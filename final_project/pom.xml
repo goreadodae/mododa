@@ -155,7 +155,15 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency> 
+		
+		<!-- USER명 한글일 경우 번역해주는 것 parser -->
+		<dependency>
+    		<groupId>xerces</groupId>
+   			 <artifactId>xercesImpl</artifactId>
+   			 <version>2.9.1</version>
+		</dependency>
+		       
 	</dependencies>
     <build>
         <plugins>
