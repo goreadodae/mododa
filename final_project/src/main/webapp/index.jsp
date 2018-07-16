@@ -8,5 +8,6 @@
 </head>
 <body>
 프로젝트 시작!
+<a href="/calendar.do">캘린더 확인해보기</a>
 </body>
 </html>
