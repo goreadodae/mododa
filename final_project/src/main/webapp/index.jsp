@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>모두다</title>
 </head>
 <body>
-프로젝트 시작!
+<a href="/gotoLogin.do">테스트페이지로</a>
 </body>
 </html>
