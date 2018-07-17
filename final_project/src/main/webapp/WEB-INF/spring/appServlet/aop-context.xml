@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- LogAdvice Bean 객체 생성 -->
+<!-- 		<bean id="log" class="org.kh.member.common.LogAdvice"/> -->
+		<!-- AOP 등록 및 설정 -->
+<!-- 		<aop:config proxy-target-class="true">
+			<aop:pointcut expression="execution(int org.kh.member.model.service..*ServiceImpl.*Member(..))" id="tranPointcut"/>
+			<aop:pointcut expression="execution(* org.kh.member.model.service..*ServiceImpl.*(..))" id="allPointcut"/>
+			<aop:aspect ref="log">
+				<aop:before method="printLog" pointcut-ref="allPointcut"/>
+				<aop:around method="aroundLog" pointcut-ref="allPointcut"/>
+				<aop:after-returning  method="printTransactionLog" pointcut-ref="tranPointcut"/>
+			</aop:aspect>
+		</aop:config> -->
+		<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+</beans>

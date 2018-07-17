@@ -22,13 +22,17 @@ public class MemberDAOImpl implements MemberDAO{
 		}
 	}
 
-	public boolean checkPw(SqlSessionTemplate sqlSession, String memberPw) {
-		String pw = sqlSession.selectOne("member.checkPw", memberPw);
+	public boolean checkPw(SqlSessionTemplate sqlSession, Member vo) {
+		String pw = sqlSession.selectOne("member.checkPw", vo);
 		if(pw==null) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+
+	public int insertMember(SqlSessionTemplate sqlSession, Member vo) {
+		return sqlSession.insert("member.insertMember", vo);
 	}
 
 }
