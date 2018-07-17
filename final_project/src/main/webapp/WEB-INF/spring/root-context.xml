@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="spring" />
-		<property name="password" value="spring" />
+		<property name="username" value="mododa" />
+		<property name="password" value="thinkingkh0130" />
 		<property name="defaultAutoCommit" value="false"/>
 	</bean>
 
@@ -23,7 +23,7 @@
 		<constructor-arg index="0" ref="sqlSession"></constructor-arg>
 	</bean>
 	
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!-- 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
@@ -42,6 +42,5 @@
 		<aop:pointcut expression="execution(* org.kh.member.model.service.MemberServiceImpl.*(..))"
 		id="tranPointcut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="tranPointcut"/>
-	</aop:config>
- -->
+	</aop:config> -->
 </beans>

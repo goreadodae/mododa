@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
-
+	<select id="selectOneMember" parameterType="member" resultType="member">
+  	SELECT member_no as memberNo,
+  	member_id as memberId,
+  	member_pw as memberPw,
+  	member_name as memberName,
+  	member_picture as memberPicture,
+  	member_depart_name as memberDepartName,
+  	member_main_task as memberMainTask
+  	from member where member_id = #{memberId} and member_pw = #{memberPw}
+  </select>
+  <select id="checkId" resultType="String">
+  	SELECT
+  	member_id as memberId
+  	from member where member_id = #{memberId}
+  </select>
+  <select id="checkPw" resultType="String">
+  	SELECT
+  	member_pw as memberPw
+  	from member where member_pw = #{memberPw}
+  </select>
 </mapper>

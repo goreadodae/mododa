@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+input[type=button] {
+	background-color: #339966;
+	border-color: #339966;
+}
+
+input[type=button]:hover {
+	background-color: rgb(35, 107, 71);
+}
+
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus
+	{
+	border-color: #CFF09E;
+	box-shadow: 0 1px 1px #CFF09E inset, 0 0 8px #CFF09E;
+	outline: 0 none;
+}
+
+input[type=checkbox]{
+	height: 20px;
+	width: 20px;
+}
+
+label{
+	color: #339966;
+	font-weight: bold;
+}
