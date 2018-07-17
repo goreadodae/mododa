@@ -25,10 +25,11 @@
  	
 </style>
 
+
 <body>
 
 <!-- 테이블을 이용한 경우 -->
-<table>
+<table width="300px">
 	<!-- 자료실 메뉴 -->
 	<tr style="float:right;">
 		<td>
@@ -88,7 +89,7 @@
 	<tr style="float:right;">
 		<td>
 			<br>
-			<a href="#">더보기 ></a>
+			<a href="#" style="font-size:80%">더보기 ></a>
 		</td>
 	</tr>
 	
@@ -97,12 +98,8 @@
 		<td>
 			<div class="dropdown-divider"></div>
 			<h5>의사결정</h5><br>
-			<p>
-			<a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목1</a> <a href="#" style="font-size:80%">의사결정 지목된 사람</a> <br>
-			</p>
-			<p>
-			<a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목2</a> <a href="#" style="font-size:80%">의사결정 지목된 사람</a> <br>
-			</p>
+			<p><a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목1</a> <a href="#" style="font-size:80%">의사결정 지목된 사람</a><br></p>
+			<p><a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목2</a> <a href="#" style="font-size:80%">의사결정 지목된 사람</a><br></p>
 		</td>
 	</tr>
 	
@@ -110,7 +107,7 @@
 	<tr style="float:right;">
 		<td>
 			<br>
-			<a href="#">더보기 ></a>
+			<a href="#" style="font-size:80%">더보기 ></a>
 		</td>
 	</tr>
 

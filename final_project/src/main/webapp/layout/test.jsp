@@ -39,7 +39,6 @@ div{
 	padding:0px;
 }
 
-
 </style>
 
 <body>
@@ -50,11 +49,9 @@ div{
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 
 	<div class="row">
-		<!-- 여백 -->
-		<div class="col-1" id="background">	</div>
 		
 		<!-- left bar -->
-		<div class="col-2" id="background">
+		<div class="col-3" id="background">
 			<jsp:include page="/layout/leftbar.jsp"></jsp:include>
 		</div>
 		
@@ -64,12 +61,11 @@ div{
 		</div>
 		
 		<!-- right bar -->
-		<div class="col-2" id="background">
+		<div class="col-3" id="background">
 			<jsp:include page="/layout/rightbar.jsp"></jsp:include>
 		</div>
 		
-		<!-- 여백 -->
-		<div class="col-1" id="background"s>	</div>
+		
 	</div>
 </div>
 </html>

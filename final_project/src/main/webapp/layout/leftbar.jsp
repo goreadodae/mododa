@@ -24,7 +24,6 @@
 </head>
 <body>
 <div class="leftbar">
-
 <ul>
   <li class="list-group-item"> 뉴스피드</li>
   <li class="list-group-item"><img src="../resources/images/layout-img/arroba.png"> 호출된 글</li>

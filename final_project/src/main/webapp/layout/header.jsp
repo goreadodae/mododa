@@ -100,7 +100,7 @@
 			$("#top-message").show();
 		} 
 	});
-<!-- 팝업창 쿠키 끝-->
+
 </script>
 
 <body>
