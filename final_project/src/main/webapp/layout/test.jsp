@@ -57,7 +57,7 @@ div{
 		
 		<!-- contents -->
 		<div class="col-6">
-			★ 내용은 여기다가~!!!★
+			<jsp:include page="/WEB-INF/views/personal/personalCall.jsp"></jsp:include>
 		</div>
 		
 		<!-- right bar -->
