@@ -18,6 +18,11 @@
  	a:visited { color: black; text-decoration: none;}
  	a:hover { color: black; text-decoration: none;}
  	
+ 	table {
+ 		padding:20px;
+ 		margin:20px;
+ 	}
+ 	
 </style>
 
 <body>
@@ -76,7 +81,6 @@
    			</div>			
    		</div>
 		<a href="#">할 일 제목2</a> <a href="#" style="font-size:80%">할 일 작성자</a><br>
-		
 		</td>
 	</tr>
 	

@@ -27,10 +27,16 @@ body{
 	height:100%;
 }
 
-middle{
-	box-sizing:border-box;
-	margin : 0px;
-	padding : 0px;
+div{
+	margin:0px;
+	padding:0px;
+}
+
+#background{
+	
+	background-color : #F5F5F5;
+	margin:0px;
+	padding:0px;
 }
 
 
@@ -44,20 +50,26 @@ middle{
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 
 	<div class="row">
+		<!-- 여백 -->
+		<div class="col-1" id="background">	</div>
+		
 		<!-- left bar -->
-		<div class="col-3" class="middle">
+		<div class="col-2" id="background">
 			<jsp:include page="/layout/leftbar.jsp"></jsp:include>
 		</div>
 		
 		<!-- contents -->
-		<div class="col-5" class="middle">
+		<div class="col-6">
 			★ 내용은 여기다가~!!!★
 		</div>
 		
 		<!-- right bar -->
-		<div class="col-4" class="middle">
+		<div class="col-2" id="background">
 			<jsp:include page="/layout/rightbar.jsp"></jsp:include>
 		</div>
+		
+		<!-- 여백 -->
+		<div class="col-1" id="background"s>	</div>
 	</div>
 </div>
 </html>

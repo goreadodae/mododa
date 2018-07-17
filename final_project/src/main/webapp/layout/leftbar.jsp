@@ -7,7 +7,6 @@
 <title>¿ÞÂÊ¹Ù</title>
 
 <style>
-
 	.leftbar{
 		background-color:#F5F5F5;
 		position : relative;
