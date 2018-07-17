@@ -35,3 +35,7 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+
+org.eclipse.wst.common.component
+pom.properties
+MANIFEST.MF
