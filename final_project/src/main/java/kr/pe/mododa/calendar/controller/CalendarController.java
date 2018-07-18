@@ -13,5 +13,10 @@ public class CalendarController {
 		return "calendar/calendar";
 	}
 	
+	@RequestMapping(value="/IntroPopup.do")
+	public String calendarIntroPopup () {
+		return "calendar/schedulePlus";
+	}
+	
 
 }
