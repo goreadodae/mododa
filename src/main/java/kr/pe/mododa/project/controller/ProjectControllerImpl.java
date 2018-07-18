@@ -45,15 +45,18 @@ public class ProjectControllerImpl implements ProjectController {
 			int proResult = projectService.insertProject(project);
 			if(proResult>0) { // 프로젝트 생성이 성공하면 insertWorkOn 진행하기
 				
-				/*WorkOn workOnInfo = new WorkOn();
-				int wonResult = projectService.insertWorkOn(workOnInfo);*/
+				int wonResult = projectService.insertWorkOn(project.getProMNo());
+				if(wonResult>0) {
+					System.out.println("완전성공");
+				} else {
+					System.out.println("work_on 실패");
+				}
 				
 			} else {
-				
+				System.out.println("project 실패");
 			}
 			
 		}
-		
 		// 프로젝트 생성이 성공하면 leftbar에 프로젝트 항목 새로 뜨게...
 		return null;
 		
