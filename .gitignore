@@ -16,7 +16,6 @@ spring-test/test-output/
 .project
 .classpath
 argfile*
-pom.xml
 activemq-data/
 
 classes/
