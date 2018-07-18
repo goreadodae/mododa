@@ -1,38 +1,66 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>¿ŞÂÊ¹Ù</title>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ì™¼ìª½ ë°”ì…ë‹ˆë‹¤.</title>
 <style>
-	.leftbar{
-		background-color:#F5F5F5;
-		position : relative;
-		height:100vh;
-	}
-	
-	ul,li{
-		background-color:#F5F5F5;
-	}
-	
-	div{
-		box-sizing:border-box;
-	}
-</style>
-</head>
-<body>
-<div class="leftbar">
-<ul>
-  <li class="list-group-item"> ´º½ºÇÇµå</li>
-  <li class="list-group-item"><img src="../resources/images/layout-img/arroba.png"> È£ÃâµÈ ±Û</li>
-  <li class="list-group-item"><img src="../resources/images/layout-img/bookmark.png"> ºÏ¸¶Å©</li>
-  <li class="list-group-item"><img src="../resources/images/layout-img/file.png"> ³»°¡ ¾´±Û </li>
-  <li class="list-group-item"><img src="../resources/images/layout-img/calendar.png"> ÀüÃ¼ Ä¶¸°´õ</li>
-</ul>
+.leftbar {
+	background-color: #F5F5F5;
+	position: relative;
+	height: 100vh;
+}
 
-</div>
+ul{
+	float : right;
+	width : 80%;
+}
+
+li{
+	list-style:none;
+	padding: 5px 0px 5px 5px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+}
+
+.icon{
+	margin-right : 5%;
+}
+
+.list-title{
+	color : #464646;
+}
+
+div {
+	box-sizing: border-box;
+}
+</style>
+
+</head>
+
+<body>
+	<div class="leftbar">
+	<br>
+		<ul>
+			<li class="list-title">ì „ì²´ ì •ë³´</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/lightning.png" class="icon"> ë‰´ìŠ¤í”¼ë“œ</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/arroba.png"  class="icon"> í˜¸ì¶œëœ ê¸€</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/bookmark.png"  class="icon"> ë¶ë§ˆí¬</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/file.png"  class="icon"> ë‚´ê°€ ì“´ê¸€</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/calendar.png"  class="icon"> ì „ì²´ ìº˜ë¦°ë”</li>
+		</ul>
+
+		<br>
+		
+		
+		<ul>
+			<li class="list-title">í”„ë¡œì íŠ¸</li>
+			<li class="list-group-item"><img src="../resources/images/layout-img/plus.png"  class="icon"> ìƒˆ í”„ë¡œì íŠ¸ ë§Œë“¤ê¸°</li>
+		</ul>
+
+	</div>
+
 
 </body>
 </html>
