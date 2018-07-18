@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>[자료실] 할 일</title>
+<title>자료실</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -20,136 +20,144 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
 	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
 	crossorigin="anonymous"></script>
+<script
+  src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
 </head>
-<style>
-body{
-	overflow-x:hidden; 
-	height:100%;
-}
-
-div{
-	margin:0px;
-	padding:0px;
-}
-
-#background{
-	
-	background-color : #F5F5F5;
-	margin:0px;
-	padding:0px;
-}
-#container {
-	margin:0px;
-	padding:0px;
-}
-#box {
-	padding-left: 35px;
-}
-
-a:link { color: black; text-decoration: none;}
-a:visited { color: black; text-decoration: none;}
-a:hover { color: black; text-decoration: none;}
-
-</style>
+<link rel="stylesheet" type="text/css" href="/resources/css/library/libraryMain.css">
 
 <body>
 <div>
-	<!-- header -->
-	<jsp:include page="/layout/header.jsp"></jsp:include>
-
+	<!-- 자료실 헤더 -->
+	<br>
 	<div class="row">
-		
-		<!-- left bar -->
-		<div class="col-3" id="background">
-			<jsp:include page="/layout/leftbar.jsp"></jsp:include>
-		</div>
-		
-		<!-- contents -->
-		<div class="col-8">
-			<!-- 자료실 헤더 -->
-			<br>
+		<div class="col-5" id="box">
 			<div class="row">
-				<div class="col-5" id="box">
-					<div class="row">
-						<div class="col-3" style="padding: 0px; margin: 0px">
-							<h4>할 일</h4>
-						</div>
-						<div class="col-9" style="padding: 0px; margin: 0px">
-							<div class="btn-group">
-								<button class="btn btn-secondary btn-sm dropdown-toggle"
-									type="button" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">전체 프로젝트</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">전체 프로젝트</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">프라이빗 공간</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">프로젝트1</a> <a
-										class="dropdown-item" href="#">프로젝트2</a>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="col-2" style="padding: 0px; margin: 0px">
+					<h4 id="subject">할 일</h4>
 				</div>
+				<div class="col-10" style="padding: 0px; margin: 0px;">
+					
+					<div class="input-group" style="width:150px;">
+  						<select class="custom-select" id="inputGroupSelect04" name="project" aria-label="Example select with button addon">
+   							<option value="전체 프로젝트" selected>전체 프로젝트</option>
+  						<option value="프라이빗 공간">프라이빗 공간</option>
+  						<option value="프로젝트1">프로젝트1</option>
+  						<option value="프로젝트2">프로젝트2</option>
+ 						</select>
+ 					</div>
 
-
-				<div class="col-7" id="container">
-					<div class="row">
-						<div class="col-2" id="container">
-							<button id="todo">할 일</button>
+				
+					<!-- <div class="btn-group">
+						<button class="btn btn-secondary btn-sm dropdown-toggle"
+							type="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">전체 프로젝트</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">전체 프로젝트</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">프라이빗 공간</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">프로젝트1</a>
+							<a class="dropdown-item" href="#">프로젝트2</a>
 						</div>
-						<div class="col-2" id="container">
-							<a href="#" id="decision">의사결정</a>
-						</div>
-						<div class="col-2" id="container">
-							<a href="#" id="image">이미지</a>
-						</div>
-						<div class="col-2" id="container">
-							<a href="#" id="file">파일</a>
-						</div>
-						<div class="col-2" id="container">
-							<a href="#" id="link">링크</a>
-						</div>
-						<div class="col-2" id="container">
-							<a href="#" id="todo"><img src="../resources/images/icon/delete.png"></img></a>
-						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
+		</div>
 
-			<div class="dropdown-divider"></div>
 
-			<div id="content">
-				<jsp:include page="/libraryTodoContent.do"></jsp:include>
+		<div class="col-7" id="container">
+			<div class="row">
+				<div class="col-2" id="container">
+					<button type="button" class="btn btn-outline-success" id="todo">할 일</button>
+				</div>
+				<div class="col-2" id="container">
+				<button type="button" class="btn btn-outline-success" id="decision">의사결정</button>
+				</div>
+				<div class="col-2" id="container">
+					<button type="button" class="btn btn-outline-success" id="image">이미지</button>
+				</div>
+				<div class="col-2" id="container">
+					<button type="button" class="btn btn-outline-success" id="file">파일</button>
+				</div>
+				<div class="col-2" id="container">
+					<button type="button" class="btn btn-outline-success" id="link">링크</button>
+				</div>
+				<div class="col-2" id="container">
+					<a href="#"><img src="../resources/images/icon/delete.png"></img></a>
+				</div>
 			</div>
-
 		</div>
 	</div>
+
+	<div class="dropdown-divider"></div>
+	<!-- 자료실 헤더 끝 -->
+	
+	<!-- 자료실 메뉴에 따른 내용 -->
+	<div id="frame">
+		<div id="content"></div>
+	</div>
+	<!-- 자료실 메뉴에 따른 내용 끝-->
+	
 </div>
-</body>
 
 <script>
-	$(document).ready(function() {
 
-		$("todo").click(function() {
-			console.log("테스트");
-			$('#content').html('<jsp:include page="/libraryTodoContent.do"></jsp:include>');
-		});
+jQuery(function($) {
+	$("#content").load("/libraryTodoContent.do");
+	
+	$("#todo").click(function() {
+		$("#subject").html("할 일");
+		$("#content").remove();
+		$("#frame").append("<div id='content'></div>");
+		$("#content").load("/libraryTodoContent.do");
+		
+	});
 
-		$("decision").click(function() {
-			$.ajax({
-				url : '/libraryTodoContent.do',
-				type : 'post',
-				dataType : 'html',
-				success : function() {
-					$('#content').html('<jsp:include page="/libraryTodoContent"></jsp:include>');
-				}
-			});
-		});
+	$("#decision").click(function() {
+		$("#subject").html("의사결정");
+		$("#content").remove();
+		$("#frame").append("<div id='content'></div>");
+		$("#content").load("/libraryDecisionContent.do");
+		
+	});
+
+	$("#image").click(function() {
+		$("#subject").html("이미지");
+		$("#content").remove();
+		$("#frame").append("<div id='content'></div>");
+		$("#content").load("/libraryImageContent.do");
+	});
+
+	$("#file").click(function() {
+		$("#subject").html("파일");
+		$("#content").remove();
+		$("#frame").append("<div id='content'></div>");
+		$("#content").load("/libraryFileContent.do");
+	});
+
+	$("#link").click(function() {
+		$("#subject").html("링크");
+		$("#content").remove();
+		$("#frame").append("<div id='content'></div>");
+		$("#content").load("/libraryLinkContent.do");
+	});
+
+});
+
 
 		
+		
+		
+		
+		
+		
+		
 
-	});
+		
+	
 </script>
 
+</body>
 </html>

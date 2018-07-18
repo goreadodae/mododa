@@ -26,15 +26,71 @@
 
 <br>
 <div class="row" >
+	<!-- 본문 -->
 	<div class="col-7" id="box">
-	내용
+		<!-- 할 일 작성 -->
+		<div>
+			할 일 작성
+		</div>
+	
+		<!-- 할 일 목록 -->
+		<div>
+			할 일 목록
+		</div>
+	
 	</div>
+	
+	<!-- right bar -->
 	<div class="col-4" id="box">
-	right side bar
+		<table width="300px">
+			<!-- 마감이 임박한 내 할 일 -->
+			<tr>
+				<td>
+					<h5>마감이 임박한 내 할 일</h5><br>
+					<p>
+					<img src="../resources/images/icon/checked-allot.png"></img>
+					<a href="#">할 일 제목1</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+					</p>
+					<p>
+					<img src="../resources/images/icon/checked-allot.png"></img>
+					<a href="#">할 일 제목2</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+					</p>
+					</td>
+			</tr>
+
+			<!-- 마감이 임박한 내 할 일의 더보기 -->
+			<tr style="float: right;">
+				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
+			</tr>
+
+			<!-- 오래된 요청한 할 일 -->
+			<tr>
+				<td>
+					<div class="dropdown-divider"></div>
+					<h5>오래된 요청한 할 일</h5>
+					<br>
+					<p>
+					<a href="#"><img src="../resources/images/icon/checked-allot.png"></img>
+					할 일 제목3</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+					</p>
+					<p>
+					<a href="#"><img src="../resources/images/icon/checked-allot.png"></img>
+					할 일 제목4</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+					</p>
+				</td>
+			</tr>
+
+			<!-- 오래된 요청한 할 일의 더보기 -->
+			<tr style="float: right;">
+				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
+			</tr>
+
+
+		</table>
 	</div>
-	<div class="col-1" id="box">
-	여백
-	</div>
+	
+	<!-- 여백 -->
+	<div class="col-1" id="box"></div>
 </div>
 
 
