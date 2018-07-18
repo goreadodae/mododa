@@ -16,9 +16,12 @@
   	member_id as memberId
   	from member where member_id = #{memberId}
   </select>
-  <select id="checkPw" resultType="String">
+  <select id="checkPw" parameterType="member" resultType="String">
   	SELECT
   	member_pw as memberPw
-  	from member where member_pw = #{memberPw}
+  	from member where member_id = #{memberId} and member_pw = #{memberPw}
   </select>
+  <insert id="insertMember" parameterType="member">
+  	insert into member values(member_SEQ.NEXTVAL,#{memberId},#{memberPw},#{memberName},null,null,null)
+  </insert>
 </mapper>

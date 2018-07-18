@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -23,7 +29,7 @@
 		<constructor-arg index="0" ref="sqlSession"></constructor-arg>
 	</bean>
 	
-<!-- 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
@@ -34,13 +40,13 @@
 		</tx:attributes>
 	</tx:advice>
 	
-	기존 AOP관련 설정은 개발자가 직접 해주지만 트랜잭션 처리는 스프링컨테이너가 tx:advice 정보를 참조하여
+<!-- 	기존 AOP관련 설정은 개발자가 직접 해주지만 트랜잭션 처리는 스프링컨테이너가 tx:advice 정보를 참조하여
 	자동으로 객체를 생성하고 실행함 <tx:method name="select" read-only="true"/> 값은 일기 전용 메소드
-	명을 명시하는 것임 - read-only는 트랜잭션 처리를 하지않음 (읽기 전용은 트랜잭션 처리가 필요없는 메소드를 말함 ex. 로그인 등..)
+	명을 명시하는 것임 - read-only는 트랜잭션 처리를 하지않음 (읽기 전용은 트랜잭션 처리가 필요없는 메소드를 말함 ex. 로그인 등..) -->
 	
 	<aop:config>
-		<aop:pointcut expression="execution(* org.kh.member.model.service.MemberServiceImpl.*(..))"
+		<aop:pointcut expression="execution(* kr.pe.mododa.member.model.service.MemberServiceImpl.*(..))"
 		id="tranPointcut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="tranPointcut"/>
-	</aop:config> -->
+	</aop:config>
 </beans>

@@ -18,7 +18,7 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public Member login(Member vo, boolean autoLogin) {
+	public Member loginSHA(Member vo, boolean autoLogin) {
 		if(autoLogin==true) {
 			
 		}
@@ -33,9 +33,14 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	public boolean checkPw(String memberPw) {
+	public boolean checkPwSHA(Member vo) {
 		boolean result = false;
-		result = memberDAO.checkPw(sqlSession, memberPw);
+		result = memberDAO.checkPw(sqlSession, vo);
+		return result;
+	}
+
+	public int insertMemberSHA(Member vo) {
+		int result = memberDAO.insertMember(sqlSession, vo);
 		return result;
 	}
 

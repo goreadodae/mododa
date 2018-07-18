@@ -32,4 +32,6 @@
 		class="org.springframework.web.servlet.view.BeanNameViewResolver">
 		<beans:property name="order" value="1"></beans:property>
 	</beans:bean>
+	
+	<beans:import resource="./aop-context.xml"/>
 </beans:beans>
