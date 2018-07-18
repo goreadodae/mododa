@@ -24,93 +24,18 @@
 
     <!-- Custom styles for this template -->
     <link href="../resources/css/index.min.css" rel="stylesheet">
-	<script
-  src="http://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
+  <style>
+  	.floating-label-form-group div {
+		border-bottom: 1px solid #e9ecef;
+	}
+  </style>
   </head>
 
   <body id="page-top">
 <script>
-	$(document).ready(function(){
-		var regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; //이메일 정규표현식
-		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}/;//비밀번호 정규식(6-16자리 영문, 숫자, 특수문자 조합)
-		$('#joinEmail').keyup(function(){
-			if ($('#joinEmail').val().match(regExp) != null) {
-				$.ajax({
-					url : "/checkEmail.do",
-					type : "post",
-					data : {
-						memberId : $('#joinEmail').val()
-					},
-					success : function(data) {
-						if(data.result=='true'){
-							$('#joinEmailTitle').text('이미 가입된 이메일입니다');
-							$('#joinEmailTitle').css('color','red');
-							$('#emailDiv').css('border-bottom','1px solid red');
-						} else {
-							$('.floating-label-form-group').css('border-bottom','');
-							$('#joinEmailTitle').text('사용가능한 이메일 입니다');
-							$('#joinEmailTitle').css('color','blue');
-						}
-					},
-					error : function(data) {
-						console.log("실패");
-					}
-				});
-			} else {
-				$('#joinEmailTitle').text('이메일형식으로 작성해주세요');
-				$('#joinEmailTitle').css('color','red');
-				$('#emailDiv').css('border-bottom','1px solid red');
-			}
-		});
-		$('#joinPassword').keyup(function(){
-			if ($('#joinPassword').val().match(regex) != null) {
-				$('.floating-label-form-group').css('border-bottom','');
-				$('#joinPwTitle').text('사용가능한 비밀번호 입니다');
-				$('#joinPwTitle').css('color','blue');
-			} else {
-				$('#joinPwTitle').text('6-16자리 영문, 숫자, 특수문자 조합으로 작성해주세요');
-				$('#joinPwTitle').css('color','red');
-				$('#pwDiv').css('border-bottom','1px solid red');
-			}
-		});
-		$('#joinName').keyup(function(){
-			if ($('#joinName').val() != '') {
-				$('.floating-label-form-group').css('border-bottom','');
-				$('#nameTitle').text('사용가능한 이름 입니다');
-				$('#nameTitle').css('color','blue');
-			} else {
-				$('#nameTitle').text('이름을 입력해주세요');
-				$('#nameTitle').css('color','red');
-				$('#nameDiv').css('border-bottom','1px solid red');
-			}
-		});
-	});
-	function join(){
-		var joinEmail = $("#joinEmail").val();
-		var joinPassword = $("#joinPassword").val();
-		var joinName = $("#joinName").val();
-		$('.form-group').css('border-bottom','');
-		if(joinEmail==''){
-			$('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-			$('#joinEmailTitle').text('이메일을 입력해주세요');
-			$('#joinEmailTitle').css('color','red');
-			$('#emailDiv').css('border-bottom','1px solid red');
-		} else if(joinPassword==''){
-			$('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-			$('#joinPwTitle').text('비밀번호를 입력해주세요');
-			$('#joinPwTitle').css('color','red');
-			$('#pwDiv').css('border-bottom','1px solid red');
-		} else if(joinName==''){
-			$('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-			$('#nameTitle').text('이름을 입력해주세요');
-			$('#nameTitle').css('color','red');
-			$('#nameDiv').css('border-bottom','1px solid red');			
-		} else {
-			return true;
-		}
-	}
+	
 </script>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
@@ -346,27 +271,27 @@
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="joinEmailTitle" style="margin-top: 50px;">Email Address</label>
-                  <input class="form-control" id="joinEmail" type="email" placeholder="Email Address (mododa@mododa.pe.kr)" required="required" data-validation-required-message="Please enter your email address.">
+                  <input class="form-control" name="memberId" id="joinEmail" type="email" placeholder="Email Address (mododa@mododa.pe.kr)" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div id="pwDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="joinPwTitle" style="margin-top: 50px;">Password</label>
-                  <input class="form-control" id="joinPassword" type="password" placeholder="Password (6-16자리 영문, 숫자, 특수문자 조합)" required="required" data-validation-required-message="Please enter your password.">
+                  <input class="form-control" name="memberPw" id="joinPassword" type="password" placeholder="Password (6-16자리 영문, 숫자, 특수문자 조합)" required="required" data-validation-required-message="Please enter your password.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div id="nameDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="nameTitle" style="margin-top: 50px;">Name</label>
-                  <input class="form-control" id="joinName" type="text" placeholder="Name (1~20자)" required="required" data-validation-required-message="Please enter your name." maxlength="20">
+                  <input class="form-control" name="memberName" id="joinName" type="text" placeholder="Name (1~20자)" required="required" data-validation-required-message="Please enter your name." maxlength="20">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div id="success"></div>
               <div class="form-group">
-                <button onclick="return join();" type="submit" class="btn btn-primary btn-xl" id="joinBtn" style="margin-top: 100px;">Join Us</button>
+                <input onclick="return join();" type="submit" class="btn btn-primary btn-xl" id="joinBtn" style="margin-top: 100px;" value="Join Us">
               </div>
               </form>
             </div>
@@ -389,14 +314,14 @@
               
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label id="idTitle" style="margin-top: 50px;">Email Address</label>
+                  <label id="idTitle" style="margin-top: 50px;"></label>
                   <input class="form-control" id="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div id="pwDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label id="pwTitle" style="margin-top: 50px;">Password</label>
+                  <label id="pwTitle" style="margin-top: 50px;"></label>
                   <input class="form-control" id="memberPw" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password.">
                   <p class="help-block text-danger"></p>
                 </div>
