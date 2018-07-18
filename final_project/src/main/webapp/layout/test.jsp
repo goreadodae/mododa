@@ -57,6 +57,7 @@ div{
 		
 		<!-- contents -->
 		<div class="col-6">
+			<jsp:include page="/WEB-INF/views/personal/personalCall.jsp"></jsp:include>
 			★ 내용은 여기다가~!!!★
 			<br>
 			<a href="/gotoProTitle.do">새 프로젝트 생성(임시)</a>
