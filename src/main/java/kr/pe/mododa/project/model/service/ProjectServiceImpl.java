@@ -28,9 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int insertWorkOn(WorkOn workOnInfo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertWorkOn(int proMNo) {
+		return projectDAO.insertWorkOn(sqlSession, proMNo);
 	}
 
 }

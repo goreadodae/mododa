@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -80,8 +80,8 @@ var title ="";
 			selectHelper: true,
 			select: function(start, end, allDay) {
 				
-                $('#myModal').show(); 
-    
+                $('#myModal').show();                
+                
 				if (title) {					
 					calendar.fullCalendar('renderEvent',
 						{
@@ -156,7 +156,9 @@ var title ="";
     
     //모듈 값 가져오기
     function saveSchedule(){
-    	title = document.getElementById("scheduleTitle").value
+
+   		title = document.getElementById("scheduleTitle").value
+        	
     	 $('#myModal').hide();
     }
     
@@ -200,9 +202,9 @@ var title ="";
            	<div class="dropdown show">
   			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">프로젝트검색</a>
 			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    		<a class="dropdown-item" href="#">Action</a>
-    		<a class="dropdown-item" href="#">Another action</a>
-    		<a class="dropdown-item" href="#">Something else here</a></div></div></div>
+			<c:forEach items="" var="l">
+    		<a class="dropdown-item" href="#">${l.proTitle}</a>
+    		</c:forEach></div></div></div>
     		<div class="col-md-6">
     		<div class="dropdown show">
   			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">관련 글 선택</a>

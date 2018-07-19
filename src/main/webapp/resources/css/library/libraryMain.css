@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+body{
+	overflow-x:hidden; 
+	height:100%;
+}
+
+div{
+	margin:0px;
+	padding:0px;
+}
+
+#background{
+	
+	background-color : #F5F5F5;
+	margin:0px;
+	padding:0px;
+}
+#container {
+	margin:0px;
+	padding:0px;
+}
+#box {
+	padding-left: 35px;
+}
+
+a:link { color: black; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: black; text-decoration: none;}
+
+.btn-outline-success{ width:100px; }

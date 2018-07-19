@@ -12,4 +12,9 @@ public class WriteController {
 		public String writeReady() {
 			return "write/writePage";
 		}
+		
+		@RequestMapping(value="/loadHeader.do")
+		public String loadHeader() {
+			return "write/header";
+		}
 }
