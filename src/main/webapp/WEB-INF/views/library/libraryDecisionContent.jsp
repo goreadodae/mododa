@@ -31,8 +31,39 @@
 <div class="row" >
 	<!-- 본문 -->
 	<div class="col-7" id="box">
-	
-	의사결정 목록
+		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+			<!-- 의사결정 메뉴 -->
+			<table width="100%">
+				<tr>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">받은 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">요청한 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 의사결정</button></td>
+					<td width="55%"></td>
+				</tr>
+			</table>
+			<div class="dropdown-divider"></div>
+			<!-- 의사결정 메뉴 끝 -->
+			
+			<!-- 의사결정 내용 -->
+			<div>
+				<table width="100%" height="100px;" border="1">
+					<tr>
+						<td rowspan="2" width="7%">아이콘</td>
+						<td width="70%" colspan="3">의사결정 제목</td>
+					</tr>
+				
+					<tr>
+						<td>프로젝트명</td>
+						<td>작성자 -> 지목받은 사람</td>
+						<td>진행상태</td>
+					</tr>
+				</table>
+			</div>
+			<div class="dropdown-divider"></div>
+			<!-- 의사결정 내용 끝 -->
+			
+			
+		</div>
 	
 	</div>
 	
