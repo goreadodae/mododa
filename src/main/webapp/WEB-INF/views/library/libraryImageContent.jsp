@@ -26,15 +26,40 @@
 
 <br>
 <div class="row" >
+	<!-- 본문 -->
 	<div class="col-7" id="box">
-	내용
+	
+	이미지 목록
+	
 	</div>
+	
+	<!-- right bar -->
 	<div class="col-4" id="box">
-	right side bar
+		<table width="300px">
+			<!-- 최근에 올린 이미지 -->
+			<tr>
+				<td>
+					<h5>최근에 올린 이미지</h5><br>
+					<p>
+					<img src="../resources/images/icon/checked-allot.png"></img>
+					<a href="#">이미지 제목1</a> <a href="#" style="font-size: 80%">등록일자</a><br>
+					</p>
+					<p>
+					<img src="../resources/images/icon/checked-allot.png"></img>
+					<a href="#">이미지 제목2</a> <a href="#" style="font-size: 80%">등록일자</a><br>
+					</p>
+				</td>
+			</tr>
+
+			<!-- 최근에 올린 이미지의 더보기 -->
+			<tr style="float: right;">
+				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
+			</tr>
+		</table>
 	</div>
-	<div class="col-1" id="box">
-	여백
-	</div>
+	
+	<!-- 여백 -->
+	<div class="col-1" id="box"></div>
 </div>
 
 

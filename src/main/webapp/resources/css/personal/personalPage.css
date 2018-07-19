@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+.content {
+	height: 875px;
+	width: 840px;
+	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
+
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.viewHeader {
+	position: fixed;
+	border-bottom: 1px solid gray;
+	height: 50px;
+	width: 840px;
+	background-color: white;
+}
+
+.headerTitle {
+	position: absolute;
+	top: 9px;
+	left: 19px;
+	float: left;
+}
+
+.headerFunction {
+	margin: 5px 10px 5px 15px;
+	float: right;
+}
+
+
+.viewContents {
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
+}
+
+.feed-list {
+	margin: 0;
+	padding: 0;
+}
+
+.feed-contents {
+	padding: 16px 20px 10px;
+	list-style: none;
+}
+
