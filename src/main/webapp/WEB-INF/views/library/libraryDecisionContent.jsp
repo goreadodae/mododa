@@ -21,20 +21,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+
+</style>
 
 <body>
 
 <br>
 <div class="row" >
+	<!-- 본문 -->
 	<div class="col-7" id="box">
-	내용
+	
+	의사결정 목록
+	
 	</div>
+	
+	<!-- right bar -->
 	<div class="col-4" id="box">
-	right side bar
+	
 	</div>
-	<div class="col-1" id="box">
-	여백
-	</div>
+	
+	<!-- 여백 -->
+	<div class="col-1" id="box"></div>
 </div>
 
 
