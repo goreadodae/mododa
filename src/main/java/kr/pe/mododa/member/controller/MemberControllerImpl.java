@@ -1,6 +1,7 @@
 package kr.pe.mododa.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,6 @@ public class MemberControllerImpl implements MemberController {
 		ModelAndView mav = new ModelAndView();//json으로 파싱할 객체
 		vo.setMemberId(memberId);
 		vo.setMemberPw(memberPw);
-		try {
-			System.out.println(sha256.encryData(vo.getMemberPw()));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(vo);
 		if(!memberService.checkId(vo.getMemberId())) {
 			mav.addObject("result", "failedId");
 			mav.setViewName("jsonView");
@@ -54,6 +48,7 @@ public class MemberControllerImpl implements MemberController {
 			mav.setViewName("jsonView");
 			return mav;
 		}
+		vo.setMemberPw(memberPw);
 		Member m = memberService.loginSHA(vo, autoLogin);
 		HttpSession session = request.getSession();
 		if(m!=null) {
@@ -62,7 +57,18 @@ public class MemberControllerImpl implements MemberController {
 		mav.setViewName("jsonView");//이전뷰로 돌아갈셋팅
 		return mav;
 	}
-
+	
+	@RequestMapping(value="/logout.do")
+	public String logoutMember(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		if(session.getAttribute("member")!=null) {
+			session.invalidate();
+			return "redirect:/index.jsp";
+		} else {
+			return "redirect:/index.jsp";
+		}
+	}
+	
 	@Override
 	@RequestMapping(value="/checkEmail.do")
 	public ModelAndView checkEmail(HttpServletRequest request, String memberId) {
@@ -75,13 +81,15 @@ public class MemberControllerImpl implements MemberController {
 
 	@Override
 	@RequestMapping(value="/join.do")
-	public String joinMember(HttpSession session, String joinEmail, String joinPassword, String joinName) {
+	public String joinMember(HttpServletRequest request, String memberId, String memberPw, String memberName) {
 		Member vo = new Member();
-		vo.setMemberId(joinEmail);
-		vo.setMemberPw(joinPassword);
-		vo.setMemberName(joinName);
+		vo.setMemberId(memberId);
+		vo.setMemberPw(memberPw);
+		vo.setMemberName(memberName);
 		int result = memberService.insertMemberSHA(vo);
 		if(result>0) {
+			HttpSession session = request.getSession();
+			session.setAttribute("member", vo);
 			return "redirect:/index.jsp";
 		} else {
 			return "member/error";
