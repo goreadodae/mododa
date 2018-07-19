@@ -11,28 +11,28 @@ public class Project {
 	private String proProgress;
 	private Date proStartDate;
 	private Date proEndDate;
-	private int proMNo;
+	private int proMemberNo;
 	
 	public Project() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Project(int proNo, String proTitle, String proProgress, Date proStartDate, Date proEndDate, int proMNo) {
+	public Project(int proNo, String proTitle, String proProgress, Date proStartDate, Date proEndDate, int proMemberNo) {
 		super();
 		this.proNo = proNo;
 		this.proTitle = proTitle;
 		this.proProgress = proProgress;
 		this.proStartDate = proStartDate;
 		this.proEndDate = proEndDate;
-		this.proMNo = proMNo;
+		this.proMemberNo = proMemberNo;
 	}
 
 	
 	@Override
 	public String toString() {
 		return "Project [proNo=" + proNo + ", proTitle=" + proTitle + ", proProgress=" + proProgress + ", proStartDate="
-				+ proStartDate + ", proEndDate=" + proEndDate + ", proMNo=" + proMNo + "]";
+				+ proStartDate + ", proEndDate=" + proEndDate + ", proMemberNo=" + proMemberNo + "]";
 	}
 
 	
@@ -76,12 +76,12 @@ public class Project {
 		this.proEndDate = proEndDate;
 	}
 
-	public int getProMNo() {
-		return proMNo;
+	public int getProMemberNo() {
+		return proMemberNo;
 	}
 
-	public void setProMNo(int proMNo) {
-		this.proMNo = proMNo;
+	public void setProMemberNo(int proMemberNo) {
+		this.proMemberNo = proMemberNo;
 	}
 	
 	

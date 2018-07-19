@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>레이아웃 샘플입니다.</title>
+<title>프로젝트 레이아웃 샘플입니다.</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -26,6 +26,7 @@
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
 </head>
+
 <style>
 body {
 	overflow-x: hidden;
@@ -50,7 +51,7 @@ div {
 }
 
 #banner {
-	background-color: #339966;
+	background-color: #CFF09E;
 	color: white;
 	height: 30px;
 	margin: 0px;
@@ -157,7 +158,35 @@ table {
 
 </style>
 
+<style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */                          
+        }
+ 
+</style>
+
+
 <script>
+
 	//leftbar, rightbar 높이 설정
 	$(document).ready(function() {
 		resizeContent();
@@ -181,8 +210,8 @@ table {
 		$("#banner").hide();
 	}
 	
-	//contents 화면 전환
-	jQuery(function($) {
+ 	//contents 화면 전환
+/* 	jQuery(function($) {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
@@ -195,11 +224,11 @@ table {
 			   $("#content-frame").load("/testareum.do");
 		   });
 
-		});
+		}); */
 	
 	
 	/* 지은 프로젝트부분 contents 화면 전환 함수 */
-		jQuery(function($) {
+/* 		jQuery(function($) {
 		   
 		   $("#project").click(function() {
 			   $("#content-frame").remove();
@@ -207,12 +236,46 @@ table {
 			   $("#content-frame").load("/gotoProTitle.do");
 		   });
 
-		});
-	
-	
+		});  */
+
+
 </script>
 
+<script type="text/javascript">
+      
+        jQuery(document).ready(function() {
+                $('#myModal').show();
+        });
+        //팝업 Close 기능
+        function close_pop(flag) {
+             $('#myModal').hide();
+        };
+        
+</script>
+
+
+
 <body>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+ 
+      <!-- Modal content -->
+      <div class="modal-content">
+                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
+                <p style="text-align: center; line-height: 1.5;"><br />여기에 내용</p>
+                <p><br /></p>
+            <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+                <span class="pop_bt" style="font-size: 13pt;" >
+                     닫기
+                </span>
+            </div>
+      </div>
+ 
+    </div>
+    <!--End Modal-->
+
+
 	<div>
 		<!-- header -->
 		<div class="header">
@@ -220,7 +283,7 @@ table {
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
-					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. <img id="cancel-img"
+					프로젝트 화면 입니다. <img id="cancel-img"
 						onclick="bannerClose();"
 						src="../resources/images/layout-img/cancel.png" />
 				</div>
@@ -385,5 +448,8 @@ table {
 			<!-- right bar 끝 -->
 		</div>
 	</div>
+	
+	
+
 </body>
 </html>
