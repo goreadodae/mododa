@@ -3,19 +3,25 @@
 <mapper namespace="project">
 
 	<insert id="insertProject" parameterType="project">
-		INSERT INTO PROJECT VALUES(
-			project_SEQ.NEXTVAL, 
+		insert into project values(
+			project_seq.nextval, 
 			#{proTitle}, 
 			'working',
 	<choose>
 		<when test="proStartDate!=null and proEndDate!=null">
-			#{proStartDate}, #{proEndDate}
+			#{proStartDate}, #{proEndDate},
 		</when>
 		<otherwise>
-			null,null
+			null,null,
 		</otherwise>
 	</choose>
-		)
+		#{proMNo})
 	</insert>
+	
+	<insert id="insertWorkOn">
+		insert into work_on values(#{proMNo},project_seq.currval,'Y')
+	</insert>
+
+	
   
 </mapper>
