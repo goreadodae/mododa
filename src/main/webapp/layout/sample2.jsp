@@ -186,20 +186,28 @@ table {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("");
+		      $("#content-frame").load("/newsfeed.do");
 		   });
 
 		   $("#callpost").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("/testareum.do");
+			   $("#content-frame").load("/personalcall.do");
 		   });
 		   
-		   $("#project").click(function() {
+		   $("#bookmark").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("");
+			   $("#content-frame").load("/bookmark.do");
 		   });
+		   
+		   $("#mypost").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/mypost.do");
+		   });
+		   
+		   
 
 		});
 	

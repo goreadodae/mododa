@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,7 +27,8 @@
 	crossorigin="anonymous">
 <!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
 
-<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/personal/personalPage.css">
 <!-- 개인페이지 공통 style저장. -->
 
 <script>
@@ -34,12 +36,31 @@
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");
 	}
+	
 	function searchCancle() {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-
+		
+		//검색 이후 결과가 나오거나 없으면, 어쨋든 실행 후 취소 버튼 누르면 다시 내가 쓴 글 보여줄 수 있도록 새로 로드필요
 	}
+	//돋보기 아이콘 클릭 후 검색어 입력 후 검색버튼누르면 검색하는 function.
+	function searchTitle(){ 
+	 var keyword = $("#keyword").val;
+		$.ajax({
+			url:"/searchTitle.do",
+			type:"POST",
+			data:{keyword:keyword},
+			success:function(responseData){
+				alert(data);
+				console.log(data);
+			},
+			error:function(){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		});
+	}
+	
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -74,15 +95,15 @@
 			</div>
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
-				<i class="fab fa-searchengin" style="color: grey;"></i> <input
-					type="text" id="keyword" name="keyword" size=80
-					style="border: none;" placeholder="제목/작성자 검색" />
+				<i class="fab fa-searchengin" style="color: grey;"></i> 
+				<input type="text" id="keyword" name="keyword" size=80
+					style="border: none;" placeholder="제목 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="search();">검색!</button>
+						onClick="searchTitle();">검색!</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
-						onclick="searchCancle();">취소</button>
+						onClick="searchCancle();">취소</button>
 				</div>
 			</div>
 		</div>
@@ -90,7 +111,7 @@
 
 		<div class="viewContents">
 			<!-- 내용출력하는 부분 -->
-			
+
 			<ul class="feed-list">
 				<li class="feed-contents">
 					<div>
@@ -190,7 +211,7 @@
 
 		</div>
 	</div>
-	
+
 
 </body>
 </html>
