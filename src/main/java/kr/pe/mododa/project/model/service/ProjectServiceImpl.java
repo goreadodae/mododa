@@ -1,5 +1,7 @@
 package kr.pe.mododa.project.model.service;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -30,6 +32,16 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int insertWorkOn(int proMemberNo) {
 		return projectDAO.insertWorkOn(sqlSession, proMemberNo);
+	}
+
+	@Override
+	public int searchMemberNo(String memberId) {
+		return projectDAO.searchMemberNo(sqlSession, memberId);
+	}
+
+	@Override
+	public ArrayList<Project> searchProjectList(int memberNo) {
+		return projectDAO.searchProjectList(sqlSession, memberNo);
 	}
 
 }

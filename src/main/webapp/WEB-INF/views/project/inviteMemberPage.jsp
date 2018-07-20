@@ -1,32 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<!-- JSTL 선언 -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>프로젝트 레이아웃 샘플입니다.</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-	crossorigin="anonymous"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-	crossorigin="anonymous"></script>
-<script
-  src="http://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
 </head>
 
+<!-- 화면 구성 스타일 -->
 <style>
 body {
 	overflow-x: hidden;
@@ -156,8 +149,19 @@ table {
 	border : 0px;
 }
 
+
+.proIcon {
+	height:30px; 
+	width:30px;
+	margin-right: 5%;
+	margin-left: 10%;
+}
+
+
 </style>
 
+
+<!-- 모달 스타일 -->
 <style>
         /* The Modal (background) */
         .modal {
@@ -181,12 +185,45 @@ table {
             border: 1px solid #888;
             width: 30%; /* Could be more or less, depending on screen size */                          
         }
- 
+        
+        .divStyle {
+        	cursor:pointer; 
+        	background-color:#DDDDDD; 
+        	text-align:center; 
+        }
+        
+        .btnStyle {
+        	background-color:#DDDDDD; 
+        	height:100%; 
+        	width:100%; 
+        	background:transparent; 
+        	border:none;
+        	outline:0;
+        	padding-top:10px;
+        	padding-bottom:10px;
+        }
+        
+        span {
+        	font-size:13pt;
+        }
+        
+        #m_header {
+        	padding : 0px;
+        	text-align: right;
+        	display: inline-block;
+        	
+        }
+        
+        #m_header img {
+        	height : 25px;
+        	width : 25px;
+        	cursor:pointer;
+        }
 </style>
 
 
+<!-- 화면 구성, 기능 스크립트 -->
 <script>
-
 	//leftbar, rightbar 높이 설정
 	$(document).ready(function() {
 		resizeContent();
@@ -205,51 +242,48 @@ table {
 		});
 	}
 	
-	//배너 닫기
-	function bannerClose() {
-		$("#banner").hide();
-	}
 	
- 	//contents 화면 전환
-/* 	jQuery(function($) {
-		   $("#newsfeed").click(function() {
-		      $("#content-frame").remove();
-		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("");
-		   });
+ 	//contents 화면 전환 -> 준석이 코드 추가하기
+ 	jQuery(function($) {
+	
 
-		   $("#callpost").click(function() {
-			   $("#content-frame").remove();
-			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("/testareum.do");
-		   });
-
-		}); */
+	}); 
 	
 	
 	/* 지은 프로젝트부분 contents 화면 전환 함수 */
-/* 		jQuery(function($) {
+ 	jQuery(function($) {
 		   
-		   $("#project").click(function() {
-			   $("#content-frame").remove();
-			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("/gotoProTitle.do");
-		   });
+ 		// 새 프로젝트 생성
+		$("#project").click(function() {
+			$("#content-frame").remove();
+			$("#contents").append("<div id='content-frame'></div>");
+			$("#content-frame").load("/gotoProTitle.do");
+		 });
 
-		});  */
-
-
+	});
 </script>
 
+
+<!-- 모달 스크립트 -->
 <script type="text/javascript">
       
-        jQuery(document).ready(function() {
-                $('#myModal').show();
-        });
-        //팝업 Close 기능
-        function close_pop(flag) {
-             $('#myModal').hide();
-        };
+    jQuery(document).ready(function() {
+        $('#inviteMemberModal').show();
+    });
+    
+     //팝업 Close 기능
+    function close_pop(flag) {
+        $('#inviteMemberModal').hide();
+    };
+     
+	function submitCheck() {
+		if(document.getElementById('memberId').value == "") {
+			alert("프로젝트명을 입력해주세요.");
+			return false;
+		} else {
+			return true;
+		}
+	}
         
 </script>
 
@@ -257,35 +291,43 @@ table {
 
 <body>
 
+<!-- 프로젝트 초대 모달 -->
+
     <!-- The Modal -->
-    <div id="myModal" class="modal">
- 
+    <div id="inviteMemberModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
-                <p style="text-align: center; line-height: 1.5;"><br />여기에 내용</p>
-                <p><br /></p>
-            <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
-                <span class="pop_bt" style="font-size: 13pt;" >
-                     닫기
-                </span>
-            </div>
+      	<!-- 닫기 버튼 -->
+      	<div class="modal-header" id="m_header"><img src="/resources/images/project/delete-button.png" onClick="close_pop();"></div>
+      	<div class="modal-body">
+                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">프로젝트 멤버 초대</span></b></span></p>
+                <form action="/inviteMember.do" method="get">
+                <p style="text-align: center; line-height: 1.5;"><br />
+  					초대 멤버 이메일 입력 : <input type="text" name="memberId" id="memberId"> <br>
+					<!-- 프로젝트 번호, 회원 번호 필요 -->
+				</p><p><br /></p>
+                <!-- submit 버튼 -->
+                <div class="divStyle">
+                <button class="btnStyle" onClick="return submitCheck();"><span>초대</span></button>
+                </div>
+                </form>
+      	</div>
       </div>
  
     </div>
     <!--End Modal-->
 
 
+
+<!-- 화면 구성 -->
 	<div>
 		<!-- header -->
 		<div class="header">
 
 			<!-- 팝업창 -->
-			<div class="row">
+			<div class="row"> 
 				<div class="col-12" id="banner">
-					프로젝트 화면 입니다. <img id="cancel-img"
-						onclick="bannerClose();"
-						src="../resources/images/layout-img/cancel.png" />
+					프로젝트 화면입니다.
 				</div>
 			</div>
 
@@ -328,6 +370,9 @@ table {
 						<li class="list-title">프로젝트</li>
 						<li class="list-group-item" id="project"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
 						<!-- 로그인이랑 연동되면 해당아이디 프로젝트 목록을 읽어와서 이 곳에 출력해준다. -->
+						<c:forEach items="${projectList}" var="projectList">
+						<li class="list-group-item"><img src="../resources/images/project/idea.png" class="proIcon" /> ${projectList.proTitle}</li>
+						</c:forEach>
 					</ul>
 
 				</div>
@@ -337,7 +382,24 @@ table {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
-				<div id="content-frame"></div>
+				<div id="content-frame">
+				
+				
+<table border="1">
+	<tr>
+		<th>아이디</th><th>이름</th><th>전화번호</th>
+	</tr>
+	<c:forEach items="${projectList}" var="projectList">
+	<tr>
+		<td>${projectList.proNo}</td>
+		<td>${projectList.proTitle}</td>
+		<td>${projectList.proProgress}</td>
+	</tr>
+	</c:forEach>
+</table>
+				
+				
+				</div>
 			</div>
 			<!-- contents 끝 -->
 
