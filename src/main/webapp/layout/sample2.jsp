@@ -194,6 +194,18 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/testareum.do");
 		   });
+    
+    	 $("#bookmark").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/bookmark.do");
+		   });
+		   
+		   $("#mypost").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/mypost.do");
+		   });
 
 		});
 	
