@@ -186,16 +186,16 @@ table {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("/newsfeed.do");
+		      $("#content-frame").load("");
 		   });
 
 		   $("#callpost").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("/personalcall.do");
+			   $("#content-frame").load("/testareum.do");
 		   });
-		   
-		   $("#bookmark").click(function() {
+    
+    	 $("#bookmark").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/bookmark.do");
@@ -206,11 +206,19 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/mypost.do");
 		   });
-		   
-		   
 
 		});
 	
+	
+	/* 지은 프로젝트부분 contents 화면 전환 함수 */
+		jQuery(function($) {
+		   $("#project").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/gotoProTitle.do");
+		   });
+
+		});
 </script>
 
 <body>
@@ -260,11 +268,11 @@ table {
 					</ul>
 
 					<br>
-
-
+					<!-- 지은 작업 중 -->
 					<ul>
 						<li class="list-title">프로젝트</li>
 						<li class="list-group-item" id="project"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
+						<!-- 로그인이랑 연동되면 해당아이디 프로젝트 목록을 읽어와서 이 곳에 출력해준다. -->
 					</ul>
 
 				</div>

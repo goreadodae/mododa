@@ -8,7 +8,8 @@
   	member_name as memberName,
   	member_picture as memberPicture,
   	member_depart_name as memberDepartName,
-  	member_main_task as memberMainTask
+  	member_main_task as memberMainTask,
+  	member_email_certify as memberEmailCertify
   	from member where member_id = #{memberId} and member_pw = #{memberPw}
   </select>
   <select id="checkId" resultType="String">
@@ -22,6 +23,40 @@
   	from member where member_id = #{memberId} and member_pw = #{memberPw}
   </select>
   <insert id="insertMember" parameterType="member">
-  	insert into member values(member_SEQ.NEXTVAL,#{memberId},#{memberPw},#{memberName},null,null,null)
+  	insert into member values(member_SEQ.NEXTVAL,#{memberId},#{memberPw},#{memberName},null,null,null,'N')
   </insert>
+      <!--
+        로그인된 경우 해당 세션id와 유효시간을 사용자 테이블에 세팅한다.
+     -->
+    <insert id="keepLogin">
+        insert into auto_login values(auto_login_SEQ.NEXTVAL, #{memberNo}, #{autoTime}, #{autoKey})
+    </insert>
+    <!--
+        유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분
+     -->
+    <select id="selectAtuoLogin" parameterType="autoLogin" resultType="autoLogin">
+        select
+        auto_no as autoNo,
+        member_no as memberNo,
+        auto_time as autoTime,
+        auto_key as autoKey
+        from auto_login where sessionKey = #{sessionId} and #{autoTime} > now()
+    </select>
+   	<select id="selectOneMemberNo" parameterType="Integer" resultType="member">
+  	SELECT member_no as memberNo,
+  	member_id as memberId,
+  	member_pw as memberPw,
+  	member_name as memberName,
+  	member_picture as memberPicture,
+  	member_depart_name as memberDepartName,
+  	member_main_task as memberMainTask,
+  	member_email_certify as memberEmailCertify
+  	from member where member_id = #{memberNo}
+  </select>
+  <delete id="deleteAutoLogin" parameterType="String">
+  	delete auto_login where auto_key=#{id}
+  </delete>
+  <update id="confirmEmail" parameterType="String">
+  	update member set member_email_certify='Y' where member_id=#{userEmail}
+  </update>
 </mapper>

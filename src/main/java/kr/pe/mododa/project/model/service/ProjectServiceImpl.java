@@ -28,8 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int insertWorkOn(int proMNo) {
-		return projectDAO.insertWorkOn(sqlSession, proMNo);
+	public int insertWorkOn(int proMemberNo) {
+		return projectDAO.insertWorkOn(sqlSession, proMemberNo);
 	}
 
 }

@@ -17,8 +17,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	@Override
-	public int insertWorkOn(SqlSessionTemplate sqlSession, int proMNo) {
-		return sqlSession.insert("project.insertWorkOn", proMNo);
+	public int insertWorkOn(SqlSessionTemplate sqlSession, int proMemberNo) {
+		return sqlSession.insert("project.insertWorkOn", proMemberNo);
 	}
 
 }
