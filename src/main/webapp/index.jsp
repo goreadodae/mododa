@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -34,9 +35,11 @@
   </head>
 
   <body id="page-top">
-<script>
-	
-</script>
+  	<c:if test="${sessionScope.member!=null }">
+  		<script type="text/javascript">//세션이 있는지 확인
+			location.href="/mainPage.do";
+  		</script>
+  	</c:if>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
@@ -311,27 +314,29 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Login</h2>
               <hr class="star-dark mb-5">
-              
+              <form action="/login.do" method="post">
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="idTitle" style="margin-top: 50px;"></label>
-                  <input class="form-control" id="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
+                  <input class="form-control" id="memberId" name="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div id="pwDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="pwTitle" style="margin-top: 50px;"></label>
-                  <input class="form-control" id="memberPw" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password.">
+                  <input class="form-control" id="memberPw" name="memberPw" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div id="success"></div>
               <div style="margin-top: 10%; margin-left: 80%;">
               <input type="checkbox" id="autoLogin" style="height: 20px; width: 20px; font-size: 15px">&nbsp;&nbsp;자동로그인</div>
+              <input type="hidden" id="autoLoginHidden" name="autoLogin" value="false"/>
               <div class="form-group">
-                <button onclick="login();" type="button" class="btn btn-primary btn-xl" id="loginBtn" style="margin-top: 100px;">Login</button>
+                <input onclick="return login();" type="submit" class="btn btn-primary btn-xl" id="loginBtn" style="margin-top: 100px;" value="Login"/>
               </div>
+              </form>
             </div>
           </div>
         </div>

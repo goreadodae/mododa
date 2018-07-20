@@ -1,5 +1,8 @@
 package kr.pe.mododa.member.controller;
 
+import java.sql.Date;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -7,12 +10,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import kr.pe.mododa.common.SHA256Util;
 import kr.pe.mododa.member.model.service.MemberServiceImpl;
+import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
 
 @Controller
@@ -22,18 +29,16 @@ public class MemberControllerImpl implements MemberController {
 	private MemberServiceImpl memberService;
 	
 	@Override
-	@RequestMapping(value="/gotoLogin.do")
-	public String gotoLogin() {
-		return "member/loginPage";
+	@RequestMapping(value="/mainPage.do")
+	public String gotoMain() {
+		return "main/mainPage";
 	}
 	
 	@Autowired
 	private SHA256Util sha256;
 
-	@Override
-	@RequestMapping(value="/login.do")
-	public ModelAndView login(HttpServletRequest request, @RequestParam String memberId, @RequestParam String memberPw
-			, @RequestParam boolean autoLogin) {
+	@RequestMapping(value="/checkLogin.do")//로그인시 아이디가 틀렸는지 비밀번호가 틀렸는지 알려주는 메소드
+	public ModelAndView checkLogin(HttpServletRequest request, @RequestParam String memberId, @RequestParam String memberPw) {
 		Member vo = new Member();
 		ModelAndView mav = new ModelAndView();//json으로 파싱할 객체
 		vo.setMemberId(memberId);
@@ -48,21 +53,58 @@ public class MemberControllerImpl implements MemberController {
 			mav.setViewName("jsonView");
 			return mav;
 		}
-		vo.setMemberPw(memberPw);
-		Member m = memberService.loginSHA(vo, autoLogin);
-		HttpSession session = request.getSession();
-		if(m!=null) {
-			session.setAttribute("member", m);
-		}
 		mav.setViewName("jsonView");//이전뷰로 돌아갈셋팅
 		return mav;
+	}
+	
+	@Override
+	@RequestMapping(value="/login.do")//로그인(쿠키값 설정, 세션설정)
+	public String login(HttpServletRequest request, @RequestParam String memberId, @RequestParam String memberPw
+			, @RequestParam String autoLogin, HttpServletResponse response) {
+		Member vo = new Member();
+		vo.setMemberId(memberId);
+		vo.setMemberPw(memberPw);
+		Member m = memberService.loginSHA(vo);
+		HttpSession session = request.getSession();
+		System.out.println(autoLogin);
+		System.out.println(m);
+		if(m!=null) {
+			session.setAttribute("member", m);
+			if(autoLogin.equals("true")) {
+				Cookie cookie = new Cookie("loginCookie", session.getId());
+				cookie.setPath("/");
+				int amount = 60*60*24*7;
+				cookie.setMaxAge(amount);
+				response.addCookie(cookie);
+				Date sessionLimit = new Date(System.currentTimeMillis() + (1000*amount));
+				AutoLogin al = new AutoLogin();
+				al.setAutoKey(session.getId());
+				al.setMemberNo(m.getMemberNo());
+				al.setAutoTime(sessionLimit);
+				memberService.keepLogin(al);
+			}
+			return "main/mainPage";
+		} else {
+			return "redirect:/index.jsp";
+		}
 	}
 	
 	@RequestMapping(value="/logout.do")
 	public String logoutMember(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(false);
 		if(session.getAttribute("member")!=null) {
+			session.removeAttribute("login");
 			session.invalidate();
+			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+			if(loginCookie != null) {
+				 loginCookie.setPath("/");
+	                // 쿠키는 없앨 때 유효시간을 0으로 설정하는 것 !!! invalidate같은거 없음.
+	                loginCookie.setMaxAge(0);
+	                // 쿠키 설정을 적용한다.
+	                response.addCookie(loginCookie);
+	                // 사용자 테이블에서도 유효기간을 현재시간으로 다시 세팅해줘야함.
+	                memberService.deleteAutoLogin(session.getId());
+			}
 			return "redirect:/index.jsp";
 		} else {
 			return "redirect:/index.jsp";
@@ -90,9 +132,25 @@ public class MemberControllerImpl implements MemberController {
 		if(result>0) {
 			HttpSession session = request.getSession();
 			session.setAttribute("member", vo);
-			return "redirect:/index.jsp";
+			return "main/mainPage";
 		} else {
 			return "member/error";
 		}
+	}
+	
+	@RequestMapping(value="/confirmEmail.do")
+	public String confirmEmail(HttpSession session) throws Exception {
+		System.out.println("controller실행");
+		String email = ((Member)session.getAttribute("member")).getMemberId();
+		memberService.confirmEmail(email);
+		return null;
+	}
+	
+	@RequestMapping(value = "/emailConfirm", method = RequestMethod.GET)
+	public String emailConfirm(String user_email, Model model, HttpSession session) throws Exception { // 이메일인증
+		memberService.userAuth(user_email);
+		model.addAttribute("user_email", user_email);
+		((Member)session.getAttribute("member")).setMemberEmailCertify("Y");
+		return "main/mainPage";
 	}
 }
