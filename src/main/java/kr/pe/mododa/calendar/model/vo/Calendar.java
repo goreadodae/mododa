@@ -6,54 +6,97 @@ public class Calendar {
 	
 	private int scheduleNo;
 	private int postNo;
-	private String memId;
+	private int memNO;
 	private Date startDate;
 	private Date endDate;
 	private int proNo;
+	private String scTitle;
 	
-	public Calendar () {}
-		
+	public Calendar () {
+		super();
+	}
+
+	
 	@Override
 	public String toString() {
-		return "Calendar [scheduleNo=" + scheduleNo + ", postNo=" + postNo + ", memId=" + memId + ", startDate="
+		return "Calendar [scheduleNo=" + scheduleNo + ", postNo=" + postNo + ", memNO=" + memNO + ", startDate="
 				+ startDate + ", endDate=" + endDate + ", proNo=" + proNo + "]";
 	}
+
+
 	public int getScheduleNo() {
 		return scheduleNo;
 	}
+
+
 	public void setScheduleNo(int scheduleNo) {
 		this.scheduleNo = scheduleNo;
 	}
+
+
 	public int getPostNo() {
 		return postNo;
 	}
+
+
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
-	public String getMemId() {
-		return memId;
+
+
+	public int getMemNO() {
+		return memNO;
 	}
-	public void setMemId(String memId) {
-		this.memId = memId;
+
+
+	public void setMemNO(int memNO) {
+		this.memNO = memNO;
 	}
+
+
 	public Date getStartDate() {
 		return startDate;
 	}
+
+
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
+
 	public Date getEndDate() {
 		return endDate;
 	}
+
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+
+
 	public int getProNo() {
 		return proNo;
 	}
+
+
 	public void setProNo(int proNo) {
 		this.proNo = proNo;
 	}
+
+
+	public String getScTitle() {
+		return scTitle;
+	}
+
+
+	public void setScTitle(String scTitle) {
+		this.scTitle = scTitle;
+	}
+
+
+	
+	
+	
 	
 	
 	

@@ -195,10 +195,16 @@ table {
 			   $("#content-frame").load("/testareum.do");
 		   });
 		   
+		   $("#calendar").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/calendar.do");
+		   });
+		   
 		   $("#project").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
-			   $("#content-frame").load("");
+			   $("#content-frame").load("/gotoProTitle.do");
 		   });
 
 		});

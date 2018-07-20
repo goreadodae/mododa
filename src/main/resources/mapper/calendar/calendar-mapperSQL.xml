@@ -2,8 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendar">
 
-	<select id="projectList">
-		select 
+	<select id="projectList" resultType="project">
+		select pro_no as proNo,
+		pro_title as proTitle,
+		pro_progress as proProgress,
+		pro_start_Date as proStartDate,
+		pro_end_Date as proEndDate,
+		pro_m_no as proMNo
+		from Project
+	</select>
+	<select id="calendarList" resultType="calendar">
+		select sc_no as scheduleNo,
+		post_no as postNo,
+		m_no as memNO,
+		pro_start_Date as startDate,
+		pro_end_Date as endDate,
+		pro_no as proNo
+		from schedule
 	</select>
 
 </mapper>
