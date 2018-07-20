@@ -212,7 +212,6 @@ table {
 	
 	/* 지은 프로젝트부분 contents 화면 전환 함수 */
 		jQuery(function($) {
-		   
 		   $("#project").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
@@ -220,8 +219,6 @@ table {
 		   });
 
 		});
-	
-	
 </script>
 
 <body>
@@ -271,7 +268,6 @@ table {
 					</ul>
 
 					<br>
-
 					<!-- 지은 작업 중 -->
 					<ul>
 						<li class="list-title">프로젝트</li>
