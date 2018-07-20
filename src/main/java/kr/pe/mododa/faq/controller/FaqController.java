@@ -1,5 +1,8 @@
 package kr.pe.mododa.faq.controller;
 
-public class FaqController {
 
+
+public interface FaqController {
+	
+	public Object selectNotice();
 }
