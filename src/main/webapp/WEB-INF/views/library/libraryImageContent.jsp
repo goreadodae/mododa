@@ -28,9 +28,33 @@
 <div class="row" >
 	<!-- 본문 -->
 	<div class="col-7" id="box">
-	
-	이미지 목록
-	
+		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+			<!-- 이미지 메뉴 -->
+			<table width="100%">
+				<tr>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">내 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 이미지</button></td>
+					<td width="70%"></td>
+				</tr>
+			</table>
+			<div class="dropdown-divider"></div>
+			<!-- 이미지 메뉴 끝 -->
+				
+			<!-- 이미지 내용 -->
+			<table border="1">
+				<tr>
+					<td colspan="3" align="center">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+					</td>
+				</tr>
+			</table>
+			<!-- 이미지 내용 끝 -->
+		</div>
 	</div>
 	
 	<!-- right bar -->
@@ -50,11 +74,13 @@
 					</p>
 				</td>
 			</tr>
+			<!-- 최근에 올린 이미지 끝 -->
 
 			<!-- 최근에 올린 이미지의 더보기 -->
 			<tr style="float: right;">
 				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
 			</tr>
+			<!-- 최근에 올린 이미지의 더보기 끝 -->
 		</table>
 	</div>
 	

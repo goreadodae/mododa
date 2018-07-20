@@ -30,75 +30,51 @@
 <body>
 <div>
 	<!-- 자료실 헤더 -->
-	<br>
-	<div class="row">
-		<div class="col-5" id="box">
-			<div class="row">
-				<div class="col-2" style="padding: 0px; margin: 0px">
-					<h4 id="subject">할 일</h4>
-				</div>
-				<div class="col-10" style="padding: 0px; margin: 0px;">
-					
-					<div class="input-group" style="width:150px;">
-  						<select class="custom-select" id="inputGroupSelect04" name="project" aria-label="Example select with button addon">
-   							<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  						<option value="프라이빗 공간">프라이빗 공간</option>
-  						<option value="프로젝트1">프로젝트1</option>
-  						<option value="프로젝트2">프로젝트2</option>
- 						</select>
- 					</div>
-
-				
-					<!-- <div class="btn-group">
-						<button class="btn btn-secondary btn-sm dropdown-toggle"
-							type="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">전체 프로젝트</button>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">전체 프로젝트</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">프라이빗 공간</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">프로젝트1</a>
-							<a class="dropdown-item" href="#">프로젝트2</a>
-						</div>
-					</div> -->
-				</div>
-			</div>
-		</div>
-
-
-		<div class="col-7" id="container">
-			<div class="row">
-				<div class="col-2" id="container">
-					<button type="button" class="btn btn-outline-success" id="todo">할 일</button>
-				</div>
-				<div class="col-2" id="container">
+	<table width="100%">
+		<tr>
+			<td width="7%">
+				<h4 id="subject">할 일</h4>
+			</td>
+			<td width="35%">
+				<select class="form-control" style="width:150px;">
+  					<option value="전체 프로젝트" selected>전체 프로젝트</option>
+  					<option value="프라이빗 공간">프라이빗 공간</option>
+  					<option value="프로젝트1">프로젝트1</option>
+  					<option value="프로젝트2">프로젝트2</option>
+				</select>
+			</td>
+			<td width="5%">
+				<button type="button" class="btn btn-outline-success" id="todo">할 일</button>
+			</td>
+			<td width="5%">
 				<button type="button" class="btn btn-outline-success" id="decision">의사결정</button>
-				</div>
-				<div class="col-2" id="container">
-					<button type="button" class="btn btn-outline-success" id="image">이미지</button>
-				</div>
-				<div class="col-2" id="container">
-					<button type="button" class="btn btn-outline-success" id="file">파일</button>
-				</div>
-				<div class="col-2" id="container">
-					<button type="button" class="btn btn-outline-success" id="link">링크</button>
-				</div>
-				<div class="col-2" id="container">
-					<a href="#"><img src="../resources/images/icon/delete.png"></img></a>
-				</div>
-			</div>
-		</div>
-	</div>
-
+			</td>
+			<td width="5%">
+				<button type="button" class="btn btn-outline-success" id="image">이미지</button>
+			</td>
+			<td width="5%">
+				<button type="button" class="btn btn-outline-success" id="file">파일</button>
+			</td>
+			<td width="5%">
+				<button type="button" class="btn btn-outline-success" id="link">링크</button>
+			</td>
+			<td width="7%"></td>
+			<td width="13%">
+				<a href="#"><img src="../resources/images/icon/delete.png"></img></a>
+			</td>
+			<td width="13%"></td>
+		</tr>
+	</table>
+	
 	<div class="dropdown-divider"></div>
+	<br>
 	<!-- 자료실 헤더 끝 -->
 	
-	<!-- 자료실 메뉴에 따른 내용 -->
+	<!-- 자료실 내용 -->
 	<div id="frame">
 		<div id="content"></div>
 	</div>
-	<!-- 자료실 메뉴에 따른 내용 끝-->
+	<!-- 자료실 내용 끝-->
 	
 </div>
 

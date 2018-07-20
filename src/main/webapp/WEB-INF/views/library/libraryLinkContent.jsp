@@ -25,12 +25,42 @@
 <body>
 
 <br>
+
 <div class="row" >
+	
+	<!-- 본문 -->
 	<div class="col-7" id="box">
-	
-	링크 목록
-	
+		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+			<!-- 링크 메뉴 -->
+			<table width="100%">
+				<tr>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">내 링크</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 링크</button></td>
+					<td width="70%"></td>
+				</tr>
+			</table>
+			<div class="dropdown-divider"></div>
+			<!-- 링크 메뉴 끝 -->
+			
+			<!-- 링크 내용 -->
+			<table width="100%" height="100px" border="1">
+				<tr>
+					<td rowspan="2" width="7%">아이콘</td>
+					<td width="60%">링크 제목</td>
+					<td width="23%">올린 사람</td>
+				</tr>
+				<tr>
+					<td colspan="2">링크 주소</td>
+				</tr>
+			</table>
+			<div class="dropdown-divider"></div>
+			<!-- 링크 내용 끝 -->
+			
+		</div>
 	</div>
+	
+	
+	<!-- right bar -->
 	<div class="col-4" id="box">
 		<table width="300px">
 			<!-- 최근에 올린 링크 -->
@@ -47,11 +77,13 @@
 					</p>
 				</td>
 			</tr>
+			<!-- 최근에 올린 링크 끝 -->
 
 			<!-- 최근에 올린 링크의 더보기 -->
 			<tr style="float: right;">
 				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
 			</tr>
+			<!-- 최근에 올린 링크의 더보기 끝 -->
 		</table>
 	</div>
 	
