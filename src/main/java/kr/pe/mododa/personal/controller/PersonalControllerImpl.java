@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.personal.model.service.PersonalServiceImpl;
+import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.personal.model.vo.Mypost;
 
 @Controller
@@ -36,12 +37,24 @@ public class PersonalControllerImpl implements PersonalController{
 //	}
 	
 
-//	@RequestMapping(value="bookmark.do") //북마크
-//	public Object bookmark()
-//	{
-//		int memberNo = 1; //(((Member)session.getAttribute("member")).getMemberNo());
-//		ArrayList<Bookmark> list = personalService.selectBookmark(memberNo);
-//	}
+	@RequestMapping(value="bookmark.do") //북마크
+	public Object bookmark()
+	{
+		//HttpSession session = request.getSession();
+		int memberNo = 1; //(((Member)session.getAttribute("member")).getMemberNo());
+		ArrayList<Bookmark> bookmark = personalService.selectBookmark(memberNo);
+		ModelAndView view = new ModelAndView();
+		if(bookmark!=null)
+		{
+			System.out.println(bookmark);
+			view.addObject("bookmark", bookmark);
+			view.setViewName("personal/bookmark");
+			return view;
+		}else {
+			view.setViewName("personal/bookmark");
+			return view;
+		}
+	}
 	
 	@RequestMapping(value="mypost.do")
 	public Object mypost()
@@ -50,7 +63,7 @@ public class PersonalControllerImpl implements PersonalController{
 		int memberNo =1;// (((Member)session.getAttribute("member")).getMemberNo());
 		ArrayList<Mypost> mypost = personalService.selectMypost(memberNo);
 		ModelAndView view = new ModelAndView();
-		if(mypost!=null) {
+		if(mypost!=null) { 
 			System.out.println(mypost);
 			view.addObject("mypost",mypost);
 			view.setViewName("personal/myPost");

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,10 +28,12 @@
 	crossorigin="anonymous">
 <!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
 
-<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/personal/personalPage.css">
 <!-- 개인페이지 공통 style저장. -->
 
 <script>
+	
 	function searchShow() {
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");
@@ -51,79 +54,67 @@
 
 	<!-- jstl은 나중에~~ -->
 
-	
-			<div class="content">
-				<div class="viewHeader">
-					<div id="showHeader">
-						<!-- 기본으로 출력되는 헤더 -->
-						<div class="headerTitle" id="headerTitle">
-							<h3>북마크</h3>
-						</div>
-						<div class="headerFunction" id="headerFun">
-							<!-- 검색기능버튼과 글쓰기 버튼. -->
-							<button type="button" class="btn btn-link btn-lg"
-								onclick="searchShow();">
-								<i class="fab fa-searchengin" style="color: grey;"></i>
-							</button>
 
-							<button type="button" class="btn btn-outline-warning">
-								<i class="fas fa-edit"></i>글쓰기
-							</button>
-
-						</div>
-					</div>
-					<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
-					<div id="contentSearch" class="headertitle" style="display: none;">
-						<i class="fab fa-searchengin" style="color: grey;"></i> <input
-							type="text" id="keyword" name="keyword" size=80 style="border: none;"
-							placeholder="제목/작성자 검색" />
-						<div class="headerFunction" id="searchFun">
-							<!-- 검색과 취소버튼 -->
-							<button type="button" class="btn btn-outline-success btn-sm"
-								onclick="search();">검색!</button>
-							<button type="button" class="btn btn-outline-secondary btn-sm"
-								onclick="searchCancle();">취소</button>
-						</div>
-					</div>
+	<div class="content">
+		<div class="viewHeader">
+			<div id="showHeader">
+				<!-- 기본으로 출력되는 헤더 -->
+				<div class="headerTitle" id="headerTitle">
+					<h3>북마크</h3>
 				</div>
-				
-				<div class="viewContents">
-					<!-- 내용출력하는 부분 -->
-					<ul class="feed-list">
-						<li class="feed-contents">
-							<div>
-								<h4>우와 돈가스당</h4>
-								<br>
-								<h5>KJS 2018/07/15/14:14</h5>시간은 출력 해야될까요????
-								<button type="button" class="btn btn-link btn-lg"
-									style="float: right;">
-									<span> <i class="far fa-bookmark"></i>
-									</span>
-								</button>
-								<br>
-							</div>
-							<hr style="color: grey;">
-						</li>
+				<div class="headerFunction" id="headerFun">
+					<!-- 검색기능버튼과 글쓰기 버튼. -->
+					<button type="button" class="btn btn-outline-light btn-lg"
+						id="searchShow" onclick="searchShow();">
+						<i class="fab fa-searchengin" style="color: grey;"></i>
+					</button>
 
-						<li class="feed-contents">
-							<div>
-								<h4>내일 점심은 돈가스당</h4>
-								<h5>KJS 2018/07/16/14:14</h5>
-								<button type="button" class="btn btn-link btn-lg"
-									style="float: right;">
-									<span> <i class="far fa-bookmark"></i>
-									</span>
-								</button>
-								<br>
-							</div>
-							<hr style="color: grey;">
-						</li>
-					</ul>
-						<span>마지막입니다.</span>
+					<button type="button" class="btn btn-outline-warning">
+						<i class="fas fa-edit"></i>글쓰기
+					</button>
+
 				</div>
 			</div>
-		
-	
+			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
+			<div id="contentSearch" class="headertitle" style="display: none;">
+				<i class="fab fa-searchengin" style="color: grey;"></i> <input
+					type="text" id="keyword" name="keyword"
+					placeholder="제목 검색" />
+				<div class="headerFunction" id="searchFun">
+					<!-- 검색과 취소버튼 -->
+					<button type="button" class="btn btn-outline-success btn-sm"
+						onclick="search();">검색!</button>
+					<button type="button" class="btn btn-outline-secondary btn-sm"
+						onclick="searchCancle();">취소</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="viewContents">
+			<!-- 내용출력하는 부분 -->
+			<c:forEach var="book" items="${bookmark }">
+				<ul class="feed-list">
+					<li class="feed-contents">
+						<div>
+							<h4>${book.postTitle }</h4>
+							<br>
+							<h5>${book.postWriter }${book.postDate } ${book.proName }</h5>
+							<button type="button" class="btn btn-link btn-lg"
+								style="float: right;">
+								<span> <i class="far fa-bookmark"></i>
+								</span>
+							</button>
+							<br>
+						</div>
+						<hr style="color: grey;">
+					</li>
+				</ul>
+			</c:forEach>
+			<span>마지막입니다.</span>
+		</div>
+	</div>
+
+
 
 
 </body>

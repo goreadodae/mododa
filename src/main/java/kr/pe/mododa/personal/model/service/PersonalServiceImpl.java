@@ -29,7 +29,7 @@ public class PersonalServiceImpl implements PersonalService {
 
 	public ArrayList<Bookmark> selectBookmark(int memberNo) {
 		ArrayList<Bookmark>bookmark = personalDAO.selectBookmark(sqlSession,memberNo);
-		return null;
+		return bookmark;
 	}
 
 	public ArrayList<Mypost> selectMypost(int memberNo) {
