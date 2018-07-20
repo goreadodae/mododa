@@ -5,7 +5,7 @@
 		<typeAlias type="kr.pe.mododa.member.model.vo.Member" alias="member"/>
 		<typeAlias type="kr.pe.mododa.project.model.vo.Project" alias="project"/>
 		<typeAlias type="kr.pe.mododa.project.model.vo.WorkOn" alias="workon"/>
-		<typeAlias type="kr.pe.mododa.faq.model.vo.Faq" alias="faq"/>
+		<typeAlias type="kr.pe.mododa.faq.model.vo.Notice" alias="faq"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Newsfeed" alias="newsfeed"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Bookmark" alias="bookmark"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Mypost" alias="mypost"/>

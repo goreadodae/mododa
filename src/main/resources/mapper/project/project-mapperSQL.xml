@@ -15,11 +15,11 @@
 			null,null,
 		</otherwise>
 	</choose>
-		#{proMNo})
+		#{proMemberNo})
 	</insert>
 	
 	<insert id="insertWorkOn">
-		insert into work_on values(#{proMNo},project_seq.currval,'Y')
+		insert into work_on values(#{proMemberNo},project_seq.currval,'Y')
 	</insert>
 
 	
