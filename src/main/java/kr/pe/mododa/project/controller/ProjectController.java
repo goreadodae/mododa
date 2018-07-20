@@ -8,5 +8,6 @@ public interface ProjectController {
 	
 	public String gotoProTitle();
 	public String createProject(HttpSession session, Project project);
+	public String gotoInviteMember();
 
 }
