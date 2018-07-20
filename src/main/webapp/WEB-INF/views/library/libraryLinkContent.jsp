@@ -26,24 +26,24 @@
 
 <br>
 
-<div class="row" >
+
 	
 	<!-- 본문 -->
-	<div class="col-7" id="box">
+	<div style="padding:10px;">
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 링크 메뉴 -->
-			<table width="100%">
+			<table width="100%" >
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">내 링크</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 링크</button></td>
-					<td width="70%"></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 링크</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 링크</button></td>
+					<td></td>
 				</tr>
 			</table>
 			<div class="dropdown-divider"></div>
 			<!-- 링크 메뉴 끝 -->
 			
 			<!-- 링크 내용 -->
-			<table width="100%" height="100px" border="1">
+			<table width="100%" height="100px" border="1" style="margin:0; padding:0;">
 				<tr>
 					<td rowspan="2" width="7%">아이콘</td>
 					<td width="60%">링크 제목</td>
@@ -60,36 +60,9 @@
 	</div>
 	
 	
-	<!-- right bar -->
-	<div class="col-4" id="box">
-		<table width="300px">
-			<!-- 최근에 올린 링크 -->
-			<tr>
-				<td>
-					<h5>최근에 올린 링크</h5><br>
-					<p>
-					<img src="../resources/images/icon/checked-allot.png"></img>
-					<a href="#">링크 이름1</a> <a href="#" style="font-size: 80%">등록일자</a><br>
-					</p>
-					<p>
-					<img src="../resources/images/icon/checked-allot.png"></img>
-					<a href="#">링크 이름2</a> <a href="#" style="font-size: 80%">등록일자</a><br>
-					</p>
-				</td>
-			</tr>
-			<!-- 최근에 올린 링크 끝 -->
 
-			<!-- 최근에 올린 링크의 더보기 -->
-			<tr style="float: right;">
-				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
-			</tr>
-			<!-- 최근에 올린 링크의 더보기 끝 -->
-		</table>
-	</div>
 	
-	<!-- 여백 -->
-	<div class="col-1" id="box"></div>
-</div>
+
 
 
 </body>
