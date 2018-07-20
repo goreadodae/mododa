@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="personal">
-  <select id="selectAllNewsfeed" >
+  <!-- <select id="selectAllNewsfeed" parameterType="Integer" resultType="newsfeed" >
   	select 
-  </select>
-  <select id="selectMyBookmark">
+  </select> -->
+  <!-- <select id="selectBookmark" parameterType="Integer" resultType="bookmark">
   	select 
+  </select> -->
+  
+  <select id="selectMypost" parameterType="int" resultType="myPost">
+  	select p.post_no as postNo, p.post_title as postTitle, m.member_picture as myImg, p.post_date as postDate, pr.pro_title as proName from post p
+	left join member m on p.post_writer = m.member_no
+	left join project pr on p.post_pro_no = pr.pro_no
+	where p.post_writer=#{memberNo}
   </select>
+  
+  
 </mapper>

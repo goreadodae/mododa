@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,6 +23,7 @@
 	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+
 
 <style>
 body {
@@ -93,6 +96,32 @@ div {
 
 
 <script type="text/javascript">
+
+	function getPost(postNo){
+		$.ajax({
+			url : "/viewPost.do",
+			type : "post",
+			data : {
+				postNo : postNo
+			},
+			success : function(data) {
+				console.log(data);
+				if(data.post!=null){
+					$('#post-title').html(data.post.postTitle);
+					$('#post-content').html(data.post.postContent);
+					$('#post-date').html(data.post.postDate);
+				} else {
+					$('#post-title').html('db에 글이 없음');
+				}
+				
+				open_pop();
+			},
+			error : function(data) {
+				console.log("실패");
+			}
+		});
+	};
+	
 	//팝업 open 기능
 	function open_pop(flag) {
 		$('#myModal').show();
@@ -110,7 +139,7 @@ div {
 			<!-- contents -->
 			<div class="col-6">
 				★ 내용은 여기다가~!!!★
-				<button onclick="open_pop();">여기 누르면 모달 팝업 뜸</button>
+				<button onclick="getPost(4);">여기 누르면 모달 팝업 뜸</button>
 			</div>
 
 		<!-- 팝업모달 -->
@@ -140,13 +169,19 @@ div {
 							</div>
 						</div>
 
-						<span id="post-title">제목</span>
+						<span id="post-title">글제목</span>
 						<hr>
-						<p>글내용</p>
+						<span id="post-content">글내용</span>
+						<br>
+						<span id="post-date">작성날짜</span>
 						<span id="like-count"><img src="../resources/images/post/like.png" id="like-icon"/> 좋아요 3개</span>
 						
 						<hr>
 						<span class="contents-title">할 일 0</span>
+						<br>
+						
+						<span class="contents-title">일정</span>
+						<div></div>
 						<br>
 						
 						<span class="contents-title">파일/이미지 0</span>

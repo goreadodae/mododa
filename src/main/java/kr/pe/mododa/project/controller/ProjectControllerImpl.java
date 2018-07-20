@@ -32,7 +32,7 @@ public class ProjectControllerImpl implements ProjectController {
 	@RequestMapping(value="createProject.do")
 	public String createProject(HttpSession session, Project project) { // 새 프로젝트 생성 기능
 		
-		//System.out.println(project.toString());
+		System.out.println(project.toString());
 
 		// memberNo 정보를 가지고 와야하는데 DB를 한번 갔다올지 그냥 세션으로 할 지 이거는 로그인 연동 후 고민~!
 		if(session.getAttribute("member")!=null) { // 세션으로 로그인 정보 가져오기
@@ -45,7 +45,7 @@ public class ProjectControllerImpl implements ProjectController {
 			int proResult = projectService.insertProject(project);
 			if(proResult>0) { // 프로젝트 생성이 성공하면 insertWorkOn 진행하기
 				
-				int wonResult = projectService.insertWorkOn(project.getProMNo());
+				int wonResult = projectService.insertWorkOn(project.getProMemberNo());
 				if(wonResult>0) {
 					System.out.println("완전성공");
 				} else {
@@ -57,9 +57,18 @@ public class ProjectControllerImpl implements ProjectController {
 			}
 			
 		}
-		// 프로젝트 생성이 성공하면 leftbar에 프로젝트 항목 새로 뜨게...
-		return null;
+		
+		return "project/inviteMemberPage";
 		
 	}
+	
+	
+	
+	@Override
+	@RequestMapping(value="gotoInviteMember.do")
+	public String gotoInviteMember() { // 이동
+		return "project/inviteMemberPage";
+	}
+	
 
 }
