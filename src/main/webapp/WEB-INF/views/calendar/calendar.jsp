@@ -80,7 +80,27 @@ var title ="";
 			selectHelper: true,
 			select: function(start, end, allDay) {
 				
-                $('#myModal').show();                
+               /* module 데이터값 가져오는 ajax */
+               
+          $.ajax({
+         url : "/calendarSchedule.do",
+         type : "post",
+         data : ,
+         success : function(data) {
+         
+            if(data.post!=null){
+               $('#project-title').html(data.post.postTitle);
+              
+            } else {
+               $('#post-title').html('글 제목 실패');
+            }
+            
+            open_pop();
+         },
+         error : function(data) {
+            console.log("실패");
+         }
+
                 
 				if (title) {					
 					calendar.fullCalendar('renderEvent',
@@ -148,6 +168,11 @@ var title ="";
 		
 	});
 	
+	//팝업 Open 기능
+    function open_pop(flag) {
+         $('#myModal').show();
+    };
+	
 	
 	//팝업 Close 기능
     function close_pop(flag) {
@@ -199,19 +224,20 @@ var title ="";
             <!-- <div class="modal-content ng-scope"> -->
             <div class="modal-header">
             <div class="row"><div class="col-md-6">
-           	<div class="dropdown show">
-  			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">프로젝트검색</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-			<c:forEach items="" var="l">
-    		<a class="dropdown-item" href="#">${l.proTitle}</a>
-    		</c:forEach></div></div></div>
+    		<select class="form-control">
+    		<option value="">프로젝트선택</option>
+    		<c:forEach items="${list}" var="l">
+    		<option>${l.proTitle}</option>
+    		</c:forEach>
+    		</select></div>
     		<div class="col-md-6">
-    		<div class="dropdown show">
-  			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">관련 글 선택</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    		<a class="dropdown-item" href="#">Action</a>
-    		<a class="dropdown-item" href="#">Another action</a>
-    		<a class="dropdown-item" href="#">Something else here</a></div></div></div>
+    		<select class="form-control">
+    		<option value="">관련글선택</option>
+    		<c:forEach items="${list}" var="l">
+    		<option>${l.proTitle}</option>
+    		</c:forEach>
+    		</select>
+    		</div>
             </div>
             </div>
             <div class="modal-body"><input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="recipeTitle" id="scheduleTitle" required="required" size="10" style="width=100%"></div>
@@ -224,7 +250,6 @@ var title ="";
      <!--     Modal 내용 끝 -->
       </div>
 <!--팝업모달 끝 -->
-
 
 
 

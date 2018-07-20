@@ -8,19 +8,13 @@ public class Member {
 	private String memberPicture;
 	private String memberDepartName;
 	private String memberMainTask;
-	@Override
-	public String toString() {
-		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberName="
-				+ memberName + ", memberPicture=" + memberPicture + ", memberDepartName=" + memberDepartName
-				+ ", memberMainTask=" + memberMainTask + "]";
-	}
+	private String memberEmailCertify;
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Member(int memberNo, String memberId, String memberPw, String memberName, String memberPicture,
-			String memberDepartName, String memberMainTask) {
-		super();
+			String memberDepartName, String memberMainTask, String memberEmailCertify) {
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberPw = memberPw;
@@ -28,6 +22,13 @@ public class Member {
 		this.memberPicture = memberPicture;
 		this.memberDepartName = memberDepartName;
 		this.memberMainTask = memberMainTask;
+		this.memberEmailCertify = memberEmailCertify;
+	}
+	@Override
+	public String toString() {
+		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberName="
+				+ memberName + ", memberPicture=" + memberPicture + ", memberDepartName=" + memberDepartName
+				+ ", memberMainTask=" + memberMainTask + ", memberEmailCertify=" + memberEmailCertify + "]";
 	}
 	public int getMemberNo() {
 		return memberNo;
@@ -71,4 +72,11 @@ public class Member {
 	public void setMemberMainTask(String memberMainTask) {
 		this.memberMainTask = memberMainTask;
 	}
+	public String getMemberEmailCertify() {
+		return memberEmailCertify;
+	}
+	public void setMemberEmailCertify(String memberEmailCertify) {
+		this.memberEmailCertify = memberEmailCertify;
+	}
+	
 }

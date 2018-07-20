@@ -5,11 +5,16 @@
 		<typeAlias type="kr.pe.mododa.member.model.vo.Member" alias="member"/>
 		<typeAlias type="kr.pe.mododa.project.model.vo.Project" alias="project"/>
 		<typeAlias type="kr.pe.mododa.project.model.vo.WorkOn" alias="workon"/>
-		<typeAlias type="kr.pe.mododa.faq.model.vo.Faq" alias="faq"/>
+		<typeAlias type="kr.pe.mododa.faq.model.vo.Notice" alias="faq"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Newsfeed" alias="newsfeed"/>
 		<typeAlias type="kr.pe.mododa.library.model.vo.Decision" alias="decision"/>
 		<typeAlias type="kr.pe.mododa.library.model.vo.Link" alias="link"/>
 		<typeAlias type="kr.pe.mododa.library.model.vo.Todo" alias="todo"/>
 		<typeAlias type="kr.pe.mododa.library.model.vo.Upload" alias="upload"/>
+		<typeAlias type="kr.pe.mododa.member.model.vo.AutoLogin" alias="autoLogin"/>
+		<typeAlias type="kr.pe.mododa.post.model.vo.Post" alias="post"/>
+		<typeAlias type="kr.pe.mododa.calendar.model.vo.Calendar" alias="calendar"/>
+		<typeAlias type="kr.pe.mododa.personal.model.vo.Bookmark" alias="bookmark"/>
+		<typeAlias type="kr.pe.mododa.personal.model.vo.Mypost" alias="mypost"/>
 	</typeAliases>
 </configuration>

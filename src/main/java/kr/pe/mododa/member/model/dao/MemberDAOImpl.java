@@ -1,8 +1,13 @@
 package kr.pe.mododa.member.model.dao;
 
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
 
 @Repository("memberDAO")
@@ -33,6 +38,29 @@ public class MemberDAOImpl implements MemberDAO{
 
 	public int insertMember(SqlSessionTemplate sqlSession, Member vo) {
 		return sqlSession.insert("member.insertMember", vo);
+	}
+	
+    // 자동로그인 체크한 경우에 사용자 테이블에 세션과 유효시간을 저장하기 위한 메서드
+    public int keepLogin(SqlSessionTemplate sqlSession, AutoLogin al){
+        // 아래가 수행되면서, 사용자 테이블에 세션id와 유효시간이 저장됨
+       return sqlSession.insert("member.keepLogin",al);
+         
+    }
+ 
+    // 이전에 로그인한 적이 있는지, 즉 유효시간이 넘지 않은 세션을 가지고 있는지 체크한다.
+    public Member checkUserWithSessionKey(SqlSessionTemplate sqlSession, String sessionId){
+        // 유효시간이 남아있고(>now()) 전달받은 세션 id와 일치하는 사용자 정보를 꺼낸다.
+    	AutoLogin al = sqlSession.selectOne("member.selectAutoLogin",sessionId);
+    	return sqlSession.selectOne("member.selectOneMemberNo", al.getMemberNo());
+     
+    }
+
+	public int deleteAutoLogin(SqlSessionTemplate sqlSession, String id) {
+		return sqlSession.delete("member.deleteAutoLogin", id);
+	}
+
+	public void userAuth(SqlSessionTemplate sqlSession, String userEmail) {
+		sqlSession.update("member.confirmEmail", userEmail);
 	}
 
 }

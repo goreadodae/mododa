@@ -2,101 +2,142 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
 
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>새 프로젝트 생성 관련 모달 입니다.</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-
-<script>
-
-/* window.onload = function() {
-	
-} */
-
-function periodOff() {
-	document.getElementById('periodLabel').innerHTML = " ";
-}
-
-function periodOn() {
-	document.getElementById('periodLabel').innerHTML = "<input type='date' id='proStartDate' name='proStartDate'> ~ <input type='date' id='proEndDate' name='proEndDate'>";
-	document.getElementById('proStartDate').valueAsDate = new Date();
-	document.getElementById('proEndDate').valueAsDate = new Date();
-}
-
-function submitCheck() {
-	if(document.getElementById('proTitle').value == "") {
-		alert("프로젝트명을 입력해주세요.");
-		return false;
-	} else {
-		return true;
-	}
-}
-
-
-</script>
-
-
-
 </head>
 
 
+<style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */                          
+        }
+        
+        .divStyle {
+        	cursor:pointer; 
+        	background-color:#DDDDDD; 
+        	text-align:center; 
+        }
+        
+        .btnStyle {
+        	background-color:#DDDDDD; 
+        	height:100%; 
+        	width:100%; 
+        	background:transparent; 
+        	border:none;
+        	outline:0;
+        	padding-top:10px;
+        	padding-bottom:10px;
+        }
+        
+        span {
+        	font-size:13pt;
+        }
+        
+        #m_header {
+        	padding : 0px;
+        	text-align: right;
+        	border: 1px solid black;
+        	
+        }
+        
+        #in {
+        	border: 1px solid red;
+        	display: inline-block;
+        }
+        
+ 
+</style>
 
+<script type="text/javascript">
+      
+        jQuery(document).ready(function() {
+                $('#myModal').show();
+        });
+        
+        //팝업 Close 기능
+        function close_pop(flag) {
+             $('#myModal').hide();
+        };
 
+		function periodOff() {
+			document.getElementById('periodLabel').innerHTML = " ";
+		}
+
+		function periodOn() {
+			document.getElementById('periodLabel').innerHTML = "<input type='date' id='proStartDate' name='proStartDate'> ~ <input type='date' id='proEndDate' name='proEndDate'>";
+			document.getElementById('proStartDate').valueAsDate = new Date();
+			document.getElementById('proEndDate').valueAsDate = new Date();
+		}
+
+		function submitCheck() {
+			if(document.getElementById('proTitle').value == "") {
+				alert("프로젝트명을 입력해주세요.");
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+</script>
 
 
 <body>
 
-createProject.jsp
-<br>
-새 프로젝트 생성(임시)
-<br>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+      	<div class="modal-header" id="m_header"><div id="in">X</div></div>
+      	<div class="modal-body">
+                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">새 프로젝트 생성</span></b></span></p>
+                <form action="/createProject.do" method="get">
+                <p style="text-align: center; line-height: 1.5;"><br />
+  					프로젝트 이름 : <input type="text" name="proTitle" id="proTitle"> <br>
+					기간 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
+					<br><label id="periodLabel"></label><br>
+					<input type="hidden" name="proMemberNo" value=999> <!-- 세션의 member_no 넣기 -->
+				</p><p><br /></p>
+                <!-- submit 버튼 -->
+                <div class="divStyle">
+                <button class="btnStyle" onClick="return submitCheck();"><span>생성</span></button>
+                </div>
+                </form>
+                <!-- 닫기 버튼 -->
+            	<br><div class="divStyle" onClick="close_pop();"><span>닫기</span></div>
+      	</div>
+      </div>
  
-<form action="/createProject.do" method="get">
-프로젝트 이름 : <input type="text" name="proTitle" id="proTitle"> <br>
-기간 없음 <input type="radio" name="period" onClick="periodOff();" checked> <br>
-기간 있음 <input type="radio" name="period" onClick="periodOn();">
-<label id="periodLabel"></label><br>
-<input type="hidden" name="proMNo" value=999> <!-- 세션정보의 m_no값을 value에 넣기 -->
-<input type="submit" value="생성" onClick="return submitCheck();">
-</form>
-
-
-<br><br><br><hr>
-
-<button class="btn btn-default" data-target="#layerpop" data-toggle="modal">모달출력버튼</button><br/>
-<div class="modal fade" id="layerpop" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- header -->
-      <div class="modal-header">
-        <!-- 닫기(x) 버튼 -->
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <!-- header title -->
-        <h4 class="modal-title">Header</h4>
-      </div>
-      <!-- body -->
-      <div class="modal-body">
-            Body
-      </div>
-      <!-- Footer -->
-      <div class="modal-footer">
-        Footer
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-      </div>
     </div>
-  </div>
-</div>
-
-
+    <!--End Modal-->
 
 </body>
-
 
 </html>
