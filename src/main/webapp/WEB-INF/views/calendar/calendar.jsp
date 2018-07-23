@@ -59,6 +59,10 @@
 
 <script type='text/javascript'>
 
+/* $(document).ready(function() {
+	
+}); */
+
 var title ="";
 
 	$(document).ready(function() {
@@ -80,26 +84,29 @@ var title ="";
 			selectHelper: true,
 			select: function(start, end, allDay) {
 				
+				  /* open_pop(); */
+				
                /* module 데이터값 가져오는 ajax */
-               
+				  
           $.ajax({
-         url : "/calendarSchedule.do",
+         url : "/selectProject.do",
          type : "post",
-         data : ,
          success : function(data) {
-         
-            if(data.post!=null){
-               $('#project-title').html(data.post.postTitle);
-              
-            } else {
-               $('#post-title').html('글 제목 실패');
-            }
-            
+ 
+			$('#projectList').find("option").remove();
+         	
+				for(var i=0;i<data.length;i++){
+					$('#projectList').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
+				}
+				
+          
             open_pop();
+            
          },
          error : function(data) {
             console.log("실패");
-         }
+            }
+         }); 
 
                 
 				if (title) {					
@@ -117,8 +124,8 @@ var title ="";
 				
 			},
 			editable: true,
-			/* events: [
-				{
+			events : function
+				/* {
 					title: '01 All Day Event',
 					start: new Date(y, m, 1)
 				},
@@ -161,8 +168,32 @@ var title ="";
 					start: new Date(y, m, 28),
 					end: new Date(y, m, 29),
 					url: 'http://google.com/'
-				}
-			] */
+				} */
+				
+				
+				 $.ajax({
+			         url : "/calendarSchedule.do",
+			         type : "post",
+			         success : function(data) {
+			        	  console.log("성공");
+			        	 var events=[];	
+			        	  for(var i=0;i<data.length;i++){
+								
+									events.push({
+									title: data[i].scTitle,
+									start: data[i].startDate,
+									end: data[i].endDate});
+							
+							}  
+			        	 console.log(events);
+			         },
+			         error : function(data) {
+			            console.log("실패");
+			            }
+			         });
+				
+				
+			
 		});
 		
 		
@@ -186,6 +217,32 @@ var title ="";
         	
     	 $('#myModal').hide();
     }
+    
+    function changeproSelect() {
+    	
+    	var postProNo = document.getElementById("projectList").value;
+	
+    	   $.ajax({
+           	url :"/selectLinkPost.do",
+           	type :"post",
+            data : {
+            	postProNo : postProNo
+             },
+           	success :function(data) {
+            
+           		$('#linkPostList').find("option").remove();
+             	
+				for(var i=0;i<data.length;i++){
+					$('#linkPostList').append("<option>"+data[i].postTitle+"</option>");
+				}	
+           		
+            },
+           	error : function(data) {
+            console.log("실패");
+            }
+           }); 
+    }
+    
     
 </script>
 
@@ -222,25 +279,23 @@ var title ="";
        <!--   Modal 내용 -->
          <div class="modal-content" style="width:30%;">
             <!-- <div class="modal-content ng-scope"> -->
-            <div class="modal-header">
+            <div class="modal-header"><h3>일정 선택</h3></div>
+            <div class="modal-body">
             <div class="row"><div class="col-md-6">
-    		<select class="form-control">
+    		<select class="form-control" id="projectList" onchange="changeproSelect();">
     		<option value="">프로젝트선택</option>
-    		<c:forEach items="${list}" var="l">
-    		<option>${l.proTitle}</option>
-    		</c:forEach>
-    		</select></div>
-    		<div class="col-md-6">
-    		<select class="form-control">
+    		</select></div><div class="col-md-6">
+    		<select class="form-control" id="linkPostList">
     		<option value="">관련글선택</option>
-    		<c:forEach items="${list}" var="l">
-    		<option>${l.proTitle}</option>
-    		</c:forEach>
     		</select>
-    		</div>
-            </div>
-            </div>
-            <div class="modal-body"><input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="recipeTitle" id="scheduleTitle" required="required" size="10" style="width=100%"></div>
+    		</div></div></div>
+            <div class="modal-body"> <div class="row"><div class="col-md-12">
+            <input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="recipeTitle" id="scheduleTitle" required="required" size="10" style="width=100%">
+            </div></div>
+            <div class="row"><div class="col-md-12">　</div></div>
+            <div class="row"><div class="col-md-12">
+            <input type="date" > ~ <input type="date">
+            </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-primary" onClick="saveSchedule();">저장</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_pop();">닫기</button></div>

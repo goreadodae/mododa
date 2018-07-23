@@ -1,21 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
 	crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
- -->
+
 <script src="/resources/js/jquery/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- 파일 업로드  -->
+<!-- <script src="path/to/your/jquery.MultiFile.js" type="text/javascript" language="javascript"></script>
+ -->
 
 
 
@@ -48,6 +52,8 @@
 							'<img src="/resources/images/writeImages/left-arrow.png"/>');
 			$("#forClear").append(
 					'<img src="/resources/images/writeImages/tmpSave.png"/>');
+			$('#imageSpace').addClass('border-right');
+
 			flag = false;
 		} else {
 			$('#tempSaved').hide();
@@ -56,6 +62,7 @@
 			$('#showBTop').css('border', "none");
 			$('#imageSpace').css('border', "none");
 			$("#forEmptyImg img").remove();
+			$('#imageSpace').removeClass('border-right');
 			flag = true;
 		}
 
@@ -83,6 +90,7 @@
 			});
 
 	//자동완성 기능 ajax 사용해야 돼
+
 	$(document).ready(function() {
 		var projectNames = [ '프라이빗 공간', '띵킹띵킹', '굿뜨굿뜨', '띵킹스맨', ];
 		$("#searchPj").autocomplete({
@@ -90,27 +98,48 @@
 		});
 	});
 
-	function readURL(input, stepImgNum) {
 
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
+//파일 이미지 업로드
+		window.URL = window.URL || window.webkitURL;
 
-			reader.onload = function(e) {
+		var fileSelect = document.getElementById("fileSelect");
+		var filesElem = document.getElementById("fileElem");
+		var img;
 
-				console.log(e.target.result);
-				$(
-						'<div class="col-md-12" style="border: 2px solid #339966; height: 80px; padding:0px; cursor:point;">'
-								+ '<img src="'+e.target.result+'"/></div>')
-						.appendTo($('#toAddImg'));
+		function readURL(files) {
+			if (!files.length) {
+				alert("No files selected!");
+			} else {
+
+				for (i = 0; i < files.length; i++) {
+					
+					
+					
+					img = document.createElement("img");
+					img.src = window.URL.createObjectURL(files[i]);
+					img.style.height = 100+'%';
+					img.style.width = 100+'%';
+					
+					console.log(img);
+					img.onload = function() {
+						window.URL.revokeObjectURL(this.src);
+					}
+					$(
+							'<div class="col-md-6" style="height:50%; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #339966; height: 80px; padding:0%;">'
+									+ img.outerHTML + '</div></div>').appendTo(
+							$('#divEnter'));
+					console.log(img.outerHTML);
+
+				}
 
 			}
-
-			reader.readAsDataURL(input.files[0]);
 		}
+	
 
-	};
-	function addPartner() {
+	//modal 후  처리..!
+	function closeBtn() {
 
+		var result = window.confirm("정말 종료하시겠습니까??");
 	}
 </script>
 
@@ -223,6 +252,27 @@ img {
 	background-image: url("/resources/images/writeImages/close.png");
 	background-size: cover;
 }
+
+#closeBtn:focus {
+	outline: none;
+}
+
+.dropdown-item:hover {
+	background-color: #CFF09E !important;
+}
+
+.dropdown-item:focus {
+	cursor: pointer !important;
+}
+
+#moreViewFn {
+	height: 40%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+
 </style>
 
 
@@ -230,12 +280,12 @@ img {
 </head>
 <body>
 	<div class="frameSize col-md-12">
-		<div class="row" style="height: 15%;">
+		<%-- 		<div class="row" style="height: 15%;">
 			<div class="col-md-12" style="height: 100%;">
 				<jsp:include page="/layout/header.jsp"></jsp:include>
 			</div>
-		</div>
-		<div class="row" style="height: 85%">
+		</div> --%>
+		<div class="row" style="height: 100%">
 
 			<div class="container" style="height: 100%; padding: 0px">
 				<!-- 			<div class="row" style="height: 10%">
@@ -254,10 +304,7 @@ img {
 							<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
 								<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
 									<div class="row" id="forEmptyImg" style="padding-top: 5px">
-										<span id="hideList"></span>
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글
-										<span>(4)</span>
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<div id="forClear"></div>
 									</div>
 								</div>
@@ -270,30 +317,9 @@ img {
 							<div class="col-md-12 border-right" style="padding: 0px; height: 100%; display: none" id="tempSaved">
 								<ul class="colorChange list-group" style="text-align: left;">
 
-									<li class="list-group-item">
-										<span>안녕하세요</span>
-										<br>
-										<span style="color: #B8B8B8">2018.7.16</span>
-										<br>
-										<span style="color: #339966">프라이빗 공간</span>
-										<br>
-									</li>
-									<li class="list-group-item">
-										<span>안녕하세요</span>
-										<br>
-										<span style="color: #B8B8B8">2018.7.16</span>
-										<br>
-										<span style="color: #339966">프라이빗 공간</span>
-										<br>
-									</li>
-									<li class="list-group-item">
-										<span>안녕하세요</span>
-										<br>
-										<span style="color: #B8B8B8">2018.7.16</span>
-										<br>
-										<span style="color: #339966">프라이빗 공간</span>
-										<br>
-									</li>
+									<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
+									<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
+									<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
 
 								</ul>
 
@@ -312,8 +338,7 @@ img {
 							<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 								<div class="row" style="padding-left: 15px; height: 100%;">
 									<div class="col-md-2" style="height: 100%;">
-										<span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span>
-										<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" />
+										<span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span> <input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" />
 									</div>
 									<div class="col-md-10">
 										<div class="row" style="height: 100%">
@@ -325,26 +350,16 @@ img {
 
 
 
-													<!-- 													<div class="btn-group dropright" style="height:100%">
-														<div id="addPartnerPic"></div>
-														<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">Dropright
-														
-														</button>
-														<div class="dropdown-menu">
-														 <a class="dropdown-item">안뇽</a>
-								
-															
-														</div>
-													</div> -->
-													<div class="dropdown" style="height:100%">
-														
+													<!-- 파트너 불러오기 !! ajax로 하기!  -->
+													<div class="dropup" style="height: 100%">
+
 														<div data-toggle="dropdown" id="addPartnerPic" role="button"></div>
-															<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-																<li class="presentation"><span role="menuitem">안녕</span></li>
-																
-															</ul>
-													
+														<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+															<button class="dropdown-item" type="button">Action</button>
+															<button class="dropdown-item" type="button">Action</button>
+															<button class="dropdown-item" type="button">Action</button>
+														</ul>
+
 													</div>
 
 
@@ -357,7 +372,11 @@ img {
 											<div class="offset-md-1 col-md-4">
 
 												<!-- 페이지 닫기  -->
-												<div id="closeFrame" class="col-md-1" style="height: 32px; float: right; border: 1px solid white;"></div>
+												<div class="col-md-1" style="height: 32px; float: right;">
+													<button onclick="closeBtn();" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
+														<span aria-hidden="true" style="height: 100%;">&times;</span>
+													</button>
+												</div>
 
 
 											</div>
@@ -388,8 +407,7 @@ img {
 									<div class="col-md-12" style="height: 100%;">
 										<div class="row">
 											<div class="col-md-12">
-												<span id="hashName"></span>
-												<input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
+												<span id="hashName"></span> <input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
 
 
 											</div>
@@ -398,25 +416,31 @@ img {
 								</div>
 							</div>
 
-							<div class="col-md-4" id="imageSpace" style="height: 100%">
-								<div class="row">
-									<b>파일/이미지</b>
-									<br>
-									<br>
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="col-md-12" style="border: 2px solid #339966; height: 80px" onclick="document.all.filesUpload.click();" id="addImg">
+							<div class="col-md-4 imageSpace" id="imageSpace" style="height: 100%">
+								<div class="row" id="moreViewFn">
+									<div class="col-md-12" style="height: 10%;">
+										<b>파일/이미지</b>
+									</div>
+									<div class="col-md-12" style="height: 90%;">
+										<div class="row" id="divEnter" style="height: 100%;">
+											<div class="col-md-6" style="padding-top: 5%">
+												<!-- <br -->
+												<div class="col-md-12" style="border: 1px solid #339966; height: 80px;" onclick="document.all.fileElem.click();" id="fileSelect">
 
 													<br>
 													<!-- div 버튼 클릭시 아래 버튼 동작! -->
 													<img src="/resources/images/writeImages/plus.png" />
 													<!-- 파일업로드 버튼 숨겨져있음!  -->
-													<input id="filesUpload" name="filesUpload" multiple="multiple" type="file" style="display: none" onchange="readURL(this,0);" />
+													<input id="fileElem" name="filesUpload" multiple type="file" style="display: none" onchange="readURL(this.files);" />
 												</div>
+
+
+
+
 											</div>
-											<div class="col-md-6" id="toAddImg"></div>
+
 										</div>
+
 									</div>
 								</div>
 

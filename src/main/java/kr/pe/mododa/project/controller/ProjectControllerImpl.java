@@ -1,15 +1,19 @@
 package kr.pe.mododa.project.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.Project;
-import kr.pe.mododa.project.model.vo.WorkOn;
 
 
 
@@ -23,8 +27,8 @@ public class ProjectControllerImpl implements ProjectController {
 	
 
 	@Override
-	@RequestMapping(value="gotoProTitle.do")
-	public String gotoProTitle() { // 이동
+	@RequestMapping(value="gotoCreateProject.do")
+	public String gotoCreateProject() { // 이동
 		return "project/createProject";
 	}
 
@@ -32,14 +36,9 @@ public class ProjectControllerImpl implements ProjectController {
 	@RequestMapping(value="createProject.do")
 	public String createProject(HttpSession session, Project project) { // 새 프로젝트 생성 기능
 		
-		System.out.println(project.toString());
+		//System.out.println(project.toString());
 
-		// memberNo 정보를 가지고 와야하는데 DB를 한번 갔다올지 그냥 세션으로 할 지 이거는 로그인 연동 후 고민~!
 		if(session.getAttribute("member")!=null) { // 세션으로 로그인 정보 가져오기
-			
-			
-			
-		} else {
 			
 			// 로그인이랑 합쳐지면 if문 안으로 옮기기
 			int proResult = projectService.insertProject(project);
@@ -47,7 +46,7 @@ public class ProjectControllerImpl implements ProjectController {
 				
 				int wonResult = projectService.insertWorkOn(project.getProMemberNo());
 				if(wonResult>0) {
-					System.out.println("완전성공");
+					System.out.println("완전 성공");
 				} else {
 					System.out.println("work_on 실패");
 				}
@@ -56,9 +55,11 @@ public class ProjectControllerImpl implements ProjectController {
 				System.out.println("project 실패");
 			}
 			
+		} else {
+			System.out.println("세션 정보 실패");
 		}
 		
-		return "project/inviteMemberPage";
+		return "redirect:/gotoInviteMember.do";
 		
 	}
 	
@@ -66,8 +67,54 @@ public class ProjectControllerImpl implements ProjectController {
 	
 	@Override
 	@RequestMapping(value="gotoInviteMember.do")
-	public String gotoInviteMember() { // 이동
-		return "project/inviteMemberPage";
+	public Object gotoInviteMember(HttpSession session) { // 이동
+		
+		// 프로젝트 목록 읽어오기
+		ArrayList<Project> projectList = this.projectList(session);
+		System.out.println(projectList);
+		ModelAndView view = new ModelAndView();
+		if(!projectList.isEmpty()) {
+			view.addObject("projectList", projectList);
+			view.setViewName("project/inviteMemberPage");
+			return view;
+		} else {
+			System.out.println("프로젝트 목록 읽어오기 에러");
+			return null;
+		}
+	}
+
+	
+	@Override
+	@RequestMapping(value="inviteMember.do")
+	public String inviteMember(@RequestParam String memberId) {
+		
+		// work_on에 insert하기
+		// 1. 회원 번호 검색
+		int memberNo = projectService.searchMemberNo(memberId);
+		// 2. 프로젝트 번호 받기 -> 넘겨 받기
+		// 3. work_on에 insert하기
+		System.out.println(memberNo);
+		
+		return "redirect:/gotoInviteMember.do";
+		
+	}
+
+	@Override
+	public ArrayList<Project> projectList(HttpSession session) {
+		
+		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+			
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			ArrayList<Project> projectList = projectService.searchProjectList(memberNo);
+			return projectList;
+			
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+		
+		
+		
 	}
 	
 

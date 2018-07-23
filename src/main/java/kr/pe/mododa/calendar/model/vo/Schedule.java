@@ -2,7 +2,7 @@ package kr.pe.mododa.calendar.model.vo;
 
 import java.sql.Date;
 
-public class Calendar {
+public class Schedule {
 	
 	private int scheduleNo;
 	private int postNo;
@@ -12,7 +12,7 @@ public class Calendar {
 	private int proNo;
 	private String scTitle;
 	
-	public Calendar () {
+	public Schedule () {
 		super();
 	}
 

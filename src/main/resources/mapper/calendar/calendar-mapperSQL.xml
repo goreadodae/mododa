@@ -11,13 +11,35 @@
 		pro_m_no as proMNo
 		from Project
 	</select>
-	<select id="calendarList" resultType="calendar">
+	<select id="calendarList" resultType="schedule">
 		select sc_no as scheduleNo,
 		post_no as postNo,
 		m_no as memNO,
 		pro_start_Date as startDate,
 		pro_end_Date as endDate,
 		pro_no as proNo
+		from schedule
+	</select>
+	<select id="postList" resultType="post">
+		select post_no as postNo,
+		post_title as postTitle,
+		post_progress as postProgress,
+		post_date as postDate,
+		post_content as postContent,
+		post_writer as postWriter,
+		post_temp as postTemp,
+		post_pro_no as postProNo,
+		post_tag as postTag
+		from post where post_pro_no = #{postProNo}
+	</select>
+	<select id="calendarScheduleList" resultType="schedule">
+		select sc_no as scheduleNo,
+		post_no as postNo,
+		m_no as memNO,
+		pro_no as proNo,
+		sc_start_date as startDate,
+		sc_end_date as endDate,
+		sc_title as scTitle
 		from schedule
 	</select>
 

@@ -81,7 +81,7 @@
         <img class="img-fluid mb-5 d-block mx-auto" src="../resources/index_img/main_logo_square_2.png" alt="">
         <h1 class="text-uppercase mb-0">Collaboration Tool</h1>
         <hr class="star-light">
-        <h2 class="font-weight-light mb-0">모두다 MODODA</h2>
+        <h2 class="font-weight-light mb-0">모두다 MODODA ${cookie.loginCookie.value }</h2>
       </div>
     </header>
 
@@ -109,8 +109,8 @@
           <div class="col-lg-12 mx-auto">
               <img class="img-fluid" src="../resources/index_img/intro_img/intro_6.PNG" alt="" style="padding-bottom: 100px;">
           </div>
-          <div class="col-lg-1 mx-auto">
-             <a class="portfolio-item d-block mx-auto" href="#join-modal">
+          <div class="col-lg-2 mx-auto">
+             <a class="portfolio-item d-block mx-auto" href="#join-modakl">
               <button class="btn btn-primary btn-xl" id="sendMessageButton" style="color:#339966; font-weight:1000;">JOIN US!!</button>
              </a>
           </div>
@@ -261,12 +261,12 @@
 
     <!-- Join Modal -->
     <div class="portfolio-modal mfp-hide" id="join-modal">
-      <div class="portfolio-modal-dialog bg-white">
+      <div class="portfolio-modal-dialog bg-white" style="height: 500px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 900px;">
         <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
           <i class="fa fa-3x fa-times"></i>
         </a>
         <div class="container text-center">
-          <div class="row">
+          <div class="row" style="margin-top: 5%;">
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Join Us</h2>
               <hr class="star-dark mb-5">
@@ -274,7 +274,7 @@
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="joinEmailTitle" style="margin-top: 50px;">Email Address</label>
-                  <input class="form-control" name="memberId" id="joinEmail" type="email" placeholder="Email Address (mododa@mododa.pe.kr)" required="required" data-validation-required-message="Please enter your email address.">
+                  <input class="form-control emailId" name="memberId" id="joinEmail" type="email" placeholder="Email Address (mododa@mododa.pe.kr)" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
@@ -305,12 +305,12 @@
 
     <!-- Login Modal -->
     <div class="portfolio-modal mfp-hide" id="login-modal">
-      <div class="portfolio-modal-dialog bg-white">
+      <div class="portfolio-modal-dialog bg-white" style="height: 10px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 900px;">
         <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
           <i class="fa fa-3x fa-times"></i>
         </a>
         <div class="container text-center">
-          <div class="row">
+          <div class="row" style="margin-top: 5%;">
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Login</h2>
               <hr class="star-dark mb-5">
@@ -318,7 +318,7 @@
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="idTitle" style="margin-top: 50px;"></label>
-                  <input class="form-control" id="memberId" name="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
+                  <input class="form-control emailId" id="memberId" name="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
@@ -330,8 +330,10 @@
                 </div>
               </div>
               <div id="success"></div>
-              <div style="margin-top: 10%; margin-left: 80%;">
-              <input type="checkbox" id="autoLogin" style="height: 20px; width: 20px; font-size: 15px">&nbsp;&nbsp;자동로그인</div>
+              <div style="margin-top: 5%; margin-left: 60%;"><a class="portfolio-item" href="#FindPassword-modal" style="color: #FF5F2E;">비밀번호를 잊으셨나요?</a></div>
+              <div class="checkbox checkbox-success" style="margin-top: 5%; margin-left: 70%;">
+              <input class="styled" type="checkbox" id="autoLogin" style="height: 20px; width: 20px; font-size: 15px;" >
+              &nbsp;&nbsp;<label for="autoLogin">자동로그인</label></div>
               <input type="hidden" id="autoLoginHidden" name="autoLogin" value="false"/>
               <div class="form-group">
                 <input onclick="return login();" type="submit" class="btn btn-primary btn-xl" id="loginBtn" style="margin-top: 100px;" value="Login"/>
@@ -342,7 +344,35 @@
         </div>
       </div>
     </div>
-
+	<!-- FindPassword Modal -->
+    <div class="portfolio-modal mfp-hide" id="FindPassword-modal">
+      <div class="portfolio-modal-dialog bg-white" style="height: 500px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 150px;">
+        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
+          <i class="fa fa-3x fa-times"></i>
+        </a>
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <h2 class="text-secondary text-uppercase mb-0">비밀번호 찾기</h2>
+              <hr class="star-dark mb-5">
+              <form action="/findPassword.do" method="post">
+              <div class="control-group">
+                <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
+                  <label id="idTitle" style="margin-top: 50px;"></label>
+                  <input class="form-control emailId" id="memberIdForFind" name="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
+                  <p class="help-block text-danger"></p>
+                </div>
+              </div>
+              <div class="form-group">
+                <input onclick="return findPassword();" type="submit" class="btn btn-primary btn-xl" style="margin-top: 100px;" value="찾기"/>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Bootstrap core JavaScript -->
     <script src="../resources/vendor/jquery/jquery.min.js"></script>
     <script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

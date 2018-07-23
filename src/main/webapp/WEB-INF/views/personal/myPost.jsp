@@ -8,9 +8,6 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -46,12 +43,12 @@
 	}
 	//돋보기 아이콘 클릭 후 검색어 입력 후 검색버튼누르면 검색하는 function.
 	function searchTitle(){ 
-	 var keyword = $("#keyword").val;
-		$.ajax({
+	 var keyword = $("#keyword").val();
+	 $.ajax({
 			url:"/searchTitle.do",
 			type:"POST",
-			data:{keyword:keyword},
-			success:function(responseData){
+			data:{"keyword":keyword},
+			success:function(data){
 				alert(data);
 				console.log(data);
 			},
@@ -78,12 +75,12 @@
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
 				<div class="headerTitle" id="headerTitle">
-					<h5>내가 쓴 글/댓글</h5>
+					<h5>내가 쓴글</h5>
 				</div>
 				<div class="headerFunction" id="headerFun">
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
-					<button type="button" class="btn btn-link btn-lg"
-						onclick="searchShow();">
+					<button type="button" class="btn btn-outline-light btn-lg"
+						id="searchShow" onclick="searchShow();">
 						<i class="fab fa-searchengin" style="color: grey;"></i>
 					</button>
 
@@ -96,8 +93,8 @@
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
 				<i class="fab fa-searchengin" style="color: grey;"></i> 
-				<input type="text" id="keyword" name="keyword" size=80
-					style="border: none;" placeholder="제목 검색" />
+				<input type="text" id="keyword" name="keyword" 
+				 placeholder="제목 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
@@ -111,104 +108,21 @@
 
 		<div class="viewContents">
 			<!-- 내용출력하는 부분 -->
-
 			<ul class="feed-list">
+			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div>
-						<span>"우와 돈가스당"</span>
+						<span>"${my.postTitle }"</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
 						<div class="user_img">
-							<img src="/IMG/test.PNG" /> <span style="background-color: red;">글쓴이</span>
-							<span style="background-color: blue;">댓글작성시간</span>
+							<img id="" src="${my.myImg }" /> <span>${my.myName }-글쓴이</span>
+							<span>${my.postDate }-글쓴 날</span>
 						</div>
-						<a class="btn btn-link btn-sm">띵킹띵킹</a>
+						<a class="btn btn-link btn-sm" href="#">${my.proName }-프로젝트 이름</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
 						<hr style="color: grey;">
-						<!-- 아코디언이나 collapse사용? -->
 					</div>
 				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<div class="user_img">
-							<img src="/IMG/test1.PNG" /> <span
-								style="background-color: red;">글쓴이</span> <span
-								style="background-color: blue;">댓글작성시간</span>
-						</div>
-						<a class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<br> <span style="background-color: red;">글쓴이</span> <span
-							style="background-color: blue;">댓글작성시간</span> <a
-							class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<br> <span style="background-color: red;">글쓴이</span> <span
-							style="background-color: blue;">댓글작성시간</span> <a
-							class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<br> <span style="background-color: red;">글쓴이</span> <span
-							style="background-color: blue;">댓글작성시간</span> <a
-							class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<br> <span style="background-color: red;">글쓴이</span> <span
-							style="background-color: blue;">댓글작성시간</span> <a
-							class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<br> <span style="background-color: red;">글쓴이</span> <span
-							style="background-color: blue;">댓글작성시간</span> <a
-							class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<div class="user_img">
-							<img src="/IMG/test.PNG" /> <span style="background-color: red;">글쓴이</span>
-							<span style="background-color: blue;">댓글작성시간</span>
-						</div>
-						<a class="btn btn-link btn-sm">띵킹띵킹</a>
-						<hr style="color: grey;">
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-				<li class="feed-contents">
-					<div>
-						<h5>"우와 돈가스당"</h5>
-						<div class="user_img">
-							<img src="/IMG/test.PNG" /> <span style="background-color: red;">글쓴이</span>
-							<span style="background-color: blue;">댓글작성시간</span>
-						</div>
-						<a class="btn btn-link btn-sm">띵킹띵킹</a>
-						<hr style="color: grey;">
-						<!-- 아코디언이나 collapse사용? -->
-					</div>
-				</li>
-
-			</ul>
-
+				</c:forEach>
+				</ul>
 		</div>
 	</div>
 

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<!-- jstl 선언 -->    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -64,13 +67,14 @@
         #m_header {
         	padding : 0px;
         	text-align: right;
-        	border: 1px solid black;
+        	display: inline-block;
         	
         }
         
-        #in {
-        	border: 1px solid red;
-        	display: inline-block;
+        #m_header img {
+        	height : 25px;
+        	width : 25px;
+        	cursor:pointer;
         }
         
  
@@ -79,12 +83,12 @@
 <script type="text/javascript">
       
         jQuery(document).ready(function() {
-                $('#myModal').show();
+                $('#createProjectModal').show();
         });
         
         //팝업 Close 기능
         function close_pop(flag) {
-             $('#myModal').hide();
+             $('#createProjectModal').hide();
         };
 
 		function periodOff() {
@@ -112,10 +116,11 @@
 <body>
 
     <!-- The Modal -->
-    <div id="myModal" class="modal">
+    <div id="createProjectModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-      	<div class="modal-header" id="m_header"><div id="in">X</div></div>
+      	<!-- 닫기 버튼 -->
+      	<div class="modal-header" id="m_header"><img src="/resources/images/project/delete-button.png" onClick="close_pop();"></div>
       	<div class="modal-body">
                 <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">새 프로젝트 생성</span></b></span></p>
                 <form action="/createProject.do" method="get">
@@ -123,15 +128,13 @@
   					프로젝트 이름 : <input type="text" name="proTitle" id="proTitle"> <br>
 					기간 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
 					<br><label id="periodLabel"></label><br>
-					<input type="hidden" name="proMemberNo" value=999> <!-- 세션의 member_no 넣기 -->
+					<input type="hidden" name="proMemberNo" value="${sessionScope.member.memberNo}"> <!-- 세션 정보 -->
 				</p><p><br /></p>
                 <!-- submit 버튼 -->
                 <div class="divStyle">
                 <button class="btnStyle" onClick="return submitCheck();"><span>생성</span></button>
                 </div>
                 </form>
-                <!-- 닫기 버튼 -->
-            	<br><div class="divStyle" onClick="close_pop();"><span>닫기</span></div>
       	</div>
       </div>
  

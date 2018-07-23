@@ -15,6 +15,7 @@
 		<typeAlias type="kr.pe.mododa.post.model.vo.Post" alias="post"/>
 		<typeAlias type="kr.pe.mododa.post.model.vo.Schedule" alias="schedule"/>
 		<typeAlias type="kr.pe.mododa.calendar.model.vo.Calendar" alias="calendar"/>
+		<typeAlias type="kr.pe.mododa.calendar.model.vo.Schedule" alias="schedule"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Bookmark" alias="bookmark"/>
 		<typeAlias type="kr.pe.mododa.personal.model.vo.Mypost" alias="mypost"/>
 	</typeAliases>

@@ -117,10 +117,10 @@ li {
 	color: #464646;
 }
 
-div {
+ div {
 	box-sizing: border-box;
 }
-
+ 
 /* rightbar */
 a:link {
 	color: black;

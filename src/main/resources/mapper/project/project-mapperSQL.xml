@@ -21,6 +21,23 @@
 	<insert id="insertWorkOn">
 		insert into work_on values(#{proMemberNo},project_seq.currval,'Y')
 	</insert>
+	
+	<select id="searchMemberNo" resultType="int">
+		select member_no from member where member_id = #{memberId}
+	</select>
+	
+	<select id="searchProjectList" resultType="project">
+		select
+			pro_no as proNo,
+			pro_title as proTitle,
+			pro_progress as proGress,
+			pro_start_date as proStartDate,
+			pro_end_date as proEndDate,
+			pro_member_no as proMemberNo
+		from project
+		where pro_no in (select pro_no from work_on where member_no = #{memberNO})
+		order by pro_no desc
+	</select>
 
 	
   

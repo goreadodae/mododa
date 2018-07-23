@@ -33,5 +33,19 @@
 		<beans:property name="order" value="1"></beans:property>
 	</beans:bean>
 	
+	    <!-- 인터셉터 객체 생성 -->
+    <beans:bean id="authenticationInterceptor" class="kr.pe.mododa.common.AuthenticationInterceptor">
+    </beans:bean>
+    <!-- Interceptor 설정 -->
+    <interceptors>
+        <interceptor>
+             <mapping path="/board/register"/>
+            <mapping path="/board/modify"/>
+            <mapping path="/index.jsp"/>
+            <beans:ref bean="authenticationInterceptor"/>
+        </interceptor>
+    </interceptors>
+	
 	<beans:import resource="./aop-context.xml"/>
+
 </beans:beans>

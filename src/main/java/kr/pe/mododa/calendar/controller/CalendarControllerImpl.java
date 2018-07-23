@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 
-import kr.pe.mododa.calendar.model.service.CalendarService;
 import kr.pe.mododa.calendar.model.service.CalendarServiceImpl;
+import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Controller("CalendarController")
@@ -34,39 +38,52 @@ public class CalendarControllerImpl implements CalendarController {
 	}
 
 	@Override
-	@RequestMapping(value="/IntroPopup.do")
+	@RequestMapping(value="IntroPopup.do")
 	public String calendarIntroPopup() {
 		return "calendar/schedulePlus";
 	}
 
 	@Override
-	@RequestMapping(value="/selectProject.do")
-	public Object selectProject() {
+	@RequestMapping(value="selectProject.do")
+	public void selectProject(HttpServletResponse response) throws Exception {
 		 ArrayList<Project> list = CalendarService.projectSelectAll();
+		 
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(list,response.getWriter());
+		 
+	}
 	
-	      ModelAndView view = new ModelAndView();
+	@Override
+	@RequestMapping(value="selectLinkPost.do")
+	public void selectLinkPost(HttpServletResponse response,@RequestParam int postProNo) throws Exception {
 	
-	         view.addObject("list",list);
-	         view.setViewName("calendar/calendar");
-	         return view;
-	      
+		 ArrayList<Post> linkPostList = CalendarService.postSelectAll(postProNo);
+		 
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(linkPostList,response.getWriter());
+		 
 	}
 
 	@Override
-	@RequestMapping(value="/calendarSchedule.do")
-	public ModelAndView calendarSchedule(HttpServletRequest request, ModelMap modelMap,@ModelAttribute Calendar cl) {
+	@RequestMapping(value="calendarSchedule.do")
+	public void calendarSchedule(HttpServletResponse response) throws Exception {
 		
-		HashMap resultMap = new HashMap();
-		ModelAndView mav = new ModelAndView();
-		//Calendar result = CalendarService.calendarSchedule(cl);
-		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
+		//HashMap resultMap = new HashMap();
+		//ModelAndView mav = new ModelAndView();
+		ArrayList<Schedule> list = CalendarService.calendarSchedule();
+		//Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
 		
-			//if(result!=null) {
-				//resultMap.put("scheduleNo", result.get);
-			//}
-		
-		return null;
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(list,response.getWriter());
 	}
+
+	
 
 	
 

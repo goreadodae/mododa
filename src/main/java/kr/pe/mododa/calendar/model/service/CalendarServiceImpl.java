@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.pe.mododa.calendar.model.dao.CalendarDAOImpl;
+import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Service("CalendarService")
@@ -27,6 +29,24 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		return list;
 	}
+
+	@Override
+	public ArrayList<Post> postSelectAll(int postProNo) {
+
+		ArrayList<Post> list = CalendarDAO.postSelectAll(sqlSession,postProNo);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<Schedule> calendarSchedule() {
+		
+		ArrayList<Schedule> list = CalendarDAO.calendarSchedule(sqlSession);
+		
+		return list;
+	}
+
+	
 
 	
 }
