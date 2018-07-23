@@ -169,7 +169,7 @@ table {
 	background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
 }
 .modal-content{
-	margin: 20% auto;
+	margin: 15% auto;
 }
 #modal-close {
 	width: 20px;
@@ -178,7 +178,8 @@ table {
 	float: right;
 }
 .btn {
-    border-width: 2px
+    border-width: 2px;
+    float: right;
 }
 .btn-primary {
     background-color: #CFF09E;
@@ -187,21 +188,10 @@ table {
 
 .btn-primary:active,
 .btn-primary:focus,
-.btn-primary:hover {
-    background-color: #CFF09E;
-    border-color: #CFF09E
-}
-
-.btn-secondary {
-    background-color: #339966;
-    border-color: #339966
-}
-
-.btn-secondary:active,
-.btn-secondary:focus,
-.btn-secondary:hover {
-    background-color: #CFF09E;
-    border-color: #CFF09E
+.btn-primary:hover,
+.btn-primary:click {
+    background-color: #CFF09E !important;
+    border-color: #CFF09E !important;
 }
 </style>
 
@@ -260,11 +250,12 @@ table {
 	function sendEmail(){
 		$('#mailModal').hide();
 		location.href='/confirmEmail.do';
-	}
-	<% if(((Member)(session.getAttribute("member"))).getMemberEmailCertify().equals("N")) {%>
-		console.log('aaaaaa');
-		open_pop();
-	<%}%>
+	};
+	$(document).ready(function(){
+ 		<% if(((Member)(session.getAttribute("member"))).getMemberEmailCertify().equals("N")) {%>
+			open_pop();
+		<%}%>
+	});
 </script>
 
 <body>
@@ -294,6 +285,7 @@ table {
 
 				<div class="col-4" id="topbar">
 					<!-- 회원 썸네일 -->
+					<a href="/logout.do">로그아웃</a>
 				</div>
 			</div>
 		</div>
@@ -328,6 +320,7 @@ table {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
+			${cookie.loginCookie.value }
 			</div>
 			<!-- contents 끝 -->
 
@@ -441,7 +434,7 @@ table {
 		<div id="mailModal" class="modal">
 
 			<!-- Modal 내용 -->
-			<div class="modal-content" style="width: 40%; height: 30%;">
+			<div class="modal-content" style="width: 30%; height: auto;">
 				<div class="row" style="margin-bottom: 20px;">
 					<div class="col-11"></div>
 					<div class="col-1">
@@ -456,9 +449,11 @@ table {
 					<div class="col-md-12" style="margin-top: 5%;">
 						<p style="width:80%; margin: 0 auto; text-align: center; color: gray; font-size: 20px;">이메일 인증을 통해 모두다를 시작해보세요<br>인증 메일은 30분 동안 유효합니다.</p>
 					</div>
-					<div class="offset-md-8 col-md-4" style="margin-top: 5%;">
-						<button onclick="sendEmail();" class="btn btn-primary btn-xl">인증 메일 보내기</button>
+					<div class="col-md-4"></div>
+					<div class="col-md-4" style="margin-top: 5%; margin-bottom: 10%;">
+						<button onclick="sendEmail();" class="btn btn-primary">인증 메일 보내기</button>
 					</div>
+					<div class="col-md-4"></div>
 				</div>
 			</div>
 			<!-- Modal 내용 끝 -->

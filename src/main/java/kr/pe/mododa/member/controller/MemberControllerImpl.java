@@ -30,7 +30,7 @@ public class MemberControllerImpl implements MemberController {
 	
 	@Override
 	@RequestMapping(value="/mainPage.do")
-	public String gotoMain() {
+	public String gotoMain(HttpSession session) {
 		return "main/mainPage";
 	}
 	
@@ -66,8 +66,6 @@ public class MemberControllerImpl implements MemberController {
 		vo.setMemberPw(memberPw);
 		Member m = memberService.loginSHA(vo);
 		HttpSession session = request.getSession();
-		System.out.println(autoLogin);
-		System.out.println(m);
 		if(m!=null) {
 			session.setAttribute("member", m);
 			if(autoLogin.equals("true")) {
@@ -130,9 +128,10 @@ public class MemberControllerImpl implements MemberController {
 		vo.setMemberName(memberName);
 		int result = memberService.insertMemberSHA(vo);
 		if(result>0) {
+			Member m = memberService.loginSHA(vo);
 			HttpSession session = request.getSession();
-			session.setAttribute("member", vo);
-			return "main/mainPage";
+			session.setAttribute("member", m);
+			return "redirect:/index.jsp";
 		} else {
 			return "member/error";
 		}
@@ -140,10 +139,9 @@ public class MemberControllerImpl implements MemberController {
 	
 	@RequestMapping(value="/confirmEmail.do")
 	public String confirmEmail(HttpSession session) throws Exception {
-		System.out.println("controller실행");
 		String email = ((Member)session.getAttribute("member")).getMemberId();
 		memberService.confirmEmail(email);
-		return null;
+		return "main/mainPage";
 	}
 	
 	@RequestMapping(value = "/emailConfirm", method = RequestMethod.GET)
@@ -151,6 +149,6 @@ public class MemberControllerImpl implements MemberController {
 		memberService.userAuth(user_email);
 		model.addAttribute("user_email", user_email);
 		((Member)session.getAttribute("member")).setMemberEmailCertify("Y");
-		return "main/mainPage";
+		return "main/comfirmEmailPage";
 	}
 }
