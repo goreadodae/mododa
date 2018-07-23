@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -41,14 +42,16 @@
 			
 			<!-- 파일 내용 -->		
 			<table width="100%" height="100px" border="1" style="margin:0; padding:0;">
-				<tr>
-					<td rowspan="2" width="7%">아이콘</td>
-					<td width="70%" colspan="2">파일명</td>
-					<td width="23%">올린날짜</td>
-				</tr>
-				<tr>
-					<td colspan="3">프로젝트명</td>
-				</tr>
+				<c:forEach items="${listFile }" var="f">
+					<tr>
+						<td rowspan="2" width="7%">아이콘</td>
+						<td width="70%" colspan="2">${f.uploadPath }</td>
+						<td width="23%">${f.uploadDate }</td>
+					</tr>
+					<tr>
+						<td colspan="3">프로젝트명</td>
+					</tr>
+				</c:forEach>
 			</table>
 			<div class="dropdown-divider"></div>
 			<!-- 파일 내용 끝 -->

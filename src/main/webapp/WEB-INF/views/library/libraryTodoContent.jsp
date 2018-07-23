@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,6 +20,7 @@
 	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
 	crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Insert title here</title>
 </head>
 
@@ -72,8 +74,9 @@
 					<td>
 						<select class="form-control" style="width:150px;">
   							<option value="프라이빗 공간">프라이빗 공간</option>
-  							<option value="프로젝트1">프로젝트1</option>
-  							<option value="프로젝트2">프로젝트2</option>
+  							<c:forEach items="${listProject }" var="p">
+  								<option value="${p.proTitle }">${p.proTitle }</option>
+  							</c:forEach>  							
 						</select>
 					</td>
 					<td>
@@ -121,12 +124,15 @@
 			<!-- 할 일 내용 -->
 			<div>
 				<table border="1" width="100%" height="100px;" style="margin:0; padding:0;">
+					<c:forEach items="${listTodo }" var="t">
 					<tr>
 						<td width="7%">아이콘</td>
-						<td width="15%">프로젝트명</td>
-						<td width="53%">할 일 제목</td>
-						<td width="25%">작성자->지목된사람</td>
+						<td width="15%">${t.todoNo }</td>
+						<td width="53%">${t.todoTitle }</td>
+						<td width="25%">${t.todoWriter } -> ${t.todoMember }</td>
 					</tr>
+					</c:forEach>
+					
 				</table>
 			</div>
 			<div class="dropdown-divider"></div>
@@ -146,20 +152,21 @@
 	<div id="todoModal" class="modal">
 
 		<!-- Modal 내용 -->
-		<div class="modal-content" style="width: 60%; ">
+		<div class="modal-content" style="width:40%;">
 			<!-- 닫기 버튼 -->
 			<div align="right">
 				<img src="../resources/images/post/close.png" onclick="closeModal();" /><br>
 			</div>
 			
 			<!-- 작성 -->
-			<table width="100%">
+			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td>
 						<select class="form-control" style="width:150px;">
   							<option value="프라이빗 공간">프라이빗 공간</option>
-  							<option value="프로젝트1">프로젝트1</option>
-  							<option value="프로젝트2">프로젝트2</option>
+  							<c:forEach items="${listProject }" var="p">
+  								<option value="${p.proTitle }">${p.proTitle }</option>
+  							</c:forEach>
 						</select>
 					</td>
 					<td></td>
