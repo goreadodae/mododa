@@ -65,6 +65,16 @@ div {
 	width: 60px;
 }
 
+.modal-schedule {
+	background-color: #fefefe;
+	margin: 17% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 60px;
+}
+
+
+
 #modal-close {
 	width: 20px;
 	float: right;
@@ -74,6 +84,7 @@ div {
 	font-size: 30px;
 }
 
+/* 댓글 */
 #comment {
 	background-color: #F5F5F5;
 }
@@ -90,8 +101,42 @@ div {
 
 /* 내용 제목 */
 .contents-title{
+	color : #282828;
 }
 
+.content-box{
+	width : 120px;
+	height: 80px;
+	border : 1px solid #d2d2d2;
+	background-color : #F5F5F5;
+	text-align : center;
+	margin-top : 10px;
+	margin-bottom : 10px;
+}
+
+#add-icon{
+	height : 30px;
+	position : relative;
+	top : 25px;
+}
+
+/* 일정 등록 */
+#sheduleTitle{
+	width : 100%;
+	height : 50px;
+	align : center;
+}
+
+/* 버튼 스타일 */
+#greenButton{
+   background-color: #339966;
+   color : #F8FAFF;
+   height : 40px;
+   width : 150px;
+   border : 0px;
+   cursor : pointer;
+}
+          
 </style>
 
 
@@ -105,7 +150,6 @@ div {
 				postNo : postNo
 			},
 			success : function(data) {
-				console.log(data);
 				if(data.post!=null){
 					$('#post-title').html(data.post.postTitle);
 					$('#post-content').html(data.post.postContent);
@@ -130,6 +174,46 @@ div {
 	//팝업 Close 기능
 	function close_pop(flag) {
 		$('#myModal').hide();
+	};
+	
+	function open_scheduleModal(flag){
+		document.getElementById('scStartDate').valueAsDate = new Date();
+        document.getElementById('scEndDate').valueAsDate = new Date();
+		$('#scheduleModal').show();
+	}
+	
+	function close_schedule(flag){
+		$('#scheduleModal').hide();
+	};
+	
+	function inputSchedule(){
+		var sheduleTitle = $('#sheduleTitle').val();
+		var scStartDate = $('#scStartDate').val();
+		var scEndDate = $('#scEndDate').val();
+		
+		$.ajax({
+			url : "/insertSchedule.do",
+			type : "post",
+			data : {
+				scTitle : sheduleTitle,
+				scStartDate : scStartDate,
+				scEndDate : scEndDate
+			},
+			success : function(data) {
+				console.log("성공");
+			},
+			error : function(data) {
+				console.log("실패");
+			},
+			complete : function(data){
+				close_schedule();
+			}
+		});
+		
+		
+		
+	
+	
 	};
 </script>
 </head>
@@ -156,7 +240,7 @@ div {
 
 				<div class="row">
 					<!-- left side -->
-					<div class="col-7">
+					<div class="col-7" style="overflow-y:scroll; padding-left : 30px;">
 						<div class="btn-group">
 							<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<img src="../resources/images/post/lightbulb.png"/>
@@ -180,22 +264,56 @@ div {
 						<span class="contents-title">할 일 0</span>
 						<br>
 						
-						<span class="contents-title">일정</span>
-						<div></div>
+						<hr>
+						<div>
+							<span class="contents-title">일정</span>
+							<div class="content-box" onclick="open_scheduleModal();"><img src="../resources/images/post/add.png" id="add-icon"/></div>
+						</div>
 						<br>
 						
+						<hr>
 						<span class="contents-title">파일/이미지 0</span>
+						<div class="content-box"><img src="../resources/images/post/add.png" id="add-icon"/></div>
 						<br>
 						
+						<hr>
 						<span class="contents-title">의사결정 0</span>
+						<div class="content-box"><img src="../resources/images/post/add.png" id="add-icon"/></div>
 						<br>
 					</div>
 					
 					<!-- right side -->
 					<div class="col-5" id="comment">댓글창</div>
 				</div>
+			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 팝업모달 끝 -->
+		
+		
+		<!-- 일정 팝업모달 -->
+		<div id="scheduleModal" class="modal">
+			<!-- Modal 내용 -->
+			<div class="modal-schedule" style="width: 25%; height: 30%;">
+				<div class="row" style="margin-bottom: 20px;">
+					<div class="col-11"></div>
+					<div class="col-1">
+						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_schedule();" />
+					</div>
+				</div>
 
-
+				<div class="row" id="scheduleInfo">
+					<div class="col-1"></div>
+					<div class="col-10">
+						<input type="text" id="sheduleTitle" placeholder="일정 제목을 입력해주세요."/><br><br>
+						<input type="date" id='scStartDate' /> ~ <input type="date" id='scEndDate' /><br><br><br>
+						<center><button id="greenButton" onclick="inputSchedule();">저장</button></center>
+					</div>
+					<div class="col-1"></div>
+				</div>
+				
+				
+				
 				
 			</div>
 			<!-- Modal 내용 끝 -->

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.post.model.service.PostServiceImpl;
 import kr.pe.mododa.post.model.vo.Post;
+import kr.pe.mododa.post.model.vo.Schedule;
 
 @Controller
 public class PostControllerImpl {
@@ -27,6 +28,15 @@ public class PostControllerImpl {
 		Post p = postService.selectOnePost(postNo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("post", p);
+		view.setViewName("jsonView");
+		return view;
+	}
+
+	@RequestMapping(value="/insertSchedule.do")
+	public ModelAndView insertSchedule(Schedule sc) {
+		int result = postService.insertSchedule(sc);
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
 		view.setViewName("jsonView");
 		return view;
 	}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.pe.mododa.post.dao.PostDAOImpl;
 import kr.pe.mododa.post.model.vo.Post;
+import kr.pe.mododa.post.model.vo.Schedule;
 
 @Service("postService")
 public class PostServiceImpl implements PostService{
@@ -20,6 +21,11 @@ public class PostServiceImpl implements PostService{
 	public Post selectOnePost(int postNo) {
 		Post p = postDAO.selectOnePost(sqlSession, postNo);
 		return p;
+	}
+
+	public int insertSchedule(Schedule sc) {
+		int result = postDAO.insertSchedule(sqlSession, sc);
+		return result;
 	}
 	
 	
