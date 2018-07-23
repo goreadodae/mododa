@@ -28,16 +28,16 @@
 <body>
 
 <br>
-<div class="row" >
+
 	<!-- 본문 -->
-	<div class="col-7" id="box">
+	<div style="padding:10px;">
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 의사결정 메뉴 -->
 			<table width="100%">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">받은 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">요청한 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">받은 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">요청한 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 의사결정</button></td>
 					<td width="55%"></td>
 				</tr>
 			</table>
@@ -46,7 +46,7 @@
 			
 			<!-- 의사결정 내용 -->
 			<div>
-				<table width="100%" height="100px;" border="1">
+				<table width="100%" height="100px;" border="1" style="margin:0; padding:0;">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
 						<td width="70%" colspan="3">의사결정 제목</td>
@@ -64,17 +64,7 @@
 			
 			
 		</div>
-	
 	</div>
-	
-	<!-- right bar -->
-	<div class="col-4" id="box">
-	
-	</div>
-	
-	<!-- 여백 -->
-	<div class="col-1" id="box"></div>
-</div>
 
 
 </body>

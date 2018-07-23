@@ -25,15 +25,15 @@
 <body>
 
 <br>
-<div class="row" >
+
 	<!-- 본문 -->
-	<div class="col-7" id="box">
+	<div style="padding:10px;">
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 이미지 메뉴 -->
 			<table width="100%">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">내 이미지</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success">전체 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 이미지</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>
@@ -41,7 +41,7 @@
 			<!-- 이미지 메뉴 끝 -->
 				
 			<!-- 이미지 내용 -->
-			<table border="1">
+			<table border="1" style="margin:0; padding:0;">
 				<tr>
 					<td colspan="3" align="center">
 						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
@@ -57,36 +57,8 @@
 		</div>
 	</div>
 	
-	<!-- right bar -->
-	<div class="col-4" id="box">
-		<table width="300px">
-			<!-- 최근에 올린 이미지 -->
-			<tr>
-				<td>
-					<h5>최근에 올린 이미지</h5><br>
-					<p>
-					<img src="../resources/images/icon/checked-allot.png"></img>
-					<a href="#">이미지 제목1</a> <a href="#" style="font-size: 80%">등록일자</a><br>
-					</p>
-					<p>
-					<img src="../resources/images/icon/checked-allot.png"></img>
-					<a href="#">이미지 제목2</a> <a href="#" style="font-size: 80%">등록일자</a><br>
-					</p>
-				</td>
-			</tr>
-			<!-- 최근에 올린 이미지 끝 -->
 
-			<!-- 최근에 올린 이미지의 더보기 -->
-			<tr style="float: right;">
-				<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
-			</tr>
-			<!-- 최근에 올린 이미지의 더보기 끝 -->
-		</table>
-	</div>
 	
-	<!-- 여백 -->
-	<div class="col-1" id="box"></div>
-</div>
 
 
 </body>

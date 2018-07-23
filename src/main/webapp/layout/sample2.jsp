@@ -206,6 +206,12 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/mypost.do");
 		   });
+		   
+		   $("#library").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/libraryMain.do");
+		   });
 
 		});
 	
@@ -288,24 +294,13 @@ table {
 
 
 			<!-- right bar -->
-			<div class="col-3" id="background">
+			<div class="col-3" id="background" >
 				<!-- 테이블을 이용한 경우 -->
 				<table width="300px">
 					<!-- 자료실 메뉴 -->
 					<tr style="float: right;">
 						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-dark dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">자료실</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">할 일</a> <a
-										class="dropdown-item" href="#">의사결정</a> <a
-										class="dropdown-item" href="#">이미지</a> <a
-										class="dropdown-item" href="#">파일</a> <a class="dropdown-item"
-										href="#">링크</a>
-								</div>
-							</div>
+							<button type="button" id="library" class="btn btn-success">자료실</button>
 						</td>
 					</tr>
 
@@ -323,19 +318,14 @@ table {
 									<img src="../resources/images/icon/checked-allot.png"></img>
 								</button>
 								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-allot.png"></img> 할당된 할
-										일</a> <a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/play-button.png"></img> 진행중</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/pause.png"></img> 일시중지</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-allot.png"></img> 할당된 할일</a> 
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/play-button.png"></img> 진행중</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/pause.png"></img> 일시중지</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
 								</div>
-							</div> <a href="#">할 일 제목1</a> <a href="#" style="font-size: 80%">할
-								일 작성자</a><br>
+							</div>
+							<a href="#">할 일 제목1</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
 
 							<div class="btn-group">
 								<button type="button" class="btn btn-link dropdown-toggle"
@@ -344,19 +334,15 @@ table {
 									<img src="../resources/images/icon/checked-allot.png"></img>
 								</button>
 								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-allot.png"></img> 할당된 할
-										일</a> <a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/play-button.png"></img> 진행중</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/pause.png"></img> 일시중지</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-allot.png"></img> 할당된 할 일</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/play-button.png"></img> 진행중</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/pause.png"></img> 일시중지</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
+									<a class="dropdown-item" href="#"><img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
 								</div>
-							</div> <a href="#">할 일 제목2</a> <a href="#" style="font-size: 80%">할
-								일 작성자</a><br>
+							</div>
+							<a href="#">할 일 제목2</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+							
 						</td>
 					</tr>
 
@@ -372,12 +358,10 @@ table {
 							<h5>의사결정</h5>
 							<br>
 							<p>
-								<a href="#"><img src="../resources/images/icon/decision.png"></img>
-									의사결정 제목1</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
+								<a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목1</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
 							</p>
 							<p>
-								<a href="#"><img src="../resources/images/icon/decision.png"></img>
-									의사결정 제목2</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
+								<a href="#"><img src="../resources/images/icon/decision.png"></img> 의사결정 제목2</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
 							</p>
 						</td>
 					</tr>

@@ -32,7 +32,7 @@
 	<!-- 자료실 헤더 -->
 	<table width="100%">
 		<tr>
-			<td width="7%">
+			<td width="20%">
 				<h4 id="subject">할 일</h4>
 			</td>
 			<td width="35%">
@@ -43,6 +43,7 @@
   					<option value="프로젝트2">프로젝트2</option>
 				</select>
 			</td>
+			<td width="15%"></td>
 			<td width="5%">
 				<button type="button" class="btn btn-outline-success" id="todo">할 일</button>
 			</td>
@@ -58,11 +59,7 @@
 			<td width="5%">
 				<button type="button" class="btn btn-outline-success" id="link">링크</button>
 			</td>
-			<td width="7%"></td>
-			<td width="13%">
-				<a href="#"><img src="../resources/images/icon/delete.png"></img></a>
-			</td>
-			<td width="13%"></td>
+			<td width="5%"></td>
 		</tr>
 	</table>
 	
@@ -81,13 +78,23 @@
 <script>
 
 jQuery(function($) {
-	$("#content").load("/libraryTodoContent.do");
+	
 	
 	$("#todo").click(function() {
 		$("#subject").html("할 일");
 		$("#content").remove();
 		$("#frame").append("<div id='content'></div>");
-		$("#content").load("/libraryTodoContent.do");
+		
+		$.ajax({
+	        url : "/libraryTodoContent.do",
+	        type: "get",
+	        success : function(){
+	        	console.log("test");
+	        	/* $("#content").load("/libraryTodoContent.do"); */
+	        }
+	    });
+		
+		
 		
 	});
 

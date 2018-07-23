@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LibraryControllerImpl {
 	
+	@Autowired
+	@RequestMapping(value="/ajax.do")
+	public void ajax() {
+		System.out.println("ajax 호출");
+	}
+	
 	// 자료실 메인 페이지로 이동
 	@Autowired
 	@RequestMapping(value="/libraryMain.do")
