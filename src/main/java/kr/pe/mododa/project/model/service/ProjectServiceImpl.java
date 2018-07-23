@@ -44,4 +44,9 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.searchProjectList(sqlSession, memberNo);
 	}
 
+	@Override
+	public int inviteMember(int memberNo) {
+		return projectDAO.inviteMember(sqlSession, memberNo);
+	}
+
 }

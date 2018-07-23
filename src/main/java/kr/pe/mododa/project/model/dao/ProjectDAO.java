@@ -13,5 +13,6 @@ public interface ProjectDAO {
 	public int insertWorkOn(SqlSessionTemplate sqlSession, int proMemberNo);
 	public int searchMemberNo(SqlSessionTemplate sqlSession, String memberId);
 	public ArrayList<Project> searchProjectList(SqlSessionTemplate sqlSession, int memberNo);
+	public int inviteMember(SqlSessionTemplate sqlSession, int memberNo);
 
 }

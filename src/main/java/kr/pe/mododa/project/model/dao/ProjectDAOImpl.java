@@ -34,4 +34,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return (ArrayList<Project>)projectList;
 	}
 
+	@Override
+	public int inviteMember(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.insert("project.inviteMember", memberNo);
+	}
+
 }

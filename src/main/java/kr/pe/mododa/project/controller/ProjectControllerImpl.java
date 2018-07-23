@@ -94,6 +94,7 @@ public class ProjectControllerImpl implements ProjectController {
 		// 2. 프로젝트 번호 받기 -> 넘겨 받기
 		// 3. work_on에 insert하기
 		System.out.println(memberNo);
+		int result = projectService.inviteMember(memberNo);
 		
 		return "redirect:/gotoInviteMember.do";
 		
@@ -112,9 +113,12 @@ public class ProjectControllerImpl implements ProjectController {
 			System.out.println("세션 실패");
 			return null;
 		}
-		
-		
-		
+
+	}
+	
+	@RequestMapping(value="testProNo.do")
+	public void testProNo(@RequestParam int proNo) {
+		System.out.println(proNo);
 	}
 	
 

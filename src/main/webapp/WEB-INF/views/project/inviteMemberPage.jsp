@@ -105,6 +105,9 @@ li {
 
 .icon {
 	margin-right: 5%;
+	height:23px; 
+	width:23px;
+	
 }
 
 .list-title {
@@ -149,13 +152,41 @@ table {
 	border : 0px;
 }
 
+</style>
+
+
+<!-- 지은 스타일 -->
+<style>
 
 .proIcon {
-	height:30px; 
-	width:30px;
-	margin-right: 5%;
-	margin-left: 10%;
+	margin-right: 2%;
+	height:23px; 
+	width:23px;
 }
+
+.subIcon {
+	height:18px; 
+	width:18px;
+}
+
+
+
+.proBtn {
+	height:100%; 
+	width:100%;
+}
+
+.proBtn>button {
+	height:100%; 
+	width:100%;
+	text-align: left;
+	padding-left: 6.5%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	background-color: rgba( 255, 255, 255, 0.5 );
+	border:0px solid;
+}
+
 
 
 </style>
@@ -259,8 +290,9 @@ table {
 			$("#contents").append("<div id='content-frame'></div>");
 			$("#content-frame").load("/gotoProTitle.do");
 		 });
-
+ 		
 	});
+	
 </script>
 
 
@@ -278,7 +310,7 @@ table {
      
 	function submitCheck() {
 		if(document.getElementById('memberId').value == "") {
-			alert("프로젝트명을 입력해주세요.");
+			alert("초대할 멤버의 이메일을 입력해주세요.");
 			return false;
 		} else {
 			return true;
@@ -359,7 +391,7 @@ table {
 						<li class="list-group-item" id="newsfeed"><img src="../resources/images/layout-img/lightning.png" class="icon"> 뉴스피드</li>
 						<li class="list-group-item" id="callpost"><img src="../resources/images/layout-img/arroba.png" class="icon"> 호출된 글</li>
 						<li class="list-group-item" id="bookmark"><img src="../resources/images/layout-img/bookmark.png" class="icon"> 북마크</li>
-						<li class="list-group-item" id="mypost"><img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴글</li>
+						<li class="list-group-item" id="mypost"><img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
 						<li class="list-group-item" id="calendar"><img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
 					</ul>
 
@@ -369,9 +401,23 @@ table {
 					<ul>
 						<li class="list-title">프로젝트</li>
 						<li class="list-group-item" id="project"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
+						
 						<!-- 로그인이랑 연동되면 해당아이디 프로젝트 목록을 읽어와서 이 곳에 출력해준다. -->
 						<c:forEach items="${projectList}" var="projectList">
-						<li class="list-group-item"><img src="../resources/images/project/idea.png" class="proIcon" /> ${projectList.proTitle}</li>
+						<li class="list-group-item" style="padding:5px;">
+						<div class="btn-group dropright proBtn">
+  							<button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}
+  							</button>
+  							<div class="dropdown-menu">
+    						<a class="dropdown-item" href="/testProNo.do?proNo=${projectList.proNo}"><img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a>
+    						<a class="dropdown-item" href="#"><img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a>
+    						<a class="dropdown-item" href="#"><img src="../resources/images/project/diagram.png" class="subIcon" /> 진행 현황</a>
+   							<a class="dropdown-item" href="#"><img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a>
+   							<a class="dropdown-item" href="#"><img src="../resources/images/project/calendar.png" class="subIcon" /> 캘린더</a>
+   							</div>			
+   						</div>
+						</li>
 						</c:forEach>
 					</ul>
 
