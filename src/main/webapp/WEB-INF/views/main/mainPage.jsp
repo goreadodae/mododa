@@ -239,7 +239,8 @@ table {
 			   $("#content-frame").load("");
 		   });
 
-		});
+	});
+	
 	function open_pop(flag) {
 		$('#mailModal').show();
 	};
@@ -256,6 +257,21 @@ table {
 			open_pop();
 		<%}%>
 	});
+</script>
+
+<!-- 지은이가 사용할 스크립트 -->
+<script>
+
+/* 지은 프로젝트부분 contents 화면 전환 함수 */
+jQuery(function($) {
+   $("#createProject").click(function() {
+	   $("#content-frame").remove();
+	   $("#contents").append("<div id='content-frame'></div>");
+	   $("#content-frame").load("/gotoCreateProject.do");
+   });
+
+});
+
 </script>
 
 <body>
@@ -310,7 +326,7 @@ table {
 
 					<ul>
 						<li class="list-title">프로젝트</li>
-						<li class="list-group-item" id="project"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
+						<li class="list-group-item" id="createProject"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
 					</ul>
 
 				</div>
