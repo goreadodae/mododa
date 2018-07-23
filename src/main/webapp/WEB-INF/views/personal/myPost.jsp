@@ -43,12 +43,12 @@
 	}
 	//돋보기 아이콘 클릭 후 검색어 입력 후 검색버튼누르면 검색하는 function.
 	function searchTitle(){ 
-	 var keyword = $("#keyword").val;
-		$.ajax({
+	 var keyword = $("#keyword").val();
+	 $.ajax({
 			url:"/searchTitle.do",
 			type:"POST",
 			data:{"keyword":keyword},
-			success:function(responseData){
+			success:function(data){
 				alert(data);
 				console.log(data);
 			},
@@ -108,9 +108,8 @@
 
 		<div class="viewContents">
 			<!-- 내용출력하는 부분 -->
-			<c:forEach var="my" items="${mypost }">
-			
 			<ul class="feed-list">
+			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div>
 						<span>"${my.postTitle }"</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
@@ -122,10 +121,8 @@
 						<hr style="color: grey;">
 					</div>
 				</li>
-				</ul>
-				
-				
 				</c:forEach>
+				</ul>
 		</div>
 	</div>
 

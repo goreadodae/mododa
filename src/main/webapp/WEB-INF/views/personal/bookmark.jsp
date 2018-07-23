@@ -92,8 +92,8 @@
 
 		<div class="viewContents">
 			<!-- 내용출력하는 부분 -->
+			<ul class="feed-list">
 			<c:forEach var="book" items="${bookmark }">
-				<ul class="feed-list">
 					<li class="feed-contents">
 						<div>
 							<h4>${book.postTitle }</h4>
@@ -108,9 +108,9 @@
 						</div>
 						<hr style="color: grey;">
 					</li>
-				</ul>
 			</c:forEach>
 			<span>마지막입니다.</span>
+			</ul>		
 		</div>
 	</div>
 
