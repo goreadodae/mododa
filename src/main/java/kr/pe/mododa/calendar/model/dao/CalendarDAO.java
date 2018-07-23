@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
 
@@ -12,7 +14,7 @@ public interface CalendarDAO {
 	
 	
 	public ArrayList<Project> projectSelectAll (SqlSessionTemplate sqlSession);
-
-	
+	public ArrayList<Post> postSelectAll (SqlSessionTemplate sqlSession,int postNo);
+	public ArrayList<Schedule> calendarSchedule (SqlSessionTemplate sqlSession);
 	
 }
