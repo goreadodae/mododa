@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .content {
-	height: 70%;
+	height: 98%;
 	width: 99.5%;
 	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
 
@@ -12,8 +12,9 @@
 #keyword{
 	height:45px;
 }
+
 .viewHeader {
-	position: ;
+	position: fixed-top ;
 	border-bottom: 1px solid gray;
 	height: 50px;
 	width: 100%;
@@ -31,9 +32,13 @@
 	margin: 5px 10px 5px 15px;
 	float: right;
 }
-
+#keyword{
+	border: none;
+	width: 75%;
+}
 
 .viewContents {
+	float:left;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 94%;
@@ -46,6 +51,8 @@
 
 .feed-contents {
 	padding: 16px 20px 10px;
+	
 	list-style: none;
 }
+
 
