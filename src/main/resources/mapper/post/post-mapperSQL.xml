@@ -16,8 +16,17 @@
   from post where post_no = #{postNo}
   </select>
   
+  <select id="selectSchedule" resultType="schedule">
+  select
+  member_no as memNO,
+  sc_start_date as startDate,
+  sc_end_date as endDate,
+  sc_title as scTitle
+  from schedule where post_no = #{postNo}  
+  </select>
+  
   <insert id="insertSchedule" parameterType="schedule">
-  	insert into schedule values(schedule_SEQ.NEXTVAL,4,21,2,sysdate,sysdate,#{scTitle});
+  	insert into schedule values(schedule_SEQ.NEXTVAL,4,21,2,#{startDate},#{endDate},#{scTitle})
   </insert>
 
 </mapper>
