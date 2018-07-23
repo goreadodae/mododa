@@ -64,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
 		MailHandler sendMail = new MailHandler(mailSender);
 		System.out.println("인증키 : " + key);
 		System.out.println("아이디 : " + email);
-		sendMail.setSubject("[ALMOM 서비스 이메일 인증]");
+		sendMail.setSubject("[MODODA 서비스 이메일 인증]");
 		sendMail.setText(
 				new StringBuffer().append("<h1>메일인증</h1>").append("<a href='http://localhost/emailConfirm?user_email=").append(email).append("&key=").append(key).append("' target='_blenk'>이메일 인증 확인</a>").toString());
 		sendMail.setFrom("mododa0130@gmail.com", "모두다");
