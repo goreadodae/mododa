@@ -55,7 +55,7 @@
 			error:function(){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			}
-		});
+		})
 	}
 	
 </script>
@@ -106,18 +106,18 @@
 		</div>
 
 
-		<div class="viewContents">
+		<div class="viewContents col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div>
 						<span>"${my.postTitle }"</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
-						<div class="user_img">
-							<img id="" src="${my.myImg }" /> <span>${my.myName }-글쓴이</span>
-							<span>${my.postDate }-글쓴 날</span>
+						<div class="writeInfo" style="position:relative;">
+							<img id="memberImg" src="../resources/images/post/close.png" /> <span>${my.myName }</span>
+							<br><span>${my.postDate }</span>
 						</div>
-						<a class="btn btn-link btn-sm" href="#">${my.proName }-프로젝트 이름</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
+						<a class="btn btn-link btn-sm" href="#">${my.proName }</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
 						<hr style="color: grey;">
 					</div>
 				</li>

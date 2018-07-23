@@ -42,8 +42,25 @@
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-
+	
 	}
+	function delBookmark(){
+		var delBookNo = $("#delNo").val();
+		$.ajax({
+			url:"/delBookmark.do",
+			type:"POST",
+			data:{"delBookNo":delBookNo},
+			success:function(data){
+				alert(data);
+				console.log(data);
+			},
+			error:function(){
+				alert("error!");
+			}
+			
+		})
+	}
+	
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -90,7 +107,7 @@
 			</div>
 		</div>
 
-		<div class="viewContents">
+		<div class="viewContents  col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 			<c:forEach var="book" items="${bookmark }">
@@ -100,8 +117,8 @@
 							<br>
 							<h5>${book.postWriter }${book.postDate } ${book.proName }</h5>
 							<button type="button" class="btn btn-link btn-lg"
-								style="float: right;">
-								<span> <i class="far fa-bookmark"></i>
+								style="float: right;" onclick="delBookmark();"><input type="hidden" id="delNo" value="${book.postNo }" />
+								<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i>
 								</span>
 							</button>
 							<br>

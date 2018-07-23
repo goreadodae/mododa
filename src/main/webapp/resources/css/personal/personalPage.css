@@ -42,17 +42,35 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 94%;
+
 }
 
 .feed-list {
-	margin: 0;
+	float:left;
 	padding: 0;
+	width:100%;
+	
 }
 
+hr{
+	margin:3px;
+}
 .feed-contents {
-	padding: 16px 20px 10px;
-	
 	list-style: none;
+	padding: 3px 20px 5px 20px;
+	 font-size:14;
+}
+#memberImg{
+	width:30px;
+	height:30px;
+	border-radius:50%;
+}
+.ico{
+
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color:yellow;
 }
 
 

@@ -3,7 +3,7 @@ package kr.pe.mododa.personal.model.vo;
 import java.sql.Date;
 
 public class Bookmark {
-	private String postNo;       //북마크한 글의 글 번호
+	private int postNo;       //북마크한 글의 글 번호
 	private String postTitle;    //북마크한 글 제목
 	private String postProgress; //북마크한 글의 진행 상태
 	private String writerImg;    //북마크한 글의 작성자 이미지 경로
@@ -16,7 +16,7 @@ public class Bookmark {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bookmark(String postNo, String postTitle, String postProgress, String writerImg, String postWriter,
+	public Bookmark(int postNo, String postTitle, String postProgress, String writerImg, String postWriter,
 			Date postDate, String proName) {
 		super();
 		this.postNo = postNo;
@@ -28,11 +28,11 @@ public class Bookmark {
 		this.proName = proName;
 	}
 
-	public String getPostNo() {
+	public int getPostNo() {
 		return postNo;
 	}
 
-	public void setPostNo(String postNo) {
+	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
 

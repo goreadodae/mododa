@@ -79,9 +79,23 @@ public class PersonalControllerImpl implements PersonalController{
 	public Object searchTitle(HttpServletRequest request,HttpServletResponse response)
 	{
 		String searchTitle = request.getParameter("keyword");
-		//System.out.println(searchTitle);
+		
+		if(searchTitle.isEmpty())
+		{
+			String noKeyword="다시입력하쇼!!";
+			return noKeyword;
+		}
+		System.out.println(searchTitle);
 		
 		return searchTitle;
 		
+	}
+	
+	@RequestMapping(value="delBookmark.do")
+	
+	public Object delBookmark(HttpServletRequest request,HttpServletResponse response) {
+		String delBookNo = request.getParameter("delBookNo");
+		int memberNo=1;
+		return delBookNo;
 	}
 }
