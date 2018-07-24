@@ -72,10 +72,7 @@ public class CalendarControllerImpl implements CalendarController {
 	@RequestMapping(value="calendarSchedule.do")
 	public void calendarSchedule(HttpServletResponse response) throws Exception {
 		
-		//HashMap resultMap = new HashMap();
-		//ModelAndView mav = new ModelAndView();
 		ArrayList<Schedule> list = CalendarService.calendarSchedule();
-		//Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");

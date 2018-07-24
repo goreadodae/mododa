@@ -17,7 +17,7 @@ public class CalendarDAOImpl implements CalendarDAO {
 	public ArrayList<Project> projectSelectAll(SqlSessionTemplate sqlSession) {
 		
 		List list = sqlSession.selectList("calendar.projectList");
-		
+		System.out.println(list.get(0));
 		return (ArrayList<Project>)list;
 	}
 
@@ -34,7 +34,7 @@ public class CalendarDAOImpl implements CalendarDAO {
 	public ArrayList<Schedule> calendarSchedule(SqlSessionTemplate sqlSession) {
 		
 		List list = sqlSession.selectList("calendar.calendarScheduleList");
-		
+
 		return (ArrayList<Schedule>)list;
 	}
 
