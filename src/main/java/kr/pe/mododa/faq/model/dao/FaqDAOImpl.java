@@ -20,4 +20,10 @@ public class FaqDAOImpl implements FaqDAO {
 		return (ArrayList<Notice>)nlist;
 	}
 
+	@Override
+	public Notice noticeRead(SqlSessionTemplate sqlSession, int noticeNo) {
+		
+		return sqlSession.selectOne("faq.noticeRead",noticeNo);
+	}
+
 }

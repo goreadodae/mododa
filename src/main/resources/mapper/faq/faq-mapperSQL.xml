@@ -3,12 +3,22 @@
 <mapper namespace="faq">
 
 
-	<select id="noticeList" resultType="faq">
+	<select id="noticeList" resultType="faq" >
 		select notice_no as noticeNO,
 		notice_title as noticeTitle,
 		notice_write_date as noticeWriteDate,
 		notice_view_count as noticeViewCount
 
 		from notice
+	</select>
+	
+	<select id="noticeRead" resultType="faq">
+	select notice_no as noticeNo,
+	notice_title as noticeTitle,
+	notice_write_date as noticeWriteDate,
+	notice_contents as noticeContents,
+	notice_view_count as noticeViewCount
+	from notice where notice_no = 1
+	
 	</select>  
 </mapper>
