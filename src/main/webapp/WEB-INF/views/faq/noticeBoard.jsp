@@ -8,20 +8,29 @@
 <title>Insert title here</title>
 </head>
 <body>
-테스트 페이지
 <h1>공지사항</h1>
 <table border="1px solid black">
    <tr>
       <td>번호</td><td>제목</td><td>작성일</td><td>조회수</td>
    </tr>
+ 
 <c:forEach items="${nlist}" var="n">
    <tr>
       <td>${n.noticeNo}</td>
-      <td>${n.noticeTitle}</td>
+      <td><a href="/noticeRead.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
       <td>${n.noticeWriteDate}</td>
       <td>${n.noticeViewCount}</td>
    </tr>
 </c:forEach>
+<form action="" method="get" style=display:inline;>
+	<select>
+	<option value="title" selected>제목</option>
+	<option value="contents">내용</option>
+	<option value="writer">작성자</option>
+	</select>
+	<input type="text" name="search" placeholder="검색" id="searchVal">
+	<input type="submit" value="검색">
+</form>
 </table>
 </body>
 </html>

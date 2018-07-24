@@ -20,11 +20,19 @@ public class FaqServiceImpl implements FaqService{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-
-
+	//1.공지사항 리스트 가져오기
 	@Override
 	public ArrayList<Notice> noticeAll() {
 		ArrayList<Notice> nlist = faqDAO.noticeAll(sqlSession);
 		return nlist;
 	}
+	
+	//2.공지사항 상세페이지 
+	@Override
+	public Notice noticeRead(int noticeNo) {
+		Notice readPage = faqDAO.noticeRead(sqlSession,noticeNo);
+		return readPage;
+	}
+	
+	
 }
