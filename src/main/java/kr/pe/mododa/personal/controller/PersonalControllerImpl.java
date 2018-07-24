@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.personal.model.service.PersonalServiceImpl;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.personal.model.vo.Mypost;
+import kr.pe.mododa.post.model.vo.Post;
 
 @Controller
 public class PersonalControllerImpl implements PersonalController{
@@ -76,27 +78,30 @@ public class PersonalControllerImpl implements PersonalController{
 	
 	@RequestMapping(value="searchTitle.do") //내가쓴 글에서 제목검색
 	@ResponseBody
-	public Object searchTitle(HttpServletRequest request,HttpServletResponse response)
+	public Object searchTitle(HttpServletRequest request,@RequestParam String keyword)
 	{
-		String searchTitle = request.getParameter("keyword");
-		
-		if(searchTitle.isEmpty())
-		{
-			String noKeyword="다시입력하쇼!!";
-			return noKeyword;
-		}
+		Post p = new Post();
+		p.setPostTitle(keyword); //
+		p.setPostWriter(1);//session에서 회원번호 가져오기.
+		System.out.println(keyword);
+		ArrayList<Mypost> searchTitle = personalService.searchTitle(p);
 		System.out.println(searchTitle);
 		
-		return searchTitle;
+		return keyword;
 		
 	}
 	
-	@RequestMapping(value="delBookmark.do")
+	@RequestMapping(value="delBookmark.do") //북마크 제거.
 	@ResponseBody
 	public Object delBookmark(HttpServletRequest request,HttpServletResponse response) {
-		int delBookNo = Integer.parseInt(request.getParameter("delBookNo")); //삭제하고자 하는 북마크의 게시글 번호
-		int memberNo=1; //회원번호(로그인 되면 세션에서 회원번호 받을 예정)
-		System.out.println(delBookNo);
-		return delBookNo;
+		Post p = new Post();
+		p.setPostNo(Integer.parseInt(request.getParameter("delBookNo"))); //삭제하고자 하는 북마크의 게시글 번호
+		p.setPostWriter(1);  //회원번호(로그인 되면 세션에서 회원번호 받을 예정)
+		System.out.println(p.getPostNo());
+		
+		int delBookmark = personalService.delBookmark(p);
+		return delBookmark;
 	}
+	
+	 
 }

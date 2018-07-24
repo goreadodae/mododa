@@ -326,7 +326,9 @@ div {
 					</div>
 
 					<!-- right side -->
-					<div class="col-5" id="comment">댓글창</div>
+					<div class="col-5" id="comment">댓글창
+					
+					</div>
 				</div>
 			</div>
 			<!-- Modal 내용 끝 -->
