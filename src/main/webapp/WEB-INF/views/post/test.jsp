@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -108,7 +107,7 @@ div {
 	border: 1px solid #d2d2d2;
 	background-color: #F5F5F5;
 	text-align: center;
-	margin-right : 0px;
+	margin-right : 10px;
 	margin-left : 0px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -122,12 +121,41 @@ div {
 	top: 25px;
 }
 
+
+/* 일정 */
+.scheduleDate{
+	font-size : 15px;
+	color : #464646;
+}
+
+#scheduleTitle{
+	font-size : 30px;
+}
+
+.scheduleList{
+	
+	padding : 5px;
+}
+
+.insertButton{
+	background-color: #339966;
+	color: #F8FAFF;
+	height: 25px;
+	width: 100px;
+	border: 0px;
+	cursor: pointer;
+	border-radius: 30px;
+	font-size : 15px;
+}
+
 /* 일정 등록 */
 #sheduleTitle {
 	width: 100%;
 	height: 50px;
 	align: center;
 }
+
+
 
 /* 버튼 스타일 */
 #greenButton {
@@ -142,8 +170,14 @@ div {
 
 
 <script type="text/javascript">
+
+	var postNo=0;
+	
 	//게시글 불러옴
-	function getPost(postNo) {
+	function getPost(postNumber) {
+		postNo = postNumber; //게시글 번호
+		var countSchedule = 0;
+		var countTodo = 0;
 		$.ajax({
 			url : "/viewPost.do",
 			type : "post",
@@ -155,6 +189,25 @@ div {
 					$('#post-title').html(data.post.postTitle);
 					$('#post-content').html(data.post.postContent);
 					$('#post-date').html(data.post.postDate);
+					
+					for(var i=0; i<data.schedule.length; i++){
+						countSchedule++;
+						var str = "<div class='scheduleList'>" + 
+						"<img src='../resources/images/post/calendar.png'/>"+
+						"<span class='scheduleDate'>&nbsp;&nbsp;" + data.schedule[i].startDate + " ~ " + data.schedule[i].endDate + "&nbsp;&nbsp; : &nbsp;&nbsp;" + data.schedule[i].scTitle +"</span>" +
+						"</div>";
+			
+						$('#appendforSchedule').append(str);
+					}
+					
+					$('#countSchedule').html(countSchedule);
+					
+					
+					for(var i=0; i<data.todo.length; i++){
+						countTodo++;
+						
+					}
+					$('').html();
 					
 					
 				} else {
@@ -193,6 +246,7 @@ div {
 
 	//일정 추가
 	function inputSchedule() {
+		
 		var scTitle = $('#scTitle').val();
 		var scStartDate = $('#scStartDate').val();
 		var scEndDate = $('#scEndDate').val();
@@ -201,13 +255,21 @@ div {
 			url : "/insertSchedule.do",
 			type : "post",
 			data : {
+				postNo : postNo,
 				scTitle : scTitle,
 				startDate : scStartDate,
 				endDate : scEndDate
 			},
 			success : function(data) {
 				console.log("성공");
-				$('#appendforSchedule').append("<div class='content-box'><span id='scheduleStartDate'>scStartDate</span></div>");
+				var str = "<div class='scheduleList'>" + 
+				"<img src='../resources/images/post/calendar.png'/>"+
+				"<span class='scheduleDate'>&nbsp;&nbsp;" + scStartDate + " ~ " + scEndDate + "&nbsp;&nbsp; : &nbsp;&nbsp;" + scTitle +"</span>" +
+				"</div>";
+	
+				$('#appendforSchedule').append(str);
+				
+				$('#countSchedule').html(Number($('#countSchedule').html())+1);
 			},
 			error : function(data) {
 				console.log("실패");
@@ -243,7 +305,7 @@ div {
 		<!-- contents -->
 		<div class="col-6">
 			★ 내용은 여기다가~!!!★
-			<button onclick="getPost(4);">여기 누르면 모달 팝업 뜸</button>
+			<button onclick="getPost(1);">여기 누르면 모달 팝업 뜸</button>
 		</div>
 
 		<!-- 팝업모달 -->
@@ -280,31 +342,24 @@ div {
 							</div>
 						</div>
 
-						<span id="post-title">글제목</span><br>
+						<span id="post-title">글 제목</span><br>
 						<hr>
 						<span id="post-content">글내용</span> <br> <span id="post-date">작성날짜</span>
 						<span id="like-count"><img
-							src="../resources/images/post/like.png" id="like-icon" /> 좋아요 3개</span>
+							src="../resources/images/post/like.png" id="like-icon" /> 좋아요 3개</span><br>
 
 						<hr>
 						<span class="contents-title">할 일 0</span> <br><br>
 						<input type="text" placeholder="새 할 일을 입력해 주세요." style="width:250px;" /> ▶ 
-						
+						<div><span>할일 ▶ reumii</span></div>
 
 						<hr>
 						<div id="appendforSchedule">
-							<span class="contents-title">일정</span><br>
-							<div class="content-box" onclick="open_scheduleModal();">
-								<img src="../resources/images/post/add.png" id="add-icon" />
-							</div>
+							<span class="contents-title">일정 &nbsp;<span id="countSchedule">0</span></span>
+							&nbsp;&nbsp;&nbsp;<button class="insertButton" onclick="open_scheduleModal();" style="float:right;">+ 일정추가</button>
 							
-							<div class="content-box">
-								<span id="scheduleStartDate">시작날짜</span>
-								<span>끝날짜</span>
-								<span >일정제목</span>
-							</div>
 						</div>
-						<br>
+						
 
 						<hr>
 						<span class="contents-title">파일/이미지 0</span><br>
@@ -318,7 +373,7 @@ div {
 						<br>
 
 						<hr>
-						<span class="contents-title">의사결정 0</span>
+						<span class="contents-title">의사결정 0</span><br>
 						<div class="content-box">
 							<img src="../resources/images/post/add.png" id="add-icon" />
 						</div>
