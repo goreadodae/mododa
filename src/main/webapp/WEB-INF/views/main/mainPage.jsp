@@ -336,7 +336,6 @@ jQuery(function($) {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
-			${cookie.loginCookie.value }
 			</div>
 			<!-- contents 끝 -->
 

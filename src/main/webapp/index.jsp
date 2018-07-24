@@ -35,6 +35,219 @@
   </head>
 
   <body id="page-top">
+  	<script>
+  	var boolEmail;
+  	var boolName;
+  	var boolPass;
+  	var regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; //이메일 정규표현식
+
+  	function login(){
+  		var loginResult = false;
+  		var memberId = $('#memberId').val();
+  		var memberPw = $('#memberPw').val();
+  		$('#pwDiv').css('border-bottom','');
+  		$('#emailDiv').css('border-bottom','');
+  		if($("input:checkbox[id='autoLogin']").is(":checked")){
+  			$('#autoLoginHidden').val("true");
+  		} else {
+  			$('#autoLoginHidden').val("false");
+  		}
+  		$.ajax({
+  			url : "/checkLogin.do",
+  			type : "post",
+  			async : false,
+  			data : {
+  				memberId : memberId,
+  				memberPw : memberPw
+  			},
+  			success : function(data) {
+  				if(data.result=='failedId'){
+  					$('#idTitle').text('이메일 확인해주세요');
+  					$('#idTitle').css('color','red');
+  					$('#emailDiv').css('border-bottom','1px solid red');
+  					$('#pwDiv').css('border-bottom','');
+  					loginResult = false;
+  				} else if(data.result=='failedPw' || memberPw==''){
+  					$('#pwTitle').text('비밀번호를 확인해주세요');
+  					$('#pwTitle').css('color','red');
+  					$('#pwDiv').css('border-bottom','1px solid red');
+  					$('#emailDiv').css('border-bottom','');
+  					loginResult = false;
+  				} else {
+  					/* console.log('submit');
+  					$('#loginForm').submit(); */
+  					loginResult = true;
+  				}
+  			},
+  			error : function(data) {
+  				console.log("실패");
+  			}
+  		});
+  		return loginResult;
+  	}
+
+  	$(document).ready(function(){
+  		$('input').keyup(function(){
+  			if($('input:focus').val()==''){
+  				$('input:focus').parents('div').css('border-bottom','');
+  			}
+  		});
+  		$('#memberId').keyup(function(){
+  			if ($('#memberId').val().match(regExp) == null && $('#memberId').val() != '') {
+  				$('#idTitle').text('이메일 형식이 아닙니다');
+  				$('#idTitle').css('color','red');
+  				$('#emailDiv').css('border-bottom','1px solid red');
+  				$('#pwDiv').css('border-bottom','');
+  			} else {
+  				$('.floating-label-form-group').css('border-bottom','');
+  				$('#idTitle').text('  ');
+  			}
+  		});
+  	});
+
+
+  	$(document).ready(function(){
+  		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}/;//비밀번호 정규식(6-16자리 영문, 숫자, 특수문자 조합)
+  		$('#joinEmail').keyup(function(){
+  			if ($('#joinEmail').val().match(regExp) != null) {
+  				$.ajax({
+  					url : "/checkEmail.do",
+  					type : "post",
+  					data : {
+  						memberId : $('#joinEmail').val()
+  					},
+  					success : function(data) {
+  						if(data.result){
+  							console.log($('#joinEmail').val());
+  							$('#joinEmailTitle').text('이미 가입된 이메일입니다');
+  							$('#joinEmailTitle').css('color','red');
+  							$('#emailDiv').css('border-bottom','1px solid red');
+  							boolEmail = false;
+  						} else {
+  							$('.floating-label-form-group').css('border-bottom','');
+  							$('#joinEmailTitle').text('사용가능한 이메일 입니다');
+  							$('#joinEmailTitle').css('color','blue');
+  							boolEmail = true;
+  						}
+  					},
+  					error : function(data) {
+  						console.log("실패");
+  					}
+  				});
+  			} else if($('#joinEmail').val()==''){
+  				$('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  				$('#joinEmailTitle').text('이메일을 입력해주세요');
+  				$('#joinEmailTitle').css('color','red');
+  				$('#emailDiv').css('border-bottom','1px solid red');
+  				boolEmail = false;
+  			} else {
+  				$('#joinEmailTitle').text('이메일형식으로 작성해주세요');
+  				$('#joinEmailTitle').css('color','red');
+  				$('#emailDiv').css('border-bottom','1px solid red');
+  				boolEmail = false;
+  			}
+  			
+  		});
+  		$('#joinPassword').keyup(function(){
+  			if ($('#joinPassword').val().match(regex) != null) {
+  				$('.floating-label-form-group').css('border-bottom','');
+  				$('#joinPwTitle').text('사용가능한 비밀번호 입니다');
+  				$('#joinPwTitle').css('color','blue');
+  				boolPass = true;
+  			} else if($('#joinPassword').val()==''){
+  				$('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  				$('#joinPwTitle').text('비밀번호를 입력해주세요');
+  				$('#joinPwTitle').css('color','red');
+  				$('#pwDiv').css('border-bottom','1px solid red');
+  				boolPass = false;
+  			} else {
+  				$('#joinPwTitle').text('6-16자리 영문, 숫자, 특수문자 조합으로 작성해주세요');
+  				$('#joinPwTitle').css('color','red');
+  				$('#pwDiv').css('border-bottom','1px solid red');
+  				boolPass = false;
+  			} 
+  		});
+  		$('#joinName').keyup(function(){
+  			if ($('#joinName').val() != '') {
+  				$('.floating-label-form-group').css('border-bottom','');
+  				$('#nameTitle').text('사용가능한 이름 입니다');
+  				$('#nameTitle').css('color','blue');
+  				boolName = true;
+  			} else if($('#joinName').val()==''){
+  				$('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  				$('#nameTitle').text('이름을 입력해주세요');
+  				$('#nameTitle').css('color','red');
+  				$('#nameDiv').css('border-bottom','1px solid red');
+  				boolName = false;
+  			} else {
+  				$('#nameTitle').text('이름을 입력해주세요');
+  				$('#nameTitle').css('color','red');
+  				$('#nameDiv').css('border-bottom','1px solid red');
+  				boolName = false;
+  			}
+  		});
+  	});
+  	function join(){
+  		var joinEmail = $("#joinEmail").val();
+  		var joinPassword = $("#joinPassword").val();
+  		var joinName = $("#joinName").val();
+  		$('.form-group').css('border-bottom','');
+  		if(joinEmail==''){
+  			$('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  			$('#joinEmailTitle').text('이메일을 입력해주세요');
+  			$('#joinEmailTitle').css('color','red');
+  			$('#emailDiv').css('border-bottom','1px solid red');
+  		} else if(joinPassword==''){
+  			$('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  			$('#joinPwTitle').text('비밀번호를 입력해주세요');
+  			$('#joinPwTitle').css('color','red');
+  			$('#pwDiv').css('border-bottom','1px solid red');
+  		} else if(joinName==''){
+  			$('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+  			$('#nameTitle').text('이름을 입력해주세요');
+  			$('#nameTitle').css('color','red');
+  			$('#nameDiv').css('border-bottom','1px solid red');			
+  		} else {
+  			if(boolEmail && boolName && boolPass){
+  				return true;
+  			}
+  		}
+  		
+  		return false;
+  	}
+
+  	function findPassword(){
+  		var fpResult = false;
+  		var memberIdForFind = $("#memberIdForFind").val();
+  		$.ajax({
+				url : "/checkEmail.do",
+				type : "post",
+				async : false,
+				data : {
+					memberId : memberIdForFind
+				},
+				success : function(data) {
+					if(data.result){
+						fpResult = true;
+					} else {
+						$('#fpTitle').text('가입되지 않은 이메일입니다');
+						$('#fpDiv').css('border-bottom','1px solid red');
+						$('#fpTitle').css('color','red');
+						fpResult = false;
+					}
+				},
+				error : function(data) {
+					console.log("실패");
+				}
+			});
+  		return fpResult;
+  	}
+  	</script>
+  	<c:if test="${cookie.loginCookie.value!=null }">
+  		<script>//쿠키값이 있는지 확인
+  			location.href="/mainPage.do";
+  		</script>
+  	</c:if>
   	<c:if test="${sessionScope.member!=null }">
   		<script type="text/javascript">//세션이 있는지 확인
 			location.href="/mainPage.do";
@@ -81,7 +294,7 @@
         <img class="img-fluid mb-5 d-block mx-auto" src="../resources/index_img/main_logo_square_2.png" alt="">
         <h1 class="text-uppercase mb-0">Collaboration Tool</h1>
         <hr class="star-light">
-        <h2 class="font-weight-light mb-0">모두다 MODODA ${cookie.loginCookie.value }</h2>
+        <h2 class="font-weight-light mb-0">모두다 MODODA</h2>
       </div>
     </header>
 
@@ -314,7 +527,7 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Login</h2>
               <hr class="star-dark mb-5">
-              <form action="/login.do" method="post">
+              <form id="loginForm" action="/login.do" method="post" onsubmit="return login();">
               <div class="control-group">
                 <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label id="idTitle" style="margin-top: 50px;"></label>
@@ -336,7 +549,7 @@
               &nbsp;&nbsp;<label for="autoLogin">자동로그인</label></div>
               <input type="hidden" id="autoLoginHidden" name="autoLogin" value="false"/>
               <div class="form-group">
-                <input onclick="return login();" type="submit" class="btn btn-primary btn-xl" id="loginBtn" style="margin-top: 100px;" value="Login"/>
+                <input type="submit" class="btn btn-primary btn-xl" id="loginBtn" style="margin-top: 100px;" value="Login"/>
               </div>
               </form>
             </div>
@@ -346,7 +559,7 @@
     </div>
 	<!-- FindPassword Modal -->
     <div class="portfolio-modal mfp-hide" id="FindPassword-modal">
-      <div class="portfolio-modal-dialog bg-white" style="height: 500px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 150px;">
+      <div class="portfolio-modal-dialog bg-white" style="height: 600px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 200px;">
         <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
           <i class="fa fa-3x fa-times"></i>
         </a>
@@ -355,16 +568,16 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">비밀번호 찾기</h2>
               <hr class="star-dark mb-5">
-              <form action="/findPassword.do" method="post">
+              <form action="/findPassword.do" method="post" onsubmit="return findPassword();">
               <div class="control-group">
-                <div id="emailDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label id="idTitle" style="margin-top: 50px;"></label>
+                <div id="fpDiv" class="form-group floating-label-form-group controls mb-0 pb-2">
+                  <label id="fpTitle" style="margin-top: 50px;"></label>
                   <input class="form-control emailId" id="memberIdForFind" name="memberId" type="email" placeholder="Email Address" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="form-group">
-                <input onclick="return findPassword();" type="submit" class="btn btn-primary btn-xl" style="margin-top: 100px;" value="찾기"/>
+                <input type="submit" class="btn btn-primary btn-xl" style="margin-top: 100px;" value="비밀번호 변경 메일 발송"/>
               </div>
               </form>
             </div>
@@ -382,7 +595,7 @@
     <script src="../resources/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="../resources/js/index.min.js"></script>
+    	<script src="../resources/js/index.min.js"></script>
 
   </body>
 </html>

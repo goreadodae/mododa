@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.member.model.vo.AutoLogin;
+import kr.pe.mododa.member.model.vo.ConfirmMailFindPass;
 import kr.pe.mododa.member.model.vo.Member;
 
 @Repository("memberDAO")
@@ -56,11 +57,28 @@ public class MemberDAOImpl implements MemberDAO{
     }
 
 	public int deleteAutoLogin(SqlSessionTemplate sqlSession, String id) {
+		System.out.println(id);
 		return sqlSession.delete("member.deleteAutoLogin", id);
 	}
 
 	public void userAuth(SqlSessionTemplate sqlSession, String userEmail) {
 		sqlSession.update("member.confirmEmail", userEmail);
+	}
+
+	public ConfirmMailFindPass checkConfirmFind(SqlSessionTemplate sqlSession, ConfirmMailFindPass cmfp) {
+		return sqlSession.selectOne("member.checkConfirmFind",cmfp);
+	}
+
+	public void deleteConfirmFind(SqlSessionTemplate sqlSession, ConfirmMailFindPass cmfp) {
+		sqlSession.delete("member.deleteConfirmFind",cmfp);
+	}
+
+	public void insertConfirmFind(SqlSessionTemplate sqlSession, ConfirmMailFindPass cmfp) {
+		sqlSession.insert("member.insertConfirmFind",cmfp);
+	}
+
+	public ConfirmMailFindPass checkConfirmFindKey(SqlSessionTemplate sqlSession, String key) {
+		return sqlSession.selectOne("member.checkConfirmFindKey",key);
 	}
 
 }
