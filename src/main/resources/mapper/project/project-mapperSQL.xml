@@ -22,7 +22,7 @@
 		insert into work_on values(#{proMemberNo},project_seq.currval,'Y')
 	</insert>
 	
-	<select id="searchMemberNo" resultType="int">
+	<select id="searchMemberNo" resultType="int"> <!-- 멤버 초대 -->
 		select member_no from member where member_id = #{memberId}
 	</select>
 	
@@ -38,6 +38,10 @@
 		where pro_no in (select pro_no from work_on where member_no = #{memberNO})
 		order by pro_no desc
 	</select>
+	
+	<insert id="inviteMember">
+		insert into work_on values(#{memberNo},project_seq.currval,'N')
+	</insert>
 
 	
   

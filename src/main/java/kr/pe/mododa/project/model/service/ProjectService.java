@@ -12,5 +12,8 @@ public interface ProjectService {
 	
 	public int searchMemberNo(String memberId);
 	public ArrayList<Project> searchProjectList(int memberNo);
+	
+	public int inviteMember(int memberNo);
+	
 
 }
