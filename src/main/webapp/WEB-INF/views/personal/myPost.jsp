@@ -4,6 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -33,31 +38,37 @@
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");
 	}
-	
+
 	function searchCancle() {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-		
+
 		//검색 이후 결과가 나오거나 없으면, 어쨋든 실행 후 취소 버튼 누르면 다시 내가 쓴 글 보여줄 수 있도록 새로 로드필요
 	}
 	//돋보기 아이콘 클릭 후 검색어 입력 후 검색버튼누르면 검색하는 function.
-	function searchTitle(){ 
-	 var keyword = $("#keyword").val();
-	 $.ajax({
-			url:"/searchTitle.do",
-			type:"POST",
-			data:{"keyword":keyword},
-			success:function(data){
-				alert(data);
-				console.log(data);
-			},
-			error:function(){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});
+	function searchTitle() {
+		var keyword = $("#keyword").val();
+		if (keyword == "") {
+			alert("검색어를 입력하세요!!!")
+		} else {
+			$.ajax({
+				url : "/searchTitle.do",
+				type : "POST",
+				data : {
+					"keyword" : keyword
+				},
+				success : function(data) {
+					alert(data);
+					console.log(data);
+				},
+				error : function() {
+					alert("code: " + request.status + "\n" + "message: "
+							+ request.responseText + "\n" + "error: " + error);
+				}
+			})
+		}
 	}
-	
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -106,18 +117,18 @@
 		</div>
 
 
-		<div class="viewContents">
+		<div class="viewContents col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div>
 						<span>"${my.postTitle }"</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
-						<div class="user_img">
-							<img id="" src="${my.myImg }" /> <span>${my.myName }-글쓴이</span>
-							<span>${my.postDate }-글쓴 날</span>
+						<div class="writeInfo" style="position:relative;">
+							<img id="memberImg" src="../resources/images/post/close.png" /> <span>${my.myName }</span>
+							<br><span>${my.postDate }</span>
 						</div>
-						<a class="btn btn-link btn-sm" href="#">${my.proName }-프로젝트 이름</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
+						<a class="btn btn-link btn-sm" href="#">${my.proName }</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
 						<hr style="color: grey;">
 					</div>
 				</li>

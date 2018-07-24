@@ -4,6 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
 
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
@@ -42,8 +46,31 @@
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-
+	
 	}
+	function delBookmark(){
+		var result = confirm("북마크 해제 하겠습니까??");
+		if(result){
+		var delBookNo = $(".delNo").val();
+		$.ajax({
+			url:"/delBookmark.do",
+			type:"POST",
+			data:{"delBookNo":delBookNo},
+			success:function(data){
+				alert(data);
+				console.log(data);
+			},
+			error:function(){
+				alert("error!");
+			}
+			
+		})
+	}
+		else{
+			alert("취소되었습니다.");
+			}
+		}
+	
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -90,21 +117,21 @@
 			</div>
 		</div>
 
-		<div class="viewContents">
+		<div class="viewContents  col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 			<c:forEach var="book" items="${bookmark }">
 					<li class="feed-contents">
 						<div>
-							<h4>${book.postTitle }</h4>
+							<a href="#" class="btn btn-link">${book.postTitle }</a>
 							<br>
-							<h5>${book.postWriter }${book.postDate } ${book.proName }</h5>
-							<button type="button" class="btn btn-link btn-lg"
-								style="float: right;">
-								<span> <i class="far fa-bookmark"></i>
+							${book.postWriter }${book.postDate }<br><a href="#" class="btn btn-link">${book.proName }</a>
+							<button type="button" class="btn btn-success btn-sm"
+								style="float: right;" onclick="delBookmark();"><input type="hidden" class="delNo" value=${book.postNo } />
+								<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i>
 								</span>
 							</button>
-							<br>
+							
 						</div>
 						<hr style="color: grey;">
 					</li>

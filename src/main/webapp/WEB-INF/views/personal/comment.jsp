@@ -34,17 +34,16 @@
 .comment-header {
 	width: 100%;
 	height: 30px;
+	z-index:10;
+	border-bottom:1px solid gray;
 }
-
 .comment-no {
 	color: gray;
 	margin-left: 15px;
 	margin-top: 5px;
 }
-
 .comment-area {
-	background-color: pink;
-	height: 75%;
+	height: 77%;
 	width: 100%;
 	bottom: 151.2px;
 	overflow-y: auto;
@@ -53,12 +52,14 @@
 
 #input-box {
 	margin: 10px;
-	border: 1px solid gray;
+	border:2px solid gray;
+	border-radius: 5px;
 }
 
 .comment-input {
 	width: 100%;
 	height: 90%;
+	border-bottom:1px solid gray;
 }
 
 .comment-list {
@@ -69,12 +70,12 @@
 
 .comment-footer {
 	fixed: bottom;
-	bottom: 10px;
+	bottom: 5px;
 }
 
 #comment-wr {
 	float: right;
-	margin-right: 5px;
+	
 }
 
 .comment.btn {
