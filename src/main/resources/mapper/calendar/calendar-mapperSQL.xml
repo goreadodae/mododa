@@ -8,13 +8,13 @@
 		pro_progress as proProgress,
 		pro_start_Date as proStartDate,
 		pro_end_Date as proEndDate,
-		pro_m_no as proMNo
+		PRO_MEMBER_NO as proMNo
 		from Project
 	</select>
 	<select id="calendarList" resultType="schedule">
 		select sc_no as scheduleNo,
 		post_no as postNo,
-		m_no as memNO,
+		member_no as memNO,
 		pro_start_Date as startDate,
 		pro_end_Date as endDate,
 		pro_no as proNo
@@ -35,7 +35,7 @@
 	<select id="calendarScheduleList" resultType="schedule">
 		select sc_no as scheduleNo,
 		post_no as postNo,
-		m_no as memNO,
+		member_no as memNO,
 		pro_no as proNo,
 		sc_start_date as startDate,
 		sc_end_date as endDate,

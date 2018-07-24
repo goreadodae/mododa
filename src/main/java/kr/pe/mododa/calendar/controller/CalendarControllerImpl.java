@@ -1,21 +1,18 @@
 package kr.pe.mododa.calendar.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.Date;
+import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
@@ -73,6 +70,20 @@ public class CalendarControllerImpl implements CalendarController {
 	public void calendarSchedule(HttpServletResponse response) throws Exception {
 		
 		ArrayList<Schedule> list = CalendarService.calendarSchedule();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		
+		String startDate =""; String endDate="";
+		
+		for(int i=0;i<list.size();i++) {
+		
+		startDate = sdf.format(list.get(i).getStartDate());
+		list.get(i).setStStartDate(startDate);
+		
+		endDate = sdf.format(list.get(i).getEndDate());
+		list.get(i).setStEndDate(endDate);
+		
+		}
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
