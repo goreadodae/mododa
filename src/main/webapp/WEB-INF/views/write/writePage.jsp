@@ -98,43 +98,69 @@
 		});
 	});
 
+	//파일 이미지 업로드
+	window.URL = window.URL || window.webkitURL;
 
-//파일 이미지 업로드
-		window.URL = window.URL || window.webkitURL;
+	/* 	var fileSelect = document.getElementById("fileSelect");
+	 var filesElem = document.getElementById("fileElem"); */
+	var imgCount = 0;
+	var filesLength = 0;
+	var img;
+	function readURL(files) {
+		if (!files.length) {
+			alert("No files selected!");
+		} else {
+			filesLength += files.length;
 
-		var fileSelect = document.getElementById("fileSelect");
-		var filesElem = document.getElementById("fileElem");
-		var img;
+			console.log(filesLength);
 
-		function readURL(files) {
-			if (!files.length) {
-				alert("No files selected!");
-			} else {
+			for (i = 0; i < files.length; i++) {
 
-				for (i = 0; i < files.length; i++) {
-					
-					
-					
-					img = document.createElement("img");
-					img.src = window.URL.createObjectURL(files[i]);
-					img.style.height = 100+'%';
-					img.style.width = 100+'%';
-					
-					console.log(img);
-					img.onload = function() {
-						window.URL.revokeObjectURL(this.src);
-					}
-					$(
-							'<div class="col-md-6" style="height:50%; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #339966; height: 80px; padding:0%;">'
-									+ img.outerHTML + '</div></div>').appendTo(
-							$('#divEnter'));
-					console.log(img.outerHTML);
+				img = document.createElement("img");
+				img.src = window.URL.createObjectURL(files[i]);
+				img.style.height = 100 + '%';
+				img.style.width = 100 + '%';
 
+				img.onload = function() {
+					window.URL.revokeObjectURL(this.src);
 				}
+				$(
+						'<div class="col-md-6" style="height:50%; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #339966; height: 80px; padding:0%;">'
+								+ img.outerHTML + '</div></div>').appendTo(
+						$('#divEnter'));
+
+				imgCount++;
 
 			}
+
+			if (files.length >= 4 || imgCount >= 4) {
+				$('#moreViewText').css('display', 'block');
+
+			}
+
 		}
-	
+
+	}
+
+	var convertMoreView = true;
+	$(document).ready(function() {
+		$('#moreViewFn').click(function() {
+			if (convertMoreView) {
+
+				$('#moreViewDiv').removeClass('moreViewDiv');
+				$('#moreViewFn').text("접어 두기");
+				convertMoreView = false;
+			} else {
+
+				$('#moreViewDiv').addClass('moreViewDiv');
+				$('#moreViewFn').text("더 보기");
+				/* console.log($('#moreViewFn').html("접어 두기")); */
+				convertMoreView = true;
+			}
+
+		});
+
+	});
 
 	//modal 후  처리..!
 	function closeBtn() {
@@ -265,14 +291,15 @@ img {
 	cursor: pointer !important;
 }
 
-#moreViewFn {
+.moreViewDiv {
 	height: 40%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-
-
+/* #modalBody {
+	overflow-y: scroll;
+} */
 </style>
 
 
@@ -417,13 +444,13 @@ img {
 							</div>
 
 							<div class="col-md-4 imageSpace" id="imageSpace" style="height: 100%">
-								<div class="row" id="moreViewFn">
+								<div class="row moreViewDiv" id="moreViewDiv">
 									<div class="col-md-12" style="height: 10%;">
 										<b>파일/이미지</b>
 									</div>
 									<div class="col-md-12" style="height: 90%;">
 										<div class="row" id="divEnter" style="height: 100%;">
-											<div class="col-md-6" style="padding-top: 5%">
+											<div class="col-md-6" style="padding-top: 5%; cursor: pointer">
 												<!-- <br -->
 												<div class="col-md-12" style="border: 1px solid #339966; height: 80px;" onclick="document.all.fileElem.click();" id="fileSelect">
 
@@ -442,6 +469,100 @@ img {
 										</div>
 
 									</div>
+								</div>
+
+								<div class="row" style="display: none; boder: 1px solid black;" id="moreViewText">
+
+									<div class="offset-md-4 col-md-8">
+										<span style="text-align: center; cursor: pointer;" id="moreViewFn">더 보기</span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										링크 <span>0</span>
+									</div>
+									<div class="row"></div>
+								</div>
+								<br>
+								<!-- 일정 창  -->
+								<div class="row">
+									<div class="col-md-12">
+										일정 <span>0</span>
+									</div>
+
+									<div class="col-md-6" style="padding-top: 5%; cursor: pointer;">
+										<!-- <br -->
+										<div class="col-md-12" style="border: 1px solid #339966; height: 80px;">
+
+											<br> <img src="/resources/images/writeImages/plus.png" />
+										</div>
+
+
+
+
+									</div>
+
+
+
+
+								</div>
+								<br>
+
+
+								<!--  관련 글  -->
+								<div class="row">
+									<div class="col-md-12">
+										관련 글 <span>0</span>
+									</div>
+									<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
+										<!-- <br -->
+										<div class="col-md-12" style="border: 1px solid #339966; height: 80px;">
+
+											<br> <img src="/resources/images/writeImages/plus.png" />
+										</div>
+
+
+
+
+									</div>
+
+									<div class="modal fade" tabindex="-1" role="dialog" id="relationWrite" aria-hidden="true">
+										<!-- <div class="container" style="height:80%"> -->
+										<div class="modal-dialog" role="document" style="background-color: white; height: 90%">
+											<div class="modal-content" style="height: 100%;">
+												<div class="modal-header" style="height: 10%">
+													<h5 class="modal-title" id="exampleModalLongTitle">관련 글 추가</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+														<span aria-hidden="true">&times;</span>
+													</button>
+
+												</div>
+												<div class="modal-body" style="height: 80% !important;">
+													<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%;">
+
+														<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+														<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+														<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+													</div>
+
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													<button type="button" class="btn btn-primary">Save changes</button>
+
+
+												</div>
+
+
+
+											</div>
+
+
+										</div>
+
+									</div>
+
 								</div>
 
 							</div>
