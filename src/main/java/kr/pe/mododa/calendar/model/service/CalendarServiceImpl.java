@@ -42,7 +42,7 @@ public class CalendarServiceImpl implements CalendarService {
 	public ArrayList<Schedule> calendarSchedule() {
 		
 		ArrayList<Schedule> list = CalendarDAO.calendarSchedule(sqlSession);
-		
+	
 		return list;
 	}
 
