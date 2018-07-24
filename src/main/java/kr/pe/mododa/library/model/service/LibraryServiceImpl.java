@@ -12,6 +12,7 @@ import kr.pe.mododa.library.model.dao.LibraryDAOImpl;
 import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Service("libraryService")
@@ -51,5 +52,15 @@ public class LibraryServiceImpl implements LibraryService{
 	// 전체 링크 출력
 	public ArrayList<Link> listLink(int memberNo) {
 		return libraryDAO.listLink(sqlSession, memberNo);
+	}
+
+	// 프로젝트 선언에 따른 멤버 리스트 출력
+	public ArrayList<Member> selectMemberList(int proNo) {
+		return libraryDAO.selectMemberList(sqlSession, proNo);
+	}
+
+	// 할 일 추가
+	public int insertTodo(Todo todo) {
+		return libraryDAO.insertTodo(sqlSession, todo);
 	}
 }

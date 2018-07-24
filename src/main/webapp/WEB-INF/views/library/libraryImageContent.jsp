@@ -24,17 +24,14 @@
 </head>
 
 <body>
-
-<br>
-
 	<!-- 본문 -->
 	<div style="padding:10px;">
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 이미지 메뉴 -->
-			<table width="100%">
+			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 이미지</button></td>
 					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 이미지</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>

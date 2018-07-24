@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Repository("libraryDAO")
@@ -44,6 +45,15 @@ public class LibraryDAOImpl implements LibraryDAO{
 	public ArrayList<Link> listLink(SqlSessionTemplate sqlSession, int memberNo) {
 		List listLink = sqlSession.selectList("library.listLink", memberNo);
 		return (ArrayList<Link>)listLink;
+	}
+
+	public ArrayList<Member> selectMemberList(SqlSessionTemplate sqlSession, int proNo) {
+		List selectMemberList = sqlSession.selectList("library.selectMemberList", proNo);
+		return (ArrayList<Member>)selectMemberList;
+	}
+
+	public int insertTodo(SqlSessionTemplate sqlSession, Todo todo) {
+		return sqlSession.insert("library.insertTodo", todo);
 	}
 
 }
