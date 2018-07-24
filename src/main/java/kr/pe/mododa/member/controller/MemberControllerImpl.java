@@ -128,6 +128,7 @@ public class MemberControllerImpl implements MemberController {
 		vo.setMemberName(memberName);
 		int result = memberService.insertMemberSHA(vo);
 		if(result>0) {
+			vo.setMemberPw(memberPw);
 			Member m = memberService.loginSHA(vo);
 			HttpSession session = request.getSession();
 			session.setAttribute("member", m);
@@ -145,10 +146,22 @@ public class MemberControllerImpl implements MemberController {
 	}
 	
 	@RequestMapping(value = "/emailConfirm", method = RequestMethod.GET)
-	public String emailConfirm(String user_email, Model model, HttpSession session) throws Exception { // 이메일인증
-		memberService.userAuth(user_email);
-		model.addAttribute("user_email", user_email);
+	public String emailConfirm(String key, Model model, HttpSession session) throws Exception { // 이메일인증
+		memberService.userAuth(key);
+		model.addAttribute("key", key);
 		((Member)session.getAttribute("member")).setMemberEmailCertify("Y");
 		return "main/comfirmEmailPage";
+	}
+	
+	@RequestMapping(value="/findPassword.do")
+	public String findPassword(HttpSession session, @RequestParam String memberId) throws Exception {
+		memberService.findPassword(memberId);
+		return "redirect:/index.jsp";
+	}
+	
+	@RequestMapping(value = "/passwordFind", method = RequestMethod.GET)
+	public String passwordFind(String key, Model model, HttpSession session) throws Exception {
+		
+		return "main/passwordFindPage";
 	}
 }
