@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -44,12 +45,11 @@
 			<table border="1" style="margin:0; padding:0;">
 				<tr>
 					<td colspan="3" align="center">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
-						<img src="/resources/images/test.jpg" style="width:31%;" alt="테스트" class="img-thumbnail">
+						<c:forEach items="${listImage }" var="i">
+							<img src="${i.uploadPath }" style="width:31%;" class="img-thumbnail">	
+						</c:forEach>
+						
+						
 					</td>
 				</tr>
 			</table>

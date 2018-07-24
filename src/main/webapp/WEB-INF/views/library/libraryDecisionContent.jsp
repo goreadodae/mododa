@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -47,16 +48,18 @@
 			<!-- 의사결정 내용 -->
 			<div>
 				<table width="100%" height="100px;" border="1" style="margin:0; padding:0;">
+					<c:forEach items="${listDecision }" var="d">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
-						<td width="70%" colspan="3">의사결정 제목</td>
+						<td width="70%" colspan="3">${d.dcContent }</td>
 					</tr>
-				
 					<tr>
-						<td>프로젝트명</td>
-						<td>작성자 -> 지목받은 사람</td>
-						<td>진행상태</td>
+						<td>${d.dcPostNo }</td>
+						<td>${d.dcWriter } -> ${d.dcMaker }</td>
+						<td>${d.dcDecision }</td>
 					</tr>
+					</c:forEach>
+					
 				</table>
 			</div>
 			<div class="dropdown-divider"></div>

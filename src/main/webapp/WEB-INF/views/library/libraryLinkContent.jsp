@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,13 +22,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
-
 <body>
-
 <br>
-
-
-	
 	<!-- 본문 -->
 	<div style="padding:10px;">
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
@@ -44,26 +40,23 @@
 			
 			<!-- 링크 내용 -->
 			<table width="100%" height="100px" border="1" style="margin:0; padding:0;">
-				<tr>
-					<td rowspan="2" width="7%">아이콘</td>
-					<td width="60%">링크 제목</td>
-					<td width="23%">올린 사람</td>
-				</tr>
-				<tr>
-					<td colspan="2">링크 주소</td>
-				</tr>
+				<c:forEach items="${listLink }" var="l">
+					<tr>
+						<td rowspan="2" width="7%">아이콘</td>
+						<td width="60%">${l.linkTitle }</td>
+						<td width="23%">${l.memberNo }</td>
+					</tr>
+					<tr>
+						<td colspan="2">${l.linkAddress }</td>
+					</tr>
+				</c:forEach>
+				
 			</table>
 			<div class="dropdown-divider"></div>
 			<!-- 링크 내용 끝 -->
 			
 		</div>
 	</div>
-	
-	
-
-	
-
-
 
 </body>
 </html>

@@ -78,24 +78,14 @@
 <script>
 
 jQuery(function($) {
-	
+	$("#content").load("/libraryTodoContent.do");
 	
 	$("#todo").click(function() {
 		$("#subject").html("할 일");
 		$("#content").remove();
 		$("#frame").append("<div id='content'></div>");
-		
-		$.ajax({
-	        url : "/libraryTodoContent.do",
-	        type: "get",
-	        success : function(){
-	        	console.log("test");
-	        	/* $("#content").load("/libraryTodoContent.do"); */
-	        }
-	    });
-		
-		
-		
+		$("#content").load("/libraryTodoContent.do");
+			
 	});
 
 	$("#decision").click(function() {

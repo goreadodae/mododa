@@ -238,6 +238,12 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("");
 		   });
+		   
+		   $("#library").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/libraryMain.do");
+		   });
 
 	});
 	
@@ -347,18 +353,7 @@ jQuery(function($) {
 					<!-- 자료실 메뉴 -->
 					<tr style="float: right;">
 						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-dark dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">자료실</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">할 일</a> <a
-										class="dropdown-item" href="#">의사결정</a> <a
-										class="dropdown-item" href="#">이미지</a> <a
-										class="dropdown-item" href="#">파일</a> <a class="dropdown-item"
-										href="#">링크</a>
-								</div>
-							</div>
+							<button type="button" id="library" class="btn btn-success">자료실</button>
 						</td>
 					</tr>
 
