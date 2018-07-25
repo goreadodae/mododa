@@ -12,9 +12,9 @@ public class WriteController {
 		public String writeReady() {
 			return "write/writePage";
 		}
-		
-		@RequestMapping(value="/loadHeader.do")
+		@Autowired
+		@RequestMapping(value="/testBtn.do")
 		public String loadHeader() {
-			return "write/header";
+			return "write/testBtn";
 		}
 }

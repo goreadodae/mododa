@@ -10,7 +10,7 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>프로젝트 레이아웃 샘플입니다.</title>
+<title>나중에 메인페이지 복사하고 색만 바꾸기</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -288,7 +288,7 @@ table {
 		$("#project").click(function() {
 			$("#content-frame").remove();
 			$("#contents").append("<div id='content-frame'></div>");
-			$("#content-frame").load("/gotoProTitle.do");
+			$("#content-frame").load("/gotoCreateProject.do");
 		 });
  		
 	});
@@ -306,6 +306,8 @@ table {
      //팝업 Close 기능
     function close_pop(flag) {
         $('#inviteMemberModal').hide();
+        location.href="/mainPage.do";
+        /* 메인페이지로 보낼 지? 프로젝트를 볼 때는 색을 바꾸고 싶은데... */
     };
      
 	function submitCheck() {

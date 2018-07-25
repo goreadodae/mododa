@@ -16,6 +16,22 @@
   from post where post_no = #{postNo}
   </select>
   
+  <select id="selectTodo" resultType="todo">
+  select
+		todo_no as todoNo,
+		todo_post_no as todoPostNo,
+		todo_pro_no as todoProNo,
+		todo_title as todoTitle,
+		todo_content as todoContent,
+		todo_writer as todoWriter,
+		todo_member as todoMember,
+		todo_start_date as todoStartDate,
+		todo_end_date as todoEndDate,
+		todo_progress as todoProgress
+		from todo
+		where todo_post_no=#{postNo}
+  </select>
+  
   <select id="selectSchedule" resultType="schedule">
   select
   member_no as memNO,
@@ -26,7 +42,11 @@
   </select>
   
   <insert id="insertSchedule" parameterType="schedule">
-  	insert into schedule values(schedule_SEQ.NEXTVAL,4,21,2,#{startDate},#{endDate},#{scTitle})
+  	insert into schedule values(schedule_SEQ.NEXTVAL,#{postNo},1,1,#{startDate},#{endDate},#{scTitle})
+  </insert>
+  
+  <insert id="insertTodo" >
+  insert into todo values(todo_SEQ.NEXTVAL,1,1,'할일제목','할일내용',1,1,sysdate,sysdate,null)
   </insert>
 
 </mapper>

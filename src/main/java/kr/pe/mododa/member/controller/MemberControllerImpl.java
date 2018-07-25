@@ -1,6 +1,7 @@
 package kr.pe.mododa.member.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import kr.pe.mododa.common.SHA256Util;
 import kr.pe.mododa.member.model.service.MemberServiceImpl;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.project.controller.ProjectControllerImpl;
+import kr.pe.mododa.project.model.vo.Project;
 
 @Controller
 public class MemberControllerImpl implements MemberController {
@@ -28,10 +31,22 @@ public class MemberControllerImpl implements MemberController {
 	@Qualifier(value="memberService")
 	private MemberServiceImpl memberService;
 	
+	// 지은 추가
+	@Autowired
+	@Qualifier(value="projectController")
+	private ProjectControllerImpl projectController;
+	
 	@Override
 	@RequestMapping(value="/mainPage.do")
-	public String gotoMain(HttpSession session) {
-		return "main/mainPage";
+	public Object gotoMain(HttpSession session) {
+
+		// 프로젝트 목록 읽어오기 - 지은 추가
+		ArrayList<Project> projectList = projectController.projectList(session);
+		System.out.println(projectList);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.setViewName("main/mainPage");
+		return view;
 	}
 	
 	@Autowired
@@ -81,7 +96,7 @@ public class MemberControllerImpl implements MemberController {
 				al.setAutoTime(sessionLimit);
 				memberService.keepLogin(al);
 			}
-			return "main/mainPage";
+			return "redirect:/mainPage.do"; // 지은 수정
 		} else {
 			return "redirect:/index.jsp";
 		}

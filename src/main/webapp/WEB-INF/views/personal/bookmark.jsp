@@ -48,29 +48,33 @@
 		$("#contentSearch").css("display", "none");
 	
 	}
-	function delBookmark(){
+	
+	function delBookmark(bookNo){
 		var result = confirm("북마크 해제 하겠습니까??");
 		if(result){
-		var delBookNo = $(".delNo").val();
+		var delBookNo = bookNo;
 		$.ajax({
 			url:"/delBookmark.do",
 			type:"POST",
 			data:{"delBookNo":delBookNo},
 			success:function(data){
-				alert(data);
-				console.log(data);
+				$("#content-frame").load("/bookmark.do");
 			},
 			error:function(){
 				alert("error!");
 			}
-			
 		})
 	}
 		else{
 			alert("취소되었습니다.");
 			}
 		}
-	
+/* 	
+	//글쓰기 버튼 기능 추가 by 영진.
+	function toWriteFn(){
+		$('#toWrite').show();
+	}
+	 */
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -96,7 +100,8 @@
 						<i class="fab fa-searchengin" style="color: grey;"></i>
 					</button>
 
-					<button type="button" class="btn btn-outline-warning">
+					<!-- 한영진이 버튼 연결 -->	
+					<button type="button" data-toggle="modal" data-target="#toWrite" class="btn btn-outline-warning">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -123,15 +128,14 @@
 			<c:forEach var="book" items="${bookmark }">
 					<li class="feed-contents">
 						<div>
-							<a href="#" class="btn btn-link">${book.postTitle }</a>
+							<span onclick="getPost(${book.postNo});" class="btn btn-link">${book.postTitle }</span>
 							<br>
-							${book.postWriter }${book.postDate }<br><a href="#" class="btn btn-link">${book.proName }</a>
+							${book.postWriter } ${book.postDate }<br><a href="#" class="btn btn-link">${book.proName }</a>
 							<button type="button" class="btn btn-success btn-sm"
-								style="float: right;" onclick="delBookmark();"><input type="hidden" class="delNo" value=${book.postNo } />
+								style="float: right;" onclick="delBookmark(${book.postNo});">
 								<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i>
 								</span>
 							</button>
-							
 						</div>
 						<hr style="color: grey;">
 					</li>
@@ -140,9 +144,30 @@
 			</ul>		
 		</div>
 	</div>
+	
+				
+			<!-- 글쓰기 모달!! div!!  -->
+			 
+ 		<!-- <button data-toggle="modal" data-target="#toWrite">오픈</button> -->
+ 
+ 		<div id="toWrite" class="modal fade" style="background-color:white;">
+      
+       
+         <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
+     		<jsp:include page="/write.do"></jsp:include>
+
+         </div>
+     
+      </div>
+	<!-- 글쓰기 모달 끝!   -->
+	
+	
+	
+	
+	
 
 
-
+<jsp:include page="/testareum.do"></jsp:include>
 
 </body>
 </html>
