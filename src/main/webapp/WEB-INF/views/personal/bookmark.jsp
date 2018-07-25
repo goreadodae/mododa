@@ -70,7 +70,12 @@
 			alert("취소되었습니다.");
 			}
 		}
-	
+/* 	
+	//글쓰기 버튼 기능 추가 by 영진.
+	function toWriteFn(){
+		$('#toWrite').show();
+	}
+	 */
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -96,7 +101,8 @@
 						<i class="fab fa-searchengin" style="color: grey;"></i>
 					</button>
 
-					<button type="button" class="btn btn-outline-warning">
+					<!-- 한영진이 버튼 연결 -->	
+					<button type="button" data-toggle="modal" data-target="#toWrite" class="btn btn-outline-warning">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -140,6 +146,27 @@
 			</ul>		
 		</div>
 	</div>
+	
+				
+			<!-- 글쓰기 모달!! div!!  -->
+			 
+ 		<!-- <button data-toggle="modal" data-target="#toWrite">오픈</button> -->
+ 
+ 		<div id="toWrite" class="modal fade" style="background-color:white;">
+      
+       
+         <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
+     		<jsp:include page="/write.do"></jsp:include>
+
+         </div>
+     
+      </div>
+	<!-- 글쓰기 모달 끝!   -->
+	
+	
+	
+	
+	
 
 
 
