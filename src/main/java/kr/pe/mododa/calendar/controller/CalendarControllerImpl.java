@@ -71,17 +71,17 @@ public class CalendarControllerImpl implements CalendarController {
 		
 		ArrayList<Schedule> list = CalendarService.calendarSchedule();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
 		
 		String startDate =""; String endDate="";
 		
 		for(int i=0;i<list.size();i++) {
 		
 		startDate = sdf.format(list.get(i).getStartDate());
-		list.get(i).setStStartDate(startDate);
+		list.get(i).setStStartDate(startDate); //시작 날짜를 format
 		
 		endDate = sdf.format(list.get(i).getEndDate());
-		list.get(i).setStEndDate(endDate);
+		list.get(i).setStEndDate(endDate); //끝 날짜를 format
 		
 		}
 		

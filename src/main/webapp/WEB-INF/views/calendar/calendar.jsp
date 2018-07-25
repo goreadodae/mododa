@@ -107,18 +107,14 @@ var title ="";
 			         type : "post",
 			         success : function(data) {
 			        	 var events = [];
-			        	 for(var i=0;i<data.length;i++){
-			        	
+			        	 for(var i=0;i<data.length;i++){			        	
 			        		 events.push({
 				        		 title : data[i].scTitle,
 				        		 start : data[i].stStartDate,
 				        		 end : data[i].stEndDate,
 				        		 color : '#CFF09E'
-				        	 });
-			  
+				        	 });			  
 			        	 }
-			        	 
-			        	 
 			        	 callback(events);
 			         },
 			         error : function(data) {
