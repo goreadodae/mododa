@@ -14,7 +14,7 @@
       <td>번호</td><td>제목</td><td>작성일</td><td>조회수</td>
    </tr>
  
-<c:forEach items="${nlist}" var="n">
+<c:forEach items="${listNotice}" var="n">
    <tr>
       <td>${n.noticeNo}</td>
       <td><a href="/noticeRead.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
@@ -32,5 +32,8 @@
 	<input type="submit" value="검색">
 </form>
 </table>
+<div>${listCount}</div>
+
 </body>
+
 </html>
