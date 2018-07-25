@@ -256,13 +256,36 @@ table {
 	};
 	function sendEmail(){
 		$('#mailModal').hide();
-		location.href='/confirmEmail.do';
+		$.ajax({
+			url : '/confirmEmail.do',
+			type : "post"
+		});
 	};
+	var timerID;
+	var time=30*60;
+	var emailCertifyFlag = true;
 	$(document).ready(function(){
  		<% if(((Member)(session.getAttribute("member"))).getMemberEmailCertify().equals("N")) {%>
-			open_pop();
+ 		if(emailCertifyFlag){
+ 			countTime();
+ 			open_pop();
+ 		}
 		<%}%>
 	});
+
+	function countTime() {
+		timerID = setInterval("decrementTime()", 1000);
+		emailCertifyFlag = false;
+	};
+    function decrementTime(){
+   	 if(time>0) {
+   		 time--;
+   	 }
+   	 else{
+   		emailCertifyFlag = true;
+   		 clearInterval(timeID);
+   	 }
+    }
 </script>
 
 <!-- 지은이가 사용할 스크립트 -->
@@ -296,17 +319,18 @@ jQuery(function($) {
 
 			<!-- 상단바 -->
 			<div class="row">
-				<div class="col-3" id="topbar">
+				<div class="col-md-3" id="topbar">
 					<img id="menu-img" src="../resources/images/layout-img/menu.png" />
 				</div>
 
-				<div class="col-5" id="topbar">
+				<div class="col-md-5" id="topbar">
 					<img id="logo-img"          
 						src="../resources/images/layout-img/main_logo_rec.png" />
 				</div>
 
-				<div class="col-4" id="topbar">
+				<div class="col-md-4" id="topbar">
 					<!-- 회원 썸네일 -->
+					<img src="../resources/upload/member/thinking.png" class="img-circle rounded-circle border" style="height: 90%; width: auto;">
 					<a href="/logout.do">로그아웃</a>
 				</div>
 			</div>

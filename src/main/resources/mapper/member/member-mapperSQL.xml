@@ -81,4 +81,10 @@
   	cf_time as cfTime
   	from confirm_mail_find_pass where cf_key = #{key}
   </select>
+  <select id="getMemberIdFromKey" resultType="String">
+  	select email from confirm_mail_find_pass where cf_key = #{key}
+  </select>
+  <update id="changePw">
+  	update member set member_pw = #{memberPw} where member_id=#{memberId}
+  </update>
 </mapper>

@@ -91,7 +91,7 @@ public class MemberControllerImpl implements MemberController {
 	public String logoutMember(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(false);
 		if(session.getAttribute("member")!=null) {
-			session.removeAttribute("login");
+			session.removeAttribute("member");
 			session.invalidate();
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 			if(loginCookie != null) {
@@ -101,7 +101,7 @@ public class MemberControllerImpl implements MemberController {
 	                // 쿠키 설정을 적용한다.
 	                response.addCookie(loginCookie);
 	                // 사용자 테이블에서도 유효기간을 현재시간으로 다시 세팅해줘야함.
-	                memberService.deleteAutoLogin(session.getId());
+	                memberService.deleteAutoLogin(loginCookie.getValue());
 			}
 			return "redirect:/index.jsp";
 		} else {
@@ -139,18 +139,24 @@ public class MemberControllerImpl implements MemberController {
 	}
 	
 	@RequestMapping(value="/confirmEmail.do")
-	public String confirmEmail(HttpSession session) throws Exception {
+	public ModelAndView confirmEmail(HttpSession session) throws Exception {
 		String email = ((Member)session.getAttribute("member")).getMemberId();
 		memberService.confirmEmail(email);
-		return "main/mainPage";
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
 	}
 	
 	@RequestMapping(value = "/emailConfirm", method = RequestMethod.GET)
 	public String emailConfirm(String key, Model model, HttpSession session) throws Exception { // 이메일인증
-		memberService.userAuth(key);
-		model.addAttribute("key", key);
-		((Member)session.getAttribute("member")).setMemberEmailCertify("Y");
-		return "main/comfirmEmailPage";
+		boolean result = memberService.userAuth(key);
+		if(result) {
+			model.addAttribute("key", key);
+			((Member)session.getAttribute("member")).setMemberEmailCertify("Y");
+			return "main/comfirmEmailPage";
+		} else {
+			return "main/failedPage";
+		}
 	}
 	
 	@RequestMapping(value="/findPassword.do")
@@ -161,7 +167,26 @@ public class MemberControllerImpl implements MemberController {
 	
 	@RequestMapping(value = "/passwordFind", method = RequestMethod.GET)
 	public String passwordFind(String key, Model model, HttpSession session) throws Exception {
+		boolean result = memberService.passwordFind(key);
+		if(result) {
+			return "main/passwordFindPage";
+		} else {
+			return "main/failedPage";
+		}
 		
-		return "main/passwordFindPage";
 	}
+	
+	@RequestMapping(value="/findChangPw.do")
+	public String findChangPw(@RequestParam String key, @RequestParam String memberPw) {
+		Member vo = new Member();
+		vo.setMemberId(memberService.getMemberIdFromKey(key));
+		vo.setMemberPw(memberPw);
+		int result = memberService.changePwSHA(vo);
+		if(result>0) {
+			return "member/changeSuccess";
+		} else {
+			return "member/changeFailed";
+		}
+	}
+	
 }

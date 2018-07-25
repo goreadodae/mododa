@@ -100,10 +100,17 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.insertConfirmFind(sqlSession, cmfp);
 	}
 
-	public void userAuth(String key) {
+	public boolean userAuth(String key) {
 		ConfirmMailFindPass cmfp = memberDAO.checkConfirmFindKey(sqlSession, key);
-		memberDAO.userAuth(sqlSession, cmfp.getEmail());
-		memberDAO.deleteConfirmFind(sqlSession, cmfp);
+		Timestamp curTime = new Timestamp(System.currentTimeMillis());
+		if(cmfp.getCfTime().compareTo(curTime)>0) {
+			memberDAO.userAuth(sqlSession, cmfp.getEmail());
+			memberDAO.deleteConfirmFind(sqlSession, cmfp);
+			return true;
+		} else {
+			memberDAO.deleteConfirmFind(sqlSession, cmfp);
+			return false;
+		}
 	}
 
 	public void findPassword(String email) throws Exception {
@@ -131,8 +138,7 @@ public class MemberServiceImpl implements MemberService {
 						"</table>").toString());
 		sendMail.setFrom("mododa0130@gmail.com", "모두다");
 		sendMail.setTo(email);
-		sendMail.send();
-		
+		sendMail.send();	
 		ConfirmMailFindPass cmfp = new ConfirmMailFindPass();
 		cmfp.setCfKey(key);
 		cmfp.setEmail(email);
@@ -144,6 +150,26 @@ public class MemberServiceImpl implements MemberService {
 			memberDAO.deleteConfirmFind(sqlSession, result);
 		}
 		memberDAO.insertConfirmFind(sqlSession, cmfp);
+	}
+
+	public boolean passwordFind(String key) {
+		ConfirmMailFindPass cmfp = memberDAO.checkConfirmFindKey(sqlSession, key);
+		Timestamp curTime = new Timestamp(System.currentTimeMillis());
+		if(cmfp.getCfTime().compareTo(curTime)>0) {
+			memberDAO.deleteConfirmFind(sqlSession, cmfp);
+			return true;
+		} else {
+			memberDAO.deleteConfirmFind(sqlSession, cmfp);
+			return false;
+		}
+	}
+
+	public String getMemberIdFromKey(String key) {
+		return memberDAO.getMemberIdFromKey(sqlSession, key);
+	}
+
+	public int changePwSHA(Member vo) {
+		return memberDAO.changePw(sqlSession, vo);
 	}
 
 }
