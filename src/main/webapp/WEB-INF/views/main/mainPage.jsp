@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>레이아웃 샘플입니다.</title>
+<title>로그인 후 메인페이지 입니다.</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -27,6 +27,7 @@
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
 </head>
+
 <style>
 body {
 	overflow-x: hidden;
@@ -112,6 +113,8 @@ li {
 
 .icon {
 	margin-right: 5%;
+	height:23px; 
+	width:23px;
 }
 
 .list-title {
@@ -155,6 +158,7 @@ table {
 	frameborder : 0px;
 	border : 0px;
 }
+
 /* The Modal (background) */
 .modal {
 	display: none; /* Hidden by default */
@@ -193,7 +197,39 @@ table {
     background-color: #CFF09E !important;
     border-color: #CFF09E !important;
 }
+
+/* 지은 스타일 추가 */
+.proIcon {
+	margin-right: 2%;
+	height:23px; 
+	width:23px;
+}
+
+.subIcon {
+	height:18px; 
+	width:18px;
+}
+
+
+
+.proBtn {
+	height:100%; 
+	width:100%;
+}
+
+.proBtn>button {
+	height:100%; 
+	width:100%;
+	text-align: left;
+	padding-left: 6.5%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	background-color: rgba( 255, 255, 255, 0.5 );
+	border:0px solid;
+}
+
 </style>
+
 
 <script>
 	//leftbar, rightbar 높이 설정
@@ -244,6 +280,12 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/libraryMain.do");
 		   });
+		   
+		   $("#calendarAll").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/calendar.do");
+		   });
 
 	});
 	
@@ -270,13 +312,54 @@ table {
 
 /* 지은 프로젝트부분 contents 화면 전환 함수 */
 jQuery(function($) {
-   $("#createProject").click(function() {
-	   $("#content-frame").remove();
-	   $("#contents").append("<div id='content-frame'></div>");
-	   $("#content-frame").load("/gotoCreateProject.do");
-   });
+	
+	// 프로젝트 생성
+   	$("#createProject").click(function() {
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("/gotoCreateProject.do");
+    });
+	
+	
+	// 하위 메뉴
+	$(".proPost").click(function() {
+		var proNo = $(this).attr('value');
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("/proPost.do?proNo="+proNo);
+	});
+	
+	$(".proHashTag").click(function() {
+		var proNo = $(this).attr('value');
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("");
+	});
+	
+	$(".proProgress").click(function() {
+		var proNo = $(this).attr('value');
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("");
+	});
+	
+	$(".proMyPost").click(function() {
+		var proNo = $(this).attr('value');
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("");
+	});
+	
+	$(".proCalendar").click(function() {
+		var proNo = $(this).attr('value');
+		$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("");
+	});
 
 });
+
+
 
 </script>
 
@@ -324,7 +407,7 @@ jQuery(function($) {
 						<li class="list-group-item" id="callpost"><img src="../resources/images/layout-img/arroba.png" class="icon"> 호출된 글</li>
 						<li class="list-group-item" id="bookmark"><img src="../resources/images/layout-img/bookmark.png" class="icon"> 북마크</li>
 						<li class="list-group-item" id="mypost"><img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
-						<li class="list-group-item" id="calendar"><img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+						<li class="list-group-item" id="calendarAll"><img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
 					</ul>
 
 					<br>
@@ -333,6 +416,32 @@ jQuery(function($) {
 					<ul>
 						<li class="list-title">프로젝트</li>
 						<li class="list-group-item" id="createProject"><img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
+					
+					
+						<!-- 로그인이랑 연동되면 해당아이디 프로젝트 목록을 읽어와서 이 곳에 출력해준다. -->
+						<c:forEach items="${projectList}" var="projectList">
+						<li class="list-group-item" style="padding:5px;">
+						<div class="btn-group dropright proBtn">
+  							<button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}
+  							</button>
+  							<div class="dropdown-menu">
+    						<a class="dropdown-item proPost" href="#" value="${projectList.proNo}">
+    							<img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a>
+    						<a class="dropdown-item proHashTag" href="#" value="${projectList.proNo}">
+    							<img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a>
+    						<a class="dropdown-item proProgress" href="#" value="${projectList.proNo}">
+    							<img src="../resources/images/project/diagram.png" class="subIcon" /> 진행 현황</a>
+   							<a class="dropdown-item proMyPost" href="#" value="${projectList.proNo}">
+   								<img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a>
+   							<a class="dropdown-item proCalendar" href="#" value="${projectList.proNo}">
+   								<img src="../resources/images/project/calendar.png" class="subIcon" /> 캘린더</a>
+   							</div>			
+   						</div>
+						</li>
+						</c:forEach>
+					
+					
 					</ul>
 
 				</div>

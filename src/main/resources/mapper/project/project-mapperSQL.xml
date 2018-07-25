@@ -39,9 +39,25 @@
 		order by pro_no desc
 	</select>
 	
-	<insert id="inviteMember">
+	<insert id="insertInviteMember">
 		insert into work_on values(#{memberNo},project_seq.currval,'N')
 	</insert>
+	
+	<select id="searchProPostList" resultType="post">
+		select
+			post_no as postNo,
+  			post_title as postTitle,
+  			post_progress as postProgress,
+  			post_date as postDate,
+  			post_content as postContent,
+  			post_writer as postWriter,
+  			post_temp as postTemp,
+  			post_pro_no as postProNo,
+  			post_Tag as postTag
+  		from post
+  		where post_pro_no = #{proNo}
+  		order by post_no desc
+	</select>
 
 	
   

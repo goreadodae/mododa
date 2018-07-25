@@ -43,6 +43,7 @@
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
+		$("#content-frame").load("/mypost.do");
 
 		//검색 이후 결과가 나오거나 없으면, 어쨋든 실행 후 취소 버튼 누르면 다시 내가 쓴 글 보여줄 수 있도록 새로 로드필요
 	}
