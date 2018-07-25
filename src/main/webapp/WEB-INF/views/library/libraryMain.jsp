@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -39,8 +40,9 @@
 				<select class="form-control" style="width:150px;">
   					<option value="전체 프로젝트" selected>전체 프로젝트</option>
   					<option value="프라이빗 공간">프라이빗 공간</option>
-  					<option value="프로젝트1">프로젝트1</option>
-  					<option value="프로젝트2">프로젝트2</option>
+  					<c:forEach items="${listProject }" var="p">
+  						<option value="${p.proNo }">${p.proTitle }</option>
+  					</c:forEach>
 				</select>
 			</td>
 			<td width="15%"></td>
@@ -64,7 +66,7 @@
 	</table>
 	
 	<div class="dropdown-divider"></div>
-	<br>
+
 	<!-- 자료실 헤더 끝 -->
 	
 	<!-- 자료실 내용 -->

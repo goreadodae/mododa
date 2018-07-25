@@ -35,6 +35,7 @@
 	
 	<select id="listProject" resultType="project">
 		select
+		pro_no as proNo,
 		pro_title as proTitle
 		from project
 		where pro_member_no = #{memberNo}
@@ -75,5 +76,18 @@
 		from link
 		where member_no = #{memberNo}
 	</select>
+	
+	<select id="selectMemberList" resultType="member">
+		select
+		member_no as memberNo
+		from work_on
+		where pro_no = #{proNo}
+	</select>
+	
+	<insert id="insertTodo" parameterType="todo">
+		insert into todo values (
+		todo_seq.nextval, null, #{todoProNo}, #{todoTitle}, 
+		null, #{todoWriter}, #{todoMember}, null, null,'吏꾪뻾')
+	</insert>
 
 </mapper>

@@ -1,9 +1,11 @@
+<%@page import="kr.pe.mododa.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="//code.jquery.com/jquery.min.js"></script>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
 	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -35,7 +37,7 @@
 	width: 60px;
 }
 
-	/* The Modal (background) */
+/* The Modal (background) */
 .modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
@@ -51,32 +53,61 @@
 </style>
 
 <script type="text/javascript">
+	/* 프로젝트 선택에 따라 팀원 변경 */
+	$("#selectProject").change(function() {
+		var proNo = $("#selectProject option:selected").val();
+		console.log(proNo);
+		
+		if(proNo >= 1) {
+			$.ajax({
+				url : "/selectMemberList.do",
+				type : "post",
+				data : {proNo : proNo},
+				success : function(data) {
+					$('#memberList').find("option").remove();
+					$('#memberList').append("<option value=''>할 사람 선택</option>");
+					for(var i=0;i<data.length;i++){
+						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberNo+"</option>");
+					}
+				},
+				error : function(data) { console.log("회원 리스트 불러오기 실패"); }
+			});
+		}
+		else {
+			$('#memberList').find("option").remove();
+			$('#memberList').append("<option value='" + <%=((Member)session.getAttribute("member")).getMemberNo()%> + "'>나</option>");
+					}
+	});
+
+	$("#memberList").change(function() {
+		var memNo = $("#memberList option:selected").val();
+		console.log(memNo);
+	});
+
 	function openModal() {
 		$('#todoModal').show();
 	}
-	
+
 	function closeModal() {
 		$('#todoModal').hide();
 	}
-	
 </script>
 
 <body>
-
-<br>
-
 	<!-- 본문 -->
-	<div style="padding:10px;">
+	<div style="padding:10px; top:0;">
 		<!-- 할 일 작성 -->
 		<div style="width:100%; height:150px; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+			<form action="/insertTodo.do" method="post">
 			<table width="100%" height="100%" style="margin:0; padding:0;">
 				<tr>
 					<td>
-						<select class="form-control" style="width:150px;">
-  							<option value="프라이빗 공간">프라이빗 공간</option>
+						<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
+  							<option value="">프로젝트 선택</option>
+  							<option value="0">프라이빗 공간</option>
   							<c:forEach items="${listProject }" var="p">
-  								<option value="${p.proTitle }">${p.proTitle }</option>
-  							</c:forEach>  							
+  								<option value="${p.proNo }">${p.proTitle }</option>
+  							</c:forEach>
 						</select>
 					</td>
 					<td>
@@ -85,24 +116,20 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input class="form-control" type="text" placeholder="새 할 일을 입력해주세요">
+						<input class="form-control" type="text" name="todoTitle" placeholder="새 할 일을 입력해주세요">
 					</td>
 				</tr>
 				<tr>
 					<td width="90%">
-						<select class="form-control" style="width:150px;">
-							<option value="" selected>작성자</option>
-  							<option value="팀원1">팀원1</option>
-  							<option value="팀원2">팀원2</option>
-  							<option value="팀원3">팀원3</option>
-  							<option value="팀원">팀원4</option>
+						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
 						</select>
 					</td>
 					<td width="10%">
-						<button type="button" class="btn btn-light" style="width:100%">저장</button>
+						<button type="submit" class="btn btn-light" style="width:100%">저장</button>
 					</td>
 				</tr>
 			</table>
+			</form>
 		</div>
 		<br>
 		<!-- 할 일 작성 끝 -->
@@ -110,11 +137,11 @@
 		<!-- 할 일 목록 -->
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 할 일 메뉴 -->
-			<table width="100%">
+			<table width="100%" style="margin:0; padding:0;">
 				<tr>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 할 일</button></td>
 					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 할 일</button></td>
 					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">요청한 할 일</button></td>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 할 일</button></td>
 					<td width="68%"></td>
 				</tr>
 			</table>
@@ -127,7 +154,7 @@
 					<c:forEach items="${listTodo }" var="t">
 					<tr>
 						<td width="7%">아이콘</td>
-						<td width="15%">${t.todoNo }</td>
+						<td width="15%">${t.todoProNo }</td>
 						<td width="53%">${t.todoTitle }</td>
 						<td width="25%">${t.todoWriter } -> ${t.todoMember }</td>
 					</tr>
@@ -159,54 +186,53 @@
 			</div>
 			
 			<!-- 작성 -->
+			<form action="/insertTodo" method="post">
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td>
-						<select class="form-control" style="width:150px;">
-  							<option value="프라이빗 공간">프라이빗 공간</option>
+					<td width="36%">
+						<select class="form-control" name="todoProNo" style="width:150px;">
+  							<option value="0">프라이빗 공간</option>
   							<c:forEach items="${listProject }" var="p">
-  								<option value="${p.proTitle }">${p.proTitle }</option>
+  								<option value="${p.proNo }">${p.proTitle }</option>
   							</c:forEach>
 						</select>
 					</td>
-					<td></td>
+					<td width="64%">
+						<input type="date" name="todoStartDate"/> ~ <input type="date" name="todoEndDate" />
+						
+					</td>
 				</tr>
+			</table>
+			
+			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td colspan="2">
-						<input class="form-control" type="text" placeholder="새 할 일을 입력해주세요">
+						<input class="form-control" type="text" name="todoTitle" placeholder="새 할 일을 입력해주세요">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
 						<textarea class="form-control" aria-label="With textarea" rows="10"
-							style="width:100%; resize:none;" placeholder="할 일 설명(선택)"></textarea>
+							style="width:100%; resize:none;" name="todoContent" placeholder="할 일 설명(선택)"></textarea>
 						
 					</td>
 				</tr>
 				<tr>
 					<td width="90%">
-						<select class="form-control" style="width:150px;">
-							<option value="" selected>작성자</option>
-  							<option value="팀원1">팀원1</option>
-  							<option value="팀원2">팀원2</option>
-  							<option value="팀원3">팀원3</option>
-  							<option value="팀원">팀원4</option>
+						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
 						</select>
 					</td>
 					<td width="10%">
-						<button type="button" class="btn btn-light" style="width:100%">저장</button>
+						<button type="submit" class="btn btn-light" style="width:100%">저장</button>
 					</td>
 				</tr>
 			</table>
+			</form>
 				
 		</div>
 		<!-- Modal 내용 끝 -->
 	</div>
 	<!-- 팝업모달 끝 -->
-	
-	
-	
-</div>
 
 
 </body>
