@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.post.model.vo.Post;
 
 
@@ -19,9 +20,12 @@ public class PostDAOImpl implements PostDAO{
 	public List<Schedule> selectSchedule(SqlSessionTemplate sqlSession, int postNo) {
 		return sqlSession.selectList("post.selectSchedule", postNo);
 	}
+	
+	public List<Todo> selectTodo(SqlSessionTemplate sqlSession, int postNo){
+		return sqlSession.selectList("post.selectTodo",postNo);
+	}
 
 	public int insertSchedule(SqlSessionTemplate sqlSession, Schedule vo) {
-		System.out.println("dao : " + vo.getScTitle());
 		return sqlSession.insert("post.insertSchedule",vo);
 	}
 

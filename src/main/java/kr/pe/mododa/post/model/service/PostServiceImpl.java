@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.post.dao.PostDAOImpl;
 import kr.pe.mododa.post.model.vo.Post;
 
@@ -22,12 +23,15 @@ public class PostServiceImpl implements PostService{
 	private SqlSessionTemplate sqlSession;
 	
 	public Post selectOnePost(int postNo) {
-		Post p = postDAO.selectOnePost(sqlSession, postNo);
-		return p;
+		return postDAO.selectOnePost(sqlSession, postNo);
 	}
 	
 	public List<Schedule> selectSchedule(int postNo) {
 		return postDAO.selectSchedule(sqlSession, postNo);
+	}
+	
+	public List<Todo> selectTodo(int postNo){
+		return postDAO.selectTodo(sqlSession, postNo);
 	}
 	
 

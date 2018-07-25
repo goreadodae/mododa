@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.post.model.service.PostServiceImpl;
 import kr.pe.mododa.post.model.vo.Post;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,17 +37,42 @@ public class PostControllerImpl {
 	@RequestMapping(value="/viewPost.do")
 	public ModelAndView viewPost(@RequestParam int postNo) {
 		Post p = postService.selectOnePost(postNo);
-		List<Schedule> sc = postService.selectSchedule(postNo);
+		List<Schedule> listSc = postService.selectSchedule(postNo);
+		List<Todo> listTodo = postService.selectTodo(postNo);
+		
+		JSONArray scheduleArray = new JSONArray();
+		
+		for(Schedule sc : listSc) {
+			String start = (sc.getStartDate().getYear()+1900) + "-" + sc.getStartDate().getMonth()+ "-" + sc.getStartDate().getDay() ;
+			String end = (sc.getEndDate().getYear()+1900) + "-" + sc.getEndDate().getMonth()+ "-" + sc.getEndDate().getDay() ;
+			JSONObject schedule = new JSONObject();
+			schedule.put("startDate",start);
+			schedule.put("endDate",end);
+			schedule.put("scTitle", sc.getScTitle());
+			scheduleArray.add(schedule);
+		}
+		
+		JSONArray todoArray = new JSONArray();
+		
+		for(Todo td : listTodo) {
+			JSONObject todo = new JSONObject();
+			todo.put("todoContent", td.getTodoContent());
+			todo.put("todoMember", td.getTodoMember());
+			todoArray.add(todo);
+		}
+		
 		ModelAndView view = new ModelAndView();
 		view.addObject("post", p);
+		view.addObject("schedule",scheduleArray);
+		view.addObject("todo", todoArray);
 		view.setViewName("jsonView");
 		return view;
 	}
 	
 	@RequestMapping(value="/insertSchedule.do")
-	public ModelAndView insertSchedule(@RequestParam String scTitle, @RequestParam Date startDate, @RequestParam Date endDate) {
-		System.out.println("controller : " + scTitle);
+	public ModelAndView insertSchedule(int postNo, @RequestParam String scTitle, @RequestParam Date startDate, @RequestParam Date endDate) {
 		Schedule vo = new Schedule();
+		vo.setPostNo(postNo);
 		vo.setScTitle(scTitle);
 		vo.setStartDate(startDate);
 		vo.setEndDate(endDate);
