@@ -9,7 +9,7 @@
 <link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.css' />
 <link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.print.min.css' media='print'/>
 
-<script type='text/javascript' src='/js/jquery/jquery-ui.min.js'></script>
+<!-- <script type='text/javascript' src='/js/jquery/jquery-ui.min.js'></script> -->
 <script type='text/javascript' src='/js/jquery/jquery.min.js'></script>
 <script type='text/javascript' src='/js/jquery/moment.min.js'></script>
 
@@ -27,34 +27,6 @@
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
- 
-    <style>
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-        }
-    
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 30%; /* Could be more or less, depending on screen size */                          
-        }
- 
-</style>
-
-
 
 
 <script type='text/javascript'>
@@ -64,15 +36,21 @@
 }); */
 
 var title ="";
-
 	$(document).ready(function() {
+		
+		createCal();
+		
+	});
+	
+	//캘린더 생성 기능
+	function createCal(){
 		
 		var date = new Date();
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
 		
-		var calendar = $('#calendar').fullCalendar({
+		$('#calendar').fullCalendar({
 			
 			header: {
 				left: 'prev,next today',
@@ -83,9 +61,7 @@ var title ="";
 			selectable: true,
 			selectHelper: true,
 			select: function(start, end, allDay) {
-				
-				  /* open_pop(); */
-				
+
                /* module 데이터값 가져오는 ajax */
 				  
           $.ajax({
@@ -97,8 +73,7 @@ var title ="";
          	
 				for(var i=0;i<data.length;i++){
 					$('#projectList').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
-				}
-				
+				}				
           
             open_pop();
             
@@ -124,91 +99,33 @@ var title ="";
 				
 			},
 			editable: true,
-			events :  function(){
+			events :  
 				
-				 $.ajax({
+				function(start, end, timezone, callback) {
+				$.ajax({
 			         url : "/calendarSchedule.do",
 			         type : "post",
-			         dataType: 'json',
-			         success : function(data,doc) {
-			        	  console.log("성공");
-						
-			        	 var events=[];	
-			        	 $(doc).find('event').each(function() {
-			        		 console.log("성공22");
-			                  events.push({
-			                	 title: '01 All Day Event',
-			                	 start: new Date(y, m, 28),
-									end: new Date(y, m, 29)
-			                 }); 
-			        	  });
-			    
-			        	    /* for(var i=0;i<data.length;i++){
-		
-									 events.push({
-									title: data[i].scTitle,
-									start: data[i].startDate,
-									end: data[i].endDate});  													
-			        	  } */
-			                 
-			                  callback(events);
+			         success : function(data) {
+			        	 var events = [];
+			        	 for(var i=0;i<data.length;i++){			        	
+			        		 events.push({
+				        		 title : data[i].scTitle,
+				        		 start : data[i].stStartDate,
+				        		 end : data[i].stEndDate,
+				        		 color : '#CFF09E'
+				        	 });			  
+			        	 }
+			        	 callback(events);
 			         },
 			         error : function(data) {
 			            console.log("실패");
 			            }
 			         });
+			}
 				
-			} 
-			/* 
-			[ {
-				title: '01 All Day Event',
-				start: new Date(y, m, 1)
-			},
-			{
-				title: '02 Long Event',
-				start: new Date(y, m, d-5),
-				end: new Date(y, m, d-2)
-			},
-			{
-				id: 999,
-				title: '03 Repeating Event',
-				start: new Date(y, m, d-3, 16, 0),
-				allDay: false
-			},
-			{
-				id: 999,
-				title: '04 Repeating Event',
-				start: new Date(y, m, d+4, 16, 0),
-				allDay: false
-			},
-			{
-				title: '05 Meeting',
-				start: new Date(y, m, d, 10, 30),
-				allDay: false
-			},
-			{
-				title: '06 Lunch',
-				start: new Date(y, m, d, 12, 0),
-				end: new Date(y, m, d, 14, 0),
-				allDay: false
-			},
-			{
-				title: '07 Birthday Party',
-				start: new Date(y, m, d+1, 19, 0),
-				end: new Date(y, m, d+1, 22, 30),
-				allDay: false // 주간의 나타남, true 나타나지않음
-			},
-			{
-				title: '08 Click for Google',
-				start: new Date(y, m, 28),
-				end: new Date(y, m, 29),
-				url: 'http://google.com/'
-			} ]  */
-			
 		});
-		
-		
-	});
+	}
+	
 	
 	//팝업 Open 기능
     function open_pop(flag) {
@@ -256,6 +173,37 @@ var title ="";
     
     
 </script>
+ 
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */                          
+        }
+ 
+</style>
+
+
+
+
+
 
 <style type='text/css'>
 
@@ -271,9 +219,6 @@ var title ="";
 		margin: 0 auto;
 		}
 
-	/* div {
-	border: 1px solid black;
-	} */
 	
 </style>
 

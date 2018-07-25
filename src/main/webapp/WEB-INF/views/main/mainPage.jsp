@@ -280,6 +280,12 @@ table {
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/libraryMain.do");
 		   });
+		   
+		   $("#calendarAll").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/calendar.do");
+		   });
 
 	});
 	
@@ -401,7 +407,7 @@ jQuery(function($) {
 						<li class="list-group-item" id="callpost"><img src="../resources/images/layout-img/arroba.png" class="icon"> 호출된 글</li>
 						<li class="list-group-item" id="bookmark"><img src="../resources/images/layout-img/bookmark.png" class="icon"> 북마크</li>
 						<li class="list-group-item" id="mypost"><img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
-						<li class="list-group-item" id="calendar"><img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+						<li class="list-group-item" id="calendarAll"><img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
 					</ul>
 
 					<br>
