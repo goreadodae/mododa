@@ -24,8 +24,6 @@ public class PasswordAdvice {
 		String memberPw = vo.getMemberPw();
 		try {
 			String encryPw = sha256.encryData(memberPw);
-			System.out.println("회원 비밀번호 : " + memberPw);
-			System.out.println("암호 비밀번호 : " + encryPw);
 			vo.setMemberPw(encryPw);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

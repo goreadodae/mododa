@@ -57,7 +57,6 @@ public class MemberDAOImpl implements MemberDAO{
     }
 
 	public int deleteAutoLogin(SqlSessionTemplate sqlSession, String id) {
-		System.out.println(id);
 		return sqlSession.delete("member.deleteAutoLogin", id);
 	}
 
@@ -79,6 +78,14 @@ public class MemberDAOImpl implements MemberDAO{
 
 	public ConfirmMailFindPass checkConfirmFindKey(SqlSessionTemplate sqlSession, String key) {
 		return sqlSession.selectOne("member.checkConfirmFindKey",key);
+	}
+
+	public String getMemberIdFromKey(SqlSessionTemplate sqlSession, String key) {
+		return sqlSession.selectOne("member.getMemberIdFromKey",key);
+	}
+
+	public int changePw(SqlSessionTemplate sqlSession, Member vo) {
+		return sqlSession.update("member.changePw", vo);
 	}
 
 }
