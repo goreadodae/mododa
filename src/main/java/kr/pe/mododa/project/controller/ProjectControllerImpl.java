@@ -7,17 +7,19 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.Project;
 
 
 
-@Controller
+@Controller("projectController")
 public class ProjectControllerImpl implements ProjectController {
 	
 	
@@ -68,19 +70,15 @@ public class ProjectControllerImpl implements ProjectController {
 	@Override
 	@RequestMapping(value="gotoInviteMember.do")
 	public Object gotoInviteMember(HttpSession session) { // 이동
-		
+
 		// 프로젝트 목록 읽어오기
 		ArrayList<Project> projectList = this.projectList(session);
-		System.out.println(projectList);
+		//System.out.println(projectList);
 		ModelAndView view = new ModelAndView();
-		if(!projectList.isEmpty()) {
-			view.addObject("projectList", projectList);
-			view.setViewName("project/inviteMemberPage");
-			return view;
-		} else {
-			System.out.println("프로젝트 목록 읽어오기 에러");
-			return null;
-		}
+		view.addObject("projectList", projectList);
+		view.setViewName("project/inviteMemberPage");
+		return view;
+		
 	}
 
 	
@@ -94,14 +92,14 @@ public class ProjectControllerImpl implements ProjectController {
 		// 2. 프로젝트 번호 받기 -> 넘겨 받기
 		// 3. work_on에 insert하기
 		System.out.println(memberNo);
-		int result = projectService.inviteMember(memberNo);
+		int result = projectService.insertInviteMember(memberNo);
 		
 		return "redirect:/gotoInviteMember.do";
 		
 	}
 
 	@Override
-	public ArrayList<Project> projectList(HttpSession session) {
+	public ArrayList<Project> projectList(HttpSession session) { // 로그인 한 사용자의 소속 프로젝트 리스트 읽어오기
 		
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 			
@@ -116,10 +114,24 @@ public class ProjectControllerImpl implements ProjectController {
 
 	}
 	
-	@RequestMapping(value="testProNo.do")
-	public void testProNo(@RequestParam int proNo) {
-		System.out.println(proNo);
+	
+	@Override
+	@RequestMapping(value="proPost.do")
+	public Object proPost(@RequestParam int proNo) {
+		System.out.println("proPost: "+proNo);
+		ArrayList<Post> proPostList = this.searchProPostList(proNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("proPostList", proPostList);
+		view.setViewName("project/projectPost");
+		return view;
 	}
+
+
+	private ArrayList<Post> searchProPostList(int proNo) {
+		return projectService.searchProPostList(proNo);
+	}
+
+
 	
 
 }

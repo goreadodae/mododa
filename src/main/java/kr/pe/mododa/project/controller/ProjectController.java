@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import kr.pe.mododa.project.model.vo.Project;
 
 public interface ProjectController {
@@ -12,7 +14,7 @@ public interface ProjectController {
 	public String createProject(HttpSession session, Project project);
 	public Object gotoInviteMember(HttpSession session);
 	public String inviteMember(String memberId);
-	
-	public ArrayList<Project> projectList(HttpSession session);
+	public ArrayList<Project> projectList(HttpSession session);	
+	public Object proPost(@RequestParam int proNo);
 
 }
