@@ -13,11 +13,13 @@ public class Todo {
 	private Date todoStartDate;
 	private Date todoEndDate;
 	private String todoProgress;
-	
-	public Todo() { }
-	
+	private String todoWriterName;
+	private String todoMemberName;
+	private String todoProjectName;
+	public Todo() {	}
 	public Todo(int todoNo, int todoPostNo, int todoProNo, String todoTitle, String todoContent, int todoWriter,
-			int todoMember, Date todoStartDate, Date todoEndDate, String todoProgress) {
+			int todoMember, Date todoStartDate, Date todoEndDate, String todoProgress, String todoWriterName,
+			String todoMemberName, String todoProjectName) {
 		super();
 		this.todoNo = todoNo;
 		this.todoPostNo = todoPostNo;
@@ -29,8 +31,10 @@ public class Todo {
 		this.todoStartDate = todoStartDate;
 		this.todoEndDate = todoEndDate;
 		this.todoProgress = todoProgress;
+		this.todoWriterName = todoWriterName;
+		this.todoMemberName = todoMemberName;
+		this.todoProjectName = todoProjectName;
 	}
-	
 	public int getTodoNo() {
 		return todoNo;
 	}
@@ -91,7 +95,25 @@ public class Todo {
 	public void setTodoProgress(String todoProgress) {
 		this.todoProgress = todoProgress;
 	}
-	
-	
+	public String getTodoWriterName() {
+		return todoWriterName;
+	}
+	public void setTodoWriterName(String todoWriterName) {
+		this.todoWriterName = todoWriterName;
+	}
+	public String getTodoMemberName() {
+		return todoMemberName;
+	}
+	public void setTodoMemberName(String todoMemberName) {
+		this.todoMemberName = todoMemberName;
+	}
+	public String getTodoProjectName() {
+		return todoProjectName;
+	}
+	public void setTodoProjectName(String todoProjectName) {
+		this.todoProjectName = todoProjectName;
+	}
+
+
 
 }

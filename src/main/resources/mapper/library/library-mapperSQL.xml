@@ -12,9 +12,15 @@
 		todo_member as todoMember,
 		todo_start_date as todoStartDate,
 		todo_end_date as todoEndDate,
-		todo_progress as todoProgress
-		from todo
-		where todo_writer = #{memberNo} or todo_member = #{memberNo}
+		todo_progress as todoProgress,
+		m1.member_name as todoWriterName,
+        m2.member_name as todoMemberName,
+        pro_title as todoProjectName
+		from todo t, member m1, member m2, Project p
+		where t.todo_writer = m1.member_no
+        and t.todo_member = m2.member_no
+        and t.todo_pro_no = p.pro_no
+        and (todo_writer = #{memberNo} or todo_member = #{memberNo})
 	</select>
 	
 	<select id="listDecision" resultType="decision">
@@ -28,9 +34,15 @@
 		dc_yn as dcYn,
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
-		dc_confirm_date as dcConfirmDate
-		from decision
-		where dc_writer = #{memberNo} or dc_maker = #{memberNo}
+		dc_confirm_date as dcConfirmDate,
+        post_title as dcPostTitle,
+        m1.member_name as dcWriterName,
+        m2.member_name as dcMakerName
+		from decision d, post p, member m1, member m2
+        where d.dc_post_no = p.post_no
+        and d.dc_writer = m1.member_no
+        and d.dc_maker = m2.member_no
+		and (dc_writer = #{memberNo} or dc_maker = #{memberNo})
 	</select>
 	
 	<select id="listProject" resultType="project">
@@ -56,32 +68,39 @@
 	<select id="listFile" resultType="upload">
 		select
 		upload_no as uploadNo,
-		post_no as postNo,
+		u.post_no as postNo,
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
-		upload_path as uploadPath
-		from upload
-		where member_no = #{memberNo} and upload_subject='파일'
+		upload_path as uploadPath,
+		p.post_title as postTitle
+		from upload u, post p
+		where u.post_no = p.post_no
+		and member_no = #{memberNo}
+		and upload_subject='파일'
 	</select>
 	
 	<select id="listLink" resultType="link">
 		select
 		link_no as linkNo,
 		post_no as postNo,
-		member_no as memberNo,
+		l.member_no as memberNo,
 		link_date as linkDate,
 		link_title as linkTitle,
-		link_address as linkAddress
-		from link
-		where member_no = #{memberNo}
+		link_address as linkAddress,
+        m.member_name as memberName
+		from link l, member m
+        where l.member_no = m.member_no
+		and m.member_no = #{memberNo}
 	</select>
 	
 	<select id="selectMemberList" resultType="member">
 		select
-		member_no as memberNo
-		from work_on
-		where pro_no = #{proNo}
+		w.member_no as memberNo,
+        member_name as memberName
+		from work_on w, member m
+        where w.member_no = m.member_no
+		and pro_no = #{proNo}
 	</select>
 	
 	<insert id="insertTodo" parameterType="todo">

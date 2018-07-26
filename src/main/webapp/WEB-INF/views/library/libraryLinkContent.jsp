@@ -43,10 +43,10 @@
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
 						<td width="60%">${l.linkTitle }</td>
-						<td width="23%">${l.memberNo }</td>
+						<td width="23%">${l.memberName }</td>
 					</tr>
 					<tr>
-						<td colspan="2">${l.linkAddress }</td>
+						<td colspan="2"><a href="${l.linkAddress }">${l.linkAddress }</a></td>
 					</tr>
 				</c:forEach>
 				

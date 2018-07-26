@@ -9,10 +9,12 @@ public class Upload {
 	private Date uploadDate;
 	private String uploadSubject;
 	private String uploadPath;
+	private String postTitle;
 	
 	public Upload() { }
 	
-	public Upload(int uploadNo, int postNo, int memberNo, Date uploadDate, String uploadSubject, String uploadPath) {
+	public Upload(int uploadNo, int postNo, int memberNo, Date uploadDate, String uploadSubject, String uploadPath,
+			String postTitle) {
 		super();
 		this.uploadNo = uploadNo;
 		this.postNo = postNo;
@@ -20,6 +22,7 @@ public class Upload {
 		this.uploadDate = uploadDate;
 		this.uploadSubject = uploadSubject;
 		this.uploadPath = uploadPath;
+		this.postTitle = postTitle;
 	}
 	
 	public int getUploadNo() {
@@ -58,6 +61,14 @@ public class Upload {
 	public void setUploadPath(String uploadPath) {
 		this.uploadPath = uploadPath;
 	}
+	public String getPostTitle() {
+		return postTitle;
+	}
+	public void setPostTitle(String postTitle) {
+		this.postTitle = postTitle;
+	}
+	
+	
 	
 	
 }
