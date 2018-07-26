@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 import kr.pe.mododa.personal.model.service.PersonalServiceImpl;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.personal.model.vo.Mypost;
+import kr.pe.mododa.personal.model.vo.SerDelPost;
 import kr.pe.mododa.post.model.vo.Post;
 
 @Controller
@@ -78,7 +81,7 @@ public class PersonalControllerImpl implements PersonalController{
 	
 	@RequestMapping(value="searchTitle.do") //내가쓴 글에서 제목검색
 	@ResponseBody
-	public Object searchTitle(HttpServletRequest request,@RequestParam String keyword)
+	public void searchTitle(HttpServletResponse response,@RequestParam String keyword) throws Exception
 	{
 		Post p = new Post();
 		p.setPostTitle(keyword); //
@@ -86,8 +89,11 @@ public class PersonalControllerImpl implements PersonalController{
 		System.out.println(keyword);
 		ArrayList<Mypost> searchTitle = personalService.searchTitle(p);
 		System.out.println(searchTitle);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		//System.out.println("안비었어");
+		new Gson().toJson(searchTitle,response.getWriter());
 		
-		return keyword;
 		
 	}
 	
@@ -101,6 +107,25 @@ public class PersonalControllerImpl implements PersonalController{
 		
 		int delBookmark = personalService.delBookmark(p);
 		return delBookmark;
+	}
+	
+	@RequestMapping(value="searchBook.do") //북마크에서 검색어를 입력받아 검색.
+	@ResponseBody
+	public void searchBookmark(HttpServletResponse response,@RequestParam String keyword) throws Exception
+	{
+		SerDelPost sdp = new SerDelPost();
+		sdp.setKeyword(keyword);
+		sdp.setMemberNo(1);//로그인되면 세션에서 회원번호 가져오기.
+		System.out.println(keyword);
+		ArrayList<Bookmark> searchBook = personalService.searchBookmark(sdp);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		//System.out.println("안비었어");
+		new Gson().toJson(searchBook,response.getWriter());
+
+
+
 	}
 	
 	 
