@@ -162,5 +162,4 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
     }
-	
 }

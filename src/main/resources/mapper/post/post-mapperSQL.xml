@@ -72,4 +72,5 @@
 	select member_name as memberName, member_picture as memberPicture from member where member_no=#{memberNo}
 	</select>
 
+
 </mapper>

@@ -47,6 +47,4 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.insert("post.insertSchedule",vo);
 	}
 
-	
-
 }

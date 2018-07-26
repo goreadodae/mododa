@@ -17,6 +17,7 @@ public class Todo {
 	private String todoMemberName;
 	private String todoMemberPicture;
 
+	
 	public Todo() { }
 
 	public Todo(int todoNo, int todoPostNo, int todoProNo, String todoTitle, String todoContent, int todoWriter,

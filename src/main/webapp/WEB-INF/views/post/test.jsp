@@ -178,7 +178,6 @@ div {
 
 
 <script type="text/javascript">
-
 	var postNo=0;
 	
 	//게시글 불러옴
