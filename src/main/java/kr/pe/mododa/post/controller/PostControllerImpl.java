@@ -14,8 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Todo;
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.service.PostServiceImpl;
 import kr.pe.mododa.post.model.vo.Post;
+import kr.pe.mododa.project.model.vo.Project;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -34,14 +36,22 @@ public class PostControllerImpl {
 		return "post/test";
 	}
 	
+	@Autowired
+	@RequestMapping(value="/post.do")
+	public String post () {
+		return "post/test";
+	}
+	
+	//post모달에 필요한 데이터들 가져옴
 	@RequestMapping(value="/viewPost.do")
 	public ModelAndView viewPost(@RequestParam int postNo) {
+		Project pro = postService.selectProject(postNo);
 		Post p = postService.selectOnePost(postNo);
 		List<Schedule> listSc = postService.selectSchedule(postNo);
 		List<Todo> listTodo = postService.selectTodo(postNo);
+		List<Member> listMember = postService.selectMembers(postNo);
 		
 		JSONArray scheduleArray = new JSONArray();
-		
 		for(Schedule sc : listSc) {
 			String start = (sc.getStartDate().getYear()+1900) + "-" + sc.getStartDate().getMonth()+ "-" + sc.getStartDate().getDay() ;
 			String end = (sc.getEndDate().getYear()+1900) + "-" + sc.getEndDate().getMonth()+ "-" + sc.getEndDate().getDay() ;
@@ -53,23 +63,55 @@ public class PostControllerImpl {
 		}
 		
 		JSONArray todoArray = new JSONArray();
-		
 		for(Todo td : listTodo) {
 			JSONObject todo = new JSONObject();
 			todo.put("todoContent", td.getTodoContent());
-			todo.put("todoMember", td.getTodoMember());
+			todo.put("todoMember", td.getTodoMemberName());
+			todo.put("todoMemberPicture", td.getTodoMemberPicture());
 			todoArray.add(todo);
 		}
 		
+		JSONArray memberArray = new JSONArray();
+		for(Member mem : listMember) {
+			JSONObject member = new JSONObject();
+			member.put("memberNo", mem.getMemberNo());
+			member.put("memberName", mem.getMemberName());
+			memberArray.add(member);
+		}
+		
 		ModelAndView view = new ModelAndView();
+		view.addObject("project",pro);
 		view.addObject("post", p);
 		view.addObject("schedule",scheduleArray);
 		view.addObject("todo", todoArray);
+		view.addObject("member",memberArray);
 		view.setViewName("jsonView");
 		return view;
 	}
 	
-	@RequestMapping(value="/insertSchedule.do")
+	//할일 추가
+	@RequestMapping(value="/postInsertTodo.do")
+	public ModelAndView insertTodo(int postNo, String todoContent, int todoWriter, int todoMember) {
+		Todo vo = new Todo();
+		vo.setTodoPostNo(postNo);
+		vo.setTodoTitle(todoContent);
+		vo.setTodoContent(todoContent);
+		vo.setTodoWriter(todoWriter);
+		vo.setTodoMember(todoMember);
+		int result = postService.insertTodo(vo);
+		
+		Member mem = postService.selectMemberForTodo(todoMember);
+		System.out.println(mem.getMemberPicture());
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.addObject("todoMember",mem);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	//일정 추가
+	@RequestMapping(value="/postInsertSchedule.do")
 	public ModelAndView insertSchedule(int postNo, @RequestParam String scTitle, @RequestParam Date startDate, @RequestParam Date endDate) {
 		Schedule vo = new Schedule();
 		vo.setPostNo(postNo);
@@ -85,7 +127,8 @@ public class PostControllerImpl {
 		return view;
 	}
 	
-	@RequestMapping(value="/fileUpload.do")
+	//이미지 파일 업로드
+	@RequestMapping(value="/postFileUpload.do")
 	 public ModelAndView fileUp(MultipartHttpServletRequest multi) {
         
         // 저장 경로 설정
