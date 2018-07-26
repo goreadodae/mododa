@@ -3,22 +3,24 @@
 <mapper namespace="faq">
 
 
-	<select id="noticeList" resultType="faq" >
-		select notice_no as noticeNO,
-		notice_title as noticeTitle,
-		notice_write_date as noticeWriteDate,
-		notice_view_count as noticeViewCount
 
-		from notice
-	</select>
 	
-	<select id="noticeRead" resultType="faq">
+	<select id="listNotice" parameterType="listNotice" resultType="notice">
+	
 	select notice_no as noticeNo,
 	notice_title as noticeTitle,
-	notice_write_date as noticeWriteDate,
 	notice_contents as noticeContents,
+	notice_write_date as noticeWriteDate,
 	notice_view_count as noticeViewCount
-	from notice where notice_no = 1
+ 	from  (select notice.*, row_number() over(order by NOTICE_NO desc) as num from notice) where num between #{startTotalBoard} and #{endTotalBoard}
 	
-	</select>  
+	</select>
+	
+	
+	<select id="listCount" resultType="Integer">
+	 select count(*) as TotalCount from notice 
+
+	</select>
+	
+	
 </mapper>

@@ -1,7 +1,9 @@
 package kr.pe.mododa.faq.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,44 +15,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.faq.model.service.FaqService;
+import kr.pe.mododa.faq.model.service.FaqServiceImpl;
 import kr.pe.mododa.faq.model.vo.Notice;
+import kr.pe.mododa.faq.model.vo.Page;
+import kr.pe.mododa.post.model.vo.Post;
 
 @Controller("faqController")
 public class FaqControllerImpl implements FaqController {
 
 	@Autowired
 	@Qualifier(value="faqService")
-	private FaqService faqService;
+	private FaqServiceImpl faqService;
 
-	@Override
+
 	@RequestMapping(value="/noticeList.do")
-	public Object selectNotice() {
-		ArrayList<Notice> nlist = faqService.noticeAll();
-		ModelAndView view = new ModelAndView();
-		if(nlist != null) {
-			view.addObject("nlist",nlist);
-			view.setViewName("faq/noticeBoard");
-			System.out.println(view);
-			return view;
-		}else {
-			view.setViewName("faq/error");
+	public  ModelAndView noticeAll(HttpServletRequest request) {
+		int currentPage;
+		if (request.getParameter("currentPage") == null) {
+			currentPage = 1;
+		} else {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		return view;
-	}
-
-
-	@RequestMapping(value="/noticeRead.do")
-	public ModelAndView noticeView(@RequestParam int noticeNo) {
-		Notice readPage = faqService.noticeRead(noticeNo);
+		
+		Page page = faqService.selectAll(currentPage);
+	
+		
+		
 		ModelAndView view = new ModelAndView();
-		if(readPage != null) {
-		view.addObject("readPage",readPage);
-		view.setViewName("faq/noticeRead");
-		System.out.println(readPage);
+		view.addObject("listNotice",page.getList());
+		view.addObject("listCount",page.getPageCount());
+		view.setViewName("faq/noticeBoard");
 		return view;
-		}else {
-			view.setViewName("faq/error");
-		}
-		return view;
+
+	
 	}
+		
+		
+		
+		
 }

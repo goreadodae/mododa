@@ -9,6 +9,5 @@ import kr.pe.mododa.faq.model.vo.Notice;
 
 public interface FaqDAO {
 
-	public ArrayList<Notice> noticeAll(SqlSessionTemplate sqlSession);
-	public Notice noticeRead(SqlSessionTemplate sqlSession,int noticeNo);
+	
 }
