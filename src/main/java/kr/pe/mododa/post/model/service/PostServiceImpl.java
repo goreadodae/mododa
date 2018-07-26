@@ -33,7 +33,6 @@ public class PostServiceImpl implements PostService{
 	public List<Todo> selectTodo(int postNo){
 		return postDAO.selectTodo(sqlSession, postNo);
 	}
-	
 
 	public int insertSchedule(Schedule vo) {
 		int result = postDAO.insertSchedule(sqlSession, vo);

@@ -115,7 +115,6 @@ public class PostControllerImpl {
                 e.printStackTrace();
             }
         }
-         
         ModelAndView view = new ModelAndView();
 		view.setViewName("jsonView");
 		return view;

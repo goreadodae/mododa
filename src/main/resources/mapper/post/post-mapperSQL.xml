@@ -32,6 +32,7 @@
 		where todo_post_no=#{postNo}
   </select>
   
+  
   <select id="selectSchedule" resultType="schedule">
   select
   member_no as memNO,
