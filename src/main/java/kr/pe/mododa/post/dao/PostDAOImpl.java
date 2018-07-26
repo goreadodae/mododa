@@ -25,6 +25,7 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.selectList("post.selectTodo",postNo);
 	}
 
+	
 	public int insertSchedule(SqlSessionTemplate sqlSession, Schedule vo) {
 		return sqlSession.insert("post.insertSchedule",vo);
 	}

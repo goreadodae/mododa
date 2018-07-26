@@ -23,7 +23,6 @@
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-
 <style>
 body {
 	overflow-x: hidden;
