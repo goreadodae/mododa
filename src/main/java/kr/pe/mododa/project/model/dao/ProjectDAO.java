@@ -15,6 +15,7 @@ public interface ProjectDAO {
 	public int searchMemberNo(SqlSessionTemplate sqlSession, String memberId);
 	public ArrayList<Project> searchProjectList(SqlSessionTemplate sqlSession, int memberNo);
 	public int insertInviteMember(SqlSessionTemplate sqlSession, int memberNo);
-	public ArrayList<Post> searchProPostList(SqlSessionTemplate sqlSession, int proNo);
+	public ArrayList<Post> searchPostList(SqlSessionTemplate sqlSession, int proNo);
+	public Project searchPrivateProject(SqlSessionTemplate sqlSession, int memberNo);
 
 }

@@ -45,12 +45,12 @@
         
         .divStyle {
         	cursor:pointer; 
-        	background-color:#DDDDDD; 
+        	background-color:#CFF09E; 
         	text-align:center; 
         }
         
         .btnStyle {
-        	background-color:#DDDDDD; 
+        	background-color:#CFF09E; 
         	height:100%; 
         	width:100%; 
         	background:transparent; 
@@ -129,7 +129,7 @@
 					기간 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
 					<br><label id="periodLabel"></label><br>
 					<input type="hidden" name="proMemberNo" value="${sessionScope.member.memberNo}"> <!-- 세션 정보 -->
-				</p><p><br /></p>
+				</p>
                 <!-- submit 버튼 -->
                 <div class="divStyle">
                 <button class="btnStyle" onClick="return submitCheck();"><span>생성</span></button>

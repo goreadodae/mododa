@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,8 +92,14 @@ public class ProjectControllerImpl implements ProjectController {
 		// 3. work_on에 insert하기
 		System.out.println(memberNo);
 		int result = projectService.insertInviteMember(memberNo);
+		if(result>0) {
+			return "redirect:/gotoInviteMember.do";
+		} else {
+			System.out.println("멤버초대실패");
+			return null; // 실패했을 경우
+		}
 		
-		return "redirect:/gotoInviteMember.do";
+		
 		
 	}
 
@@ -114,22 +119,52 @@ public class ProjectControllerImpl implements ProjectController {
 
 	}
 	
+	@Override
+	public Project privateProject(HttpSession session) { // 로그인 한 사용자의 프라이빗 프로젝트 읽어오기
+		
+		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+			
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			Project privateProject = projectService.searchPrivateProject(memberNo);
+			return privateProject;
+			
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+	}
+	
 	
 	@Override
 	@RequestMapping(value="proPost.do")
-	public Object proPost(@RequestParam int proNo) {
+	public Object proPost(@RequestParam int proNo) { // 프로젝트 글 목록 읽어오기
 		System.out.println("proPost: "+proNo);
-		ArrayList<Post> proPostList = this.searchProPostList(proNo);
+		ArrayList<Post> postList = this.searchPostList(proNo);
 		ModelAndView view = new ModelAndView();
-		view.addObject("proPostList", proPostList);
+		view.addObject("postList", postList);
 		view.setViewName("project/projectPost");
+		return view;
+	}
+	
+	@Override
+	@RequestMapping(value="priPost.do")
+	public Object priPost(@RequestParam int proNo) { // 프라이빗 글 목록 읽어오기
+		// System.out.println("proPost: "+proNo);
+		ArrayList<Post> postList = this.searchPostList(proNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/privatePost");
 		return view;
 	}
 
 
-	private ArrayList<Post> searchProPostList(int proNo) {
-		return projectService.searchProPostList(proNo);
+	private ArrayList<Post> searchPostList(int proNo) { // 글 목록 읽어오는 공통 함수
+		return projectService.searchPostList(proNo);
 	}
+	
+	
+
+
 
 
 	
