@@ -9,10 +9,6 @@
 	padding-left: 0px;
 }
 
-#keyword{
-	height:45px;
-}
-
 .viewHeader {
 	position: fixed-top ;
 	border-bottom: 1px solid gray;
@@ -32,9 +28,13 @@
 	margin: 5px 10px 5px 15px;
 	float: right;
 }
+#searchShow{
+	float:left;
+}
 #keyword{
 	border: none;
-	width: 75%;
+	height:45px;
+	width: 50%;
 }
 
 .viewContents {

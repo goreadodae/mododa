@@ -5,6 +5,7 @@ import java.sql.Date;
 public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소식을 담을 객체..
 	private int postNo;  //글 번호
 	private String postTitle; //글 제목
+	private String postProgress;//글 진행 상태.
 	private String postWriter;//글 작성자
 	private String pWriterImg;//글 작성자 이미지.
 	private String postContent;//날짜에 따라서 (오늘날짜를 기준으로 1~2일 이내면 "새글이 작성되었어요", 지나면 내용 사라짐.할수 있겟죠??컼컼컼 
@@ -16,11 +17,12 @@ public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소�
 		// TODO Auto-generated constructor stub
 	}
 
-	public Newsfeed(int postNo, String postTitle, String postWriter, String pWriterImg, String postContent,
+	public Newsfeed(int postNo, String postTitle,String postProgress, String postWriter, String pWriterImg, String postContent,
 			Date postDate, String proName) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
+		this.postProgress = postProgress;
 		this.postWriter = postWriter;
 		this.pWriterImg = pWriterImg;
 		this.postContent = postContent;
@@ -50,6 +52,16 @@ public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소�
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
+
+	
+	public String getPostProgress() {
+		return postProgress;
+	}
+
+	public void setPostProgress(String postProgress) {
+		this.postProgress = postProgress;
+	}
+
 
 
 

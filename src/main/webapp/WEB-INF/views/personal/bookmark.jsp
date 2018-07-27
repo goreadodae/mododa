@@ -92,12 +92,13 @@
 						for(var i=0;i<data.length;i++)
 							{
 							result+=
-								'<li class="feed-contents"><div><span onclick="getPost('+data[i].postNo+');"class="btn btn-link">'+data[i].postTitle+'</span><br>'+
-								data[i].postWriter + data[i].postDate+'<br><a href="#" class="btn btn-link">'+data[i].proName+'</a>'+
-								'<button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
+								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
+								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
+								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
+								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
 								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
-								'</button></div><hr style="color: grey;">'+
-								'</div></li>';
+								'</button></div>'+
+								'</div><hr style="color:grey;"></li>';
 							}
 						$(".feed-list").append(result);
 						$(".feed-list").append("<span>마지막입니다.</sapn>");
@@ -134,7 +135,7 @@
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
 				<div class="headerTitle" id="headerTitle">
-					<h3>북마크</h3>
+					<h5>북마크</h5>
 				</div>
 				<div class="headerFunction" id="headerFun">
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -145,7 +146,7 @@
 
 
 					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" onclick="location='/write.do'" class="btn btn-outline-warning">
+					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -158,7 +159,7 @@
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="searchBook()">검색!</button>
+						onclick="searchBook()" style="float:left;">검색!</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onclick="searchCancle();">취소</button>
 				</div>
@@ -170,16 +171,19 @@
 			<ul class="feed-list">
 				<c:forEach var="book" items="${bookmark }">
 					<li class="feed-contents">
-						<div>
-							<span onclick="getPost(${book.postNo});" class="btn btn-link">${book.postTitle }</span>
-							<br> ${book.postWriter } ${book.postDate }<br>
-							<a href="#" class="btn btn-link">${book.proName }</a>
-							<button type="button" class="btn btn-success btn-sm"
+						<div class="row">
+							<div class="col-md-12">
+							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
+							</div>
+							<div class="col-md-12">&nbsp;&nbsp;&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }</div>
+							<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">${book.proName }</a></div>
+							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
 								<span class="ico"> <i class="far fa-bookmark"
 									style="color: yellow;"></i>
 								</span>
 							</button>
+							</div>
 						</div>
 						<hr style="color: grey;">
 					</li>
@@ -211,7 +215,7 @@
 		
 			
 
-<%-- <jsp:include page="/testareum.do"></jsp:include> --%>
-
+ <jsp:include page="/post.do"></jsp:include>
+ 
 </body>
 </html>

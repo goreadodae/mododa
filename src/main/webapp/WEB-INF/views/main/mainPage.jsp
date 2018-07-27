@@ -274,7 +274,7 @@ li[id^="sub_"] a {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("");
+		      $("#content-frame").load("/newsfeed.do");
 		   });
 
 		   $("#callpost").click(function() {
@@ -287,6 +287,12 @@ li[id^="sub_"] a {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/bookmark.do");
+		   });
+		   
+		   $("#mypost").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/mypost.do");
 		   });
 		   
 		   $("#project").click(function() {
@@ -616,6 +622,9 @@ jQuery(function($) {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
+			<div id="content-frame">
+			<jsp:include page="/newsfeed.do"></jsp:include>
+			</div>
 			</div>
 			<!-- contents 끝 -->
 
