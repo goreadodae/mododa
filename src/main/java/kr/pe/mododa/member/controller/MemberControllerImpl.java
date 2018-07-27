@@ -204,4 +204,8 @@ public class MemberControllerImpl implements MemberController {
 		}
 	}
 	
+	@RequestMapping(value="/myInfo.do")
+	public String myInfo() {
+		return "member/myInfo";
+	}
 }

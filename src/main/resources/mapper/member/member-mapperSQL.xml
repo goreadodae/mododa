@@ -84,7 +84,7 @@
   <select id="getMemberIdFromKey" resultType="String">
   	select email from confirm_mail_find_pass where cf_key = #{key}
   </select>
-  <update id="changePw">
+  <update id="changePw" parameterType="member">
   	update member set member_pw = #{memberPw} where member_id=#{memberId}
   </update>
 </mapper>

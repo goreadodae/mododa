@@ -62,7 +62,7 @@ div {
 	font-size: 15px;
 }
 
-#topbar {
+.topbar {
 	height: 50px;
 	border-bottom: 1px solid #c8c8c8;
 	padding: 0px;
@@ -227,7 +227,18 @@ table {
 	background-color: rgba( 255, 255, 255, 0.5 );
 	border:0px solid;
 }
-
+.myInfo{
+	height: 70%; width: auto; position:absolute; top:0; bottom:0; margin:auto;
+}
+.myInfoPop{
+	height: auto; width: 100%;
+}
+#myInfoDropDown{
+	height: auto; width: 400px;
+}
+.dropdown-item:active{
+	background-color: #CFF09E;
+}
 </style>
 
 
@@ -328,6 +339,11 @@ table {
    		 clearInterval(timeID);
    	 }
     }
+    function gotoMyInfo(){//내정보 페이지로 이동
+    	$("#content-frame").remove();
+	   	$("#contents").append("<div id='content-frame'></div>");
+	    $("#content-frame").load("/myInfo.do");
+    }
 </script>
 
 <!-- 지은이가 사용할 스크립트 -->
@@ -381,9 +397,6 @@ jQuery(function($) {
 	});
 
 });
-
-
-
 </script>
 
 <body>
@@ -402,19 +415,62 @@ jQuery(function($) {
 
 			<!-- 상단바 -->
 			<div class="row">
-				<div class="col-md-3" id="topbar">
+				<div class="col-md-3 topbar">
 					<img id="menu-img" src="../resources/images/layout-img/menu.png" />
 				</div>
 
-				<div class="col-md-5" id="topbar">
+				<div class="col-md-5 topbar">
 					<img id="logo-img"          
 						src="../resources/images/layout-img/main_logo_rec.png" />
 				</div>
 
-				<div class="col-md-4" id="topbar">
-					<!-- 회원 썸네일 -->
-					<img src="../resources/upload/member/thinking.png" class="img-circle rounded-circle border" style="height: 90%; width: auto;">
-					<a href="/logout.do">로그아웃</a>
+				<div class="col-md-4 topbar">
+					<div class="row" style="height: 100%;">
+					<div class="col-md-4 topbar"></div>
+					<div class="col-md-1 dropdown topbar">
+						<!-- 회원 썸네일 -->
+					<c:choose>
+						<c:when test="${sessionScope.member.memberPicture!=null }">
+							<c:set var="memberPic" value="${sessionScope.member.memberPicture }"/>
+						</c:when>
+						<c:otherwise>
+							<c:set var="memberPic" value="../resources/upload/member/whale.png"/>
+						</c:otherwise>
+					</c:choose>
+					<img src="${memberPic }" class="img-circle rounded-circle border myInfo dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<div class="dropdown-menu dropdown-menu-right" id="myInfoDropDown">
+						<div class="row" style="margin: 20px;">
+							<div class="col-md-4" style="margin: 0;">
+							<img src="${memberPic }" class="img-circle rounded-circle border myInfoPop">
+							</div>
+							<div class="col-md-8">
+								<div class="row">
+								<div class="col-md-12">${sessionScope.member.memberName }</div>
+								<div class="col-md-12">${sessionScope.member.memberId }</div>
+								</div>
+							</div>
+    						<a class="dropdown-item" href="#" onclick="gotoMyInfo();">내정보</a>
+    						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
+    						<a class="dropdown-item" href="/logout.do">로그아웃</a>
+ 						</div>
+ 						</div>
+						</div>
+						<div class="col-md-1 topbar">
+						<!-- 파트너추가 -->
+					<img src="../resources/upload/member/add-friend.png" class="myInfo">
+						</div>
+						<div class="col-md-3 topbar">
+						<!-- 파트너 목록 -->
+						<a class="myInfo" href="">파트너 목록</a>
+						</div>
+						<div class="col-md-3 topbar">
+						</div>
+					</div>
+					
+					
+					
+					
+					
 				</div>
 			</div>
 		</div>
