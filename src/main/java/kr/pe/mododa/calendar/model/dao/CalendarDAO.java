@@ -16,5 +16,5 @@ public interface CalendarDAO {
 	public ArrayList<Project> projectSelectAll (SqlSessionTemplate sqlSession);
 	public ArrayList<Post> postSelectAll (SqlSessionTemplate sqlSession,int postNo);
 	public ArrayList<Schedule> calendarSchedule (SqlSessionTemplate sqlSession);
-	
+	public int calendarInsertSchedule (SqlSessionTemplate sqlSession,Schedule sc);
 }
