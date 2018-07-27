@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.dao.ProjectDAOImpl;
 import kr.pe.mododa.project.model.vo.Project;
@@ -58,6 +59,18 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Project searchPrivateProject(int memberNo) {
 		return projectDAO.searchPrivateProject(sqlSession, memberNo);
+	}
+
+	public Member searchMemberName(int proNo) {
+		return projectDAO.searchMemberName(sqlSession, proNo);
+	}
+
+	public String searchProTitle(int proNo) {
+		return projectDAO.searchProTitle(sqlSession, proNo);
+	}
+
+	public ArrayList<Member> postWriterMemberList(String[] postWriterNumberList) {
+		return projectDAO.postWriterMemberList(sqlSession, postWriterNumberList);
 	}
 
 }

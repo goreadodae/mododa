@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -49,6 +50,19 @@ public class ProjectDAOImpl implements ProjectDAO {
 	@Override
 	public Project searchPrivateProject(SqlSessionTemplate sqlSession, int memberNo) {
 		return sqlSession.selectOne("project.searchPrivateProject", memberNo);
+	}
+
+	public Member searchMemberName(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("project.searchMemberName", proNo);
+	}
+
+	public String searchProTitle(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("project.searchProTitle", proNo);
+	}
+
+	public ArrayList<Member> postWriterMemberList(SqlSessionTemplate sqlSession, String[] postWriterNumberList) {
+		List postWriterMemberList = sqlSession.selectList("project.postWriterMemberList", postWriterNumberList);
+		return (ArrayList<Member>)postWriterMemberList;
 	}
 
 }
