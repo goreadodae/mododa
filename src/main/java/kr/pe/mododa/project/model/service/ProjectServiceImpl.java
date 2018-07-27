@@ -51,8 +51,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<Post> searchProPostList(int proNo) {
-		return projectDAO.searchProPostList(sqlSession, proNo);
+	public ArrayList<Post> searchPostList(int proNo) {
+		return projectDAO.searchPostList(sqlSession, proNo);
+	}
+
+	@Override
+	public Project searchPrivateProject(int memberNo) {
+		return projectDAO.searchPrivateProject(sqlSession, memberNo);
 	}
 
 }

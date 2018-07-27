@@ -98,6 +98,7 @@ public class Todo {
 	public String getTodoWriterName() {
 		return todoWriterName;
 	}
+
 	public void setTodoWriterName(String todoWriterName) {
 		this.todoWriterName = todoWriterName;
 	}
@@ -113,7 +114,5 @@ public class Todo {
 	public void setTodoProjectName(String todoProjectName) {
 		this.todoProjectName = todoProjectName;
 	}
-
-
 
 }

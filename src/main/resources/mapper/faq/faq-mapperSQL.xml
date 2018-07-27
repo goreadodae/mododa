@@ -22,5 +22,18 @@
 
 	</select>
 	
+	<!-- 글번호에 해당하는 데이터의 조회수 1증가 -->
+	<update id="viewCount" parameterType="Integer">
+		update notice set  NOTICE_VIEW_COUNT = NOTICE_VIEW_COUNT+1 where notice_No=#{noticeNo}
+	</update>
+	
+	<select id="noticeDetail" parameterType="Integer" resultType="notice">
+	select notice_no as noticeNo,
+	notice_title as noticeTitle,
+	notice_contents as noticeContents,
+	notice_write_date as noticeWriteDate,
+	notice_view_count as noticeViewCount from notice where Notice_No=#{noticeNo}
+	</select>
+	
 	
 </mapper>

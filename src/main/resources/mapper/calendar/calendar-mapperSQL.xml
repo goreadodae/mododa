@@ -42,5 +42,8 @@
 		sc_title as scTitle
 		from schedule
 	</select>
+	<insert id ="calendarInsertSchedule" parameterType="schedule">
+	insert into schedule values (schedule_SEQ.nextval,#{postNo},1,#{proNo},#{startDate},#{endDate},#{scTitle})
+	</insert>
 
 </mapper>

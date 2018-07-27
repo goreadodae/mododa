@@ -18,7 +18,6 @@ public class Schedule {
 		super();
 	}
 	
-	
 
 	@Override
 	public String toString() {

@@ -25,7 +25,7 @@
 	where p.post_writer=#{memberNo}
   </select>
   
-  <select id="selectTitle" parameterType="post" resultType="myPost"> <!--내가 쓴 글 에서 제목을 검색하는 쿼리 -->
+  <select id="searchTitle" parameterType="post" resultType="myPost"> <!--내가 쓴 글 에서 제목을 검색하는 쿼리 -->
     select p.post_no as postNo, m.member_name as myName, p.post_title as
 	postTitle, m.member_picture as myImg, p.post_date as postDate,
 	pr.pro_title as proName 
@@ -38,6 +38,17 @@
   <delete id="delBookmark" parameterType="post"> <!-- 북마크 제거 -->
   	delete from bookmark where post_no=#{postNo} and member_no=#{postWriter}
   </delete>
+  
+  <select id="searchBookmark" parameterType="serdel" resultType="bookmark"> <!-- 북마크한 글 검색 -->
+   select b.post_no as postNo, p.post_title as postTitle,p.post_progress as postProgress, 
+  	m.member_picture as writerImg, m.member_name as postWriter, p.post_date as postDate,pr.pro_title as proName
+	from bookmark b
+	left join post p on  b.post_no = p.post_no
+	join member m on m.member_no = p.post_writer
+	join project pr on pr.pro_no = p.post_pro_no
+	where  b.member_no=#{memberNo} and (p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
+	order by p.post_date desc
+  </select>
   
   
   

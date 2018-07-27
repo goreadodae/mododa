@@ -12,6 +12,7 @@ import kr.pe.mododa.personal.model.dao.PersonalDAOImpl;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.personal.model.vo.Mypost;
 import kr.pe.mododa.personal.model.vo.Newsfeed;
+import kr.pe.mododa.personal.model.vo.SerDelPost;
 import kr.pe.mododa.post.model.vo.Post;
 
 @Service("personalService")
@@ -39,13 +40,18 @@ public class PersonalServiceImpl implements PersonalService {
 	}
 
 	public ArrayList<Mypost> searchTitle(Post p) { //내가쓴 글에서 제목 검색
-		ArrayList<Mypost> searchTitle = personalDAO.selectTitle(sqlSession,p);
+		ArrayList<Mypost> searchTitle = personalDAO.searchTitle(sqlSession,p);
 		return searchTitle;
 	}
 
 	public int delBookmark(Post p) {
 		int delBookmark = personalDAO.delBookmark(sqlSession,p);
 		return delBookmark;
+	}
+	
+	public ArrayList<Bookmark> searchBookmark(SerDelPost sdp) {
+		ArrayList<Bookmark> searchBook = personalDAO.searchBookmark(sqlSession,sdp);
+		return searchBook;
 	}
 	
 	

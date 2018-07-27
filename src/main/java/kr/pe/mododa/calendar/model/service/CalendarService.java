@@ -11,5 +11,5 @@ public interface CalendarService {
 	public ArrayList<Project> projectSelectAll ();
 	public ArrayList<Post> postSelectAll (int postNo);
 	public ArrayList<Schedule> calendarSchedule ();
-	
+	public int calendarInsertSchedule (Schedule sc);
 }

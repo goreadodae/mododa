@@ -1,20 +1,16 @@
 package kr.pe.mododa.write.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@Controller
-public class WriteController {
+import org.springframework.web.bind.annotation.RequestParam;
 
-		@Autowired
-		@RequestMapping(value="/write.do")
-		public String writeReady() {
-			return "write/writePage";
-		}
-		@Autowired
-		@RequestMapping(value="/testBtn.do")
-		public String loadHeader() {
-			return "write/testBtn";
-		}
+public interface WriteController {
+	
+	public String writeReady();
+	public String loadHeader();
+	public String loadTumbnail();
+	public void autoComplete(HttpServletRequest request,HttpServletResponse response, @RequestParam int memberNo) throws Exception;
+	
+
 }

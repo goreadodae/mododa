@@ -3,7 +3,11 @@ package kr.pe.mododa.faq.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.stream.events.Namespace;
+
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.faq.model.vo.Notice;
@@ -12,6 +16,8 @@ import kr.pe.mododa.faq.model.vo.NoticeList;
 
 @Repository("faqDAO")
 public class FaqDAOImpl implements FaqDAO {
+	
+	
 
 	public List<Notice> getNoticeCurrentPage(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage) {
 
@@ -89,6 +95,55 @@ public class FaqDAOImpl implements FaqDAO {
 		
 		return sb.toString();
 	}
+
+	public int viewCount(SqlSessionTemplate sqlSession, int noticeNo) {
+		
+		return sqlSession.update("faq.viewCount", noticeNo);
+	}
+
+
+	public Notice selectNoticeOne(SqlSessionTemplate sqlSession, int noticeNo) {
+				
+		return sqlSession.selectOne("faq.noticeDetail",noticeNo);
+	}
+
+//	public List<Notice> getSearchCurrentPage(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage,
+//			String search, String searchOption) {
+//		
+//		 
+//		   
+//		   String option = null;
+//		   // 시작 ,끝 게시물
+//		   int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage-1);
+//		   int endTotalBoard = currentPage*listPerCountPage;
+//		   
+//		   if(searchOption.equals("title")) {
+//		      option = "noticeTitle";
+//		   }else if (searchOption.equals("contents")) {
+//		      option = "noticeContests";
+//		   }
+//		   
+//		   //System.out.println("option값:"+option);
+//		   
+//		   
+//		 
+//		return null;
+//	}
+
+//	public String getSearchPageCount(SqlSessionTemplate sqlSession, int currentPage, int recordCountPerPage,
+//			int naviCountPerPage, String search, String searchOption) {
+//		
+//		return null;
+//	}
+
+
+
+
+	
+	
+	
+	
+	
 
 
 

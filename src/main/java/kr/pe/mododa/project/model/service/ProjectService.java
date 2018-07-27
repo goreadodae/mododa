@@ -16,6 +16,7 @@ public interface ProjectService {
 	
 	public int insertInviteMember(int memberNo);
 	
-	public ArrayList<Post> searchProPostList(int proNo);
+	public ArrayList<Post> searchPostList(int proNo);
+	public Project searchPrivateProject(int memberNo);
 
 }
