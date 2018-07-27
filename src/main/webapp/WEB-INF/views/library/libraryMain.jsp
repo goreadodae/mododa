@@ -78,13 +78,6 @@
 </div>
 
 <script>
-/* function F5keydown(){
-	   if(event.keyCode== 116) {
-	      window.event.keyCode = "";
-	      location.reload();
-	      return false;
-	   }
-	} */
 
 jQuery(function($) {
 	

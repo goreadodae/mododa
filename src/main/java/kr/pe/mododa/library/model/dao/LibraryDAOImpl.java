@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
@@ -22,9 +23,9 @@ public class LibraryDAOImpl implements LibraryDAO{
 	}
 
 	// 전체 의사결정 출력
-	public ArrayList<Todo> listDecision(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<Decision> listDecision(SqlSessionTemplate sqlSession, int memberNo) {
 		List listDecision = sqlSession.selectList("library.listDecision", memberNo);
-		return (ArrayList<Todo>)listDecision;
+		return (ArrayList<Decision>)listDecision;
 	}
 
 	public ArrayList<Project> listProject(SqlSessionTemplate sqlSession, int memberNo) {
@@ -54,6 +55,31 @@ public class LibraryDAOImpl implements LibraryDAO{
 
 	public int insertTodo(SqlSessionTemplate sqlSession, Todo todo) {
 		return sqlSession.insert("library.insertTodo", todo);
+	}
+
+	public ArrayList<Todo> listTodoMe(SqlSessionTemplate sqlSession, int memberNo) {
+		List listTodoMe = sqlSession.selectList("library.listTodoMe", memberNo);
+		return (ArrayList<Todo>)listTodoMe;
+	}
+
+	public ArrayList<Todo> listTodoRequest(SqlSessionTemplate sqlSession, int memberNo) {
+		List listTodoRequest = sqlSession.selectList("library.listTodoRequest", memberNo);
+		return (ArrayList<Todo>)listTodoRequest;
+	}
+
+	public ArrayList<Decision> listDcMe(SqlSessionTemplate sqlSession, int memberNo) {
+		List listDcMe = sqlSession.selectList("library.listDcMe", memberNo);
+		return (ArrayList<Decision>)listDcMe;
+	}
+
+	public ArrayList<Decision> listDcRequest(SqlSessionTemplate sqlSession, int memberNo) {
+		List listDcRequest = sqlSession.selectList("library.listDcRequest", memberNo);
+		return (ArrayList<Decision>)listDcRequest;
+	}
+
+	public ArrayList<Upload> listImageMe(SqlSessionTemplate sqlSession, int memberNo) {
+		List listImageMe = sqlSession.selectList("library.listImageMe", memberNo);
+		return (ArrayList<Upload>)listImageMe;
 	}
 
 }

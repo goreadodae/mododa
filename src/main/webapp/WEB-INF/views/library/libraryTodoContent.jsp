@@ -52,47 +52,6 @@
 }
 </style>
 
-<script type="text/javascript">
-	/* 프로젝트 선택에 따라 팀원 변경 */
-	$("#selectProject").change(function() {
-		var proNo = $("#selectProject option:selected").val();
-		console.log(proNo);
-		
-		if(proNo >= 1) {
-			$.ajax({
-				url : "/selectMemberList.do",
-				type : "post",
-				data : {proNo : proNo},
-				success : function(data) {
-					$('#memberList').find("option").remove();
-					$('#memberList').append("<option value=''>할 사람 선택</option>");
-					for(var i=0;i<data.length;i++){
-						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
-					}
-				},
-				error : function(data) { console.log("회원 리스트 불러오기 실패"); }
-			});
-		}
-		else {
-			$('#memberList').find("option").remove();
-			$('#memberList').append("<option value='" + <%=((Member)session.getAttribute("member")).getMemberNo()%> + "'>나</option>");
-					}
-	});
-
-	$("#memberList").change(function() {
-		var memNo = $("#memberList option:selected").val();
-		console.log(memNo);
-	});
-
-	function openModal() {
-		$('#todoModal').show();
-	}
-
-	function closeModal() {
-		$('#todoModal').hide();
-	}
-</script>
-
 <body>
 	<!-- 본문 -->
 	<div style="padding:10px; top:0;">
@@ -139,9 +98,9 @@
 			<!-- 할 일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 할 일</button></td>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 할 일</button></td>
-					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">요청한 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoAll();">전체 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoMe();">내 할 일</button></td>
+					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoRequest();">요청한 할 일</button></td>
 					<td width="68%"></td>
 				</tr>
 			</table>
@@ -149,8 +108,8 @@
 			<!-- 할 일 메뉴 끝 -->
 			
 			<!-- 할 일 내용 -->
-			<div>
-				<table border="1" width="100%" height="100px;" style="margin:0; padding:0;">
+			<div id="todoTableContainer">
+				<table border="1" id="todoTable" width="100%" height="100px;" style="margin:0; padding:0;">
 					<c:forEach items="${listTodo }" var="t">
 					<tr>
 						<td width="7%">아이콘</td>
@@ -159,7 +118,6 @@
 						<td width="25%">${t.todoWriterName } -> ${t.todoMemberName }</td>
 					</tr>
 					</c:forEach>
-					
 				</table>
 			</div>
 			<div class="dropdown-divider"></div>
@@ -230,6 +188,124 @@
 	</div>
 	<!-- 팝업모달 끝 -->
 
-
 </body>
+
+<script type="text/javascript">
+	/* 프로젝트 선택에 따라 팀원 변경 */
+	$("#selectProject").change(function() {
+		var proNo = $("#selectProject option:selected").val();
+		console.log(proNo);
+		
+		if(proNo >= 1) {
+			$.ajax({
+				url : "/selectMemberList.do",
+				type : "post",
+				data : {proNo : proNo},
+				success : function(data) {
+					$('#memberList').find("option").remove();
+					$('#memberList').append("<option value=''>할 사람 선택</option>");
+					for(var i=0;i<data.length;i++){
+						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
+					}
+				},
+				error : function(data) { console.log("회원 리스트 불러오기 실패"); }
+			});
+		}
+		else {
+			$('#memberList').find("option").remove();
+			$('#memberList').append("<option value='" + <%=((Member)session.getAttribute("member")).getMemberNo()%> + "'>나</option>");
+		}
+	});
+
+	$("#memberList").change(function() {
+		var memNo = $("#memberList option:selected").val();
+		console.log(memNo);
+	});
+
+	/* 할 일 작성 모달 열기 */
+	function openModal() {
+		$('#todoModal').show();
+	}
+
+	/* 할 일 작성 모달 닫기 */
+	function closeModal() {
+		$('#todoModal').hide();
+	}
+	
+	/* 전체 할 일 눌렀을 때 */
+	function todoAll() {
+		$.ajax({
+			url:"/listTodoAll.do",
+			type:"POST",
+			success : function(data) {
+				$("#todoTable").remove();
+				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#todoTable").append(
+							"<tr>" + 
+							"<td width='7%'>아이콘</td>" +
+							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+							"<td width='15%'>"+data[i].todoTitle+"</td>" +
+							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+	}
+	
+	/* 내 할 일 눌렀을 때 */
+	function todoMe() {
+		$.ajax({
+			url:"/listTodoMe.do",
+			type:"POST",
+			success : function(data) {
+				$("#todoTable").remove();
+				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#todoTable").append(
+							"<tr>" + 
+							"<td width='7%'>아이콘</td>" +
+							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+							"<td width='15%'>"+data[i].todoTitle+"</td>" +
+							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+	}
+	
+	/* 요청한 할 일 눌렀을 때 */
+	function todoRequest() {
+		$.ajax({
+			url:"/listTodoRequest.do",
+			type:"POST",
+			success : function(data) {
+				$("#todoTable").remove();
+				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#todoTable").append(
+							"<tr>" + 
+							"<td width='7%'>아이콘</td>" +
+							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+							"<td width='15%'>"+data[i].todoTitle+"</td>" +
+							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+		
+	}
+	
+</script>
+
+
 </html>

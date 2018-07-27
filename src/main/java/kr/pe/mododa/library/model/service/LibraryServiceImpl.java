@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.pe.mododa.library.model.dao.LibraryDAOImpl;
+import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
@@ -30,7 +31,7 @@ public class LibraryServiceImpl implements LibraryService{
 	}
 	
 	// 전체 의사결정 출력
-	public ArrayList<Todo> listDecision(int memberNo) {
+	public ArrayList<Decision> listDecision(int memberNo) {
 		return libraryDAO.listDecision(sqlSession, memberNo);
 	}
 
@@ -62,5 +63,30 @@ public class LibraryServiceImpl implements LibraryService{
 	// 할 일 추가
 	public int insertTodo(Todo todo) {
 		return libraryDAO.insertTodo(sqlSession, todo);
+	}
+
+	// 내 할 일
+	public ArrayList<Todo> listTodoMe(int memberNo) {
+		return libraryDAO.listTodoMe(sqlSession, memberNo);
+	}
+
+	// 요청한 할 일
+	public ArrayList<Todo> listTodoRequest(int memberNo) {
+		return libraryDAO.listTodoRequest(sqlSession, memberNo);
+	}
+	
+	// 받은 의사결정
+	public ArrayList<Decision> listDcMe(int memberNo) {
+		return libraryDAO.listDcMe(sqlSession, memberNo);
+	}
+
+	// 요청한 의사결정
+	public ArrayList<Decision> listDcRequest(int memberNo) {
+		return libraryDAO.listDcRequest(sqlSession, memberNo);
+	}
+
+	// 내 이미지
+	public ArrayList<Upload> listImageMe(int memberNo) {
+		return libraryDAO.listImageMe(sqlSession, memberNo);
 	}
 }
