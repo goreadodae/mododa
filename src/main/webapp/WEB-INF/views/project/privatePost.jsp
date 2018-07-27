@@ -9,7 +9,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>프로젝트 별 프로젝트 글 보기</title>
+<title>프라이빗 글 보기</title>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
@@ -73,7 +73,7 @@
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
 				<div class="headerTitle" id="headerTitle">
-					<h5>프로젝트 글</h5>
+					<h5>프라이빗 글</h5>
 				</div>
 				<div class="headerFunction" id="headerFun">
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -107,7 +107,7 @@
 		<div class="viewContents col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
- 				<c:forEach items="${postList}" var="postList">
+				<c:forEach items="${postList}" var="postList">
 				<li class="feed-contents">
 					<div>
 						<span>${postList.postTitle}</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->

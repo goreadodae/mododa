@@ -219,12 +219,12 @@ table {
         
         .divStyle {
         	cursor:pointer; 
-        	background-color:#DDDDDD; 
+        	background-color:#CFF09E; 
         	text-align:center; 
         }
         
         .btnStyle {
-        	background-color:#DDDDDD; 
+        	background-color:#CFF09E; 
         	height:100%; 
         	width:100%; 
         	background:transparent; 
@@ -312,7 +312,7 @@ table {
      
 	function submitCheck() {
 		if(document.getElementById('memberId').value == "") {
-			alert("초대할 멤버의 이메일을 입력해주세요.");
+			alert("초대 멤버 이메일을 입력해주세요.");
 			return false;
 		} else {
 			return true;
@@ -339,7 +339,7 @@ table {
                 <p style="text-align: center; line-height: 1.5;"><br />
   					초대 멤버 이메일 입력 : <input type="text" name="memberId" id="memberId"> <br>
 					<!-- 프로젝트 번호, 회원 번호 필요 -->
-				</p><p><br /></p>
+				</p>
                 <!-- submit 버튼 -->
                 <div class="divStyle">
                 <button class="btnStyle" onClick="return submitCheck();"><span>초대</span></button>
