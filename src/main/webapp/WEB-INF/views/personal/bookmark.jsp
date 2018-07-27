@@ -211,7 +211,7 @@
 		
 			
 
-<%-- <jsp:include page="/testareum.do"></jsp:include> --%>
+<jsp:include page="/testareum.do"></jsp:include>
 
 </body>
 </html>

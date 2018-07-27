@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
@@ -34,17 +35,21 @@ public class PostDAOImpl implements PostDAO{
 	public List<Member> selectMembers(SqlSessionTemplate sqlSession, int postNo){
 		return sqlSession.selectList("post.selectMembers",postNo);
 	}
+	
+	public Member selectMemberInfo(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("post.selectMemberInfo", memberNo);
+	}
 
 	public int insertTodo(SqlSessionTemplate sqlSession, Todo vo) {
 		return sqlSession.insert("post.insertTodo",vo);
 	}
 	
-	public Member selectMemberForTodo(SqlSessionTemplate sqlSession, int memberNo) {
-		return sqlSession.selectOne("post.selectMemberforTodo", memberNo);
-	}
-	
 	public int insertSchedule(SqlSessionTemplate sqlSession, Schedule vo) {
 		return sqlSession.insert("post.insertSchedule",vo);
+	}
+
+	public int insertDecision(SqlSessionTemplate sqlSession, Decision vo) {
+		return sqlSession.insert("post.insertDecision",vo);
 	}
 
 }
