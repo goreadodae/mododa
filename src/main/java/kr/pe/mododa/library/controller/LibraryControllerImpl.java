@@ -132,10 +132,25 @@ public class LibraryControllerImpl implements LibraryController{
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
+			
+			// 파일 객체에 대한 리스트
 			ArrayList<Upload> listFile = libraryService.listFile(memberNo);
 			
+			// 파일명에 대한 리스트
+			ArrayList<String> fileName = new ArrayList<String>();
+			
+			// 파일 경로에서 파일명 추출
+			for(int i=0; i<listFile.size(); i++) {
+				String[] array = listFile.get(i).getUploadPath().split("/");
+				for(int j=0; j<array.length; j++) {
+					if(j == array.length-1) {
+						fileName.add(array[j]);
+					}
+				}
+			}
+			
 			ModelAndView view = new ModelAndView();
+			view.addObject("fileName", fileName);
 			view.addObject("listFile", listFile);
 			view.setViewName("library/libraryFileContent");
 			return view;

@@ -47,19 +47,19 @@
 			</td>
 			<td width="15%"></td>
 			<td width="5%">
-				<button type="button" class="btn btn-outline-success" id="todo">할 일</button>
+				<a id="todo">할 일</a>
 			</td>
 			<td width="5%">
-				<button type="button" class="btn btn-outline-success" id="decision">의사결정</button>
+				<a id="decision">의사결정</a>
 			</td>
 			<td width="5%">
-				<button type="button" class="btn btn-outline-success" id="image">이미지</button>
+				<a id="image">이미지</a>
 			</td>
 			<td width="5%">
-				<button type="button" class="btn btn-outline-success" id="file">파일</button>
+				<a id="file">파일</a>
 			</td>
 			<td width="5%">
-				<button type="button" class="btn btn-outline-success" id="link">링크</button>
+				<a id="link">링크</a>
 			</td>
 			<td width="5%"></td>
 		</tr>
@@ -78,8 +78,16 @@
 </div>
 
 <script>
+/* function F5keydown(){
+	   if(event.keyCode== 116) {
+	      window.event.keyCode = "";
+	      location.reload();
+	      return false;
+	   }
+	} */
 
 jQuery(function($) {
+	
 	$("#content").load("/libraryTodoContent.do");
 	
 	$("#todo").click(function() {

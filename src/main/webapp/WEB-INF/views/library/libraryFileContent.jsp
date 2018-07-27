@@ -39,14 +39,16 @@
 			
 			<!-- 파일 내용 -->		
 			<table width="100%" height="100px" border="1" style="margin:0; padding:0;">
-				<c:forEach items="${listFile }" var="f">
+				<c:forEach items="${fileName }" var="fn">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
-						<td width="70%" colspan="2">${f.uploadPath }</td>
+						<td width="70%" colspan="2">${fn }</td>
+				</c:forEach>
+				<c:forEach items="${listFile }" var="f">
 						<td width="23%">${f.uploadDate }</td>
 					</tr>
 					<tr>
-						<td colspan="3">프로젝트명</td>
+						<td colspan="3">${f.postTitle }</td>
 					</tr>
 				</c:forEach>
 			</table>

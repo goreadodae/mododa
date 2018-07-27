@@ -39,14 +39,16 @@
 			<!-- 이미지 메뉴 끝 -->
 				
 			<!-- 이미지 내용 -->
-			<table border="1" style="margin:0; padding:0;">
+			<table style="margin:0; padding:0;">
 				<tr>
-					<td colspan="3" align="center">
+					<td colspan="3">
 						<c:forEach items="${listImage }" var="i">
-							<img src="${i.uploadPath }" style="width:31%;" class="img-thumbnail">	
+						<div style="border:1px solid grey;margin:5px; width:250px; height:250px;float:left;display:table;">
+							<div style="display:table-cell; vertical-align:middle;">
+							<img src="${i.uploadPath }" style="width:100%;" />
+							</div>
+						</div>
 						</c:forEach>
-						
-						
 					</td>
 				</tr>
 			</table>

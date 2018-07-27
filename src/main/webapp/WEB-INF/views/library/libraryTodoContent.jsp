@@ -67,7 +67,7 @@
 					$('#memberList').find("option").remove();
 					$('#memberList').append("<option value=''>할 사람 선택</option>");
 					for(var i=0;i<data.length;i++){
-						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberNo+"</option>");
+						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
 					}
 				},
 				error : function(data) { console.log("회원 리스트 불러오기 실패"); }
@@ -154,9 +154,9 @@
 					<c:forEach items="${listTodo }" var="t">
 					<tr>
 						<td width="7%">아이콘</td>
-						<td width="15%">${t.todoProNo }</td>
+						<td width="15%">${t.todoProjectName }</td>
 						<td width="53%">${t.todoTitle }</td>
-						<td width="25%">${t.todoWriter } -> ${t.todoMember }</td>
+						<td width="25%">${t.todoWriterName } -> ${t.todoMemberName }</td>
 					</tr>
 					</c:forEach>
 					
@@ -189,17 +189,13 @@
 			<form action="/insertTodo" method="post">
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="36%">
+					<td>
 						<select class="form-control" name="todoProNo" style="width:150px;">
   							<option value="0">프라이빗 공간</option>
   							<c:forEach items="${listProject }" var="p">
   								<option value="${p.proNo }">${p.proTitle }</option>
   							</c:forEach>
 						</select>
-					</td>
-					<td width="64%">
-						<input type="date" name="todoStartDate"/> ~ <input type="date" name="todoEndDate" />
-						
 					</td>
 				</tr>
 			</table>

@@ -15,14 +15,11 @@ public class Todo {
 	private String todoProgress;
 	private String todoWriterName;
 	private String todoMemberName;
-	private String todoMemberPicture;
-
-	
-	public Todo() { }
-
+	private String todoProjectName;
+	public Todo() {	}
 	public Todo(int todoNo, int todoPostNo, int todoProNo, String todoTitle, String todoContent, int todoWriter,
 			int todoMember, Date todoStartDate, Date todoEndDate, String todoProgress, String todoWriterName,
-			String todoMemberName, String todoMemberPicture) {
+			String todoMemberName, String todoProjectName) {
 		super();
 		this.todoNo = todoNo;
 		this.todoPostNo = todoPostNo;
@@ -36,9 +33,8 @@ public class Todo {
 		this.todoProgress = todoProgress;
 		this.todoWriterName = todoWriterName;
 		this.todoMemberName = todoMemberName;
-		this.todoMemberPicture = todoMemberPicture;
+		this.todoProjectName = todoProjectName;
 	}
-
 	public int getTodoNo() {
 		return todoNo;
 	}
@@ -112,14 +108,11 @@ public class Todo {
 	public void setTodoMemberName(String todoMemberName) {
 		this.todoMemberName = todoMemberName;
 	}
-
-	public String getTodoMemberPicture() {
-		return todoMemberPicture;
+	public String getTodoProjectName() {
+		return todoProjectName;
 	}
-
-	public void setTodoMemberPicture(String todoMemberPicture) {
-		this.todoMemberPicture = todoMemberPicture;
+	public void setTodoProjectName(String todoProjectName) {
+		this.todoProjectName = todoProjectName;
 	}
-	
 
 }
