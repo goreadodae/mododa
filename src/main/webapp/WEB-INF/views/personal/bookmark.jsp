@@ -4,10 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
@@ -46,7 +45,7 @@
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-	
+		$("#content-frame").load("/bookmark.do");
 	}
 	
 	function delBookmark(bookNo){
@@ -69,6 +68,50 @@
 			alert("취소되었습니다.");
 			}
 		}
+	function searchBook()// 북마크 글 작성한 회원이름,또는 글 제목을 검색.
+	{
+		var keyword=$("#keyword").val();
+		console.log(keyword);
+		if(keyword =="")
+			{
+			alert("검색어를 입력하세요!!");
+			}else{
+				$.ajax({
+					url:"/searchBook.do",
+					type:"post",
+					data:{"keyword":keyword},
+					dataType:"json",
+					success:function(data){
+						if(data.length==0)
+							{
+							$(".feed-list").empty();
+							$(".feed-list").append("<div>내용없어요</div>");
+							}else{
+						$(".feed-list").empty();
+						var result="";
+						for(var i=0;i<data.length;i++)
+							{
+							result+=
+								'<li class="feed-contents"><div><span onclick="getPost('+data[i].postNo+');"class="btn btn-link">'+data[i].postTitle+'</span><br>'+
+								data[i].postWriter + data[i].postDate+'<br><a href="#" class="btn btn-link">'+data[i].proName+'</a>'+
+								'<button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
+								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
+								'</button></div><hr style="color: grey;">'+
+								'</div></li>';
+							}
+						$(".feed-list").append(result);
+						$(".feed-list").append("<span>마지막입니다.</sapn>");
+					   } 
+				   },
+					error:function()
+					{
+						alert("error");
+					}
+				})
+			}
+				
+				
+				}
 /* 	
 	//글쓰기 버튼 기능 추가 by 영진.
 	function toWriteFn(){
@@ -100,8 +143,9 @@
 						<i class="fab fa-searchengin" style="color: grey;"></i>
 					</button>
 
-					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" data-toggle="modal" data-target="#toWrite" class="btn btn-outline-warning">
+					<!-- 한영진이 버튼 연결 -->
+					<button type="button" data-toggle="modal" data-target="#toWrite"
+						class="btn btn-outline-warning">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -110,12 +154,11 @@
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
 				<i class="fab fa-searchengin" style="color: grey;"></i> <input
-					type="text" id="keyword" name="keyword"
-					placeholder="제목 검색" />
+					type="text" id="keyword" name="keyword" placeholder="제목&글 작성자로 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="search();">검색!</button>
+						onclick="searchBook()">검색!</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onclick="searchCancle();">취소</button>
 				</div>
@@ -125,49 +168,51 @@
 		<div class="viewContents  col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
-			<c:forEach var="book" items="${bookmark }">
+				<c:forEach var="book" items="${bookmark }">
 					<li class="feed-contents">
 						<div>
 							<span onclick="getPost(${book.postNo});" class="btn btn-link">${book.postTitle }</span>
-							<br>
-							${book.postWriter } ${book.postDate }<br><a href="#" class="btn btn-link">${book.proName }</a>
+							<br> ${book.postWriter } ${book.postDate }<br>
+							<a href="#" class="btn btn-link">${book.proName }</a>
 							<button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
-								<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i>
+								<span class="ico"> <i class="far fa-bookmark"
+									style="color: yellow;"></i>
 								</span>
 							</button>
 						</div>
 						<hr style="color: grey;">
 					</li>
-			</c:forEach>
-			<span>마지막입니다.</span>
-			</ul>		
+				</c:forEach>
+				<span>마지막입니다.</span>
+			</ul>
 		</div>
 	</div>
-	
-				
-			<!-- 글쓰기 모달!! div!!  -->
-			 
- 		<!-- <button data-toggle="modal" data-target="#toWrite">오픈</button> -->
- 
- 		<div id="toWrite" class="modal fade" style="background-color:white;">
-      
-       
-         <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
-     		<jsp:include page="/write.do"></jsp:include>
 
-         </div>
-     
-      </div>
+
+	<!-- 글쓰기 모달!! div!!  -->
+
+	<!-- <button data-toggle="modal" data-target="#toWrite">오픈</button> -->
+
+	<div id="toWrite" class="modal fade" style="background-color: white;">
+
+
+		<div class="offset-md-1 col-md-10 offset-md-1 modal-content"
+			style="padding: 0px; border: none;">
+			<jsp:include page="/write.do"></jsp:include>
+
+		</div>
+
+	</div>
 	<!-- 글쓰기 모달 끝!   -->
-	
-	
-	
-	
-	
 
 
-<jsp:include page="/testareum.do"></jsp:include>
+
+
+
+
+
+	<jsp:include page="/testareum.do"></jsp:include>
 
 </body>
 </html>
