@@ -31,11 +31,7 @@
 
 <script type='text/javascript'>
 
-/* $(document).ready(function() {
-	
-}); */
 
-var title ="";
 	$(document).ready(function() {
 		
 		createCal();
@@ -50,8 +46,17 @@ var title ="";
 		var m = date.getMonth();
 		var y = date.getFullYear();
 		
-		$('#calendar').fullCalendar({
-			
+		var calendar = $('#calendar').fullCalendar({
+			/* monthNames: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+	    	monthNamesShort: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+	    	dayNames: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
+			dayNamesShort: ["일","월","화","수","목","금","토"],
+	    	buttonText: {
+	    	today : "오늘",
+			month : "월별",
+	    	week : "주별",
+	    	day : "일별",
+	    	},  */
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -61,52 +66,40 @@ var title ="";
 			selectable: true,
 			selectHelper: true,
 			select: function(start, end, allDay) {
+         
+         modalProjectPrice();
+         open_pop();
 
-               /* module 데이터값 가져오는 ajax */
-				  
-          $.ajax({
-         url : "/selectProject.do",
-         type : "post",
-         success : function(data) {
- 
-			$('#projectList').find("option").remove();
-         	
-				for(var i=0;i<data.length;i++){
-					$('#projectList').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
-				}				
-          
-            open_pop();
-            
-         },
-         error : function(data) {
-            console.log("실패");
-            }
-         }); 
-
+              /*title = document.getElementById("scheduleTitle").value;
+               console.log(title);
                 
-				if (title) {					
+				 if (title) {					
 					calendar.fullCalendar('renderEvent',
 						{
 							title: title,
 							start: start,
 							end: end,
-							allDay: allDay
+							allDay: allDay,
+							color : '#339966'
 						},
 						true // make the event "stick"
 					);
 				}
-				calendar.fullCalendar('unselect');
-				
-			},
+				calendar.fullCalendar('unselect'); */
+               
+			} ,
 			editable: true,
-			events :  
-				
+			events :  	
 				function(start, end, timezone, callback) {
 				$.ajax({
 			         url : "/calendarSchedule.do",
 			         type : "post",
 			         success : function(data) {
 			        	 var events = [];
+			        	 console.log(data[0].stStartDate);
+			        	 console.log(data[0].stEndDate);
+			        	 
+			        	 
 			        	 for(var i=0;i<data.length;i++){			        	
 			        		 events.push({
 				        		 title : data[i].scTitle,
@@ -140,11 +133,66 @@ var title ="";
     
     //모듈 값 가져오기
     function saveSchedule(){
-
-   		title = document.getElementById("scheduleTitle").value
-        	
-    	 $('#myModal').hide();
+    	
+    	var proSelect = document.getElementById("projectList").value;
+    	var relationSelect = document.getElementById("linkPostList").value;
+    	var title = document.getElementById("scheduleTitle").value;
+    	var startDate = document.getElementById("startDate").value;
+    	var endDate = document.getElementById("endDate").value;
+   	    	
+    	console.log(proSelect);
+    	console.log(relationSelect);
+    	console.log(title);
+    	console.log(startDate);
+    	console.log(endDate);
+    	
+    	 $.ajax({
+            url : "/calendarInsertSchedule.do",
+            type : "post",
+            data :  {
+            	proSelect : proSelect,
+            	relationSelect : relationSelect,
+            	title : title,
+            	startDate : startDate,
+            	endDate : endDate            	
+            },
+            success : function(data) {
+               console.log("성공");
+               
+               window.location.reload(true);//새로고침코드
+            },
+            error : function(data) {
+               console.log("실패");
+            },
+            complete : function(data) {
+            	close_pop();
+            }
+		}); 
     }
+    
+    
+    /* module 데이터값 가져오는 ajax */
+    function modalProjectPrice(){
+        	
+    	 $.ajax({
+             url : "/selectProject.do",
+             type : "post",
+             success : function(data) {
+     
+    			$('#projectList').find("option").remove();
+             	
+    				for(var i=0;i<data.length;i++){
+    					$('#projectList').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
+    				}				
+
+             },
+             error : function(data) {
+                console.log("실패");
+                }
+             }); 
+    }
+    
+    /* module 데이터값 가져오는 ajax 프로젝트선택시 */
     
     function changeproSelect() {
     	
@@ -161,7 +209,7 @@ var title ="";
            		$('#linkPostList').find("option").remove();
              	
 				for(var i=0;i<data.length;i++){
-					$('#linkPostList').append("<option>"+data[i].postTitle+"</option>");
+					$('#linkPostList').append("<option value='"+data[i].postNo+"'>"+data[i].postTitle+"</option>");
 				}	
            		
             },
@@ -171,6 +219,8 @@ var title ="";
            }); 
     }
     
+
+   
     
 </script>
  
@@ -197,6 +247,8 @@ var title ="";
             border: 1px solid #888;
             width: 30%; /* Could be more or less, depending on screen size */                          
         }
+ 
+ 	
  
 </style>
 
@@ -246,11 +298,11 @@ var title ="";
     		</select>
     		</div></div></div>
             <div class="modal-body"> <div class="row"><div class="col-md-12">
-            <input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="recipeTitle" id="scheduleTitle" required="required" size="10" style="width=100%">
+            <input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="width=100%">
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" > ~ <input type="date">
+            <input type="date" id="startDate" > ~ <input type="date" id="endDate">
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-primary" onClick="saveSchedule();">저장</button>
