@@ -201,7 +201,7 @@
       
        
          <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
-     		<jsp:include page="/write.do"></jsp:include>
+     		
 
          </div>
      

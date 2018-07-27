@@ -4,8 +4,6 @@ import java.sql.Date;
 
 public class Project {
 	
-	
-	
 	private int proNo;
 	private String proTitle;
 	private String proProgress;
