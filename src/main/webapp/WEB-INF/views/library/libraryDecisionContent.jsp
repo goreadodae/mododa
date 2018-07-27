@@ -51,9 +51,17 @@
 						<td width="70%" colspan="3">${d.dcContent }</td>
 					</tr>
 					<tr>
-						<td>${d.dcPostNo }</td>
-						<td>${d.dcWriter } -> ${d.dcMaker }</td>
+						<td>${d.dcPostTitle }</td>
+						<td>${d.dcWriterName } -> ${d.dcMakerName }</td>
 						<td>${d.dcDecision }</td>
+						<%-- <c:choose>
+							 <c:when test="${d.dcDecision=='n'.charAt(0) }">
+								<td>결정중</td>
+							</c:when>
+							<c:otherwise>
+								<td>결정 완료</td>
+							</c:otherwise>
+						</c:choose> --%>
 					</tr>
 					</c:forEach>
 					

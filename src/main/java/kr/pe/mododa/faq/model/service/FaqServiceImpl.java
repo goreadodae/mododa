@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,4 +45,56 @@ public class FaqServiceImpl implements FaqService{
 		return page;
 	
 	}
+	
+
+
+
+
+
+	public int viewCount(int noticeNo) {
+		
+		int result = faqDAO.viewCount(sqlSession, noticeNo);
+		
+		return result;
+	}
+
+
+
+
+	public Notice selectNoticeOne(int noticeNo) {
+
+		Notice nContent = faqDAO.selectNoticeOne(sqlSession,noticeNo);
+		
+		return nContent;
+		
+
+	}
+
+
+
+
+
+
+//	public Page searchNotice(int currentPage, String search, String searchOption) {	
+//	
+//		int recordCountPerPage = 10;
+//		int naviCountPerPage = 5;
+//
+//		List<Notice> list = faqDAO.getSearchCurrentPage(sqlSession, currentPage, recordCountPerPage,search,searchOption);
+//		String pageCount = faqDAO.getSearchPageCount(sqlSession,currentPage,recordCountPerPage,naviCountPerPage,search,searchOption);
+//		
+//		Page page = null;
+//
+//		if (!list.isEmpty() && !pageCount.isEmpty()) {
+//			page = new Page();
+//			page.setList(list);
+//			page.setPageCount(pageCount);
+//
+//		}
+//
+//		return page;
+//	}
+
+	
+	
 }

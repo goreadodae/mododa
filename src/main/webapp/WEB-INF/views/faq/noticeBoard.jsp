@@ -17,7 +17,7 @@
 <c:forEach items="${listNotice}" var="n">
    <tr>
       <td>${n.noticeNo}</td>
-      <td><a href="/noticeRead.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
+      <td><a href="/noticeDetail.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
       <td>${n.noticeWriteDate}</td>
       <td>${n.noticeViewCount}</td>
    </tr>

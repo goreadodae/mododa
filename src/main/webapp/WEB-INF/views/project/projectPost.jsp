@@ -107,13 +107,13 @@
 		<div class="viewContents col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
-				<c:forEach items="${proPostList}" var="proPostList">
+ 				<c:forEach items="${postList}" var="postList">
 				<li class="feed-contents">
 					<div>
-						<span>${proPostList.postTitle}</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
+						<span>${postList.postTitle}</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
 						<div class="writeInfo" style="position:relative;">
 							<img id="memberImg" src="../resources/images/post/close.png" /> <span>글쓴이</span>
-							<br><span>${proPostList.postDate}</span>
+							<br><span>${postList.postDate}</span>
 						</div>
 						<a class="btn btn-link btn-sm" href="#">프로젝트이름</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
 						<hr style="color: grey;">

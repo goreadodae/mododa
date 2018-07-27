@@ -9,10 +9,12 @@ public class Link {
 	private Date linkDate;
 	private String linkTitle;
 	private String linkAddress;
+	private String memberName;
 	
 	public Link() { }
 	
-	public Link(int linkNo, int postNo, int memberNo, Date linkDate, String linkTitle, String linkAddress) {
+	public Link(int linkNo, int postNo, int memberNo, Date linkDate, String linkTitle, String linkAddress,
+			String memberName) {
 		super();
 		this.linkNo = linkNo;
 		this.postNo = postNo;
@@ -20,6 +22,7 @@ public class Link {
 		this.linkDate = linkDate;
 		this.linkTitle = linkTitle;
 		this.linkAddress = linkAddress;
+		this.memberName = memberName;
 	}
 	
 	public int getLinkNo() {
@@ -58,6 +61,14 @@ public class Link {
 	public void setLinkAddress(String linkAddress) {
 		this.linkAddress = linkAddress;
 	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	
+	
 
 	
 }

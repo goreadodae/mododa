@@ -42,9 +42,11 @@ public class MemberControllerImpl implements MemberController {
 
 		// 프로젝트 목록 읽어오기 - 지은 추가
 		ArrayList<Project> projectList = projectController.projectList(session);
-		System.out.println(projectList);
+		Project privateProject = projectController.privateProject(session); // 0726 지은추가
+		//System.out.println(projectList);
 		ModelAndView view = new ModelAndView();
 		view.addObject("projectList", projectList);
+		view.addObject("privateProject", privateProject); // 0726 지은추가
 		view.setViewName("main/mainPage");
 		return view;
 	}

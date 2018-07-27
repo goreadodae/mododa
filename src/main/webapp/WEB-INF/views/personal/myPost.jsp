@@ -60,8 +60,24 @@
 					"keyword" : keyword
 				},
 				success : function(data) {
-					alert(data);
-					console.log(data);
+					if (data.length == 0) {
+						$(".feed-list").empty();
+						$(".feed-list").append("<div>내용없어요</div>");
+					} else {
+						var result="";
+						$(".feed-list").empty();
+						for(var i=0;i<data.length;i++)
+							{
+							result+='<li class="feed-contents"><div><span "class="btn btn-link">"'+data[i].postTitle+'"</span>'+
+							'<div class="writeInfo" style="position:relative;">'+
+							  '<img id="memberImg" src="../resources/images/post/close.png" /> <span>'+data[i].myName+'</span>'+
+							  '<br><span>'+data[i].postDate+'</span>'+
+							  '</div> <a class="btn btn-link btn-sm" href="#">'+data[i].proName+'</a><hr style="color:grey;">'+
+							  '</div></li>';
+							}
+						$(".feed-list").append(result);
+						$(".feed-list").append("<span>마지막입니다.</sapn>");
+					}
 				},
 				error : function() {
 					alert("code: " + request.status + "\n" + "message: "

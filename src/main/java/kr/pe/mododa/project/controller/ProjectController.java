@@ -15,6 +15,7 @@ public interface ProjectController {
 	public Object gotoInviteMember(HttpSession session);
 	public String inviteMember(String memberId);
 	public ArrayList<Project> projectList(HttpSession session);	
-	public Object proPost(@RequestParam int proNo);
-
+	public Object proPost(int proNo);
+	public Project privateProject(HttpSession session);
+	public Object priPost(int proNo);
 }

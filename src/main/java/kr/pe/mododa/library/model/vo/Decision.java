@@ -13,11 +13,13 @@ public class Decision {
 	private char dcDecision;
 	private String dcComment;
 	private Date dcConfirmDate;
-	
+	private String dcPostTitle;
+	private String dcWriterName;
+	private String dcMakerName;
 	public Decision() { }
-	
 	public Decision(int dcNo, int dcPostNo, int dcWriter, int dcMaker, String dcContent, Date dcDate, char dcYn,
-			char dcDecision, String dcComment, Date dcConfirmDate) {
+			char dcDecision, String dcComment, Date dcConfirmDate, String dcPostTitle, String dcWriterName,
+			String dcMakerName) {
 		super();
 		this.dcNo = dcNo;
 		this.dcPostNo = dcPostNo;
@@ -29,8 +31,10 @@ public class Decision {
 		this.dcDecision = dcDecision;
 		this.dcComment = dcComment;
 		this.dcConfirmDate = dcConfirmDate;
+		this.dcPostTitle = dcPostTitle;
+		this.dcWriterName = dcWriterName;
+		this.dcMakerName = dcMakerName;
 	}
-	
 	public int getDcNo() {
 		return dcNo;
 	}
@@ -91,6 +95,26 @@ public class Decision {
 	public void setDcConfirmDate(Date dcConfirmDate) {
 		this.dcConfirmDate = dcConfirmDate;
 	}
+	public String getDcPostTitle() {
+		return dcPostTitle;
+	}
+	public void setDcPostTitle(String dcPostTitle) {
+		this.dcPostTitle = dcPostTitle;
+	}
+	public String getDcWriterName() {
+		return dcWriterName;
+	}
+	public void setDcWriterName(String dcWriterName) {
+		this.dcWriterName = dcWriterName;
+	}
+	public String getDcMakerName() {
+		return dcMakerName;
+	}
+	public void setDcMakerName(String dcMakerName) {
+		this.dcMakerName = dcMakerName;
+	}
+	
+	
 	
 	
 }

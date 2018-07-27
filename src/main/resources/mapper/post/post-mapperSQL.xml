@@ -1,53 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="post">
-  
-  <select id="selectOnePost" resultType="post">
-  select 
-  post_no as postNo,
-  post_title as postTitle,
-  post_progress as postProgress,
-  post_date as postDate,
-  post_content as postContent,
-  post_writer as postWriter,
-  post_temp as postTemp,
-  post_pro_no as postProNo,
-  post_Tag as postTag
-  from post where post_no = #{postNo}
-  </select>
-  
-  <select id="selectTodo" resultType="todo">
-  select
+
+	<select id="selectProject" resultType="project">
+		select pro_title as proTitle from project where pro_no=(select post_pro_no
+		from post where post_no=#{postNo})
+	</select>
+
+	<select id="selectOnePost" resultType="post">
+		select
+		post_no as postNo,
+		post_title as postTitle,
+		post_progress as postProgress,
+		post_date as postDate,
+		post_content as postContent,
+		post_writer as postWriter,
+		post_temp as postTemp,
+		post_pro_no as postProNo,
+		post_Tag as postTag
+		from post where post_no = #{postNo}
+	</select>
+
+	<select id="selectTodo" resultType="todo">
+		select
 		todo_no as todoNo,
 		todo_post_no as todoPostNo,
 		todo_pro_no as todoProNo,
 		todo_title as todoTitle,
 		todo_content as todoContent,
 		todo_writer as todoWriter,
-		todo_member as todoMember,
+		todo_member astodoMember,
 		todo_start_date as todoStartDate,
-		todo_end_date as todoEndDate,
-		todo_progress as todoProgress
+		todo_end_date astodoEndDate,
+		todo_progress as todoProgress,
+		(select member_name from member where member_no=todo_writer) as todoWriterName,
+		(select member_name from member where member_no=todo_member) as todoMemberName,
+		(select member_picture from member where member_no=todo_member) as todoMemberPicture
 		from todo
 		where todo_post_no=#{postNo}
-  </select>
-  
-  
-  <select id="selectSchedule" resultType="schedule">
-  select
-  member_no as memNO,
-  sc_start_date as startDate,
-  sc_end_date as endDate,
-  sc_title as scTitle
-  from schedule where post_no = #{postNo}  
-  </select>
-  
-  <insert id="insertSchedule" parameterType="schedule">
-  	insert into schedule values(schedule_SEQ.NEXTVAL,#{postNo},1,1,#{startDate},#{endDate},#{scTitle})
-  </insert>
-  
-  <insert id="insertTodo" >
-  insert into todo values(todo_SEQ.NEXTVAL,1,1,'할일제목','할일내용',1,1,sysdate,sysdate,null)
-  </insert>
+	</select>
+	
+	<select id="selectMembers" resultType="member">
+	select 
+	member_no as memberNo,
+	member_name as memberName
+	from work_on join member using (member_no) 
+	where pro_no=(select post_pro_no from post where post_no=#{postNo})
+	</select>
+
+
+	<select id="selectSchedule" resultType="schedule">
+		select
+		member_no as memNO,
+		sc_start_date as startDate,
+		sc_end_date as endDate,
+		sc_title as scTitle
+		from schedule where post_no = #{postNo}
+	</select>
+
+	<insert id="insertSchedule" parameterType="schedule">
+		insert into schedule
+		values(schedule_SEQ.NEXTVAL,#{postNo},1,(select post_pro_no from post where post_no=#{postNo}),#{startDate},#{endDate},#{scTitle})
+	</insert>
+
+	<insert id="insertTodo" parameterType="todo">
+		insert into todo
+		values(todo_SEQ.NEXTVAL,#{todoPostNo},(select post_pro_no from post where post_no=#{todoPostNo}),#{todoTitle},#{todoContent},#{todoWriter},#{todoMember},SYSDATE,SYSDATE,'')
+	</insert>
+	
+	<select id="selectMemberforTodo" resultType="member">
+	select member_name as memberName, member_picture as memberPicture from member where member_no=#{memberNo}
+	</select>
+
 
 </mapper>
