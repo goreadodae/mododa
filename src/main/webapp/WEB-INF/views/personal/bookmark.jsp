@@ -101,7 +101,7 @@
 					</button>
 
 					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" data-toggle="modal" data-target="#toWrite" class="btn btn-outline-warning">
+					<button type="button" onclick="location='/write.do'" class="btn btn-outline-warning">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -143,14 +143,16 @@
 			<span>마지막입니다.</span>
 			</ul>		
 		</div>
+		
+		
+		
+		
 	</div>
 	
 				
 			<!-- 글쓰기 모달!! div!!  -->
-			 
- 		<!-- <button data-toggle="modal" data-target="#toWrite">오픈</button> -->
- 
- 		<div id="toWrite" class="modal fade" style="background-color:white;">
+ 	
+<%--  		<div id="toWrite" class="modal fade" style="background-color:white;">
       
        
          <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
@@ -158,8 +160,11 @@
 
          </div>
      
-      </div>
+      </div>  --%>
+		
 	<!-- 글쓰기 모달 끝!   -->
+		
+			 
 	
 	
 	
@@ -167,7 +172,7 @@
 	
 
 
-<jsp:include page="/testareum.do"></jsp:include>
+<%-- <jsp:include page="/testareum.do"></jsp:include> --%>
 
 </body>
 </html>
