@@ -156,16 +156,18 @@ public class MemberServiceImpl implements MemberService {
 		ConfirmMailFindPass cmfp = memberDAO.checkConfirmFindKey(sqlSession, key);
 		Timestamp curTime = new Timestamp(System.currentTimeMillis());
 		if(cmfp.getCfTime().compareTo(curTime)>0) {
-			memberDAO.deleteConfirmFind(sqlSession, cmfp);
 			return true;
 		} else {
-			memberDAO.deleteConfirmFind(sqlSession, cmfp);
 			return false;
 		}
 	}
 
 	public String getMemberIdFromKey(String key) {
-		return memberDAO.getMemberIdFromKey(sqlSession, key);
+		String memberId = memberDAO.getMemberIdFromKey(sqlSession, key);
+		ConfirmMailFindPass cmfp = new ConfirmMailFindPass();
+		cmfp.setCfKey(key);
+		memberDAO.deleteConfirmFind(sqlSession, cmfp);
+		return memberId;
 	}
 
 	public int changePwSHA(Member vo) {
