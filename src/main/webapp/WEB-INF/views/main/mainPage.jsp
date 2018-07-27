@@ -275,6 +275,12 @@ li[id^="sub_"] a {
 		   $("#bookmark").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/bookmark.do");
+		   });
+		   
+		   $("#project").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("");
 		   });
 		   

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="write">
+
+	<select id="loadProjectName" resultType="project">
+	select
+	pro_no as proNo,
+	pro_title as proTitle,
+	pro_progress as proProgress,
+	pro_start_date as proStartDate,
+	pro_end_date as proEndDate,
+	pro_member_no as proMemberNo
+	from project
+	where pro_member_no = #{memberNo}
+	</select>
+
+  
+</mapper>
