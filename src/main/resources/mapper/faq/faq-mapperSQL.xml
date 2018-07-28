@@ -35,5 +35,37 @@
 	notice_view_count as noticeViewCount from notice where Notice_No=#{noticeNo}
 	</select>
 	
+	<select id="searchList" parameterType="searchList" resultType="notice">
+	select notice_no as noticeNo,
+	notice_title as noticeTitle,
+	notice_contents as noticeContents,
+	notice_write_date as noticeWriteDate,                                                   
+	notice_view_count as noticeViewCount from	
+	(select notice.*, row_number() over(order by notice_no desc) as num from notice 
+	<choose>
+	<when test="option=='NOTICE_TITLE'">
+	where NOTICE_TITLE like '%' || #{search} || '%')
+	</when>
+	<when test="option=='NOTICE_CONTENTS'">
+	where NOTICE_CONTENTS like '%' || #{search} || '%')
+	</when>
+	</choose>
+	where num between #{startTotalBoard} and #{endTotalBoard}
+	
+	</select>
+	
+	<select id="searchCount" parameterType="searchList" resultType="Integer">
+	select count(*) as totalCount from notice 
+	<choose>
+		<when test="option=='NOTICE_TITLE'">
+			where NOTICE_TITLE like '%' || #{search} || '%'
+		</when>
+		<when test="option=='NOTICE_CONTENTS'">
+			where NOTICE_CONTENTS like '%' || #{search} || '%'
+		</when>
+	
+	</choose>
+	</select>
+	
 	
 </mapper>
