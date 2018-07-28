@@ -73,6 +73,41 @@
 		where pro_no = (select min(pro_no) from project where pro_member_no = #{memberNo})
 	</select>
 
+	<select id="searchMemberName" resultType="member">
+		select 
+			member_no as memberNo,
+  			member_id as memberId,
+  			member_pw as memberPw,
+  			member_name as memberName,
+  			member_picture as memberPicture,
+  			member_depart_name as memberDepartName,
+  			member_main_task as memberMainTask,
+  			member_email_certify as memberEmailCertify
+		from member 
+		where member_no = (select pro_member_no from project where pro_no= #{proNo})
+	</select>
 	
+	<select id="searchProTitle" resultType="String">
+		select pro_title
+		from project
+		where pro_no = #{proNo}
+	</select>
+	
+	<select id="postWriterMemberList" resultType="member">
+		select 
+			member_no as memberNo,
+  			member_id as memberId,
+  			member_pw as memberPw,
+  			member_name as memberName,
+  			member_picture as memberPicture,
+  			member_depart_name as memberDepartName,
+  			member_main_task as memberMainTask,
+  			member_email_certify as memberEmailCertify
+		from member 
+		where member_no in
+		<foreach item="postWriterNumberList" collection="array" open="(" separator="," close=")">
+			#{postWriterNumberList}
+		</foreach>	
+	</select>
   
 </mapper>

@@ -138,21 +138,30 @@ public class ProjectControllerImpl implements ProjectController {
 	@Override
 	@RequestMapping(value="proPost.do")
 	public Object proPost(@RequestParam int proNo) { // 프로젝트 글 목록 읽어오기
-		System.out.println("proPost: "+proNo);
+		// System.out.println("proPost: "+proNo);
 		ArrayList<Post> postList = this.searchPostList(proNo);
+		String proTitle = projectService.searchProTitle(proNo);
+		ArrayList<Member> postWriterMemberList = this.postWriterMemberList(postList);
+		// System.out.println(postWriterMemberList.toString());
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
+		view.addObject("proTitle", proTitle);
+		view.addObject("postWriterMemberList", postWriterMemberList);
 		view.setViewName("project/projectPost");
 		return view;
 	}
 	
+
+
 	@Override
 	@RequestMapping(value="priPost.do")
 	public Object priPost(@RequestParam int proNo) { // 프라이빗 글 목록 읽어오기
 		// System.out.println("proPost: "+proNo);
 		ArrayList<Post> postList = this.searchPostList(proNo);
+		Member member = projectService.searchMemberName(proNo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
+		view.addObject("member", member);
 		view.setViewName("project/privatePost");
 		return view;
 	}
@@ -162,7 +171,30 @@ public class ProjectControllerImpl implements ProjectController {
 		return projectService.searchPostList(proNo);
 	}
 	
+	private ArrayList<Member> postWriterMemberList(ArrayList<Post> postList) {
+		
+		String [] postWriterNumberList = new String[postList.size()];
+		
+		for(int i=0; i<postList.size(); i++) {
+			postWriterNumberList[i] = Integer.toString(postList.get(i).getPostWriter());
+		}
+		
+		ArrayList<Member> postWriterMemberList = projectService.postWriterMemberList(postWriterNumberList);
+		return postWriterMemberList;
+	}
 	
+	
+	
+	
+	@RequestMapping(value="gotoMoreProject.do")
+	public Object gotoMoreProject(HttpSession session) { // 이동
+		// 프로젝트 목록 읽어오기
+		ArrayList<Project> projectList = this.projectList(session);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.setViewName("project/moreProject");
+		return view;
+	}
 
 
 
