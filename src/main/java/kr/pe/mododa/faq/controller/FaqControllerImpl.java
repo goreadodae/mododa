@@ -68,27 +68,68 @@ public class FaqControllerImpl implements FaqController {
 				
 	}
 	
-//	@RequestMapping(value="/noticeSearch.do")
-//	public ModelAndView noticeSearch(HttpServletRequest request) {
-//	
-//		request.setCharacterEncoding("utf-8");
-//		String search = request.getParameter("search");
-//		String searchOption = request.getParameter("searchOption");
+	@RequestMapping(value="/noticeSearch.do")
+	public ModelAndView noticeSearch(HttpServletRequest request) {
+	
+		String search = request.getParameter("search");
+		String searchOption = request.getParameter("searchOption");
+
+
+		int currentPage;
+		if(request.getParameter("currentPage")==null) {
+			currentPage=1;
+		}else{
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+
+		Page page = faqService.searchNotice(currentPage,search,searchOption);
+		
+		System.out.println(page.getList().get(0).getNoticeTitle());
+		
+
+		ModelAndView view = new ModelAndView(); 
+		view.addObject("searchList",page.getList());//맵퍼에서 넘어온 "listNotice"을게시글 리스트를 view변수에 담는다
+		view.addObject("searchCount",page.getPageCount()); // 총게시물수를 view변수에 담는다
+		view.setViewName("faq/noticeSearch");// 게시글갯수,총게시물수를 noticeBoard.jsp로 보낸다
+		return view;
+		
+		
+
+	}
+	@RequestMapping(value="/writeReady.do")
+	public String writeReady() {
+		return "faq/noticeWriteReady";
+	}
+	
+//	@RequestMapping(value="/noticeWrite.do")
+//	public ModelAndView noticeWrite(HttpServletRequest request) {
+//		
+//		HttpSession session = request.getSession(false);
+//		
+//		String noticeTitle = request.getParameter("title");
+//		String noticeContents= request.getParameter("contents");
 //
-//		// System.out.println("searchOption값 : "+searchOption);
+//		Notice notice = new Notice();
+//		notice.setNoticeTitle(noticeTitle);
+//		notice.setNoticeContents(noticeContents);
+//		
 //
-//		int currentPage;
-//		if(request.getParameter("currentPage")==null) {
-//			currentPage=1;
-//		}else{
-//			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+//		// 3.비즈니스 로직 처리
+//		int result = new BoardService().insertNotice(board);
+//
+//		if (result > 0) {// 글쓰기가 정상작동 할경우
+//			response.sendRedirect("/review");
+//		} else {// 작동이 안될경우
+//			response.sendRedirect("/View/error/error.jsp");
 //		}
 //
-//		Page page = faqService.searchNotice(currentPage,search,searchOption); 
-//
+//	} else {// 세션이 제대로 연결되지 않은경우
+//		response.sendRedirect("/View/error/error.jsp");
 //	}
 //		
-	
+//		return null;
+//		
+//	}
 		
 		
 		

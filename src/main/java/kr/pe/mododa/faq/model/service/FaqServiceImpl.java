@@ -75,25 +75,28 @@ public class FaqServiceImpl implements FaqService{
 
 
 
-//	public Page searchNotice(int currentPage, String search, String searchOption) {	
-//	
-//		int recordCountPerPage = 10;
-//		int naviCountPerPage = 5;
-//
-//		List<Notice> list = faqDAO.getSearchCurrentPage(sqlSession, currentPage, recordCountPerPage,search,searchOption);
-//		String pageCount = faqDAO.getSearchPageCount(sqlSession,currentPage,recordCountPerPage,naviCountPerPage,search,searchOption);
-//		
-//		Page page = null;
-//
-//		if (!list.isEmpty() && !pageCount.isEmpty()) {
-//			page = new Page();
-//			page.setList(list);
-//			page.setPageCount(pageCount);
-//
-//		}
-//
-//		return page;
-//	}
+	public Page searchNotice(int currentPage, String search, String searchOption) {	
+	
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 5;
+
+		List<Notice> list = faqDAO.getSearchCurrentPage(sqlSession, currentPage, recordCountPerPage,search,searchOption);
+		String pageCount = faqDAO.getSearchPageCount(sqlSession,currentPage,recordCountPerPage,naviCountPerPage,search,searchOption);
+		
+		
+		
+		
+		Page page = null;
+
+		if (!list.isEmpty() && !pageCount.isEmpty()) {
+			page = new Page();
+			page.setList(list);
+			page.setPageCount(pageCount);
+
+		}
+
+		return page;
+	}
 
 	
 	

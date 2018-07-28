@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.faq.model.vo.Notice;
 import kr.pe.mododa.faq.model.vo.NoticeList;
+import kr.pe.mododa.faq.model.vo.SearchList;
 
 
 @Repository("faqDAO")
@@ -107,34 +108,108 @@ public class FaqDAOImpl implements FaqDAO {
 		return sqlSession.selectOne("faq.noticeDetail",noticeNo);
 	}
 
-//	public List<Notice> getSearchCurrentPage(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage,
-//			String search, String searchOption) {
-//		
-//		 
-//		   
-//		   String option = null;
-//		   // 시작 ,끝 게시물
-//		   int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage-1);
-//		   int endTotalBoard = currentPage*listPerCountPage;
-//		   
-//		   if(searchOption.equals("title")) {
-//		      option = "noticeTitle";
-//		   }else if (searchOption.equals("contents")) {
-//		      option = "noticeContests";
-//		   }
-//		   
-//		   //System.out.println("option값:"+option);
-//		   
-//		   
-//		 
-//		return null;
-//	}
+	public List<Notice> getSearchCurrentPage(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage,
+			String search, String searchOption) {
+		
+		   String option = null;
+		   // 시작 ,끝 게시물
+		   int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage-1);
+		   int endTotalBoard = currentPage*listPerCountPage;
+	   
+		   if(searchOption.equals("title")) {
+		      option = "NOTICE_TITLE";
+		   }else if (searchOption.equals("contents")) {
+		      option = "NOTICE_CONTENTS";
+		   }
+		   
+		   List<Notice> list = new ArrayList<Notice>();
 
-//	public String getSearchPageCount(SqlSessionTemplate sqlSession, int currentPage, int recordCountPerPage,
-//			int naviCountPerPage, String search, String searchOption) {
-//		
-//		return null;
-//	}
+			SearchList searchList = new SearchList();
+			searchList.setStartTotalBoard(startTotalBoard);
+			searchList.setEndTotalBoard(endTotalBoard);
+			searchList.setOption(option);
+			searchList.setSearch(search);
+			
+			
+		   List<Notice> noticeList =  sqlSession.selectList("faq.searchList",searchList);
+		   return noticeList;
+	}
+
+	public String getSearchPageCount(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage,
+			int countPerPage, String search, String searchOption) {
+		
+		int TotalCount = 0; //게시물
+		
+		
+		
+		   String option = null;
+		   //System.out.println("dao : " +searchOption);
+		   if(searchOption.equals("title")) {
+		      option = "NOTICE_TITLE";
+		   }else if(searchOption.equals("contents")){
+		      option = "NOTICE_CONTENTS";
+		   }
+		
+		   SearchList searchCount = new SearchList();
+		   
+		   searchCount.setOption(option);
+		   searchCount.setSearch(search);
+		   
+		  TotalCount = sqlSession.selectOne("faq.searchCount",searchCount);
+
+		
+		int pageTotalCount = 0;
+
+		if (TotalCount % listPerCountPage != 0) {
+			pageTotalCount = TotalCount / listPerCountPage + 1;
+		} else {
+			pageTotalCount = TotalCount / listPerCountPage;
+		}
+
+		if (currentPage < 1) {
+			currentPage = 1;
+		} else if (currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+
+		int startCount = ((currentPage - 1) / countPerPage) * countPerPage + 1;
+		int endCount = startCount + countPerPage - 1;
+
+		if (endCount > pageTotalCount) {
+			endCount = pageTotalCount;
+		}
+
+		boolean gotoPrev = true;
+		boolean gotoNext = true;
+		if (startCount == 1) {
+			gotoPrev = false;
+		}
+		if (endCount == pageTotalCount) {
+			gotoNext = false;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		if (gotoPrev) {
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
+
+		}
+
+		for (int i = startCount; i <= endCount; i++) {
+			if (i == currentPage) {
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><b>" + i + "</b></a>");
+
+			} else {
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'>" + i + "</a>");
+			}
+		}
+		if (gotoNext) {
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>");
+		}
+
+		return sb.toString();
+		
+	}
 
 
 
