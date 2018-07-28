@@ -103,47 +103,57 @@
 
 	//자동완성 기능 ajax 사용해야 돼
 
-	$(document).ready(function() {
+	/* 	$(document).ready(function() {
 
-		var projectNames = [ '프라이빗 공간', '띵킹띵킹', '굿뜨굿뜨', '띵킹스맨', ];
-		var searchText = [];
+	 var projectNames = [ '프라이빗 공간', '띵킹띵킹', '굿뜨굿뜨', '띵킹스맨', ];
+	 var searchText = [];
 
-		$("#searchPj").autocomplete({
-			source : function(request, response) {
-				$.ajax({
-					type : "post",
-					url : "/autoComplete.do",
-					dataType : "json",
-					data : {
-						searchValues : request.term,
-						memberNo : $("#memberNo").val()
+	 $("#searchPj").autocomplete({
+	 matchContains:true,
+	 delay:100,
+	 source : function(request, response) {
+	 $.ajax({
+	 type : "post",
+	 url : "/autoComplete.do",
+	 dataType : "json",
+	 data : {
+	 searchValues : request.term,
+	 memberNo : $("#memberNo").val()
 
-					},
-					success : function(data) {
-						console.log("성공");
-						console.log(data[0].proTitle);
+	 },
+	 success : function(data) {
+	 console.log("성공");
+	
+	 response($.map(data, function(item) {
+	
+	
+	 return {
 
-						for (var i = 0; i < data.length; i++) {
+	 label : item.proTitle,
+	 value : item.proTitle
+	 }
+	 }));
+	
+	 },
+	 error : function(data) {
+	
+	 console.log("에러");
+	 }
 
-							response($.map(data, function(item) {
-								return {
-
-									label : data[i].proTitle,
-									value : data[i].proTitle
-								}
-							}));
-						}
-					},
-					error : function(data) {
-						console.log("에러");
-					}
-
-				})
-			},
-			minLength : 1
-		});
-	});
-
+	 })
+	 },
+	 minLength :2,
+	 autoFocus:false,
+	 select:function(event,ui){
+	 console.log(ui.item.label);
+	 $('#changeType').text(ui.item.vale);
+	 $('#changeType').css('color','#0093BF');
+	 },focus:function(event,ui){
+	 return false;
+	 }
+	 });
+	 });
+	 */
 	//파일 이미지 업로드
 	window.URL = window.URL || window.webkitURL;
 
@@ -259,6 +269,52 @@
 
 	 }); 
 	 */
+
+	$(document).ready(
+			function() {
+				$('#searchPj').focus(
+						function() {
+
+							$.ajax({
+								url : "/autoComplete.do",
+								type : "post",
+								data : {
+									memberNo : $('#memberNo').val()
+
+								},
+								success : function(data) {
+									$('#addPjList').find("button").remove();
+
+									for (var i = 0; i < data.length; i++) {
+
+										console.log(data[i].proTitle);
+										$('#addPjList').append(
+												'<button id="pjName'+data[i].proNo+'" class="dropdown-item" type="button">'
+														+ data[i].proTitle
+														+ '</button>');
+									}
+
+								},
+								error : function(data) {
+									console.log("실패");
+								}
+							})
+
+						});
+
+			});
+	 
+	 function saveScheduleToView(){
+		 
+		 var proSelect = $('#projectList').val();
+		 var relationSelect = $('#linkPostList').val();
+		 var title = $('#scheduleTitle').val();
+		 var startDate = $('#startDate').val();
+		 var endDate = $('#endDate').val();
+		 
+		 
+		 
+	 }
 </script>
 
 <style>
@@ -401,6 +457,21 @@ img {
 /* #modalBody {
 	overflow-y: scroll;
 } */
+
+
+/* 음 다시 생각 해봐야할듯  */
+/* #relationList input{
+	width:14px;
+	height:14px;
+	border-radius:7px;
+	backgroud-color:#bcbcbc;
+	cursor: pointer;
+}
+#relationList input:checked{
+	background-color: #339966;
+	
+} */
+
 </style>
 
 
@@ -467,8 +538,21 @@ img {
 						<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 							<div class="row" style="padding-left: 15px; height: 100%;">
 								<div class="col-md-2" style="height: 100%; padding: 0px">
-									<span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span> <input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" /> <input
-										type="hidden" id="memberNo" value="${sessionScope.member.memberNo}" />
+									<span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span>
+
+									<div class="dropdown" style="padding: 0px">
+
+										<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" data-toggle="dropdown" role="button" />
+
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addPjList">
+											<button class="dropdown-item" type="button">프라이빗 공간</button>
+
+										</ul>
+									</div>
+
+
+
+									<input type="hidden" id="memberNo" value="${sessionScope.member.memberNo}" />
 								</div>
 								<div class="col-md-10">
 									<div class="row" style="height: 100%">
@@ -594,7 +678,7 @@ img {
 									일정 <span>0</span>
 								</div>
 
-								<div class="col-md-6" style="padding-top: 5%; cursor: pointer;">
+								<div class="col-md-6" data-toggle="modal" data-target="#loadSchedule" style="padding-top: 5%; cursor: pointer;">
 									<!-- <br -->
 									<div class="col-md-12" style="border: 1px solid #339966; height: 80px;">
 
@@ -715,7 +799,7 @@ img {
 											</div>
 											<div class="modal-footer">
 
-												<button type="button" class="btn btn-primary">Save changes</button>
+												<button type="button" class="btn btn-primary" >Save changes</button>
 
 
 											</div>
@@ -730,6 +814,67 @@ img {
 								</div>
 
 								<!-- 모달 끝 -->
+
+
+								<!-- 일정 모달 시작   -->
+								<div class="modal fade" tabindex="-1" role="dialog" id="loadSchedule" aria-hidden="true">
+									<!--   Modal 내용 -->
+
+									<div class="modal-dialog modal-dialog-centered" role="document" >
+										<div class="modal-content">
+											<!-- <div class="modal-content ng-scope"> -->
+											<div class="modal-header">
+												<h3>일정 선택</h3>
+												<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-6">
+														<select class="form-control" id="projectList" onchange="changeproSelect();">
+															<option value="">프로젝트선택</option>
+														</select>
+													</div>
+													<div class="col-md-6">
+														<select class="form-control" id="linkPostList">
+															<option value="">관련글선택</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-12">
+														<input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12"></div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<input type="date" id="startDate"> ~ <input type="date" id="endDate">
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary" onClick="saveScheduleToView();" style="background-color:#CFF09E; border:none;">저장</button>
+												
+											</div>
+											<!-- </div> -->
+										</div>
+									</div>
+									<!--     Modal 내용 끝 -->
+								</div>
+								<!--팝업모달 끝 -->
+
+
+
+
+
+
+
 
 							</div>
 
