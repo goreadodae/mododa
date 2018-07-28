@@ -112,7 +112,7 @@
 						<i class="fab fa-searchengin" style="color: grey;"></i>
 					</button>
 
-					<button type="button" class="btn btn-outline-warning">
+					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -126,7 +126,7 @@
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onClick="searchTitle();">검색!</button>
+						onClick="searchTitle();" style="float:left;">검색!</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onClick="searchCancle();">취소</button>
 				</div>
@@ -139,21 +139,21 @@
 			<ul class="feed-list">
 			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
-					<div>
-						<span>"${my.postTitle }"</span> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
+					<div class="row">
+						<div class="col-md-12"><span>"${my.postTitle }"</span></div> <!-- 제목 클릭하면 글 볼 수 있도록 연결해야됨.. -->
 						<div class="writeInfo" style="position:relative;">
 							<img id="memberImg" src="../resources/images/post/close.png" /> <span>${my.myName }</span>
 							<br><span>${my.postDate }</span>
 						</div>
 						<a class="btn btn-link btn-sm" href="#">${my.proName }</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
-						<hr style="color: grey;">
 					</div>
+					<hr style="color: grey;">
 				</li>
 				</c:forEach>
 				</ul>
 		</div>
 	</div>
-
+<jsp:include page="/post.do"></jsp:include>
 
 </body>
 </html>

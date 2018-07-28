@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="personal">
-  <!-- <select id="selectAllNewsfeed" parameterType="Integer" resultType="newsfeed" >
-  	select 
-  </select> -->
+  
+  <select id="selectAllNewsfeed" parameterType="int" resultType="newsfeed" > <!-- 회원번호를 받아  그회원이 속한 프로젝트의 모든 글을 읽는 쿼리.-->
+	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress, p.post_date as postDate,
+	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName from post p
+	join member m on(p.post_writer=m.member_no)
+	join project pr on(p.post_pro_no=pr.pro_no)
+	where p.POST_PRO_NO in(select pro_no from work_on where member_no=#{memberNo}) 
+	order by p.post_no desc
+  </select>
+  
   <select id="selectBookmark" parameterType="int" resultType="bookmark"> <!-- 북마크한 글 읽어노는 쿼리 -->
   	select b.post_no as postNo, p.post_title as postTitle,p.post_progress as postProgress, 
   	m.member_picture as writerImg, m.member_name as postWriter, p.post_date as postDate,pr.pro_title as proName
@@ -23,6 +30,15 @@
 	left join member m on p.post_writer=m.member_no
 	left join project pr on p.post_pro_no=pr.pro_no
 	where p.post_writer=#{memberNo}
+  </select>
+  
+  <select id="searchNews" parameterType="serdel" resultType="newsfeed"><!-- 뉴스피드에서 검색어를 입력받아 검색. -->
+  	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress, p.post_date as postDate,
+	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName from post p
+	join member m on(p.post_writer=m.member_no)
+	join project pr on(p.post_pro_no=pr.pro_no)
+	where p.POST_PRO_NO in(select pro_no from work_on where member_no=#{memberNo}) and(p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
+	order by p.post_no desc
   </select>
   
   <select id="searchTitle" parameterType="post" resultType="myPost"> <!--내가 쓴 글 에서 제목을 검색하는 쿼리 -->

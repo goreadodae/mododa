@@ -44,6 +44,11 @@ public class PersonalDAOImpl {
 		List searchBook = sqlSession.selectList("personal.searchBookmark",sdp);
 		return (ArrayList<Bookmark>)searchBook;
 	}
+
+	public ArrayList<Newsfeed> searchNews(SqlSessionTemplate sqlSession, SerDelPost sdp) {
+		List searchFeed = sqlSession.selectList("personal.searchNews",sdp);
+		return (ArrayList<Newsfeed>)searchFeed;
+	}
 	
 	
 

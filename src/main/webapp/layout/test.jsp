@@ -52,7 +52,7 @@ div {
          </div>
 
          <!-- contents -->
-         <div class="col-6"><jsp:include page="/WEB-INF/views/personal/newsFeed.jsp"></jsp:include> </div>
+         <div class="col-6"><jsp:include page="/WEB-INF/views/personal/newsfeed.jsp"></jsp:include> </div>
 
          <!-- right bar -->
          <div class="col-3" id="background">

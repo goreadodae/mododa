@@ -274,10 +274,7 @@ li[id^="sub_"] a {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("");
-		      $("#banner").css('background-color','#339966');
-		      $('li[id^="sub_'+beforeShow+'"]').hide();
-		      $(".privateSub").hide();
+		      $("#content-frame").load("/newsfeed.do");
 		   });
 
 		   $("#callpost").click(function() {
@@ -296,6 +293,12 @@ li[id^="sub_"] a {
 			   $("#banner").css('background-color','#339966');
 			   $('li[id^="sub_'+beforeShow+'"]').hide();
 			   $(".privateSub").hide();
+		   });
+		   
+		   $("#mypost").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/mypost.do");
 		   });
 		   
 		   $("#project").click(function() {
@@ -654,6 +657,9 @@ li[id^="sub_"] a {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
+			<div id="content-frame">
+			<jsp:include page="/newsfeed.do"></jsp:include>
+			</div>
 			</div>
 			<!-- contents 끝 -->
 

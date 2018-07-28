@@ -26,8 +26,8 @@
 <title>Insert title here</title>
 <style>
 .comment-box {
-	height: 600px;
-	width: 460px;
+	height: 100%;
+	width: 100%;
 	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
 }
 
