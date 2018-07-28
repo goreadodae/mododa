@@ -173,10 +173,29 @@
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-link dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<img src="../resources/images/icon/checked-allot.png"></img>
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#"><img
+										src="../resources/images/icon/checked-allot.png"></img> 할당된 할
+										일</a> <a class="dropdown-item" href="#"><img
+										src="../resources/images/icon/play-button.png"></img> 진행중</a> <a
+										class="dropdown-item" href="#"><img
+										src="../resources/images/icon/pause.png"></img> 일시중지</a> <a
+										class="dropdown-item" href="#"><img
+										src="../resources/images/icon/checked-complete.png"></img> 완료</a>
+									<a class="dropdown-item" href="#"><img
+										src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
+								</div>
+							</div>
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
 							</div>
-							<div class="col-md-12">&nbsp;&nbsp;&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }</div>
-							<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">${book.proName }</a></div>
+							<div class="col-md-9"><img id="memberImg2" src="${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
+							<a href="#" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
 								<span class="ico"> <i class="far fa-bookmark"
