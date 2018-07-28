@@ -210,4 +210,45 @@ public class MemberControllerImpl implements MemberController {
 	public String myInfo() {
 		return "member/myInfo";
 	}
+	
+	@RequestMapping(value="/changeMyInfo.do")
+	public ModelAndView changeMyInfo(HttpSession session, @RequestParam String category, @RequestParam String context) throws Exception {
+		Member vo = (Member) session.getAttribute("member");
+		switch(category) {
+		case "name":
+			vo.setMemberName(context);
+			break;
+		case "depart":
+			vo.setMemberDepartName(context);
+			break;
+		case "mainTask":
+			vo.setMemberMainTask(context);
+			break;
+		}
+		int result = memberService.changeMyInfo(vo);
+		if(result>0) {
+			session.setAttribute("member", vo);
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/changePwPage.do")
+	public String changePw() {
+		return "member/changePwPage";
+	}
+	
+	@RequestMapping(value="/changPw.do")
+	public String changPw(@RequestParam String memberId, @RequestParam String memberPw) {
+		Member vo = new Member();
+		vo.setMemberId(memberId);
+		vo.setMemberPw(memberPw);
+		int result = memberService.changePwSHA(vo);
+		if(result>0) {
+			return "member/changeSuccess";
+		} else {
+			return "member/changeFailed";
+		}
+	}
 }

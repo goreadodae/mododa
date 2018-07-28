@@ -85,8 +85,11 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	public int changePw(SqlSessionTemplate sqlSession, Member vo) {
-		System.out.println(vo);
 		return sqlSession.update("member.changePw", vo);
+	}
+
+	public int changeMyInfo(SqlSessionTemplate sqlSession, Member vo) {
+		return sqlSession.update("member.changeMyInfo", vo);
 	}
 
 }

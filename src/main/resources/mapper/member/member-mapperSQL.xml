@@ -87,4 +87,16 @@
   <update id="changePw" parameterType="member">
   	update member set member_pw = #{memberPw} where member_id=#{memberId}
   </update>
+  <update id="changeMyInfo" parameterType="member">
+  	update member set member_name = #{memberName}
+  	<choose>
+  		<when test="memberDepartName==null">,member_depart_name = null</when>
+  		<otherwise>,member_depart_name = #{memberDepartName}</otherwise>
+  	</choose>
+  	<choose>
+  		<when test="memberMainTask==null">,member_main_task = null</when>
+  		<otherwise>,member_main_task = #{memberMainTask}</otherwise>
+  	</choose>
+  	where member_no = #{memberNo}
+  </update>
 </mapper>

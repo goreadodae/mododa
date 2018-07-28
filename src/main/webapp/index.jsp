@@ -74,8 +74,6 @@
   					$('#emailDiv').css('border-bottom','');
   					loginResult = false;
   				} else {
-  					/* console.log('submit');
-  					$('#loginForm').submit(); */
   					loginResult = true;
   				}
   			},
