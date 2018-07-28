@@ -38,23 +38,28 @@ public class PostControllerImpl {
 	@Autowired
 	@RequestMapping(value="/testareum.do")
 	public String postView () {
-		return "post/test";
+		return "post/postDetail";
 	}
 
 	@Autowired
 	@RequestMapping(value="/post.do")
 	public String post () {
-		return "post/test";
+		return "post/postDetail";
 	}
 
-	//post모달에 필요한 데이터들 가져옴
+	//post 정보 불러오기
 	@RequestMapping(value="/viewPost.do")
-	public ModelAndView viewPost(@RequestParam int postNo) {
+	public ModelAndView viewPost(HttpSession session, @RequestParam int postNo) {
+		int memberNo=0;
+		if(session.getAttribute("member")!=null) {
+			memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		}
 		Project pro = postService.selectProject(postNo);
 		Post p = postService.selectOnePost(postNo);
 		List<Schedule> listSc = postService.selectSchedule(postNo);
 		List<Todo> listTodo = postService.selectTodo(postNo);
 		List<Member> listMember = postService.selectMembers(postNo);
+		Decision decision = postService.selectDecision(postNo);
 
 		JSONArray scheduleArray = new JSONArray();
 		for(Schedule sc : listSc) {
@@ -83,21 +88,24 @@ public class PostControllerImpl {
 			member.put("memberName", mem.getMemberName());
 			memberArray.add(member);
 		}
+		
 
 		ModelAndView view = new ModelAndView();
+		view.addObject("memberNo",memberNo);
 		view.addObject("project",pro);
 		view.addObject("post", p);
 		view.addObject("schedule",scheduleArray);
 		view.addObject("todo", todoArray);
+		view.addObject("decision",decision);
 		view.addObject("member",memberArray);
 		view.setViewName("jsonView");
 		return view;
 	}
 
-	//할일 추가
+	//�븷�씪 異붽�
 	@RequestMapping(value="/postInsertTodo.do")
 	public ModelAndView insertTodo(HttpSession session, int postNo, String todoContent, int todoMember) {
-		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+		if(session.getAttribute("member")!=null) { // 濡쒓렇�씤 �꽭�뀡�쓣 媛��졇�삤湲�
 			int todoWriter = ((Member)session.getAttribute("member")).getMemberNo();
 			Todo vo = new Todo();
 			vo.setTodoPostNo(postNo);
@@ -116,7 +124,7 @@ public class PostControllerImpl {
 			return view;
 		} 
 		else {
-			System.out.println("세션 실패");
+			System.out.println("�꽭�뀡 �떎�뙣");
 			ModelAndView view = new ModelAndView();
 			view.addObject("result", -1);
 			view.setViewName("jsonView");
@@ -124,7 +132,7 @@ public class PostControllerImpl {
 		}
 	}
 
-	//일정 추가
+	//�씪�젙 異붽�
 	@RequestMapping(value="/postInsertSchedule.do")
 	public ModelAndView insertSchedule(HttpSession session, int postNo, @RequestParam String scTitle, @RequestParam Date startDate, @RequestParam Date endDate) {
 		if(session.getAttribute("member")!=null) {
@@ -153,15 +161,15 @@ public class PostControllerImpl {
 		}
 	}
 
-	//이미지 파일 업로드
+	//�씠誘몄� �뙆�씪 �뾽濡쒕뱶
 	@RequestMapping(value="/postFileUpload.do")
 	public ModelAndView fileUp(MultipartHttpServletRequest multi) {
 
-		// 저장 경로 설정
+		// ���옣 寃쎈줈 �꽕�젙
 		String root = multi.getSession().getServletContext().getRealPath("/");
 		String path = root+"resources/upload/";
 
-		String newFileName = ""; // 업로드 되는 파일명
+		String newFileName = ""; // �뾽濡쒕뱶 �릺�뒗 �뙆�씪紐�
 
 		File dir = new File(path);
 		if(!dir.isDirectory()){
@@ -174,7 +182,7 @@ public class PostControllerImpl {
 
 			MultipartFile mFile = multi.getFile(uploadFile);
 			String fileName = mFile.getOriginalFilename();
-			System.out.println("실제 파일 이름 : " +fileName);
+			System.out.println("�떎�젣 �뙆�씪 �씠由� : " +fileName);
 			newFileName = System.currentTimeMillis()+"."
 					+fileName.substring(fileName.lastIndexOf(".")+1);
 
@@ -221,5 +229,36 @@ public class PostControllerImpl {
 			view.setViewName("jsonView");
 			return view;
 		}
+	}
+	
+	//의사결정 삭제
+	@RequestMapping(value="/postDeleteDecision.do")
+	public ModelAndView deleteDecision(int postNo) {
+		int result = postService.deleteDecision(postNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	//의사결정 승인/반려 선택
+	@RequestMapping(value="/postUpdateDecision.do")
+	public ModelAndView updateDecision(int postNo, char dcDecision, String dcComment) {
+		Decision vo = new Decision();
+		vo.setDcPostNo(postNo);
+		vo.setDcDecision(dcDecision);
+		if(dcComment=="") {
+			if(dcDecision=='Y') dcComment="승인합니다.";
+			else dcComment="반려합니다.";
+		}
+		vo.setDcComment(dcComment);
+		int result = postService.updateDecision(vo);
+		Decision decision = postService.selectDecision(postNo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.addObject("decision", decision);
+		view.setViewName("jsonView");
+		return view;
 	}
 }

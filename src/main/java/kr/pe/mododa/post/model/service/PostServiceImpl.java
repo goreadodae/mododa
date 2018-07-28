@@ -41,16 +41,20 @@ public class PostServiceImpl implements PostService{
 		return postDAO.selectTodo(sqlSession, postNo);
 	}
 	
+	public Decision selectDecision(int postNo){
+		return postDAO.selectDecision(sqlSession, postNo);
+	}
+	
 	public List<Member> selectMembers(int postNo){
 		return postDAO.selectMembers(sqlSession, postNo);
-	}
-
-	public int insertTodo(Todo vo) {
-		return postDAO.insertTodo(sqlSession, vo);
 	}
 	
 	public Member selectMemberInfo(int memberNo) {
 		return postDAO.selectMemberInfo(sqlSession, memberNo);
+	}
+
+	public int insertTodo(Todo vo) {
+		return postDAO.insertTodo(sqlSession, vo);
 	}
 	
 	public int insertSchedule(Schedule vo) {
@@ -61,7 +65,13 @@ public class PostServiceImpl implements PostService{
 		return postDAO.insertDecision(sqlSession,vo);
 	}
 
+	public int deleteDecision(int postNo) {
+		return postDAO.deleteDecision(sqlSession,postNo);
+	}
 
+	public int updateDecision(Decision vo) {
+		return postDAO.updateDecision(sqlSession,vo);
+	}
 	
 
 }
