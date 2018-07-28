@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kr.pe.mododa.library.model.service.LibraryServiceImpl;
+import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
@@ -91,7 +92,7 @@ public class LibraryControllerImpl implements LibraryController{
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
-			ArrayList<Todo> listDecision = libraryService.listDecision(memberNo);
+			ArrayList<Decision> listDecision = libraryService.listDecision(memberNo);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listDecision", listDecision);
@@ -211,6 +212,110 @@ public class LibraryControllerImpl implements LibraryController{
 			return "redirect:/index.jsp";
 		}
 	}
+	
+	// 전체 할 일 불러오기
+	@RequestMapping(value="/listTodoAll.do")
+	public void listTodoAll(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		
+		ArrayList<Todo> listTodoAll = libraryService.listTodo(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
 
+		new Gson().toJson(listTodoAll,response.getWriter());
+	}
+	
+	// 내 할 일 불러오기
+	@RequestMapping(value="/listTodoMe.do")
+	public void listTodoMe(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
+		ArrayList<Todo> listTodoMe = libraryService.listTodoMe(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listTodoMe,response.getWriter());
+	}
+	
+	// 요청한 할 일 불러오기
+	@RequestMapping(value="/listTodoRequest.do")
+	public void listTodoRequest(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Todo> listTodoRequest = libraryService.listTodoRequest(memberNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listTodoRequest,response.getWriter());
+	}
+	
+	// 전체 의사결정 불러오기
+	@RequestMapping(value="/listDcAll.do")
+	public void listDcAll(HttpSession session, HttpServletResponse response) throws Exception {
+		System.out.println("test");
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Decision> listDcAll = libraryService.listDecision(memberNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listDcAll,response.getWriter());
+	}
+	
+	// 받은 의사결정 불러오기
+	@RequestMapping(value="/listDcMe.do")
+	public void listDcMe(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Decision> listDcMe = libraryService.listDcMe(memberNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listDcMe,response.getWriter());
+	}
+	
+	// 요청한 의사결정 불러오기
+	@RequestMapping(value="/listDcRequest.do")
+	public void listDcRequest(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Decision> listDcRequest = libraryService.listDcRequest(memberNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listDcRequest,response.getWriter());
+	}
+	
+	// 전체 이미지 불러오기
+	@RequestMapping(value="/listImageAll.do")
+	public void listImageAll(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		
+		ArrayList<Upload> listImageAll = libraryService.listImage(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listImageAll,response.getWriter());
+	}
+	
+	// 내 이미지 불러오기
+	@RequestMapping(value="/listImageMe.do")
+	public void listImageMe(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		
+		ArrayList<Upload> listImageMe = libraryService.listImageMe(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listImageMe,response.getWriter());
+	}
+	
 }

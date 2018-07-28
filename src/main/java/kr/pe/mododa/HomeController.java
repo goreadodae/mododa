@@ -36,4 +36,19 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value="/header.do")
+	public String header() {
+		return "main/header";
+	}
+	
+	@RequestMapping(value="/leftbar.do")
+	public String leftbar() {
+		return "main/leftbar";
+	}
+	
+	@RequestMapping(value="/rightbar.do")
+	public String rightbar() {
+		return "main/rightbar";
+	}
+	
 }

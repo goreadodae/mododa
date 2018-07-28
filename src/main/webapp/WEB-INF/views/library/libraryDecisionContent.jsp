@@ -33,9 +33,9 @@
 			<!-- 의사결정 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">받은 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">요청한 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcAll();">전체 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcMe();">받은 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcRequest();">요청한 의사결정</button></td>
 					<td width="55%"></td>
 				</tr>
 			</table>
@@ -43,8 +43,8 @@
 			<!-- 의사결정 메뉴 끝 -->
 			
 			<!-- 의사결정 내용 -->
-			<div>
-				<table width="100%" height="100px;" border="1" style="margin:0; padding:0;">
+			<div id="dcTableContainer">
+				<table id="dcTable" width="100%" height="100px;" border="1" style="margin:0; padding:0;">
 					<c:forEach items="${listDecision }" var="d">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
@@ -54,14 +54,6 @@
 						<td>${d.dcPostTitle }</td>
 						<td>${d.dcWriterName } -> ${d.dcMakerName }</td>
 						<td>${d.dcDecision }</td>
-						<%-- <c:choose>
-							 <c:when test="${d.dcDecision=='n'.charAt(0) }">
-								<td>결정중</td>
-							</c:when>
-							<c:otherwise>
-								<td>결정 완료</td>
-							</c:otherwise>
-						</c:choose> --%>
 					</tr>
 					</c:forEach>
 					
@@ -73,7 +65,93 @@
 			
 		</div>
 	</div>
-
-
 </body>
+
+<script>
+	/* 전체 의사결정 */
+	function listDcAll() {
+		$.ajax({
+			url:"/listDcAll.do",
+			type:"POST",
+			success : function(data) {
+				$("#dcTable").remove();
+				$("#dcTableContainer").append("<table border='1' id='dcTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#dcTable").append(
+							"<tr>" + 
+							"<td rowspan='2' width='7%'>아이콘</td>" +
+							"<td width='70%' colspan='3'>"+ data[i].dcContent +"</td>" +
+							"</tr>" +
+							"<tr>" +
+							"<td>"+data[i].dcPostTitle +"</td>" +
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
+							"<td>"+data[i].dcDecision +"</td>" +
+							"</tr>" 
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+	}
+	
+	/* 받은 의사결정 */
+	function listDcMe() {
+		$.ajax({
+			url:"/listDcMe.do",
+			type:"POST",
+			success : function(data) {
+				$("#dcTable").remove();
+				$("#dcTableContainer").append("<table border='1' id='dcTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#dcTable").append(
+							"<tr>" + 
+							"<td rowspan='2' width='7%'>아이콘</td>" +
+							"<td width='70%' colspan='3'>"+ data[i].dcContent +"</td>" +
+							"</tr>" +
+							"<tr>" +
+							"<td>"+data[i].dcPostTitle +"</td>" +
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
+							"<td>"+data[i].dcDecision +"</td>" +
+							"</tr>" 
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+	}
+	
+	/* 요청한 의사결정 */
+	function listDcRequest() {
+		$.ajax({
+			url:"/listDcRequest.do",
+			type:"POST",
+			success : function(data) {
+				$("#dcTable").remove();
+				$("#dcTableContainer").append("<table border='1' id='dcTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#dcTable").append(
+							"<tr>" + 
+							"<td rowspan='2' width='7%'>아이콘</td>" +
+							"<td width='70%' colspan='3'>"+ data[i].dcContent +"</td>" +
+							"</tr>" +
+							"<tr>" +
+							"<td>"+data[i].dcPostTitle +"</td>" +
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
+							"<td>"+data[i].dcDecision +"</td>" +
+							"</tr>" 
+					);
+				}
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
+	}
+</script>
+
+
 </html>
