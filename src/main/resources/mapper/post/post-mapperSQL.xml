@@ -57,10 +57,14 @@
 		sc_title as scTitle
 		from schedule where post_no = #{postNo}
 	</select>
+	
+	<select id="selectDecision" resultType="decision">
+	select * from decision where dc_Post_No=#{dcPostNo}
+	</select>
 
 	<insert id="insertSchedule" parameterType="schedule">
 		insert into schedule
-		values(schedule_SEQ.NEXTVAL,#{postNo},1,(select post_pro_no from post where post_no=#{postNo}),#{startDate},#{endDate},#{scTitle})
+		values(schedule_SEQ.NEXTVAL,#{postNo},#{memNO},(select post_pro_no from post where post_no=#{postNo}),#{startDate},#{endDate},#{scTitle})
 	</insert>
 
 	<insert id="insertTodo" parameterType="todo">
@@ -68,9 +72,13 @@
 		values(todo_SEQ.NEXTVAL,#{todoPostNo},(select post_pro_no from post where post_no=#{todoPostNo}),#{todoTitle},#{todoContent},#{todoWriter},#{todoMember},SYSDATE,SYSDATE,'')
 	</insert>
 	
-	<select id="selectMemberforTodo" resultType="member">
+	<select id="selectMemberInfo" resultType="member">
 	select member_name as memberName, member_picture as memberPicture from member where member_no=#{memberNo}
 	</select>
+	
+	<insert id="insertDecision" parameterType="decision">
+		insert into decision values(decision_SEQ.NEXTVAL, #{dcPostNo}, #{dcWriter}, #{dcMaker}, #{dcContent},SYSDATE,'n',null,null,null)
+	</insert>
 
 
 </mapper>

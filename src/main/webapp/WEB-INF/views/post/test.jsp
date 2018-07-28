@@ -65,12 +65,23 @@ div {
 	width: 60px;
 }
 
-.modal-schedule {
+.modal-input {
 	background-color: #fefefe;
 	margin: 17% auto; /* 15% from the top and centered */
 	padding: 20px;
 	border: 1px solid #888;
 	width: 60px;
+}
+
+#modal-decision{
+	background-color: #fefefe;
+	margin: 17% auto; /* 15% from the top and centered */
+	padding: 25px;
+	border: 1px solid #888;
+	width: 60px;
+	border-radius: 5px;
+	width: 550px;
+	height:230px;
 }
 
 #modal-close {
@@ -85,63 +96,6 @@ div {
 /* 댓글 */
 #comment {
 	background-color: #F5F5F5;
-}
-
-.comment-box {
-	height: 99%;
-	width: 100%;
-	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
-}
-
-.comment-header {
-	width: 100%;
-	height: 30px;
-	z-index:10;
-	border-bottom:1px solid gray;
-}
-.comment-no {
-	color: gray;
-	margin-left: 15px;
-	margin-top: 5px;
-}
-.comment-area {
-	height: 77%;
-	width: 100%;
-	bottom: 151.2px;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-#input-box {
-	margin: 10px;
-	border:2px solid gray;
-	border-radius: 5px;
-}
-
-.comment-input {
-	width: 100%;
-	height: 90%;
-	border-bottom:1px solid gray;
-}
-
-.comment-list {
-	padding: 5;
-	margin: 0;
-	list-style: none;
-}
-
-.comment-footer {
-	fixed: bottom;
-	bottom: 5px;
-}
-
-#comment-wr {
-	float: right;
-	
-}
-
-.comment.btn {
-	margin-top: 1;
 }
 
 #like-count {
@@ -220,6 +174,45 @@ div {
 	align: center;
 }
 
+/* 의사결정 등록 */
+#decisionContent{
+	width : 100%;
+	height : 50px;
+}
+
+.memberIdForDecision{
+	font-weight:bold;
+}
+
+#decisionWait{
+	background-color : #aaaaaa;
+	color : white;
+	width : 50px;
+	text-align : center;
+	border-radius: 20px;
+	margin : 0px;
+	display : inline-block;
+}
+
+#decisionApproval{
+	background-color : #64CD3C;
+	color : white;
+	width : 50px;
+	text-align : center;
+	border-radius: 20px;
+	margin : 0px;
+	display : inline-block;
+}
+
+#decisionCancel{
+	background-color : #64CD3C;
+	color : white;
+	width : 50px;
+	text-align : center;
+	border-radius: 20px;
+	margin : 0px;
+	display : inline-block;
+}
 
 
 /* 버튼 스타일 */
@@ -230,6 +223,16 @@ div {
 	width: 150px;
 	border: 0px;
 	cursor: pointer;
+}
+
+.insertButton2 {
+	background-color: #339966;
+	color: #F8FAFF;
+	width: 80px;
+	border: 0px;
+	cursor: pointer;
+	padding : 5px;
+	border-radius: 30px;
 }
 </style>
 
@@ -286,10 +289,15 @@ div {
 					
 					//게시글 프로젝트의 멤버들
 					$('#selectMember').html("");
+					$('#selectMemberForDecision').html("");
 					for(var i=0; i<data.member.length; i++){
 						var strMember = "<option value='" + data.member[i].memberNo + "'>" + data.member[i].memberName + "</option>";
 						$('#selectMember').append(strMember);
+						$('#selectMemberForDecision').append(strMember);
 					}
+					
+					//의사결정 불렁오기
+					
 					
 				} else {
 					$('#post-title').html('db에 글이 없음');
@@ -325,37 +333,57 @@ div {
 		$('#scheduleModal').hide();
 	};
 	
+	//의사결정 모달 open
+	function open_decision(flag){
+		$('#decisionModal').show();
+	}
+	
+	//의사결정 모달 close
+	function close_decision(flag) {
+		$('#decisionModal').hide();
+	};
+	
 	//할일 추가
 	function inputTodo(){
 		var todoContent = $('#newTodoContent').val();
-		var todoWriter = 1; //////session!!!
 		var todoMember = $('#selectMember').val();
-		
+		if(todoContent==""){
+			alert("할 일 내용을 입력해주세요.");
+		}
+		else if(todoMember==null){
+			alert("담당자를 선택해주세요.");
+		}
+		else{
 		$.ajax({
 			url : "/postInsertTodo.do",
 			type : "post",
 			data : {
 				postNo : postNo,
 				todoContent : todoContent,
-				todoWriter : todoWriter,
 				todoMember : todoMember
 			},
 			success : function(data) {
-				console.log("성공");
-				
-				var str = "" + todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img src=" + data.todoMember.memberPicture + " /> " + data.todoMember.memberName +"<br>";
-	
-				$('#appendforTodo').append(str);
-				
-				$('#countTodo').html(Number($('#countTodo').html())+1);
+				if(data.result<0){ //로그인 세션이 null일때
+					console.log("insert실패");
+					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+				}
+				else{
+					var str = "" + todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img src=" + data.todoMember.memberPicture + " /> " + data.todoMember.memberName +"<br>";
+					
+					$('#appendforTodo').append(str);
+					
+					$('#countTodo').html(Number($('#countTodo').html())+1);
+				}
 			},
 			error : function(data) {
 				console.log("실패");
 			},
 			complete : function(data) {
+				$('#newTodoContent').val("");
 				close_schedule();
 			}
 		});
+		}
 	};
 
 	//일정 추가
@@ -374,21 +402,25 @@ div {
 				endDate : scEndDate
 			},
 			success : function(data) {
-				console.log("성공");
-				var str = "<div class='scheduleList'>" + 
-				"<img src='../resources/images/post/calendar.png'/>"+
-				"<span class='scheduleDate'>&nbsp;&nbsp;" + scStartDate + " ~ " + scEndDate + "&nbsp;&nbsp; : &nbsp;&nbsp;" + scTitle +"</span>" +
-				"</div>";
-	
-				$('#appendforSchedule').append(str);
-				
-				$('#countSchedule').html(Number($('#countSchedule').html())+1);
+				if(data.result<0){
+					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+				}
+				else{
+					var str = "<div class='scheduleList'>" + 
+					"<img src='../resources/images/post/calendar.png'/>"+
+					"<span class='scheduleDate'>&nbsp;&nbsp;" + scStartDate + " ~ " + scEndDate + "&nbsp;&nbsp; : &nbsp;&nbsp;" + scTitle +"</span>" +
+					"</div>";
+		
+					$('#appendforSchedule').append(str);
+					
+					$('#countSchedule').html(Number($('#countSchedule').html())+1);
+				}
 			},
 			error : function(data) {
 				console.log("실패");
 			},
 			complete : function(data) {
-				close_schedule();
+				close_decision();
 			}
 		});
 	};
@@ -407,6 +439,41 @@ div {
 		}
 
 	};
+	
+	//의사결정 추가
+	function inputDecision(){
+		var dcMaker = $('#selectMemberForDecision').val();
+		var dcContent = $('#decisionContent').val();
+
+		$.ajax({
+			url : "/postInsertDecision.do",
+			type : "post",
+			data : {
+				postNo :postNo,
+				dcMaker : dcMaker,
+				dcContent : dcContent
+			},
+			success : function(data) {
+				if(data.result<0){
+					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+				}
+				else{
+					var str = "<span class='memberIdForDecision'>" + data.writerMem.memberName + "</span>님의 요청 : " + dcContent + "<br>" +
+							"<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>" + data.makerMem.memberName + "</span>님의 결정 기다리는 중";
+		
+					$('#appendforDecision').html(str);
+					$('#countDecision').html(1);
+				}
+			},
+			error : function(data) {
+				console.log("실패");
+			},
+			complete : function(data) {
+				$('#decisionContent').val("");
+				close_decision();
+			}
+		});
+	}
 
 
 
@@ -474,8 +541,7 @@ div {
 						<div>
 							<span class="contents-title">일정 &nbsp;<span id="countSchedule">0</span></span>
 							&nbsp;&nbsp;&nbsp;<button class="insertButton" onclick="open_scheduleModal();" style="float:right;">+ 일정추가</button>
-							<div id="appendforSchedule"></div>
-							
+							<div id="appendforSchedule"></div><br>
 						</div>
 						
 
@@ -491,80 +557,20 @@ div {
 						<br>
 
 						<hr>
-						<span class="contents-title">의사결정 0</span><br>
-						<div class="content-box">
+						<span class="contents-title">의사결정 &nbsp;<span id="countDecision">0</span></span><br>
+						<div id="appendforDecision">
+						<div class="content-box" onclick="open_decision();">
 							<img src="../resources/images/post/add.png" id="add-icon" />
 						</div>
+						<br>
+						
+						</div>
+						
 						<br>
 					</div>
 
 					<!-- right side -->
-					<div class="col-5" id="comment">
-					
-					<div class="comment-box">
-		<div class="comment-header">
-			<!-- 댓글 갯수 출력.-->
-			<span class="comment-no">댓글 <span
-				class="badge badge-pill badge-success">10</span></span>
-		</div>
-		<div class="comment-area">
-			<!-- 댓글 내용 출력.-->
-			<ul class="comment-list">
-
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀 제대로 해라
-					
-				</li>
-				
-			</ul>
-		</div>
-
-		<div class="comment-footer">
-			<div id="input-box">
-				<textarea class="comment-input" placeholder="댓글 입력!!!"></textarea>
-				<div class="comment-fun"
-					style="background-color: white; width: 100%; height: 31px;">
-					<!-- 글감첨부, 댓글버튼 -->
-					<button class="btn btn-link btn-sm" style="float:left;">글감첨부</button>
-					<span class="badge badge-pill badge-warning">10</span>
-					<button id="comment-wr" class="btn btn-outline text-success btn-sm">댓글
-						작성!</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-					
-					</div>
+					<div class="col-5" id="comment">댓글창</div>
 				</div>
 			</div>
 			<!-- Modal 내용 끝 -->
@@ -576,7 +582,7 @@ div {
 		<!-- 일정 팝업모달 -->
 		<div id="scheduleModal" class="modal">
 			<!-- Modal 내용 -->
-			<div class="modal-schedule" style="width: 25%; height: 30%;">
+			<div class="modal-input" style="width: 25%; height: 30%;">
 				<div class="row" style="margin-bottom: 20px;">
 					<div class="col-11"></div>
 					<div class="col-1">
@@ -599,10 +605,6 @@ div {
 					</div>
 					<div class="col-1"></div>
 				</div>
-
-
-
-
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>
@@ -612,12 +614,27 @@ div {
 		<!-- 이미지 팝업모달 -->
 		<div id="scheduleModal" class="modal">
 			<!-- Modal 내용 -->
-			<div class="modal-schedule" style="width: 25%; height: 30%;">
+			<div class="modal-input" style="width: 25%; height: 30%;">
 			
 			</div>
 		</div>
 		<!-- 이미지 팝업모달 끝 -->
-
+		
+		<!-- 의사결정 팝업모달 시작 -->
+		<div id="decisionModal" class="modal">
+			<!-- Modal 내용 -->
+			<div id="modal-decision">
+			<img src="../resources/images/post/select.png" /><span style="color :#339966; ">&nbsp;&nbsp;의사결정 요청</span>
+			<img src="../resources/images/post/close.png" onclick="close_decision();" style="float:right; height : 20px;"/><br><br>
+				<input type="text" id="decisionContent" placeholder="결정을 요청할 내용을 입력해 주세요."/><br><br>
+				
+				결정자 선택&nbsp;&nbsp;<select id="selectMemberForDecision"></select><br>
+				<button class="insertButton2" onclick="inputDecision();" style="float:right;">요청</button>
+			
+			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 의사결정 팝업모달 끝 -->
 	</div>
 </body>
 </html>

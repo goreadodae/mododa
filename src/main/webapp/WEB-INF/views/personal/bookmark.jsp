@@ -234,7 +234,7 @@
 		
 			
 
- <jsp:include page="/post.do"></jsp:include>
- 
+<jsp:include page="/testareum.do"></jsp:include>
+
 </body>
 </html>
