@@ -66,7 +66,7 @@
 								<i class="fab fa-searchengin" style="color: grey;"></i>
 							</button>
 
-							<button type="button" class="btn btn-outline-warning">
+							<button type="button" class="btn btn-outline-success">
 								<i class="fas fa-edit"></i>글쓰기
 							</button>
 

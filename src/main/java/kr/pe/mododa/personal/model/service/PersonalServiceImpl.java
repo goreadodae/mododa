@@ -26,7 +26,7 @@ public class PersonalServiceImpl implements PersonalService {
 
 	public ArrayList<Newsfeed> selectAllNewsFeed(int memberNo) {
 		ArrayList<Newsfeed> newsfeed = personalDAO.selectAllNewsFeed(sqlSession,memberNo);
-		return null;
+		return newsfeed;
 	}
 
 	public ArrayList<Bookmark> selectBookmark(int memberNo) {
@@ -52,6 +52,11 @@ public class PersonalServiceImpl implements PersonalService {
 	public ArrayList<Bookmark> searchBookmark(SerDelPost sdp) {
 		ArrayList<Bookmark> searchBook = personalDAO.searchBookmark(sqlSession,sdp);
 		return searchBook;
+	}
+
+	public ArrayList<Newsfeed> searchNews(SerDelPost sdp) {
+		ArrayList<Newsfeed> searchFeed = personalDAO.searchNews(sqlSession,sdp);
+		return searchFeed;
 	}
 	
 	

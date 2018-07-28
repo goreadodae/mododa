@@ -49,7 +49,6 @@ public class WriteControllerImpl implements WriteController {
 		ModelAndView mav = new ModelAndView();
 		
 		ArrayList<Project> list = writeService.autoComplete(memberNo);
-		
 		response.setContentType("apllication/json");
 		response.setCharacterEncoding("utf-8");
 		

@@ -264,48 +264,186 @@ li[id^="sub_"] a {
 		});
 	}
 	
-	//배너 닫기
+/* 	//배너 닫기
 	function bannerClose() {
 		$("#banner").hide();
-	}
+	} */
 	
 	//contents 화면 전환
 	jQuery(function($) {
 		   $("#newsfeed").click(function() {
 		      $("#content-frame").remove();
 		      $("#contents").append("<div id='content-frame'></div>");
-		      $("#content-frame").load("");
+		      $("#content-frame").load("/newsfeed.do");
 		   });
 
 		   $("#callpost").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/testareum.do");
+			   $("#banner").css('background-color','#339966');
+			   $('li[id^="sub_'+beforeShow+'"]').hide();
+			   $(".privateSub").hide();
 		   });
 		   
 		   $("#bookmark").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/bookmark.do");
+			   $("#banner").css('background-color','#339966');
+			   $('li[id^="sub_'+beforeShow+'"]').hide();
+			   $(".privateSub").hide();
+		   });
+		   
+		   $("#mypost").click(function() {
+			   $("#content-frame").remove();
+			   $("#contents").append("<div id='content-frame'></div>");
+			   $("#content-frame").load("/mypost.do");
 		   });
 		   
 		   $("#project").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("");
+			   $("#banner").css('background-color','#339966');
+			   $('li[id^="sub_'+beforeShow+'"]').hide();
+			   $(".privateSub").hide();
 		   });
 		   
 		   $("#library").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/libraryMain.do");
+			   $("#banner").css('background-color','#339966');
+			   $('li[id^="sub_'+beforeShow+'"]').hide();
+			   $(".privateSub").hide();
 		   });
 		   
 		   $("#calendarAll").click(function() {
 			   $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/calendar.do");
+			   $("#banner").css('background-color','#339966');
+			   $('li[id^="sub_'+beforeShow+'"]').hide();
+			   $(".privateSub").hide();
 		   });
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+			/* 지은이가 사용하는 스크립트 */
+			// 프로젝트 생성
+		   	$("#createProject").click(function() {
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    $("#content-frame").load("/gotoCreateProject.do");
+			    $("#banner").css('background-color','#CFF09E');
+		    });
+			
+		   	$("#moreProject").click(function() {
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    $("#content-frame").load("/gotoMoreProject.do");
+			    $("#banner").css('background-color','#CFF09E');
+		    });
+		   	
+ 		   	$("#moreProjectMain").click(function() {
+		   		var proNo = $(this).attr(value);
+		   		alert(proNo);
+		   	});
+			
+		   	var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
+			// 프라이빗 공간
+		   	$("#privateMain").click(function() {
+		   		var displayValue = $(".privateSub").css('display');
+		   		if(displayValue=='none') {
+		   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
+		   			$(".privateSub").show();
+		   			$("#banner").css('background-color','#CFF09E');
+		   		} else {
+		   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
+		   			$(".privateSub").hide();
+		   			$("#banner").css('background-color','#339966');
+		   		}
+		    });
+		   	
+		   	// 프라이빗 하위 메뉴 
+		   	$(".priPost").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    $("#content-frame").load("/priPost.do?proNo="+proNo);
+			});
+			
+			$(".priHashTag").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    //$("#content-frame").load("#");
+			});
+		   	
+			
+			// 프로젝트 목록
+		   	$(".projectMain").click(function() {
+		   		var proNo = $(this).attr('value');
+				var displayValue = $('li[id^="sub_'+proNo+'"]').css('display');
+		   		if(displayValue=='none') {
+		   			$(".privateSub").hide();/* 열렸던 창 닫기 */
+		   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
+		   			$('li[id^="sub_'+proNo+'"]').show();
+		   			beforeShow = proNo;/* 열렸던 창 닫기 */
+		   			$("#banner").css('background-color','#CFF09E');
+		   		} else {
+		   			$('li[id^="sub_'+proNo+'"]').hide();
+		   			$("#banner").css('background-color','#339966');
+		   		}
+		    });
+
+			// 프로젝트 하위 메뉴
+			$(".proPost").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    $("#content-frame").load("/proPost.do?proNo="+proNo);
+			});
+			
+			$(".proHashTag").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    //$("#content-frame").load("#");
+			});
+			
+			$(".proProgress").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    //$("#content-frame").load("#");
+			});
+			
+			$(".proMyPost").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    //$("#content-frame").load("#");
+			});
+			
+			$(".proCalendar").click(function() {
+				var proNo = $(this).attr('value');
+				$("#content-frame").remove();
+			   	$("#contents").append("<div id='content-frame'></div>");
+			    //$("#content-frame").load("#");
+			});
+		   
+		   
+		   
+		   
+		   
+		   
 
 	});
 	
@@ -356,102 +494,6 @@ li[id^="sub_"] a {
 </script>
 
 
-<!-- 지은이가 사용할 스크립트 -->
-<script>
-
-/* 지은 프로젝트부분 contents 화면 전환 함수 */
-jQuery(function($) {
-	
-	// 프로젝트 생성
-   	$("#createProject").click(function() {
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    $("#content-frame").load("/gotoCreateProject.do");
-    });
-	
-   	var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
-	// 프라이빗 공간
-   	$("#privateMain").click(function() {
-   		var displayValue = $(".privateSub").css('display');
-   		if(displayValue=='none') {
-   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
-   			$(".privateSub").show();
-   		} else {
-   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
-   			$(".privateSub").hide();
-   		}
-    });
-   	
-   	// 프라이빗 하위 메뉴 
-   	$(".priPost").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    $("#content-frame").load("/priPost.do?proNo="+proNo);
-	});
-	
-	$(".priHashTag").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    //$("#content-frame").load("#");
-	});
-   	
-	
-	// 프로젝트 목록
-   	$(".projectMain").click(function() {
-   		var proNo = $(this).attr('value');
-		var displayValue = $('li[id^="sub_'+proNo+'"]').css('display');
-   		if(displayValue=='none') {
-   			$(".privateSub").hide();/* 열렸던 창 닫기 */
-   			$('li[id^="sub_'+beforeShow+'"]').hide();/* 열렸던 창 닫기 */
-   			$('li[id^="sub_'+proNo+'"]').show();
-   			beforeShow = proNo;/* 열렸던 창 닫기 */
-   		} else {
-   			$('li[id^="sub_'+proNo+'"]').hide();
-   		}
-    });
-
-	// 프로젝트 하위 메뉴
-	$(".proPost").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    $("#content-frame").load("/proPost.do?proNo="+proNo);
-	});
-	
-	$(".proHashTag").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    //$("#content-frame").load("#");
-	});
-	
-	$(".proProgress").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    //$("#content-frame").load("#");
-	});
-	
-	$(".proMyPost").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    //$("#content-frame").load("#");
-	});
-	
-	$(".proCalendar").click(function() {
-		var proNo = $(this).attr('value');
-		$("#content-frame").remove();
-	   	$("#contents").append("<div id='content-frame'></div>");
-	    //$("#content-frame").load("#");
-	});
-
-});
-</script>
-
-
 <body>
 	<div>
 		<!-- header -->
@@ -460,9 +502,8 @@ jQuery(function($) {
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
-					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. <img id="cancel-img"
-						onclick="bannerClose();"
-						src="../resources/images/layout-img/cancel.png" />
+					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. 
+					<!-- <img id="cancel-img" onclick="bannerClose();" src="../resources/images/layout-img/cancel.png" /> -->
 				</div>
 			</div>
 
@@ -555,7 +596,7 @@ jQuery(function($) {
 						<li class="list-group-item" id="privateMain"><img src="../resources/images/project/safe.png" class="icon"> 프라이빗 공간</li>
 						<li class="privateSub">
 						<a class="dropdown-item priPost" href="#" value="${privateProject.proNo}">
-							<img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글
+							<img src="../resources/images/project/post-it.png" class="subIcon" /> 프라이빗 글
 						</a>
 						</li>
 						<li class="privateSub">
@@ -605,7 +646,7 @@ jQuery(function($) {
 						
 						</c:forEach>
 						
-						<li class="list-group-item"><img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
+						<li class="list-group-item" id="moreProject"><img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
 						<!-- 모달로 전체 목록 띄우기 -->
 					</ul>
 
@@ -616,6 +657,9 @@ jQuery(function($) {
 
 			<!-- contents -->
 			<div class="col-6" id="contents">
+			<div id="content-frame">
+			<jsp:include page="/newsfeed.do"></jsp:include>
+			</div>
 			</div>
 			<!-- contents 끝 -->
 
