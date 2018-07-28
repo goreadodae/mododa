@@ -352,6 +352,7 @@ li[id^="sub_"] a {
     	$("#content-frame").remove();
 	   	$("#contents").append("<div id='content-frame'></div>");
 	    $("#content-frame").load("/myInfo.do");
+	    console.log('내정보페이지이동');
     }
 </script>
 
@@ -480,7 +481,7 @@ jQuery(function($) {
 				<div class="col-md-4 topbar">
 					<div class="row" style="height: 100%;">
 					<div class="col-md-4 topbar"></div>
-					<div class="col-md-1 dropdown topbar">
+					<div class="col-md-1 dropdown topbar" id="myInfoDiv">
 						<!-- 회원 썸네일 -->
 					<c:choose>
 						<c:when test="${sessionScope.member.memberPicture!=null }">
@@ -498,8 +499,8 @@ jQuery(function($) {
 							</div>
 							<div class="col-md-8">
 								<div class="row">
-								<div class="col-md-12">${sessionScope.member.memberName }</div>
-								<div class="col-md-12">${sessionScope.member.memberId }</div>
+								<div class="col-md-12"><label class="label-name">${sessionScope.member.memberName }</label></div>
+								<div class="col-md-12"><label class="label-id">${sessionScope.member.memberId }</label></div>
 								</div>
 							</div>
     						<a class="dropdown-item" href="#" onclick="gotoMyInfo();">내정보</a>

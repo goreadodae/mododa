@@ -8,7 +8,7 @@
 </head>
 <body>
 	<script>
-		alert("변경에 성공하였습니다. 변경된 비밀번호로 로그인해주세요");
+		alert("변경에 성공하였습니다");
 		location.href="/index.jsp";
 	</script>
 </body>

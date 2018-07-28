@@ -174,4 +174,8 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.changePw(sqlSession, vo);
 	}
 
+	public int changeMyInfo(Member vo) {
+		return memberDAO.changeMyInfo(sqlSession, vo);
+	}
+
 }
