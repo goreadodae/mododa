@@ -74,7 +74,7 @@ public class CalendarControllerImpl implements CalendarController {
 		
 		ArrayList<Schedule> list = CalendarService.calendarSchedule();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
 		
 		String startDate =""; String endDate="";
 		
