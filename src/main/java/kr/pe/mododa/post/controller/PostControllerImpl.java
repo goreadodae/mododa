@@ -88,7 +88,7 @@ public class PostControllerImpl {
 			member.put("memberName", mem.getMemberName());
 			memberArray.add(member);
 		}
-		
+
 
 		ModelAndView view = new ModelAndView();
 		view.addObject("memberNo",memberNo);
@@ -210,10 +210,10 @@ public class PostControllerImpl {
 			vo.setDcContent(dcContent);
 
 			int result = postService.insertDecision(vo);
-			
+
 			Member writerMem = postService.selectMemberInfo(dcWriter);
 			Member makerMem = postService.selectMemberInfo(dcMaker);
-			
+
 			ModelAndView view = new ModelAndView();
 			if(result>0) {
 				view.addObject("result", result);
@@ -230,7 +230,7 @@ public class PostControllerImpl {
 			return view;
 		}
 	}
-	
+
 	//의사결정 삭제
 	@RequestMapping(value="/postDeleteDecision.do")
 	public ModelAndView deleteDecision(int postNo) {
@@ -240,7 +240,7 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//의사결정 승인/반려 선택
 	@RequestMapping(value="/postUpdateDecision.do")
 	public ModelAndView updateDecision(int postNo, char dcDecision, String dcComment) {
@@ -254,10 +254,24 @@ public class PostControllerImpl {
 		vo.setDcComment(dcComment);
 		int result = postService.updateDecision(vo);
 		Decision decision = postService.selectDecision(postNo);
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.addObject("decision", decision);
+		view.setViewName("jsonView");
+		return view;
+	}
+
+	//진행과정 변경
+	@RequestMapping(value="/postUpdatePostProgress.do")
+	public ModelAndView updatePostProgress(int postNo, String postProgress) {
+		Post vo = new Post();
+		vo.setPostNo(postNo);
+		vo.setPostProgress(postProgress);
+		int result = postService.updatePostProgress(vo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
 		view.setViewName("jsonView");
 		return view;
 	}

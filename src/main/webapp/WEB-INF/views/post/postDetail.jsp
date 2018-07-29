@@ -65,12 +65,15 @@ div {
 	width: 60px;
 }
 
-.modal-input {
+#modal-schedule {
 	background-color: #fefefe;
-	margin: 17% auto; /* 15% from the top and centered */
-	padding: 20px;
+	margin: 13% auto; /* 15% from the top and centered */
+	padding: 25px;
 	border: 1px solid #888;
 	width: 60px;
+	border-radius: 5px;
+	width: 550px;
+	height:290px;
 }
 
 #modal-decision{
@@ -152,7 +155,19 @@ div {
 }
 
 
-/* 일정 */
+/* 일정 등록 */
+
+#scTitle{
+	width : 100%;
+	height : 50px;
+}
+
+#scStartDate, #scEndDate{
+	border : 1px solid #aaaaaa;
+	height : 40px;
+	font-size:15px;
+}
+
 .scheduleDate{
 	font-size : 15px;
 	color : #464646;
@@ -176,13 +191,6 @@ div {
 	cursor: pointer;
 	border-radius: 30px;
 	font-size : 15px;
-}
-
-/* 일정 등록 */
-#sheduleTitle {
-	width: 100%;
-	height: 50px;
-	align: center;
 }
 
 /* 의사결정 등록 */
@@ -231,6 +239,7 @@ div {
 	background-color : #dcdcdc;
 	color : #505050;
 	display : inline-block;
+	float : right;
 }
 
 #decideForDecision{
@@ -239,6 +248,7 @@ div {
 	background-color : #CFF09E;
 	color : #505050;
 	display : inline-block;
+	float : right;
 }
 
 #decideYes{
@@ -347,12 +357,12 @@ div {
 						var strDecision = "<span class='memberIdForDecision'>" + data.decision.dcWriterName + "</span>님의 요청 : " + data.decision.dcContent + "<br>";
 
 						if(data.decision.dcYn=='n' || data.decision.dcYn=='N'){//아직 의사결정 안됬을때(대기)
-							strDecision += "<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 기다리는 중&nbsp;&nbsp;&nbsp;";
+							strDecision += "<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 기다리는 중&nbsp;&nbsp;&nbsp;<br>";
 						}
 						else if(data.decision.dcDecision=='y'||data.decision.dcDecision=='Y'){//의사결정이 승인일때
-							strDecision += "<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;";
+							strDecision += "<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;<br>";
 						}else{//의사결정이 반려일때
-							strDecision += "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;";
+							strDecision += "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;<br>";
 						}
 						
 						if(data.memberNo==data.decision.dcWriter){//로그인한 계정이 결정 요청자일 경우
@@ -364,7 +374,7 @@ div {
 						
 						$('#countDecision').html(1);
 					}
-					$('#appendforDecision').html(strDecision);
+					$('#appendforDecision').html(strDecision+"<br><br>");
 					
 					
 					//게시글 프로젝트의 멤버들
@@ -432,6 +442,46 @@ div {
 	//의사결정하기 모달 close
 	function close_decide(flag){
 		$('#decideModal').hide();
+	}
+	
+	//진행과정 변경
+	function changeProgress(status){
+		$.ajax({
+			url : "/postUpdatePostProgress.do",
+			type : "post",
+			data : {
+				postNo : postNo,
+				postProgress : status
+			},
+			success : function(data) {
+				if(data.result<0){
+					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+				}
+				else{
+					console.log("성공");
+					
+					if(status=='발의된 이슈'){
+						$('#statusImg').attr("src","../resources/images/post/light-bulbOn.png");
+					}
+					else if(status=='진행 중'){
+						$('#statusImg').attr("src","../resources/images/post/play-buttonOn.png");
+					}
+					else if(status=='일시중지'){
+						$('#statusImg').attr("src","../resources/images/post/pauseOn.png");
+					}
+					else if(status=='완료'){
+						$('#statusImg').attr("src","../resources/images/post/checked.png");
+					}
+					
+				}
+			},
+			error : function(data) {
+				console.log("진행과정 변경 실패");
+			},
+			complete : function(data) {
+				
+			}
+		});
 	}
 	
 	//할일 추가
@@ -640,10 +690,10 @@ div {
 				else{
 					var strDecision = "<span class='memberIdForDecision'>" + data.decision.dcWriterName + "</span>님의 요청 : " + data.decision.dcContent + "<br>";
 					if(decideResult=='Y'){
-						strDecision += "<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;";
+						strDecision += "<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;<br>";
 					}
 					else{
-						strDecision +=  "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;";
+						strDecision +=  "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;<br>";
 					}
 					
 					if(memberNo==data.decision.dcWriter){//로그인한 계정이 결정 요청자일 경우
@@ -653,7 +703,7 @@ div {
 						strDecision += " <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
 					}
 					
-					$('#appendforDecision').html(strDecision);
+					$('#appendforDecision').html(strDecision+"<br><br>");
 				}
 			},
 			error : function(data) {
@@ -693,17 +743,13 @@ div {
 							<button type="button" class="btn btn-link dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">
-								<img src="../resources/images/post/lightbulb.png" />
+								<img id="statusImg" src="../resources/images/post/lightbulb.png" />
 							</button>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#"><img
-									src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/play-button.png" /> 진행중</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/pause.png" /> 일시중지</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/checked-allot.png" /> 완료</a>
+								<a class="dropdown-item" onclick="changeProgress('발의된 이슈');"><img src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> 
+								<a class="dropdown-item" onclick="changeProgress('진행 중');"><img src="../resources/images/icon/play-button.png" /> 진행 중</a> 
+								<a class="dropdown-item" onclick="changeProgress('일시중지');"><img src="../resources/images/icon/pause.png" /> 일시중지</a> 
+								<a class="dropdown-item" onclick="changeProgress('완료');"><img src="../resources/images/icon/checked-allot.png" /> 완료</a>
 							</div>
 						</div>
 
@@ -772,30 +818,13 @@ div {
 
 		<!-- 일정 팝업모달 -->
 		<div id="scheduleModal" class="modal">
-			<!-- Modal 내용 -->
-			<div class="modal-input" style="width: 25%; height: 30%;">
-				<div class="row" style="margin-bottom: 20px;">
-					<div class="col-11"></div>
-					<div class="col-1">
-						<img src="../resources/images/post/close.png" id="modal-close"
-							onclick="close_schedule();" />
-					</div>
-				</div>
-
-				<div class="row" id="scheduleInfo">
-					<div class="col-1"></div>
-					<div class="col-10">
-						<input type="text" id="scTitle" placeholder="일정 제목을 입력해주세요." /><br>
-						<br> <input type="date" id='scStartDate' /> ~ <input
-							type="date" id='scEndDate' /><br>
-						<br>
-						<br>
-						<center>
-							<button id="greenButton" onclick="inputSchedule();">저장</button>
-						</center>
-					</div>
-					<div class="col-1"></div>
-				</div>
+			<!-- Modal 내용 --> 
+			<div id="modal-schedule">
+				<img src="../resources/images/post/add-event.png" style="margin-bottom:5px;" /><span style="color :#339966; ">&nbsp;&nbsp;일정 추가하기</span>
+				<img src="../resources/images/post/close.png" onclick="close_schedule();" style="float:right; height : 20px;"/><br><br>
+				<input type="text" id="scTitle" placeholder="일정 제목을 입력해주세요." /><br><br>
+				<span style="font-size : 18px; color : #aaaaaa;">일정기간 &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="date" id='scStartDate' />&nbsp;&nbsp;&nbsp;<span style="font-size : 30px; color : #aaaaaa;">~</span>&nbsp;&nbsp;&nbsp;<input type="date" id='scEndDate' /><br><br>
+				<button class="insertButton2" onclick="inputSchedule();" style="float:right; margin-top:10px;">저장</button>
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>

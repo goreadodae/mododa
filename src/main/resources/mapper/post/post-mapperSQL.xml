@@ -96,6 +96,10 @@
 	<update id="updateDecision" parameterType="decision">
 	update decision set dc_yn='Y', dc_decision=#{dcDecision}, dc_comment=#{dcComment} where dc_post_no=#{dcPostNo}
 	</update>
+	
+	<update id="updatePostProgress" parameterType="post">
+	update post set post_progress=#{postProgress} where post_no=#{postNo}
+	</update>
 
 
 </mapper>
