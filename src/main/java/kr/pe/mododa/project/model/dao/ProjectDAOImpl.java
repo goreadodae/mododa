@@ -65,4 +65,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return (ArrayList<Member>)postWriterMemberList;
 	}
 
+	public ArrayList<Post> searchProMyPostList(SqlSessionTemplate sqlSession, int proNo, int memberNo) {
+		
+		return null;
+	}
+
 }
