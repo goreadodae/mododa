@@ -16,5 +16,11 @@ public interface CalendarController {
 	public void calendarSchedule (HttpServletResponse response) throws Exception;
 	public ModelAndView calendarInsertSchedule(HttpServletResponse response,@RequestParam int proSelect,@RequestParam int relationSelect,
 			@RequestParam String title, @RequestParam Date startDate, @RequestParam Date endDate) throws Exception; 
+	public void updateSchedule (HttpServletResponse response,@RequestParam int scheduleNo,@RequestParam String title,
+			@RequestParam Date startDate,@RequestParam Date endDate) throws Exception;
+	public void infoSchedule (HttpServletResponse response,@RequestParam int scheduleNo) throws Exception;
+	public void deleteSchdule (HttpServletResponse response,@RequestParam int scheduleNo)throws Exception;	
+	public void selectProjectOne (HttpServletResponse response,@RequestParam int proNo) throws Exception;
+	
 	
 }
