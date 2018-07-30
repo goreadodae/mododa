@@ -20,10 +20,10 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <head>
 <!--   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> -->
-<script src="http://cdn.embed.ly/jquery.embedly-3.0.5.min.js" type="text/javascript"></script>
+<!-- <script src="http://cdn.embed.ly/jquery.embedly-3.0.5.min.js" type="text/javascript"></script>
 <script src="http://cdn.embed.ly/jquery.preview-0.3.2.min.js" type="text/javascript"></script>
 <link rel="stylesheet" href="http://cdn.embed.ly/jquery.preview-0.3.2.css" />
-</head>
+</head> -->
 
 
 
@@ -101,12 +101,10 @@
 				}
 			});
 
-	//자동완성 기능 ajax 사용해야 돼
+	//자동완성
 
 	/* 	$(document).ready(function() {
 
-	 var projectNames = [ '프라이빗 공간', '띵킹띵킹', '굿뜨굿뜨', '띵킹스맨', ];
-	 var searchText = [];
 
 	 $("#searchPj").autocomplete({
 	 matchContains:true,
@@ -163,6 +161,9 @@
 	var filesLength = 0;
 	var img;
 	function readURL(files) {
+
+		var height = $('.height').height('100px');
+
 		if (!files.length) {
 			alert("No files selected!");
 		} else {
@@ -181,7 +182,7 @@
 					window.URL.revokeObjectURL(this.src);
 				}
 				$(
-						'<div class="col-md-6" style="height:50%; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #339966; height: 80px; padding:0%;">'
+						'<div class="col-md-6 imgHeight" style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
 								+ img.outerHTML + '</div></div>').appendTo(
 						$('#divEnter'));
 
@@ -189,7 +190,8 @@
 
 			}
 
-			if (files.length >= 4 || imgCount >= 4) {
+			if ($('#moreViewDiv').height() >= 200 && filesLength > 3) {
+				$('#moreViewDiv').addClass('moreViewDiv');
 				$('#moreViewText').css('display', 'block');
 
 			}
@@ -276,7 +278,7 @@
 						function() {
 
 							$.ajax({
-								url : "/autoComplete.do",
+								url : "/projectNameList.do",
 								type : "post",
 								data : {
 									memberNo : $('#memberNo').val()
@@ -303,18 +305,105 @@
 						});
 
 			});
-	 
-	 function saveScheduleToView(){
-		 
-		 var proSelect = $('#projectList').val();
-		 var relationSelect = $('#linkPostList').val();
-		 var title = $('#scheduleTitle').val();
-		 var startDate = $('#startDate').val();
-		 var endDate = $('#endDate').val();
-		 
-		 
-		 
-	 }
+
+	//일정추가 
+	var scheCnt = 1;
+	var scheduleCnt = 0;
+
+	function saveScheduleToView() {
+
+		var title = $('#scheduleTitle').val();
+		var startDate = $('#startDate').val();
+		var endDate = $('#endDate').val();
+		console.log("title");
+
+		if (!title || !startDate || !endDate) {
+
+			alert("공백이 없어야 합니다.");
+
+		}
+
+		else {
+
+			$(
+					'<div id="schdules_'
+							+ scheCnt
+							+ '" class="col-md-6" style="height:100px; padding-top:5%;">'
+							+ '<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0;">'
+							+ '<div class="col-md-12" style="padding:5px;color:#A1A1A1;"><img src="/resources/images/writeImages/calendar.png" style="padding:0;"/>&nbsp;&nbsp;'
+							+ startDate + '</div><div class="col-md-12">'
+							+ title + '</div></div></div>').appendTo(
+					$('#addSchedules'));
+			//일정개수
+			scheduleCnt++;
+			$('#scheduleCnt').text(scheduleCnt);
+
+		}
+		//초기화
+		$('#scheduleTitle').val("");
+		$('#startDate').val("");
+		$('#endDate').val("");
+
+	}
+
+	//관련 글 불러오기
+
+	function bringRelativeWrite() {
+		var currentProNo = $("#currentProNo").val()
+		console.log(currentProNo);
+
+		$.ajax({
+			url : "/relationWriteList.do",
+			type : "get",
+			data : {
+
+				currentProNo : currentProNo
+
+			},
+			
+			
+			
+			
+			
+			success : function(data) {
+
+				console.log("성공");
+				
+				
+				for(var i=0;i<data.length;i++){
+					
+					$('#relationList').append('<li class="list-group-item" style="padding-top: 10px;">'
+											+'<div class="row" style="height: 50%">'
+											+'<div class="col-md-12" style="height: 100%">'
+											+'	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
+											+'<span>'+data[i].postTitle+'</span>'
+											+'</div>'
+											+'</div>'
+											+'<div class="row" style="height: 50%">'
+											+'<div class="col-md-12" style="height: 100%">'
+											+'<h6 style="display: inline">'
+											+'<span>'+data[i].post+'</span>'
+											+'</h6>&nbsp;&nbsp;'
+											+'<h6 style="display: inline">'
+											+'<span>2018.7.8</span>'
+											+'</h6>'
+											+'</div>'
+											+'</div>'
+											+'</li>')
+					
+					
+				}
+				
+				
+				
+			},
+			error : function(data) {
+				console.log("실패");
+			}
+
+		})
+
+	}
 </script>
 
 <style>
@@ -353,6 +442,16 @@ div {
 	outline: none;
 }
 
+#scheduleTitle {
+	border: none;
+	height: 100%;
+	width: 100%;
+}
+
+#scheduleTitle:focus {
+	outline: none;
+}
+
 div.tarea:focus {
 	outline: none;
 }
@@ -379,7 +478,7 @@ div.tarea {
 	outline: none;
 }
 
-img {
+.plus {
 	margin-left: auto;
 	margin-right: auto;
 	vertical-align: middle;
@@ -431,6 +530,14 @@ img {
 	outline: none;
 }
 
+.scheduleInput:focus {
+	outline: none !important;
+}
+
+.scheduleInput {
+	border: none;
+}
+
 #closeBtn:focus {
 	outline: none;
 }
@@ -444,11 +551,14 @@ img {
 }
 
 .moreViewDiv {
-	height: 40%;
+	height: 220px;
 	overflow: hidden;
-	text-overflow: ellipsis;
 }
-
+/* .moreViewDiv {
+	/* height: 40%; 
+	overflow: hidden;
+	
+	} */
 #relationList li {
 	height: 100px;
 	padding-top: 0;
@@ -457,7 +567,6 @@ img {
 /* #modalBody {
 	overflow-y: scroll;
 } */
-
 
 /* 음 다시 생각 해봐야할듯  */
 /* #relationList input{
@@ -471,14 +580,13 @@ img {
 	background-color: #339966;
 	
 } */
-
 </style>
 
 
 
 </head>
 <body>
-	<div class="frameSize col-md-12">
+	<div class="frameSize offset-md-1 col-md-10 offset-md-1">
 		<%-- 		<div class="row" style="height: 15%;">
 			<div class="col-md-12" style="height: 100%;">
 				<jsp:include page="/layout/header.jsp"></jsp:include>
@@ -489,396 +597,378 @@ img {
 		<!-- <div class="row" style="height: 100%; padding:0px" > -->
 
 
-		<div class="container" style="height: 100%; padding: 0px">
+		<!-- <div class="container" style="height: 100%; padding: 0px"> -->
 
-			<!-- 			<div class="row" style="height: 10%">
+		<!-- 			<div class="row" style="height: 10%">
 				<div class="col-md-12" style="padding: 0px">
 				</div>
 			</div> -->
 
-			<div class="row" style="height: 100%; padding: 0px;">
+		<div class="row" style="height: 100%; padding: 0px;">
 
-				<div class="col-md-3" id="test" style="padding-top: 40px; height: 100%;">
+			<div class="col-md-3" id="test" style="padding-top: 40px; height: 100%;">
 
 
-					<div class="row" style="height: 10%">
+				<div class="row" style="height: 10%">
 
-						<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
-							<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
-								<div class="row" id="forEmptyImg" style="padding-top: 5px">
-									<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<div id="forClear"></div>
-								</div>
+					<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
+						<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
+							<div class="row" id="forEmptyImg" style="padding-top: 5px">
+								<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<div id="forClear"></div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="height: 90%">
+				</div>
+				<div class="row" style="height: 90%">
 
-						<div class="col-md-12 border-right" style="padding: 0px; height: 100%; display: none" id="tempSaved">
-							<ul class="colorChange list-group" style="text-align: left;">
+					<div class="col-md-12 border-right" style="padding: 0px; height: 100%; display: none" id="tempSaved">
+						<ul class="colorChange list-group" style="text-align: left;">
 
-								<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
-								<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
-								<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
+							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
+							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
+							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
 
-							</ul>
+						</ul>
 
-
-						</div>
 
 					</div>
-
 
 				</div>
-				<!-- 임시저장 공간  -->
 
-				<div class="col-md-9" style="height: 100%">
 
-					<div class="row" style="padding-top: 40px; height: 15%;">
-						<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
-							<div class="row" style="padding-left: 15px; height: 100%;">
-								<div class="col-md-2" style="height: 100%; padding: 0px">
-									<span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span>
+			</div>
+			<!-- 임시저장 공간  -->
 
-									<div class="dropdown" style="padding: 0px">
+			<div class="col-md-9" style="height: 100%">
 
-										<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" data-toggle="dropdown" role="button" />
+				<div class="row" style="padding-top: 40px; height: 15%;">
+					<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
+						<div class="row" style="padding-left: 15px; height: 100%;">
+							<div class="col-md-2" style="height: 100%; padding: 0px">
+								<span class="changeType" style="color: #339966;" id="changeType" onclick="changeClick();"><c:out value="${currentProName}"></c:out></span>
 
-										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addPjList">
-											<button class="dropdown-item" type="button">프라이빗 공간</button>
+								<div class="dropdown" style="padding: 0px">
 
-										</ul>
+									<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" data-toggle="dropdown" role="button" />
+
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addPjList">
+										<button class="dropdown-item" type="button">프라이빗 공간</button>
+
+									</ul>
+								</div>
+
+
+
+								<input type="hidden" id="memberNo" value="${sessionScope.member.memberNo}" />
+							</div>
+							<div class="col-md-10">
+								<div class="row" style="height: 100%">
+									<div class="offset-md-5 col-md-2">
+										<!-- 파트너 아이콘 불러오기 -->
+										<div class="row" id="partnerImg" style="height: 100%; float: right">
+
+											<div style="position: relative;" id="defaultPartnerPic"></div>
+
+
+
+											<!-- 파트너 불러오기 !! ajax로 하기!  -->
+											<div class="dropup" style="height: 100%">
+
+												<div data-toggle="dropdown" id="addPartnerPic" role="button"></div>
+												<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+													<button class="dropdown-item" type="button">Action</button>
+													<button class="dropdown-item" type="button">Action</button>
+													<button class="dropdown-item" type="button">Action</button>
+												</ul>
+
+											</div>
+
+
+
+
+										</div>
+
 									</div>
 
+									<div class="offset-md-1 col-md-4">
+
+										<!-- 페이지 닫기  -->
+										<div class="col-md-1" style="height: 32px; float: right;">
+											<button onclick="closeBtn()" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
+												<span aria-hidden="true" style="height: 100%;">&times;</span>
+											</button>
+										</div>
 
 
-									<input type="hidden" id="memberNo" value="${sessionScope.member.memberNo}" />
+									</div>
+
 								</div>
-								<div class="col-md-10">
-									<div class="row" style="height: 100%">
-										<div class="offset-md-5 col-md-2">
-											<!-- 파트너 아이콘 불러오기 -->
-											<div class="row" id="partnerImg" style="height: 100%; float: right">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="height: 85%">
+					<div class="col-md-8" style="height: 100%">
+						<div class="row" style="height: 85%">
+							<div class="col-md-12" style="height: 100%;">
+								<div class="row" style="height: 10%">
+									<div class="col-md-12" style="height: 100%;">
+										<input type="text" id="writeTitle" placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
+									</div>
+								</div>
+								<div class="row" style="height: 90%">
+									<div class="col-md-12" style="height: 100%">
+										<div class="tarea col-md-12" contenteditable="true" style="height: 100%; padding-left: 0px;">this looks like a textarea!</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-												<div style="position: relative;" id="defaultPartnerPic"></div>
+						<div class="row" style="height: 15%">
+							<div class="col-md-12" style="height: 100%;">
+								<div class="row">
+									<div class="col-md-12">
+										<span id="hashName"></span> <input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
 
-
-
-												<!-- 파트너 불러오기 !! ajax로 하기!  -->
-												<div class="dropup" style="height: 100%">
-
-													<div data-toggle="dropdown" id="addPartnerPic" role="button"></div>
-													<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-														<button class="dropdown-item" type="button">Action</button>
-														<button class="dropdown-item" type="button">Action</button>
-														<button class="dropdown-item" type="button">Action</button>
-													</ul>
-
-												</div>
-
-
-
-
-											</div>
-
-										</div>
-
-										<div class="offset-md-1 col-md-4">
-
-											<!-- 페이지 닫기  -->
-											<div class="col-md-1" style="height: 32px; float: right;">
-												<button onclick="closeBtn()" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
-													<span aria-hidden="true" style="height: 100%;">&times;</span>
-												</button>
-											</div>
-
-
-										</div>
 
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="height: 85%">
-						<div class="col-md-8" style="height: 100%">
-							<div class="row" style="height: 85%">
-								<div class="col-md-12" style="height: 100%;">
-									<div class="row" style="height: 10%">
-										<div class="col-md-12" style="height: 100%;">
-											<input type="text" id="writeTitle" placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
-										</div>
-									</div>
-									<div class="row" style="height: 90%">
-										<div class="col-md-12" style="height: 100%">
-											<div class="tarea col-md-12" contenteditable="true" style="height: 100%; padding-left: 0px;">this looks like a textarea!</div>
-										</div>
-									</div>
-								</div>
+
+					<div class="col-md-4 imageSpace" id="imageSpace" style="height: 100%">
+						<div class="row" id="moreViewDiv">
+							<div class="col-md-12" style="height: 10%;">
+								<b>파일/이미지</b>
 							</div>
+							<div class="col-md-12" style="height: 90%;">
+								<div class="row" id="divEnter" style="height: 100%;">
+									<div class="col-md-6" style="padding-top: 5%; cursor: pointer">
+										<!-- <br -->
+										<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="document.all.fileElem.click();" id="fileSelect">
 
-							<div class="row" style="height: 15%">
-								<div class="col-md-12" style="height: 100%;">
-									<div class="row">
-										<div class="col-md-12">
-											<span id="hashName"></span> <input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
-
-
+											<br>
+											<!-- div 버튼 클릭시 아래 버튼 동작! -->
+											<img class="plus" src="/resources/images/writeImages/plus.png" />
+											<!-- 파일업로드 버튼 숨겨져있음!  -->
+											<input id="fileElem" name="filesUpload" multiple type="file" style="display: none" onchange="readURL(this.files);" />
 										</div>
+
+
+
+
 									</div>
+
 								</div>
+
 							</div>
 						</div>
 
-						<div class="col-md-4 imageSpace" id="imageSpace" style="height: 100%">
-							<div class="row moreViewDiv" id="moreViewDiv">
-								<div class="col-md-12" style="height: 10%;">
-									<b>파일/이미지</b>
+						<div class="row" style="display: none;" id="moreViewText">
+
+							<div class="offset-md-4 col-md-8">
+								<span style="text-align: center; cursor: pointer;" id="moreViewFn">더 보기</span>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-12">
+								링크 <span>0</span>
+							</div>
+							<div class="row"></div>
+						</div>
+						<br>
+						<!-- 일정 창  -->
+						<div class="row" id="addSchedules">
+							<div class="col-md-12">
+								일정 <span id="scheduleCnt">0</span>
+							</div>
+
+
+
+							<div class="col-md-6" data-toggle="modal" data-target="#loadSchedule" style="padding-top: 5%; cursor: pointer;">
+								<!-- <br -->
+								<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;">
+
+									<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
 								</div>
-								<div class="col-md-12" style="height: 90%;">
-									<div class="row" id="divEnter" style="height: 100%;">
-										<div class="col-md-6" style="padding-top: 5%; cursor: pointer">
-											<!-- <br -->
-											<div class="col-md-12" style="border: 1px solid #339966; height: 80px;" onclick="document.all.fileElem.click();" id="fileSelect">
 
-												<br>
-												<!-- div 버튼 클릭시 아래 버튼 동작! -->
-												<img src="/resources/images/writeImages/plus.png" />
-												<!-- 파일업로드 버튼 숨겨져있음!  -->
-												<input id="fileElem" name="filesUpload" multiple type="file" style="display: none" onchange="readURL(this.files);" />
+
+
+
+							</div>
+
+
+
+
+
+						</div>
+						<br>
+
+
+						<!--  관련 글  -->
+						<div class="row">
+							<div class="col-md-12">
+								관련 글 <span>0</span>
+							</div>
+							<!-- 모달 버튼 시작  -->
+							<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
+								<!-- <br -->
+								<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="bringRelativeWrite();">
+
+									<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
+								</div>
+
+
+
+
+							</div>
+							<!-- 모달 버튼 끝 -->
+
+							<!-- 모달 시작 -->
+							<div class="modal fade" tabindex="-1" role="dialog" id="relationWrite" aria-hidden="true">
+								<!-- <div class="container" style="height:80%"> -->
+								<div class="modal-dialog" role="document" style="background-color: white; height: 90%">
+									<div class="modal-content" style="height: 100%; z-index: 1070;">
+
+										<!-- 관련 글 헤더  -->
+										<div class="modal-header" style="height: 10%; border: none !important;">
+											<h4 class="modal-title" id="exampleModalLongTitle">관련 글 추가</h4>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<h6 style="color: #339966; padding-top: 5px;">
+												<c:out value="${currentProName}"></c:out>
+											</h6>
+											<c:set var="currentProNo" value="${currentProNo}"></c:set>
+											<input type="hidden" id="currentProNo" value="${currentProNo}">
+
+											<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<!-- 검색창 -->
+										<div class="modal-header" style="height: 10%;">
+
+
+											<div class="col-md-12" style="height: 100%; padding: 0px">
+												<input type="text" id="relationSearch" placeholder="관련 글 제목/작성자 검색" style="height: 100%; width: 100%; border: none;" />
 											</div>
-
-
-
 
 										</div>
 
-									</div>
 
-								</div>
-							</div>
+										<div class="modal-body" style="height: 70%; padding: 0px">
+											<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%; padding: 0px">
+												<ul class="list-group" id="relationList">
+													<li class="list-group-item" style="padding-top: 10px;">
 
-							<div class="row" style="display: none; boder: 1px solid black;" id="moreViewText">
-
-								<div class="offset-md-4 col-md-8">
-									<span style="text-align: center; cursor: pointer;" id="moreViewFn">더 보기</span>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12">
-									링크 <span>0</span>
-								</div>
-								<div class="row"></div>
-							</div>
-							<br>
-							<!-- 일정 창  -->
-							<div class="row">
-								<div class="col-md-12">
-									일정 <span>0</span>
-								</div>
-
-								<div class="col-md-6" data-toggle="modal" data-target="#loadSchedule" style="padding-top: 5%; cursor: pointer;">
-									<!-- <br -->
-									<div class="col-md-12" style="border: 1px solid #339966; height: 80px;">
-
-										<br> <img src="/resources/images/writeImages/plus.png" />
-									</div>
-
-
-
-
-								</div>
-
-
-
-
-							</div>
-							<br>
-
-
-							<!--  관련 글  -->
-							<div class="row">
-								<div class="col-md-12">
-									관련 글 <span>0</span>
-								</div>
-								<!-- 모달 버튼 시작  -->
-								<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
-									<!-- <br -->
-									<div class="col-md-12" style="border: 1px solid #339966; height: 80px;">
-
-										<br> <img src="/resources/images/writeImages/plus.png" />
-									</div>
-
-
-
-
-								</div>
-								<!-- 모달 버튼 끝 -->
-
-								<!-- 모달 시작 -->
-								<div class="modal fade" tabindex="-1" role="dialog" id="relationWrite" aria-hidden="true">
-									<!-- <div class="container" style="height:80%"> -->
-									<div class="modal-dialog" role="document" style="background-color: white; height: 90%">
-										<div class="modal-content" style="height: 100%; z-index: 1070;">
-
-											<!-- 관련 글 헤더  -->
-											<div class="modal-header" style="height: 10%; border: none !important;">
-												<h5 class="modal-title" id="exampleModalLongTitle">관련 글 추가</h5>
-												&nbsp;&nbsp; <span class="changeType" style="color: #F6AD00;" id="changeType" onclick="changeClick();">프라이빗 공간</span> <input type="hidden" placeholder="프로젝트 검사" id="searchPj"
-													class="findPj" />
-
-												<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<!-- 검색창 -->
-											<div class="modal-header" style="height: 10%;">
-
-
-												<div class="col-md-12" style="height: 100%; padding: 0px">
-													<input type="text" id="relationSearch" placeholder="관련 글 제목/작성자 검색" style="height: 100%; width: 100%; border: none;" />
-												</div>
-
-											</div>
-
-
-											<div class="modal-body" style="height: 70%; padding: 0px">
-												<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%; padding: 0px">
-													<ul class="list-group" id="relationList">
-														<li class="list-group-item" style="padding-top: 10px;">
-
-															<div class="row" style="border: 1px solid black; height: 50%">
-																<div class="col-md-12" style="height: 100%">
-																	<input type="checkbox" style="height: 100% !important; vertical-align: middle"><span>모두다 기획의도</span>
-																</div>
+														<div class="row" style="height: 50%">
+															<div class="col-md-12" style="height: 100%">
+																<input type="checkbox" style="height: 100% !important; vertical-align: middle"><span>모두다 기획의도</span>
 															</div>
-															<div class="row" style="height: 50%">
+														</div>
+														<div class="row" style="height: 50%">
 
-																<div class="col-md-12" style="border: 1px solid black; height: 100%">
+															<div class="col-md-12" style="height: 100%">
 
-																	<h6 style="display: inline">
-																		<span>고래두대</span>
-																	</h6>
-																	&nbsp;&nbsp;
-																	<h6 style="display: inline">
-																		<span>2018.7.8</span>
-																	</h6>
-																</div>
-
-
+																<h6 style="display: inline">
+																	<span>고래두대</span>
+																</h6>
+																&nbsp;&nbsp;
+																<h6 style="display: inline">
+																	<span>2018.7.8</span>
+																</h6>
 															</div>
-														</li>
-														<li class="list-group-item">Dapibus ac facilisis in</li>
-														<li class="list-group-item">Morbi leo risus</li>
-														<li class="list-group-item">Porta ac consectetur ac</li>
-														<li class="list-group-item">Vestibulum at eros</li>
-														<li class="list-group-item">Cras justo odio</li>
-														<li class="list-group-item">Dapibus ac facilisis in</li>
-														<li class="list-group-item">Morbi leo risus</li>
-														<li class="list-group-item">Porta ac consectetur ac</li>
-														<li class="list-group-item">Vestibulum at eros</li>
-														<li class="list-group-item">Cras justo odio</li>
-														<li class="list-group-item">Dapibus ac facilisis in</li>
-														<li class="list-group-item">Morbi leo risus</li>
-														<li class="list-group-item">Porta ac consectetur ac</li>
-														<li class="list-group-item">Vestibulum at eros</li>
-														<li class="list-group-item">Cras justo odio</li>
-														<li class="list-group-item">Dapibus ac facilisis in</li>
-														<li class="list-group-item">Morbi leo risus</li>
-														<li class="list-group-item">Porta ac consectetur ac</li>
-														<li class="list-group-item">Vestibulum at eros</li>
 
 
-													</ul>
+														</div>
+													</li>
 
+												</ul>
 
-
-												</div>
-
-											</div>
-											<div class="modal-footer">
-
-												<button type="button" class="btn btn-primary" >Save changes</button>
 
 
 											</div>
 
+										</div>
+										<div class="modal-footer">
+
+											<button type="button" class="btn btn-primary" style="background-color: #CFF09E">저장</button>
 
 
 										</div>
 
 
+
 									</div>
 
+
 								</div>
-
-								<!-- 모달 끝 -->
-
-
-								<!-- 일정 모달 시작   -->
-								<div class="modal fade" tabindex="-1" role="dialog" id="loadSchedule" aria-hidden="true">
-									<!--   Modal 내용 -->
-
-									<div class="modal-dialog modal-dialog-centered" role="document" >
-										<div class="modal-content">
-											<!-- <div class="modal-content ng-scope"> -->
-											<div class="modal-header">
-												<h3>일정 선택</h3>
-												<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<select class="form-control" id="projectList" onchange="changeproSelect();">
-															<option value="">프로젝트선택</option>
-														</select>
-													</div>
-													<div class="col-md-6">
-														<select class="form-control" id="linkPostList">
-															<option value="">관련글선택</option>
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-12">
-														<input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="">
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-12"></div>
-												</div>
-												<div class="row">
-													<div class="col-md-12">
-														<input type="date" id="startDate"> ~ <input type="date" id="endDate">
-													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" onClick="saveScheduleToView();" style="background-color:#CFF09E; border:none;">저장</button>
-												
-											</div>
-											<!-- </div> -->
-										</div>
-									</div>
-									<!--     Modal 내용 끝 -->
-								</div>
-								<!--팝업모달 끝 -->
-
-
-
-
-
-
-
 
 							</div>
 
-							<!-- 							<br>
+							<!-- 모달 끝 -->
+
+
+							<!-- 일정 모달 시작   -->
+							<div class="modal fade" tabindex="-1" role="dialog" id="loadSchedule" aria-hidden="true">
+								<!--   Modal 내용 -->
+
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<!-- <div class="modal-content ng-scope"> -->
+										<div class="modal-header">
+											<h3 style="color: #339966;">
+												<c:out value="${currentProName}"></c:out>
+											</h3>
+											<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-12" style="padding: 0px">
+													<input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="height: 100%; width: 100%; border: none;" />
+
+												</div>
+
+											</div>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-12"></div>
+											</div>
+											<div class="row">
+												<div class="col-md-12"></div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<input class="scheduleInput" type="date" id="startDate" required><br> ~ <input class="scheduleInput" type="date" id="endDate" required>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary" onClick="saveScheduleToView();" style="background-color: #CFF09E; border: none;">저장</button>
+
+										</div>
+										<!-- </div> -->
+									</div>
+								</div>
+								<!--     Modal 내용 끝 -->
+							</div>
+							<!--팝업모달 끝 -->
+
+
+
+
+
+
+
+
+						</div>
+
+						<!-- 							<br>
 							<br>
 							
 							
@@ -901,14 +991,14 @@ img {
 
 
 
-						</div>
 					</div>
 				</div>
-
 			</div>
 
-			<!-- </div> -->
 		</div>
+
+		<!-- </div> -->
+		<!-- 	</div> container-->
 	</div>
 
 

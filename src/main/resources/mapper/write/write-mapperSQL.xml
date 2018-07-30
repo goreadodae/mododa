@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="write">
 
-	<select id="loadProjectName" resultType="project">
+	<select id="forSerachProjectNames" resultType="project">
 	select
 	pro_no as proNo,
 	pro_title as proTitle,
@@ -13,6 +13,36 @@
 	from project
 	where pro_member_no = #{memberNo}
 	</select>
+	
+	<select id="loadProjectName" resultType="String">
+	select
+	pro_title as proTitle
+	from project
+	where pro_member_no = #{proMemberNo} and pro_no = #{proNo}
+	</select>
+	
+	<select id="relationwriteList" resultType="post">
+	select
+	post_no as postNo,
+	post_title as postTitle,
+	post_progress as postProgress,
+	post_date as postDate,
+	post_content as postContent,
+	post_writer as postWriter,
+	post_temp as postTemp,
+	post_pro_no as postProNo,
+	post_tag as postTag
+	
+	from post
+	join member
+	where post_pro_no = #{currentProNo}
+	
+	
+	
+	
+	
+	</select>
+	
 
   
 </mapper>

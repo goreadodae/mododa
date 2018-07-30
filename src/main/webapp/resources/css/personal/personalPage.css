@@ -52,13 +52,10 @@
 	
 }
 
-hr{
-	margin:3px;
-}
 .feed-contents {
 	list-style: none;
 	padding: 3px 20px 5px 20px;
-	 font-size:14;
+	 font-size:14px;
 }
 #memberImg{
 	width:30px;
@@ -70,7 +67,8 @@ hr{
 	height:20px;
 	border-radius:50%;
 	vertical-align:left;
-}
+}/*추가*/
+
 .ico{
 
     width: 30px;
@@ -78,5 +76,6 @@ hr{
     line-height: 30px;
     color:yellow;
 }
+
 
 

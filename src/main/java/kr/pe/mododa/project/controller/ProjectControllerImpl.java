@@ -147,6 +147,8 @@ public class ProjectControllerImpl implements ProjectController {
 		view.addObject("postList", postList);
 		view.addObject("proTitle", proTitle);
 		view.addObject("postWriterMemberList", postWriterMemberList);
+		// 글쓰기에 프로젝트 번호 전달(여기 수정)
+		view.addObject("proNo",proNo);
 		view.setViewName("project/projectPost");
 		return view;
 	}
@@ -196,7 +198,18 @@ public class ProjectControllerImpl implements ProjectController {
 		return view;
 	}
 
-
+	
+	
+	@RequestMapping(value="proMyPost.do")
+	public Object proMyPost(HttpSession session, @RequestParam int proNo) { // 프로젝트 내 글 읽어오기
+		// System.out.println("proPost: "+proNo);
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		ArrayList<Post> postList = projectService.searchProMyPostList(proNo, memberNo); // 프로젝트 글 전부 읽어오기
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/proMyPost");
+		return view;
+	}
 
 
 	

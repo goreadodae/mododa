@@ -12,4 +12,9 @@ public interface CalendarService {
 	public ArrayList<Post> postSelectAll (int postNo);
 	public ArrayList<Schedule> calendarSchedule ();
 	public int calendarInsertSchedule (Schedule sc);
+	public int updateSchedule (Schedule sc);
+	public Schedule infoSchedule (int scheduleNo);
+	public int deleteSchdule (int scheduleNo);
+	public Project selectProjectOne (int proNo); 
+	
 }

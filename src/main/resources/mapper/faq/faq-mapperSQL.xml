@@ -67,5 +67,12 @@
 	</choose>
 	</select>
 	
+	<insert id="insertNotice"  parameterType="notice">
+		insert into Notice values(notice_SEQ.NEXTVAL,#{noticeTitle},#{noticeContents},SYSDATE,0)
+	</insert>
+	
+	<delete id="noticeDelete">
+		delete from notice where NOTICE_NO = #{noticeNo}	
+	</delete>
 	
 </mapper>

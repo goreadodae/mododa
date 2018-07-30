@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,48 +16,82 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
+import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.service.WriteServiceImpl;
 
 @Controller
 public class WriteControllerImpl implements WriteController {
-	
-		@Autowired
-		private WriteServiceImpl writeService;
-		
 
-		@Autowired
-		@RequestMapping(value="/write.do")
-		public String writeReady() {
-			return "write/writePage";
-		}
+	@Autowired
+	private WriteServiceImpl writeService;
+
+	@Autowired
+	@RequestMapping(value = "/write.do")
+	public String writeReady() {
 		
-		@RequestMapping(value="/testBtn.do")
-		public String loadHeader() {
-			return "write/testBtn";
-		}
-		
-		
-		@RequestMapping(value="/loadTumbnail.do")
-		public String loadTumbnail() {
-			return "write/writePage";
-			
-		}
-		
-		@RequestMapping(value="/autoComplete.do")
-		public void autoComplete(HttpServletRequest request,HttpServletResponse response, @RequestParam int memberNo) throws Exception {
+		return "write/writePage";
+	}
+
+	@RequestMapping(value = "/testBtn.do")
+	public String loadHeader() {
+		return "write/testBtn";
+	}
+
+	@RequestMapping(value = "/loadTumbnail.do")
+	public String loadTumbnail() {
+		return "write/writePage";
+
+	}
+
+	@RequestMapping(value = "/projectNameList.do")
+	public void autoComplete(HttpServletRequest request, HttpServletResponse response, @RequestParam int memberNo)
+			throws Exception {
 		Project pj = new Project();
 		ModelAndView mav = new ModelAndView();
-		
+
 		ArrayList<Project> list = writeService.autoComplete(memberNo);
 		response.setContentType("apllication/json");
 		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(list, response.getWriter());
+
+	}
+
+	
+	@RequestMapping(value ="/writePage.do")
+	public ModelAndView currentProName(HttpServletResponse response, @RequestParam int currentProjectNo, HttpSession session) {
+		Project pj = new Project();
+		pj.setProMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+		pj.setProNo(currentProjectNo);
+		String currentProName = writeService.currentProName(pj);
+		System.out.println(currentProjectNo);
 		
-		new Gson().toJson(list,response.getWriter());	
-		}
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/write/writePage");
+		view.addObject("currentProName",currentProName);
+		view.addObject("currentProNo",currentProjectNo);
+		return view;
 		
+
+	}
+	
+	@RequestMapping(value="/relationWriteList.do")
+	public void relationWriteList(HttpServletResponse response, @RequestParam int currentProNo) throws Exception{
+		
+		ArrayList<Post> list = writeService.relationWriteList(currentProNo);
+		ModelAndView view = new ModelAndView();
+		response.setContentType("aplication/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(list,response.getWriter());
+		
+		
+		
+		
+	}
+	
+	
+	
+
 }
-		
-
-
-

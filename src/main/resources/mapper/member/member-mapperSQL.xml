@@ -97,6 +97,10 @@
   		<when test="memberMainTask==null">,member_main_task = null</when>
   		<otherwise>,member_main_task = #{memberMainTask}</otherwise>
   	</choose>
+  	<choose>
+  		<when test="memberPicture==null">,member_picture = null</when>
+  		<otherwise>,member_picture = #{memberPicture}</otherwise>
+  	</choose>
   	where member_no = #{memberNo}
   </update>
 </mapper>
