@@ -34,7 +34,7 @@ public class CalendarControllerImpl implements CalendarController {
 	@Override
 	@RequestMapping(value="calendar.do")
 	public String calendarView() {
-		return "calendar/calendar";
+		return "calendar/calendarTemplateTest";
 	}
 
 	@Override
@@ -53,6 +53,19 @@ public class CalendarControllerImpl implements CalendarController {
 		 
 		 new Gson().toJson(list,response.getWriter());
 		 
+	}
+	
+	@Override
+	@RequestMapping(value="selectProjectOne.do")
+	public void selectProjectOne(HttpServletResponse response,@RequestParam int proNo) throws Exception {
+		
+		Project p = CalendarService.selectProjectOne(proNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(p,response.getWriter());
+		
 	}
 	
 	@Override
@@ -105,12 +118,10 @@ public class CalendarControllerImpl implements CalendarController {
 		sc.setPostNo(relationSelect);
 		sc.setScTitle(title);
 		sc.setStartDate(startDate);
-		sc.setEndDate(endDate);
-		
-		System.out.println(sc);
+		sc.setEndDate(endDate);		
 		
 		int result = CalendarService.calendarInsertSchedule(sc);		
-		System.out.println();
+
 		ModelAndView view = new ModelAndView();
 		if(result>0) {
 			view.addObject("result", result);
@@ -118,6 +129,70 @@ public class CalendarControllerImpl implements CalendarController {
 		view.setViewName("jsonView");
 		return view;
 	}
+	
+	@Override
+	@RequestMapping(value="updateSchedule.do")
+	public void updateSchedule(HttpServletResponse response,@RequestParam int scheduleNo,@RequestParam String title,
+			@RequestParam Date startDate,@RequestParam Date endDate) throws Exception {
+	
+		Schedule sc = new Schedule();
+		
+		sc.setScTitle(title);
+		sc.setStartDate(startDate);
+		sc.setEndDate(endDate);
+		sc.setScheduleNo(scheduleNo);
+		
+		
+		 int result = CalendarService.updateSchedule(sc);
+		 
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(result,response.getWriter());
+		 
+	}
+	
+	@Override
+	@RequestMapping(value="infoSchedule.do")
+	public void infoSchedule(HttpServletResponse response,@RequestParam int scheduleNo) throws Exception {
+	
+		Schedule sc = CalendarService.infoSchedule(scheduleNo);
+		/*Project pj = CalendarService.infoProject(scheduleNo);
+		Post p = CalendarService.infoPost(scheduleNo);*/
+		
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
+		
+		String startDateUp =""; String endDateUp="";
+		 
+		startDateUp = sdf.format(sc.getStartDate());
+		sc.setStStartDate(startDateUp); //시작 날짜를 format
+		
+		endDateUp = sdf.format(sc.getEndDate());
+		sc.setStEndDate(endDateUp); //끝 날짜를 format	
+		
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(sc,response.getWriter());
+		 
+	}
+
+	@Override
+	@RequestMapping(value="deleteSchedule.do")
+	public void deleteSchdule(HttpServletResponse response,@RequestParam int scheduleNo) throws Exception {
+		
+		 int result = CalendarService.deleteSchdule(scheduleNo);
+		 
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(result,response.getWriter());
+		
+	}
+
+	
+	
+	
 
 
 }
