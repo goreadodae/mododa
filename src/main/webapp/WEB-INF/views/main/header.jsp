@@ -73,7 +73,29 @@
 	height: auto; width: 250px;
 }
 </style>
+<script>
 
+	/* 기본 구조 구성하는 스크립트 시작 */
+	//leftbar, rightbar 높이 설정
+	$(document).ready(function() {
+		resizeContent();
+	});
+
+	$(window).resize(function() {
+		resizeContent();
+	});
+	
+	function resizeContent() {
+		var windowHeight = $(window).height();
+		var topHeight = $('.header').height();
+
+		$('#background').css({
+			'height' : (windowHeight-topHeight) + 'px'
+		});
+	}
+	/* 기본 구조 구성하는 스크립트 끝 */
+
+</script>
 <body>
 
 <!-- header -->
