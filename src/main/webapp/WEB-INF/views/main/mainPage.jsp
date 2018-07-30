@@ -23,7 +23,6 @@ div {
 	padding: 0px;
 }
 </style>
-
 <body>
 
 	<!-- header -->

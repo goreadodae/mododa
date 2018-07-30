@@ -47,10 +47,11 @@
 	
 	<select id="listProject" resultType="project">
 		select
-		pro_no as proNo,
-		pro_title as proTitle
-		from project
-		where pro_member_no = #{memberNo}
+		w.pro_no as proNo,
+		p.pro_title as proTitle
+		from work_on w, project p
+        where w.pro_no = p.PRO_NO
+		and member_no = #{memberNo}
 	</select>
 	
 	<select id="listImage" resultType="upload">
