@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -65,7 +66,7 @@ var scheduleNo = 0;
 			},
 			selectable: true,
 			selectHelper: true,
-			contentHeight: 600,
+			contentHeight: 700,
 			select: function(start, end, allDay) {
          
          modalProjectPrice();
@@ -140,7 +141,7 @@ var scheduleNo = 0;
          $('#myModal').hide();
     };
     
-  //팝업 Close 기능
+  //팝업 update Close 기능
     function close_up_pop(flag) {
          $('#myModalUpdate').hide();
     };
@@ -154,7 +155,6 @@ var scheduleNo = 0;
     	var startDate = document.getElementById("startDate").value;
     	var endDate = document.getElementById("endDate").value;
 
-    	
     	 $.ajax({
             url : "/calendarInsertSchedule.do",
             type : "post",
@@ -227,7 +227,7 @@ var scheduleNo = 0;
     }
     
 
-    var projectName ="안녕";
+
     
     function updateModal (scheduleNo) {
     	
@@ -239,18 +239,14 @@ var scheduleNo = 0;
               },
             	success :function(data) {
             		
-            		projectOne(data.proNo);
-            		/* var postName = return postOne(data.postNo); */
-            		
-            		
             		$('#scUpdatePro').find("label").remove();
             		$('#scUpdatePost').find("label").remove(); 					
            
- 					$('#scUpdatePro').append("<label>"+projectName+"</label>");
- 					$('#scUpdatePost').append("<label>"+data.proNo+"</label>");
- 					$('#scheduleTitleUpdate').attr('value',data.scTitle);
- 					$('#startDateUpdate').attr('value',data.stStartDate);
- 					$('#endDateUpdate').attr('value',data.stEndDate);
+ 					$('#scUpdatePro').append("<label>"+data.pj.proTitle+"</label>");
+ 					$('#scUpdatePost').append("<label>"+data.p.postTitle+"</label>");
+ 					$('#scheduleTitleUpdate').attr('value',data.sc.scTitle);
+ 					$('#startDateUpdate').attr('value',data.sc.stStartDate);
+ 					$('#endDateUpdate').attr('value',data.sc.stEndDate);
             		
              },
             error : function(data) {
@@ -303,11 +299,9 @@ var scheduleNo = 0;
 	        success : function(data) {
 	           
 	        	var deleteCheck = confirm("정말로 삭제하시겠습니까?");
-	        	
 	        	if(deleteCheck){
 	        		window.location.reload(true);
 	        	}
-
 	        },
 	        error : function(data) {
 	           console.log("실패");
@@ -319,33 +313,33 @@ var scheduleNo = 0;
 	   
    }
    
+   /* 달력 시작,종료일 확인시 시작일보다 종료일의 날짜가 클때 */
    
-  function projectOne (proNo) {
+   function dateCheck (){
 	   
-	   $.ajax({
-	        url : "/selectProjectOne.do",
-	        type : "post",
-	        data :  {   
-	        	proNo : proNo
-	        },
-	        success : function(data) {
-				console.log(data.proTitle);
-	        projectName = data.proTitle;
+	   var startDate = $('#startDate').val();
+       var endDate = $('#endDate').val();
+      
+       //-을 구분자로 연,월,일로 잘라내어 배열로 반환
+       var startArray = startDate.split('-');
+       var endArray = endDate.split('-');   
+       //배열에 담겨있는 연,월,일을 사용해서 Date 객체 생성
+       var start_date = new Date(startArray[0], startArray[1], startArray[2]);
+       var end_date = new Date(endArray[0], endArray[1], endArray[2]);
+            //날짜를 숫자형태의 날짜 정보로 변환하여 비교한다.      
+		
+       if(start_date.getTime() > end_date.getTime()) {
+           
+          $('#endDate').attr('value',startDate);    
+           
+           alert("종료날짜보다 시작날짜가 작아야합니다.");
+          /*  return false; */
+  		 }
+           
+   }
 
-	        },
-	        error : function(data) {
-	           console.log("실패");
-	        },
-	        complete : function(data) {
-	        	close_pop();
-	        }
-		});
-	   
-   } 
    
    
-   
-    
 </script>
 
 
@@ -361,13 +355,19 @@ div {
 	padding: 0px;
 }
 
+#background {
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
+}
+
 #calendar {
 		margin-top: 40px;
 		/* text-align: center; */
 		font-size: 14px;
 		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 		margin: 0 auto;
-		width : 900px;
+		width : 1000px;
 		}
 		
 		
@@ -413,9 +413,9 @@ div {
 	<div class="col-9" id="contents" style="padding:0;">
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		<div class="row"><div class="col-md-12">　</div></div>
+		<div class="row"><div class="col-md-12">　</div></div>
+		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="col-md" id="calendar"></div>
-
-	
 	</div>
 	<!-- contents 끝 -->
 
@@ -442,11 +442,11 @@ div {
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+            <input type="date" id="startDate" onchange="dateCheck();"> ~ <input type="date" id="endDate" onchange="dateCheck();">
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-primary" onClick="saveSchedule();">저장</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">닫기</button></div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_pop();">닫기</button></div>
             <!-- </div> -->
          </div>
      <!--     Modal 내용 끝 -->

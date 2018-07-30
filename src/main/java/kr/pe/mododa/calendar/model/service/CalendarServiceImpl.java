@@ -31,11 +31,11 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 	
 	@Override
-	public Project selectProjectOne(int proNo) {
+	public Project selectProjectOne(int scheduleNo) {
 		
-		Project P = CalendarDAO.selectProjectOne(sqlSession,proNo);
+		Project pj = CalendarDAO.selectProjectOne(sqlSession,scheduleNo);
 		
-		return P;
+		return pj;
 	}
 
 	@Override
@@ -45,6 +45,15 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		return list;
 	}
+	
+	@Override
+	public Post selectPostOne(int scheduleNo) {
+		
+		Post P = CalendarDAO.selectPostOne(sqlSession,scheduleNo);
+		
+		return P;
+	}
+
 
 	@Override
 	public ArrayList<Schedule> calendarSchedule() {
@@ -86,6 +95,7 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		return result;
 	}
+
 
 
 	
