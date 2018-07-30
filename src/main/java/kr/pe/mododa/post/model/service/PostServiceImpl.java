@@ -77,5 +77,9 @@ public class PostServiceImpl implements PostService{
 		return postDAO.updatePostProgress(sqlSession,vo);
 	}
 	
+	public int updateTodoProgress(Todo vo) {
+		return postDAO.updateTodoProgress(sqlSession, vo);
+	}
+	
 
 }

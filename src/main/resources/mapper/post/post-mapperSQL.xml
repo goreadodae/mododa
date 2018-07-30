@@ -3,7 +3,11 @@
 <mapper namespace="post">
 
 	<select id="selectProject" resultType="project">
-		select pro_title as proTitle from project where pro_no=(select post_pro_no
+		select 
+		pro_title as proTitle,
+		pro_progress as proProgress
+		from project 
+		where pro_no=(select post_pro_no
 		from post where post_no=#{postNo})
 	</select>
 
@@ -99,6 +103,10 @@
 	
 	<update id="updatePostProgress" parameterType="post">
 	update post set post_progress=#{postProgress} where post_no=#{postNo}
+	</update>
+	
+	<update id="updateTodoProgress" parameterType="todo">
+	update todo set todo_progress=#{todoProgress} where todo_no=#{todoNo}
 	</update>
 
 

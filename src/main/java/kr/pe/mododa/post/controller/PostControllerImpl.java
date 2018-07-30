@@ -36,12 +36,6 @@ public class PostControllerImpl {
 	private PostServiceImpl postService;
 
 	@Autowired
-	@RequestMapping(value="/testareum.do")
-	public String postView () {
-		return "post/postDetail";
-	}
-
-	@Autowired
 	@RequestMapping(value="/post.do")
 	public String post () {
 		return "post/postDetail";
@@ -75,6 +69,7 @@ public class PostControllerImpl {
 		JSONArray todoArray = new JSONArray();
 		for(Todo td : listTodo) {
 			JSONObject todo = new JSONObject();
+			todo.put("todoNo", td.getTodoNo());
 			todo.put("todoContent", td.getTodoContent());
 			todo.put("todoMember", td.getTodoMemberName());
 			todo.put("todoMemberPicture", td.getTodoMemberPicture());
@@ -124,7 +119,6 @@ public class PostControllerImpl {
 			return view;
 		} 
 		else {
-			System.out.println("�꽭�뀡 �떎�뙣");
 			ModelAndView view = new ModelAndView();
 			view.addObject("result", -1);
 			view.setViewName("jsonView");
@@ -182,7 +176,6 @@ public class PostControllerImpl {
 
 			MultipartFile mFile = multi.getFile(uploadFile);
 			String fileName = mFile.getOriginalFilename();
-			System.out.println("�떎�젣 �뙆�씪 �씠由� : " +fileName);
 			newFileName = System.currentTimeMillis()+"."
 					+fileName.substring(fileName.lastIndexOf(".")+1);
 
@@ -262,13 +255,27 @@ public class PostControllerImpl {
 		return view;
 	}
 
-	//진행과정 변경
+	//게시글 진행과정 변경
 	@RequestMapping(value="/postUpdatePostProgress.do")
 	public ModelAndView updatePostProgress(int postNo, String postProgress) {
 		Post vo = new Post();
 		vo.setPostNo(postNo);
 		vo.setPostProgress(postProgress);
 		int result = postService.updatePostProgress(vo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	//할일 진행과정 변경
+	@RequestMapping(value="/postUpdateTodoProgress.do")
+	public ModelAndView updateTodoProgress(int todoNo, String todoProgress) {
+		Todo vo = new Todo();
+		vo.setTodoNo(todoNo);
+		vo.setTodoProgress(todoProgress);
+		int result = postService.updateTodoProgress(vo);
 		
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
