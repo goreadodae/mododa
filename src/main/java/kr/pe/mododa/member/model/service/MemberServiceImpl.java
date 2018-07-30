@@ -1,14 +1,21 @@
 package kr.pe.mododa.member.model.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Iterator;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.pe.mododa.common.MailHandler;
 import kr.pe.mododa.common.TempKey;
@@ -24,6 +31,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
+	@Autowired
+	private ServletContext servletContext;
 
 	@Override
 	public Member loginSHA(Member vo) {
@@ -178,4 +188,47 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.changeMyInfo(sqlSession, vo);
 	}
 
+	public boolean changeMemberPic(MultipartHttpServletRequest request, Member vo) {
+		boolean isSuccess = false;
+		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거 넘 어렵
+		System.out.println("root1 : "+root_path);
+		root_path = root_path.replaceFirst("webapp", "");
+		System.out.println("root2 : "+root_path);
+		String attach_path = "/resources/upload/member/";
+		String uploadPath = root_path+attach_path;
+		File dir = new File(uploadPath);
+		System.out.println(dir);
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+		Iterator<String> iter = request.getFileNames();
+		while(iter.hasNext()) {
+			String uploadFileName = iter.next();
+			MultipartFile mFile = request.getFile(uploadFileName);
+			String originalFileName = mFile.getOriginalFilename();
+			String saveFileName = originalFileName;
+			if(saveFileName != null && !saveFileName.equals("")) {
+				if(new File(uploadPath + saveFileName).exists()) {//중복 파일명 변경
+					saveFileName = System.currentTimeMillis()+"_"+saveFileName;
+				}
+				if(vo.getMemberPicture()!=null) {
+					File delFile = new File(uploadPath+vo.getMemberPicture());
+					delFile.delete();
+				}
+				try {
+					mFile.transferTo(new File(uploadPath + saveFileName));
+					vo.setMemberPicture(saveFileName);
+					memberDAO.changeMyInfo(sqlSession, vo);
+					isSuccess = true;
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+					isSuccess = false;
+				} catch (IOException e) {
+					e.printStackTrace();
+					isSuccess = false;
+				}
+			} // if end
+		} // while end
+		return isSuccess;
+	}
 }

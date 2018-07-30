@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
@@ -31,9 +33,16 @@ public class MemberControllerImpl implements MemberController {
 	
 	@Override
 	@RequestMapping(value="/mainPage.do")
-	public String gotoMain() {
-		// 0728 수정
-		return "main/template"; // 나중에 메인페이지로 변경
+	public Object gotoMain(HttpSession session) {
+		// 프로젝트 목록 읽어오기 - 지은 추가
+		ArrayList<Project> projectList = projectController.projectList(session);
+		Project privateProject = projectController.privateProject(session); // 0726 지은추가
+		//System.out.println(projectList);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.addObject("privateProject", privateProject); // 0726 지은추가
+		view.setViewName("main/mainPage");
+		return view;
 	}
 	
 	@Autowired
@@ -236,4 +245,12 @@ public class MemberControllerImpl implements MemberController {
 			return "member/changeFailed";
 		}
 	}
+	
+	@RequestMapping(value="/changeMemberPic.do")
+	public String changeMemberPic(MultipartHttpServletRequest request, HttpSession session) throws Exception {
+		Member vo = (Member) session.getAttribute("member");
+		memberService.changeMemberPic(request, vo);
+		return "redirect:/index.jsp";
+	}
+	
 }
