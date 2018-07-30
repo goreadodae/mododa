@@ -1,49 +1,42 @@
 package kr.pe.mododa;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-/**
- * Handles requests for the application home page.
- */
+import kr.pe.mododa.project.controller.ProjectControllerImpl;
+import kr.pe.mododa.project.model.vo.Project;
+
+
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	@Autowired
+	@Qualifier(value="projectController")
+	private ProjectControllerImpl projectController;
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
-	
+	// 페이지 공통 부분 로드하는 컨트롤러
 	@RequestMapping(value="/header.do")
 	public String header() {
 		return "main/header";
 	}
 	
 	@RequestMapping(value="/leftbar.do")
-	public String leftbar() {
-		return "main/leftbar";
+	public Object leftbar(HttpSession session) {
+		// 프로젝트 목록 읽어오기
+		ArrayList<Project> projectList = projectController.projectList(session);
+		Project privateProject = projectController.privateProject(session);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.addObject("privateProject", privateProject);
+		view.setViewName("main/leftbar"); // 0728 수정
+		return view;
 	}
 	
 	@RequestMapping(value="/rightbar.do")

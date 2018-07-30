@@ -196,7 +196,18 @@ public class ProjectControllerImpl implements ProjectController {
 		return view;
 	}
 
-
+	
+	
+	@RequestMapping(value="proMyPost.do")
+	public Object proMyPost(HttpSession session, @RequestParam int proNo) { // 프로젝트 내 글 읽어오기
+		// System.out.println("proPost: "+proNo);
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		ArrayList<Post> postList = projectService.searchProMyPostList(proNo, memberNo); // 프로젝트 글 전부 읽어오기
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/proMyPost");
+		return view;
+	}
 
 
 	

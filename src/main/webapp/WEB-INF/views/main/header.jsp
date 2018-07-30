@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Header</title>
 </head>
 
 <style>
@@ -70,6 +70,31 @@
 }
 </style>
 
+
+<script>
+
+	/* 기본 구조 구성하는 스크립트 시작 */
+	//leftbar, rightbar 높이 설정
+	$(document).ready(function() {
+		resizeContent();
+	});
+
+	$(window).resize(function() {
+		resizeContent();
+	});
+	
+	function resizeContent() {
+		var windowHeight = $(window).height();
+		var topHeight = $('.header').height();
+
+		$('#background').css({
+			'height' : (windowHeight-topHeight) + 'px'
+		});
+	}
+	/* 기본 구조 구성하는 스크립트 끝 */
+
+</script>
+
 <body>
 
 <!-- header -->
@@ -78,9 +103,7 @@
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
-					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. <img id="cancel-img"
-						onclick="bannerClose();"
-						src="../resources/images/layout-img/cancel.png" />
+					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. 
 				</div>
 			</div>
 
