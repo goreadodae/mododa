@@ -50,7 +50,7 @@ div {
 
 /* 지은 스타일 추가 */
 .proIcon {
-	margin-right: 2%;
+	margin-right: 5%;
 	height: 23px;
 	width: 23px;
 }
@@ -145,12 +145,12 @@ li[id^="sub_"] a {
 		// 프라이빗 하위 메뉴 
 		$(".priPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/priPost.do?proNo=" + proNo;
+			location.href="/privatePost.do?proNo=" + proNo;
 		});
 
 		$(".priHashTag").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/privateHashTag.do?proNo=" + proNo;
 		});
 
 		// 프로젝트 목록
@@ -170,12 +170,12 @@ li[id^="sub_"] a {
 		// 프로젝트 하위 메뉴
 		$(".proPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/proPost.do?proNo=" + proNo;
+			location.href="/projectPost.do?proNo=" + proNo;
 		});
 
 		$(".proHashTag").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/projectHashTag.do?proNo=" + proNo;
 		});
 
 		$(".proProgress").click(function() {
@@ -185,7 +185,7 @@ li[id^="sub_"] a {
 
 		$(".proMyPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/proMyPost.do?proNo=" + proNo;
+			location.href="/projectMyPost.do?proNo=" + proNo;
 		});
 
 		$(".proCalendar").click(function() {

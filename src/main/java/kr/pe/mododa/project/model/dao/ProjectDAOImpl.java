@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.project.model.vo.ProjectPostList;
+import kr.pe.mododa.project.model.vo.SearchHelper;
 
 
 
@@ -31,43 +33,49 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	@Override
+	public int insertInviteMember(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.insert("project.insertInviteMember", memberNo);
+	}
+	
+	@Override
 	public ArrayList<Project> searchProjectList(SqlSessionTemplate sqlSession, int memberNo) {
 		List projectList = sqlSession.selectList("project.searchProjectList", memberNo);
 		return (ArrayList<Project>)projectList;
 	}
-
+	
 	@Override
-	public int insertInviteMember(SqlSessionTemplate sqlSession, int memberNo) {
-		return sqlSession.insert("project.insertInviteMember", memberNo);
-	}
-
-	@Override
-	public ArrayList<Post> searchPostList(SqlSessionTemplate sqlSession, int proNo) {
-		List proPostList = sqlSession.selectList("project.searchPostList", proNo);
-		return (ArrayList<Post>)proPostList;
+	public Project searchPrivateList(SqlSessionTemplate sqlSession, int memberNo) {
+		return (Project)sqlSession.selectOne("project.searchPrivateList", memberNo);
 	}
 
 	@Override
-	public Project searchPrivateProject(SqlSessionTemplate sqlSession, int memberNo) {
-		return sqlSession.selectOne("project.searchPrivateProject", memberNo);
+	public ArrayList<ProjectPostList> searchPostList(SqlSessionTemplate sqlSession, int proNo) {
+		List postList = sqlSession.selectList("project.searchPostList", proNo);
+		return (ArrayList<ProjectPostList>)postList;
 	}
 
-	public Member searchMemberName(SqlSessionTemplate sqlSession, int proNo) {
-		return sqlSession.selectOne("project.searchMemberName", proNo);
+	@Override
+	public ArrayList<ProjectPostList> searchMyPostList(SqlSessionTemplate sqlSession, Project project) {
+		List postList = sqlSession.selectList("project.searchMyPostList", project);
+		return (ArrayList<ProjectPostList>)postList;
 	}
 
-	public String searchProTitle(SqlSessionTemplate sqlSession, int proNo) {
-		return sqlSession.selectOne("project.searchProTitle", proNo);
+	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo) {
+		List postList = sqlSession.selectList("project.searchHashTagPostList", proNo);
+		return (ArrayList<ProjectPostList>)postList;
 	}
 
-	public ArrayList<Member> postWriterMemberList(SqlSessionTemplate sqlSession, String[] postWriterNumberList) {
-		List postWriterMemberList = sqlSession.selectList("project.postWriterMemberList", postWriterNumberList);
-		return (ArrayList<Member>)postWriterMemberList;
+	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh) {
+		List postList = sqlSession.selectList("project.searchProTitleOrMemberName", sh);
+		return (ArrayList<ProjectPostList>)postList;
 	}
 
-	public ArrayList<Post> searchProMyPostList(SqlSessionTemplate sqlSession, int proNo, int memberNo) {
-		
-		return null;
-	}
+
+
+
+
+
+
+
 
 }

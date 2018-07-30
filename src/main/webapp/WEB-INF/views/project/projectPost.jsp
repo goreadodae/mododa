@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <!-- 준석이 스타일 -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -53,7 +52,7 @@ div {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-		$("#content-frame").load("/bookmark.do");
+		/* $("#content-frame").load("/bookmark.do"); */
 	}
 	
 	function searchPrivate() // 검색
@@ -137,20 +136,21 @@ div {
 				</div>
 				
 				<div class="headerFunction" id="headerFun">
-					<!-- 검색기능버튼과 글쓰기 버튼. -->
-					<button type="button" class="btn btn-outline-light btn-lg" id="searchShow" onclick="searchShow();">
-						<i class="fas fa-search" style="color: grey;"></i>
-					</button>
+						<!-- 검색기능버튼과 글쓰기 버튼. -->
+						<button type="button" class="btn btn-outline-light btn-lg"
+							id="searchShow" onclick="searchShow();">
+							<i class="fas fa-search" style="color: grey;"></i>
+						</button>
 
-					<!-- 한영진이 버튼 연결 -->	
-											<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
+						<!-- 한영진이 버튼 연결 -->
+						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
 						<c:url var="url" value="/writePage.do">
-						<c:param name="currentProjectNo" value="${proNo}"></c:param>
+							<c:param name="currentProjectNo" value="${proNo}"></c:param>
 						</c:url>
-	<button type="button" onclick="location='${url}'" class="btn btn-outline-success">
-		<i class="fas fa-edit"></i>글쓰기
-	</button>
-				</div>
+						<button type="button" onclick="location='${url}'"class="btn btn-outline-success">
+							<i class="fas fa-edit"></i>글쓰기
+						</button>
+					</div>
 				
 			</div>
 			
@@ -177,13 +177,13 @@ div {
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
-							<span onclick="getPost();" class="btn btn-link" style="float:left;">${postList.postTitle}</span>
+							<span onclick="getPost(${postList.postNo});" class="btn btn-link" style="float:left;">${postList.postTitle}</span>
 							</div>
-							<c:forEach items="${postWriterMemberList}" var="postWMList">
-							<c:if test="${postList.postWriter==postWMList.memberNo}">
-							<div class="col-md-9"><img id="memberImg2" src="${postWMList.memberPicture}">&nbsp;&nbsp;${postWMList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
-							<a href="#" class="btn btn-link" style="float:none;" >${proTitle}</a></div>
-							</c:if></c:forEach>
+							
+							<div class="col-md-9">
+							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
+							</div>
+							
 						</div>
 						<hr style="color: grey;">
 					</li>

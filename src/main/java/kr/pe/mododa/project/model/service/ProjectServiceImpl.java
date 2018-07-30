@@ -12,6 +12,8 @@ import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.dao.ProjectDAOImpl;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.project.model.vo.ProjectPostList;
+import kr.pe.mododa.project.model.vo.SearchHelper;
 import kr.pe.mododa.project.model.vo.WorkOn;
 
 
@@ -22,6 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Resource(name="projectDAO")
 	private ProjectDAOImpl projectDAO;
+	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
@@ -37,44 +40,50 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int searchMemberNo(String memberId) {
+	public int searchMemberNo(String memberId) { // 회원 번호 검색
 		return projectDAO.searchMemberNo(sqlSession, memberId);
 	}
-
-	@Override
-	public ArrayList<Project> searchProjectList(int memberNo) {
-		return projectDAO.searchProjectList(sqlSession, memberNo);
-	}
-
+	
 	@Override
 	public int insertInviteMember(int memberNo) {
 		return projectDAO.insertInviteMember(sqlSession, memberNo);
 	}
 
 	@Override
-	public ArrayList<Post> searchPostList(int proNo) {
+	public ArrayList<Project> searchProjectList(int memberNo) {
+		return projectDAO.searchProjectList(sqlSession, memberNo);
+	}
+	
+	@Override
+	public Project searchPrivateList(int memberNo) {
+		return projectDAO.searchPrivateList(sqlSession, memberNo);
+	}
+
+	@Override
+	public ArrayList<ProjectPostList> searchPostList(int proNo) {
 		return projectDAO.searchPostList(sqlSession, proNo);
 	}
 
 	@Override
-	public Project searchPrivateProject(int memberNo) {
-		return projectDAO.searchPrivateProject(sqlSession, memberNo);
+	public ArrayList<ProjectPostList> searchMyPostList(Project project) {
+		return projectDAO.searchMyPostList(sqlSession, project);
 	}
 
-	public Member searchMemberName(int proNo) {
-		return projectDAO.searchMemberName(sqlSession, proNo);
+	@Override
+	public ArrayList<ProjectPostList> searchHashTagPostList(int proNo) {
+		return projectDAO.searchHashTagPostList(sqlSession, proNo);
 	}
 
-	public String searchProTitle(int proNo) {
-		return projectDAO.searchProTitle(sqlSession, proNo);
+	@Override
+	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SearchHelper sh) {
+		return projectDAO.searchProTitleOrMemberName(sqlSession, sh);
 	}
 
-	public ArrayList<Member> postWriterMemberList(String[] postWriterNumberList) {
-		return projectDAO.postWriterMemberList(sqlSession, postWriterNumberList);
-	}
 
-	public ArrayList<Post> searchProMyPostList(int proNo, int memberNo) {
-		return projectDAO.searchProMyPostList(sqlSession, proNo, memberNo);
-	}
+
+
+
+
+
 
 }
