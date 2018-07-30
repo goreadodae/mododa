@@ -16,5 +16,10 @@
       <td>${noticeDetail.noticeViewCount}</td>
    </tr>
 
+<form action="/noticeDelete.do">
+		<input type="submit" value="글삭제"> 
+		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
+	</form>
+
 </body>
 </html>
