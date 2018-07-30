@@ -147,6 +147,8 @@ public class ProjectControllerImpl implements ProjectController {
 		view.addObject("postList", postList);
 		view.addObject("proTitle", proTitle);
 		view.addObject("postWriterMemberList", postWriterMemberList);
+		// 글쓰기에 프로젝트 번호 전달(여기 수정)
+		view.addObject("proNo",proNo);
 		view.setViewName("project/projectPost");
 		return view;
 	}

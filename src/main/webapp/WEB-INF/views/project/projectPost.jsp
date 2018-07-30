@@ -143,9 +143,13 @@ div {
 					</button>
 
 					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
-						<i class="fas fa-edit"></i>글쓰기
-					</button>
+											<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
+						<c:url var="url" value="/writePage.do">
+						<c:param name="currentProjectNo" value="${proNo}"></c:param>
+						</c:url>
+	<button type="button" onclick="location='${url}'" class="btn btn-outline-success">
+		<i class="fas fa-edit"></i>글쓰기
+	</button>
 				</div>
 				
 			</div>
