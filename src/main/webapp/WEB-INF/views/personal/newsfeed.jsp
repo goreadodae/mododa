@@ -1,31 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-	crossorigin="anonymous"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-	crossorigin="anonymous"></script>
-<!-- CDN방식으로 부트스트랩 링크 추가 -->
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>템플릿</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
 	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
@@ -34,12 +19,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
-
-
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>★모두다-Collaboration Tool★</title>
+</head>
 
 <script>
 	function searchShow() {
@@ -70,7 +50,10 @@
 						if(data.length==0)
 							{
 							$(".feed-list").empty();
-							$(".feed-list").append("<div>내용없어요</div>");
+							$(".feed-list").append('<div class="row">'+
+								  	'<div class="col-md-12"><center>'+	
+									'<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>'+
+									'<span font-size="12px;">검색결과가 존재하지 않습니다..</span></div></div>');
 							}else{
 						$(".feed-list").empty();
 						var result="";
@@ -80,10 +63,8 @@
 								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
 								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
 								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
-								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
-								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
-								'</button></div>'+
-								'</div><hr style="color:grey;"></li>';
+								'<div class="col-md-3"></div>'+
+								'</div><hr style="color:grey;"></li>'; 
 							}
 						$(".feed-list").append(result);
 						$(".feed-list").append("<span>마지막입니다.</sapn>");
@@ -101,13 +82,32 @@
 	
 	
 </script>
+<style>
+body {
+	overflow-x: hidden;
+	height: 100%;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
 
-</head>
 <body>
 
+<!-- header -->
+<jsp:include page="/header.do"></jsp:include>
+<!-- header 끝 -->
 
-	<!-- jstl은 나중에~~ -->
-			<div class="content">
+<div class="row">
+	<!-- left bar -->a
+	<jsp:include page="/leftbar.do"></jsp:include>
+	<!-- left bar 끝-->
+
+
+	<!-- contents -->
+	<div class="col-6" id="contents" style="padding:0;">
+		<div class="content">
 				<div class="viewHeader">
 					<div id="showHeader">
 						<!-- 기본으로 출력되는 헤더 -->
@@ -150,13 +150,28 @@
 								<div class="col-md-12">
 								<span onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</span>
 								</div>
-								<div class="user_img">
-									<img src="${news.pWriterImg }" />
+								<div class="col-md-9">
+									<img id="memberImg" src="${news.pWriterImg }" />
+									<span id="postcontent" style="font-size:12px;">${news.pWriterImg }</span><br>
+									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
-								<a class="btn btn-link btn-sm">n개의 소식 더 보기</a>
-								<!-- 아코디언이나 collapse사용? -->
-								<div class="feed-footer">
-									<i class="far fa-lightbulb"></i> 발의된 이슈
+								<div class="col-md-12">
+								<c:choose>
+									<c:when test="${news.postProgress eq'완료' }">
+										<c:set var="statusImg" value="../resources/images/post/lightbulb.png" />
+									</c:when>
+									<c:when test="${news.postProgress eq'진행 중' }">
+										<c:set var="statusImg" value="../resources/images/icon/play-button.png"/>
+									</c:when>
+									<c:when test="${news.postProgress eq'일시중지' }">
+									<c:set var="statusImg" value="../resources/images/icon/pause.png"/>
+									</c:when>
+									<c:otherwise>
+										<c:set var ="statusImg" value="../resources/images/icon/checked-allot.png"/>
+									</c:otherwise>
+									</c:choose>
+									<img id="memberImg2" src=${statusImg }/>&nbsp;
+									<a onclick="#" class="btn btn-link" style="float:none;" value="${news.proNo }">${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">
@@ -170,5 +185,16 @@
 
 
 <jsp:include page="/post.do"></jsp:include>
+		
+	
+	</div>
+	<!-- contents 끝 -->
+
+
+	<!-- right bar -->
+	<jsp:include page="/rightbar.do"></jsp:include>
+	<!-- right bar 끝 -->
+</div>
+
 </body>
 </html>
