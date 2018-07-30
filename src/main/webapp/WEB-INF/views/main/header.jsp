@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -68,8 +69,33 @@
 .dropdown-item:active{
 	background-color: #CFF09E;
 }
+#partnerList{
+	height: auto; width: 250px;
+}
 </style>
+<script>
 
+	/* 기본 구조 구성하는 스크립트 시작 */
+	//leftbar, rightbar 높이 설정
+	$(document).ready(function() {
+		resizeContent();
+	});
+
+	$(window).resize(function() {
+		resizeContent();
+	});
+	
+	function resizeContent() {
+		var windowHeight = $(window).height();
+		var topHeight = $('.header').height();
+
+		$('#background').css({
+			'height' : (windowHeight-topHeight) + 'px'
+		});
+	}
+	/* 기본 구조 구성하는 스크립트 끝 */
+
+</script>
 <body>
 
 <!-- header -->
@@ -91,18 +117,18 @@
 				</div>
 
 				<div class="col-md-5 topbar">
-					<img id="logo-img"          
-						src="../resources/images/layout-img/main_logo_rec.png" />
+					<a href="/mainPage.do"><img id="logo-img"          
+						src="../resources/images/layout-img/main_logo_rec.png"></a>
 				</div>
 
 				<div class="col-md-4 topbar">
 					<div class="row" style="height: 100%;">
 					<div class="col-md-4 topbar"></div>
-					<div class="col-md-1 dropdown topbar">
+					<div class="col-md-1 dropdown topbar" id="myInfoDiv">
 						<!-- 회원 썸네일 -->
 					<c:choose>
 						<c:when test="${sessionScope.member.memberPicture!=null }">
-							<c:set var="memberPic" value="${sessionScope.member.memberPicture }"/>
+							<c:set var="memberPic" value="../resources/upload/member/${sessionScope.member.memberPicture }"/>
 						</c:when>
 						<c:otherwise>
 							<c:set var="memberPic" value="../resources/upload/member/whale.png"/>
@@ -120,7 +146,7 @@
 								<div class="col-md-12">${sessionScope.member.memberId }</div>
 								</div>
 							</div>
-    						<a class="dropdown-item" href="#" onclick="gotoMyInfo();">내정보</a>
+    						<a class="dropdown-item" href="/myInfo.do">내정보</a>
     						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
     						<a class="dropdown-item" href="/logout.do">로그아웃</a>
  						</div>
@@ -132,20 +158,30 @@
 						</div>
 						<div class="col-md-3 topbar">
 						<!-- 파트너 목록 -->
-						<a class="myInfo" href="">파트너 목록</a>
+						<a class="myInfo dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">파트너 목록</a>
+						<div class="dropdown-menu" id="partnerList">
+							<div class="row" style="margin: 20px;">
+								<div class="col-md-4" style="margin: 0;">
+									<img src="${memberPic }"
+										class="img-circle rounded-circle border myInfoPop">
+								</div>
+								<div class="col-md-8">
+									<div class="row">
+										<div class="col-md-12">${sessionScope.member.memberName }</div>
+										<div class="col-md-12">${sessionScope.member.memberId }</div>
+									</div>
+								</div>
+							</div>
+ 						</div>
+						</div>
+						<div class="col-md-1 topbar">
 						</div>
 						<div class="col-md-3 topbar">
 						</div>
 					</div>
-					
-					
-					
-					
-					
 				</div>
 			</div>
 		</div>
 		<!-- header 끝 -->
-
 </body>
 </html>

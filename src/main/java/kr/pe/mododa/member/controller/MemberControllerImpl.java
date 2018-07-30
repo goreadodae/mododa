@@ -1,7 +1,6 @@
 package kr.pe.mododa.member.controller;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
@@ -22,8 +23,6 @@ import kr.pe.mododa.common.SHA256Util;
 import kr.pe.mododa.member.model.service.MemberServiceImpl;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.project.controller.ProjectControllerImpl;
-import kr.pe.mododa.project.model.vo.Project;
 
 @Controller
 public class MemberControllerImpl implements MemberController {
@@ -31,15 +30,10 @@ public class MemberControllerImpl implements MemberController {
 	@Qualifier(value="memberService")
 	private MemberServiceImpl memberService;
 	
-	// 지은 추가
-	@Autowired
-	@Qualifier(value="projectController")
-	private ProjectControllerImpl projectController;
 	
 	@Override
 	@RequestMapping(value="/mainPage.do")
 	public Object gotoMain(HttpSession session) {
-
 		// 프로젝트 목록 읽어오기 - 지은 추가
 		ArrayList<Project> projectList = projectController.projectList(session);
 		Project privateProject = projectController.privateProject(session); // 0726 지은추가
@@ -251,4 +245,12 @@ public class MemberControllerImpl implements MemberController {
 			return "member/changeFailed";
 		}
 	}
+	
+	@RequestMapping(value="/changeMemberPic.do")
+	public String changeMemberPic(MultipartHttpServletRequest request, HttpSession session) throws Exception {
+		Member vo = (Member) session.getAttribute("member");
+		memberService.changeMemberPic(request, vo);
+		return "redirect:/index.jsp";
+	}
+	
 }

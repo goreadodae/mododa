@@ -32,6 +32,11 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.selectList("post.selectTodo",postNo);
 	}
 	
+	public Decision selectDecision(SqlSessionTemplate sqlSession, int postNo){
+		Decision d =  sqlSession.selectOne("post.selectDecision",postNo);
+		return d;
+	}
+	
 	public List<Member> selectMembers(SqlSessionTemplate sqlSession, int postNo){
 		return sqlSession.selectList("post.selectMembers",postNo);
 	}
@@ -51,5 +56,16 @@ public class PostDAOImpl implements PostDAO{
 	public int insertDecision(SqlSessionTemplate sqlSession, Decision vo) {
 		return sqlSession.insert("post.insertDecision",vo);
 	}
-
+	
+	public int deleteDecision(SqlSessionTemplate sqlSession, int postNo) {
+		return sqlSession.delete("post.deleteDecision",postNo);
+	}
+	
+	public int updateDecision(SqlSessionTemplate sqlSession, Decision vo) {
+		return sqlSession.update("post.updateDecision",vo);
+	}
+	
+	public int updatePostProgress(SqlSessionTemplate sqlSession, Post vo) {
+		return sqlSession.update("post.updatePostProgress",vo);
+	}
 }

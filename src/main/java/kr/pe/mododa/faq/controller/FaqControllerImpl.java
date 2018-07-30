@@ -84,7 +84,6 @@ public class FaqControllerImpl implements FaqController {
 
 		Page page = faqService.searchNotice(currentPage,search,searchOption);
 		
-		System.out.println(page.getList().get(0).getNoticeTitle());
 		
 
 		ModelAndView view = new ModelAndView(); 
@@ -101,36 +100,62 @@ public class FaqControllerImpl implements FaqController {
 		return "faq/noticeWriteReady";
 	}
 	
-//	@RequestMapping(value="/noticeWrite.do")
-//	public ModelAndView noticeWrite(HttpServletRequest request) {
-//		
-//		HttpSession session = request.getSession(false);
-//		
-//		String noticeTitle = request.getParameter("title");
-//		String noticeContents= request.getParameter("contents");
-//
-//		Notice notice = new Notice();
-//		notice.setNoticeTitle(noticeTitle);
-//		notice.setNoticeContents(noticeContents);
-//		
-//
-//		// 3.비즈니스 로직 처리
-//		int result = new BoardService().insertNotice(board);
-//
-//		if (result > 0) {// 글쓰기가 정상작동 할경우
-//			response.sendRedirect("/review");
-//		} else {// 작동이 안될경우
-//			response.sendRedirect("/View/error/error.jsp");
-//		}
-//
-//	} else {// 세션이 제대로 연결되지 않은경우
-//		response.sendRedirect("/View/error/error.jsp");
-//	}
-//		
-//		return null;
-//		
-//	}
+	@RequestMapping(value="/noticeWrite.do")
+	public ModelAndView noticeWrite(HttpServletRequest request) {
 		
+		HttpSession session = request.getSession(false);
+		
+		String noticeTitle = request.getParameter("title");
+		String noticeContents= request.getParameter("contents");
+
+		Notice notice = new Notice();
+		notice.setNoticeTitle(noticeTitle);
+		notice.setNoticeContents(noticeContents);
+		
+		
+		// 3.비즈니스 로직 처리
+		int result = faqService.insertNotice(notice);
+		
+		ModelAndView view = new ModelAndView();
+		if(result>0) {
+		 
+		view.setViewName("faq/noticeWrite");// 게시글갯수,총게시물수를 noticeBoard.jsp로 보낸다
+		}else {
+		view.setViewName("faq/noticeError");
+		
+		}
+		return view;
+	}
+	
+	@RequestMapping(value="/noticeDelete.do")
+	public String noticeDelete(HttpServletRequest request) {
+		
+		//1.view에서 요청값 받기
+		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		
+		//2.비즈니스 로직
+		
+		HttpSession session = request.getSession(false); 
+		
+		int result = faqService.deleteNotice(noticeNo); // 게시글 삭제
+		
+		 ModelAndView view = new ModelAndView();
+				
+				if(result>0) { //게시글삭제가 성공하면
+					view.setViewName("/noticeList.do");
+				}else {//게시글 삭제가 실패하면
+					view.setViewName("faq/noticeError");
+					
+				}
+			
+			
+		
+		return "redirect:/faq/noticeList.do";
+		
+	}
+		
+	
+//	@RequestMapping(value="/noticeDelete.do")
 		
 		
 }

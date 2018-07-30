@@ -1,38 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.css' />
-<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.print.min.css' media='print'/>
-
-<!-- <script type='text/javascript' src='/js/jquery/jquery-ui.min.js'></script> -->
-<script type='text/javascript' src='/js/jquery/jquery.min.js'></script>
-<script type='text/javascript' src='/js/jquery/moment.min.js'></script>
-<script type='text/javascript' src='/js/fullcalendar/fullcalendar.js'></script>
-
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script> -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<!-- <script src="//code.jquery.com/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
-<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
-
+<title>í…œí”Œë¦¿</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<script type='text/javascript' src='/js/jquery/jquery.min.js'></script>
+<script type='text/javascript' src='/js/jquery/moment.min.js'></script>
 
+<script type='text/javascript' src='/js/fullcalendar/fullcalendar.js'></script>
+<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.print.min.css' media='print'/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
 <script type='text/javascript'>
 
@@ -46,7 +37,7 @@ var scheduleNo = 0;
 	var calHeight = 1000;
 	
 	
-	//Ä¶¸°´õ »ı¼º ±â´É
+	//ìº˜ë¦°ë” ìƒì„± ê¸°ëŠ¥
 	function createCal(){
 		
 		var date = new Date();
@@ -55,16 +46,16 @@ var scheduleNo = 0;
 		var y = date.getFullYear();
 		
 		var calendar = $('#calendar').fullCalendar({
-			/* monthNames: ["1¿ù","2¿ù","3¿ù","4¿ù","5¿ù","6¿ù","7¿ù","8¿ù","9¿ù","10¿ù","11¿ù","12¿ù"],
-	    	monthNamesShort: ["1¿ù","2¿ù","3¿ù","4¿ù","5¿ù","6¿ù","7¿ù","8¿ù","9¿ù","10¿ù","11¿ù","12¿ù"],
-	    	dayNames: ["ÀÏ¿äÀÏ","¿ù¿äÀÏ","È­¿äÀÏ","¼ö¿äÀÏ","¸ñ¿äÀÏ","±İ¿äÀÏ","Åä¿äÀÏ"],
-			dayNamesShort: ["ÀÏ","¿ù","È­","¼ö","¸ñ","±İ","Åä"], 
+			/* monthNames: ["1ì›”","2ì›”","3ì›”","4ì›”","5ì›”","6ì›”","7ì›”","8ì›”","9ì›”","10ì›”","11ì›”","12ì›”"],
+	    	monthNamesShort: ["1ì›”","2ì›”","3ì›”","4ì›”","5ì›”","6ì›”","7ì›”","8ì›”","9ì›”","10ì›”","11ì›”","12ì›”"],
+	    	dayNames: ["ì¼ìš”ì¼","ì›”ìš”ì¼","í™”ìš”ì¼","ìˆ˜ìš”ì¼","ëª©ìš”ì¼","ê¸ˆìš”ì¼","í† ìš”ì¼"],
+			dayNamesShort: ["ì¼","ì›”","í™”","ìˆ˜","ëª©","ê¸ˆ","í† "], 
 	    	buttonText: {
-	    	today : "¿À´Ã",
-			month : "¿ùº°",
-	    	week : "ÁÖº°",
-	    	list : "¸®½ºÆ®",
-	    	day : "ÀÏº°",
+	    	today : "ì˜¤ëŠ˜",
+			month : "ì›”ë³„",
+	    	week : "ì£¼ë³„",
+	    	list : "ë¦¬ìŠ¤íŠ¸",
+	    	day : "ì¼ë³„",
 	    	},*/ 
 			header: {
 				left: 'title',
@@ -75,10 +66,6 @@ var scheduleNo = 0;
 			selectable: true,
 			selectHelper: true,
 			contentHeight: 600,
-			droppable: true,
-			drop: function(date) {
-			    alert("Dropped on " + date.format());
-			  },
 			select: function(start, end, allDay) {
          
          modalProjectPrice();
@@ -125,7 +112,7 @@ var scheduleNo = 0;
 			        	 callback(events);
 			         },
 			         error : function(data) {
-			            console.log("½ÇÆĞ");
+			            console.log("ì‹¤íŒ¨");
 			            }
 			         });
 			},
@@ -142,23 +129,23 @@ var scheduleNo = 0;
 	}
 	
 	
-	//ÆË¾÷ Open ±â´É
+	//íŒì—… Open ê¸°ëŠ¥
     function open_pop(flag) {
          $('#myModal').show();
     };
 	
 	
-	//ÆË¾÷ Close ±â´É
+	//íŒì—… Close ê¸°ëŠ¥
     function close_pop(flag) {
          $('#myModal').hide();
     };
     
-  //ÆË¾÷ Close ±â´É
+  //íŒì—… Close ê¸°ëŠ¥
     function close_up_pop(flag) {
          $('#myModalUpdate').hide();
     };
     
-    //¸ğµâ °ª °¡Á®¿À±â
+    //ëª¨ë“ˆ ê°’ ê°€ì ¸ì˜¤ê¸°
     function saveSchedule(){
     	
     	var proSelect = document.getElementById("projectList").value;
@@ -166,12 +153,7 @@ var scheduleNo = 0;
     	var title = document.getElementById("scheduleTitle").value;
     	var startDate = document.getElementById("startDate").value;
     	var endDate = document.getElementById("endDate").value;
-   	    	
-    	console.log(proSelect);
-    	console.log(relationSelect);
-    	console.log(title);
-    	console.log(startDate);
-    	console.log(endDate);
+
     	
     	 $.ajax({
             url : "/calendarInsertSchedule.do",
@@ -184,12 +166,12 @@ var scheduleNo = 0;
             	endDate : endDate            	
             },
             success : function(data) {
-               console.log("¼º°ø");
+               console.log("ì„±ê³µ");
                
-               window.location.reload(true);//»õ·Î°íÄ§ÄÚµå
+               window.location.reload(true);//ìƒˆë¡œê³ ì¹¨ì½”ë“œ
             },
             error : function(data) {
-               console.log("½ÇÆĞ");
+               console.log("ì‹¤íŒ¨");
             },
             complete : function(data) {
             	close_pop();
@@ -198,7 +180,7 @@ var scheduleNo = 0;
     }
     
     
-    /* module µ¥ÀÌÅÍ°ª °¡Á®¿À´Â ajax */
+    /* module ë°ì´í„°ê°’ ê°€ì ¸ì˜¤ëŠ” ajax */
     function modalProjectPrice(){
         	
     	 $.ajax({
@@ -213,12 +195,12 @@ var scheduleNo = 0;
     				}			
              },
              error : function(data) {
-                console.log("½ÇÆĞ");
+                console.log("ì‹¤íŒ¨");
                 }
              }); 
     }
     
-    /* module µ¥ÀÌÅÍ°ª °¡Á®¿À´Â ajax ÇÁ·ÎÁ§Æ®¼±ÅÃ½Ã */
+    /* module ë°ì´í„°ê°’ ê°€ì ¸ì˜¤ëŠ” ajax í”„ë¡œì íŠ¸ì„ íƒì‹œ */
     
     function changeproSelect() {
     	
@@ -236,16 +218,17 @@ var scheduleNo = 0;
              	
 				for(var i=0;i<data.length;i++){
 					$('#linkPostList').append("<option value='"+data[i].postNo+"'>"+data[i].postTitle+"</option>");
-				}	
-           		
+				}			
             },
            	error : function(data) {
-            console.log("½ÇÆĞ");
+            console.log("ì‹¤íŒ¨");
             }
            }); 
     }
     
 
+    var projectName ="ì•ˆë…•";
+    
     function updateModal (scheduleNo) {
     	
     	 $.ajax({
@@ -256,18 +239,22 @@ var scheduleNo = 0;
               },
             	success :function(data) {
             		
+            		projectOne(data.proNo);
+            		/* var postName = return postOne(data.postNo); */
+            		
+            		
             		$('#scUpdatePro').find("label").remove();
-            		$('#scUpdatePost').find("label").remove();
- 			
- 					$('#scUpdatePro').append("<label>"+data.postNo+"</label>");
+            		$('#scUpdatePost').find("label").remove(); 					
+           
+ 					$('#scUpdatePro').append("<label>"+projectName+"</label>");
  					$('#scUpdatePost').append("<label>"+data.proNo+"</label>");
  					$('#scheduleTitleUpdate').attr('value',data.scTitle);
  					$('#startDateUpdate').attr('value',data.stStartDate);
  					$('#endDateUpdate').attr('value',data.stEndDate);
             		
              },
-            	error : function(data) {
-             console.log("½ÇÆĞ");
+            error : function(data) {
+             console.log("ì‹¤íŒ¨");
              }
             });    	
     	
@@ -291,12 +278,12 @@ var scheduleNo = 0;
         	scheduleNo : scheduleNo
         },
         success : function(data) {
-           console.log("¼º°ø");
+           console.log("ì„±ê³µ");
            
-           window.location.reload(true);//»õ·Î°íÄ§ÄÚµå
+           window.location.reload(true);//ìƒˆë¡œê³ ì¹¨ì½”ë“œ
         },
         error : function(data) {
-           console.log("½ÇÆĞ");
+           console.log("ì‹¤íŒ¨");
         },
         complete : function(data) {
         	close_pop();
@@ -315,7 +302,7 @@ var scheduleNo = 0;
 	        },
 	        success : function(data) {
 	           
-	        	var deleteCheck = confirm("Á¤¸»·Î »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?");
+	        	var deleteCheck = confirm("ì •ë§ë¡œ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
 	        	
 	        	if(deleteCheck){
 	        		window.location.reload(true);
@@ -323,7 +310,7 @@ var scheduleNo = 0;
 
 	        },
 	        error : function(data) {
-	           console.log("½ÇÆĞ");
+	           console.log("ì‹¤íŒ¨");
 	        },
 	        complete : function(data) {
 	        	close_pop();
@@ -332,11 +319,60 @@ var scheduleNo = 0;
 	   
    }
    
+   
+  function projectOne (proNo) {
+	   
+	   $.ajax({
+	        url : "/selectProjectOne.do",
+	        type : "post",
+	        data :  {   
+	        	proNo : proNo
+	        },
+	        success : function(data) {
+				console.log(data.proTitle);
+	        projectName = data.proTitle;
+
+	        },
+	        error : function(data) {
+	           console.log("ì‹¤íŒ¨");
+	        },
+	        complete : function(data) {
+	        	close_pop();
+	        }
+		});
+	   
+   } 
+   
+   
+   
     
 </script>
- 
-    <style>
-        /* The Modal (background) */
+
+
+</head>
+
+<style>
+body {
+	overflow-x: hidden;
+	height: 100%;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+
+#calendar {
+		margin-top: 40px;
+		/* text-align: center; */
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		margin: 0 auto;
+		width : 900px;
+		}
+		
+		
+		
+  /* The Modal (background) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -358,134 +394,91 @@ var scheduleNo = 0;
             border: 1px solid #888;
             width: 30%; /* Could be more or less, depending on screen size */                          
         }
- 
- 	
- 
+
 </style>
 
-
-
-<style type='text/css'>
-
-	#calendar {
-		margin-top: 40px;
-		/* text-align: center; */
-		font-size: 14px;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		margin: 0 auto;
-		}
-
-	/* #calendar {
-		width: 850px;
-		height:500px; 
-		margin: 0 auto;
-		}*/
-		
-		.fc-time{display:none}
-		
-		body {
-		overflow-x: hidden;
-		height: 100%;
-		}
-		div {
-		margin: 0px;
-		padding: 0px;
-		}
-		
-	
-</style>
-
-
-<title>Ä¶¸°´õ</title>
-</head>
 <body>
-
 
 <!-- header -->
 <jsp:include page="/header.do"></jsp:include>
-<!-- header ³¡ -->
+<!-- header ë -->
 
 <div class="row">
 	<!-- left bar -->
 	<jsp:include page="/leftbar.do"></jsp:include>
-	<!-- left bar ³¡-->
+	<!-- left bar ë-->
 
 
 	<!-- contents -->
-	<div class="col-6" id="contents" style="padding:0;">
-		<!-- ¿©±â¿¡ º»¹® ³»¿ë Ãß°¡ÇØÁÖ½Ã¸é µË´Ï´ç~~!! -->
-		
-		 <div class="row"><div class="col-md-12">¡¡</div></div>
- 		<div class="row"><div class="col-md-12">¡¡</div></div>
-		<div id="calendar"></div>
-		
+	<div class="col-9" id="contents" style="padding:0;">
+		<!-- ì—¬ê¸°ì— ë³¸ë¬¸ ë‚´ìš© ì¶”ê°€í•´ì£¼ì‹œë©´ ë©ë‹ˆë‹¹~~!! -->
+		<div class="row"><div class="col-md-12">ã€€</div></div>
+		<div class="col-md" id="calendar"></div>
+
 	
 	</div>
-	<!-- right bar -->
-	<jsp:include page="/rightbar.do"></jsp:include>
-	<!-- right bar ³¡ -->
-	<!-- contents ³¡ -->
+	<!-- contents ë -->
+
 </div>
 
 
 
 <div id="myModal" class="modal">     
-       <!--   Modal ³»¿ë -->
+       <!--   Modal ë‚´ìš© -->
          <div class="modal-content" style="width:30%;">
             <!-- <div class="modal-content ng-scope"> -->
-            <div class="modal-header"><h3>ÀÏÁ¤ ¼±ÅÃ</h3></div>
+            <div class="modal-header"><h3>ì¼ì • ì„ íƒ</h3></div>
             <div class="modal-body">
             <div class="row"><div class="col-md-6">
     		<select class="form-control" id="projectList" onchange="changeproSelect();">
-    		<option value="">ÇÁ·ÎÁ§Æ®¼±ÅÃ</option>
+    		<option value="">í”„ë¡œì íŠ¸ì„ íƒ</option>
     		</select></div><div class="col-md-6">
     		<select class="form-control" id="linkPostList">
-    		<option value="">°ü·Ã±Û¼±ÅÃ</option>
+    		<option value="">ê´€ë ¨ê¸€ì„ íƒ</option>
     		</select>
     		</div></div></div>
             <div class="modal-body"> <div class="row"><div class="col-md-12">
-            <input type="text" class="form-control" placeholder="ÀÏÁ¤ Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="width=100%">
+            <input type="text" class="form-control" placeholder="ì¼ì • ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="width=100%">
             </div></div>
-            <div class="row"><div class="col-md-12">¡¡</div></div>
+            <div class="row"><div class="col-md-12">ã€€</div></div>
             <div class="row"><div class="col-md-12">
             <input type="date" id="startDate"> ~ <input type="date" id="endDate">
             </div></div></div>
             <div class="modal-footer">
-             <button type="button" class="btn btn-primary" onClick="saveSchedule();">ÀúÀå</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">´İ±â</button></div>
+             <button type="button" class="btn btn-primary" onClick="saveSchedule();">ì €ì¥</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">ë‹«ê¸°</button></div>
             <!-- </div> -->
          </div>
-     <!--     Modal ³»¿ë ³¡ -->
+     <!--     Modal ë‚´ìš© ë -->
       </div>
-<!--ÆË¾÷¸ğ´Ş ³¡ -->
+<!--íŒì—…ëª¨ë‹¬ ë -->
 
 
 <div id="myModalUpdate" class="modal">     
-       <!--   Modal ³»¿ë -->
+       <!--   Modal ë‚´ìš© -->
          <div class="modal-content" style="width:30%;">
             <!-- <div class="modal-content ng-scope"> -->
-            <div class="modal-header"><h3>ÀÏÁ¤ ¼öÁ¤</h3></div>
+            <div class="modal-header"><h3>ì¼ì • ìˆ˜ì •</h3></div>
             <div class="modal-body">
             <div class="row"><div class="col-md-6" id="scUpdatePro">	
     		</div><div class="col-md-6" id="scUpdatePost">
     		</div></div></div>
             <div class="modal-body"> <div class="row"><div class="col-md-12">
-            <input type="text" class="form-control" placeholder="ÀÏÁ¤ Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä." name="scheduleTitleUpdate" id="scheduleTitleUpdate" required="required" size="10" style="width=100%">
+            <input type="text" class="form-control" placeholder="ì¼ì • ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”." name="scheduleTitleUpdate" id="scheduleTitleUpdate" required="required" size="10" style="width=100%">
             </div></div>
-            <div class="row"><div class="col-md-12">¡¡</div></div>
+            <div class="row"><div class="col-md-12">ã€€</div></div>
             <div class="row"><div class="col-md-12">
             <input type="date" id="startDateUpdate" > ~ <input type="date" id="endDateUpdate">
             </div></div></div>
             <div class="modal-footer">
-             <button type="button" class="btn btn-primary" onClick="saveUpdateSchedule();">¼öÁ¤</button>
-             <button type="button" class="btn btn-primary" onClick="deleteSchedule();">»èÁ¦</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">´İ±â</button></div>
+             <button type="button" class="btn btn-primary" onClick="saveUpdateSchedule();">ìˆ˜ì •</button>
+             <button type="button" class="btn btn-primary" onClick="deleteSchedule();">ì‚­ì œ</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">ë‹«ê¸°</button></div>
             <!-- </div> -->
          </div>
-     <!--     Modal ³»¿ë ³¡ -->
+     <!--     Modal ë‚´ìš© ë -->
       </div>
-<!--ÆË¾÷¸ğ´Ş ³¡ -->
-
+<!--íŒì—…ëª¨ë‹¬ ë -->
 
 
 

@@ -14,6 +14,7 @@
 </head>
 
 <style>
+/* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
 	height: 100%;
@@ -22,6 +23,12 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+#background {
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
+}
+/* 기본 구조 스타일 끝 */
 </style>
 
 <body>

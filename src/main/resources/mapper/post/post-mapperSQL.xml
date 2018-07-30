@@ -59,7 +59,16 @@
 	</select>
 	
 	<select id="selectDecision" resultType="decision">
-	select * from decision where dc_Post_No=#{dcPostNo}
+	select 
+	dc_writer as dcWriter,
+	dc_maker as dcMaker,
+	dc_content as dcContent,
+	dc_yn as dcYn,
+	dc_decision as dcDecision,
+	dc_comment as dcComment,
+	(select member_name from member where member_no=dc_writer) as dcWriterName,
+    (select member_name from member where member_no=dc_maker) as dcMakerName
+	from decision where dc_Post_No=#{postNo}
 	</select>
 
 	<insert id="insertSchedule" parameterType="schedule">
@@ -77,8 +86,20 @@
 	</select>
 	
 	<insert id="insertDecision" parameterType="decision">
-		insert into decision values(decision_SEQ.NEXTVAL, #{dcPostNo}, #{dcWriter}, #{dcMaker}, #{dcContent},SYSDATE,'n',null,null,null)
+		insert into decision values(decision_SEQ.NEXTVAL, #{dcPostNo}, #{dcWriter}, #{dcMaker}, #{dcContent},SYSDATE,'N',null,null,null)
 	</insert>
+	
+	<delete id="deleteDecision">
+	delete from decision where dc_post_no=#{postNo}
+	</delete>
+	 
+	<update id="updateDecision" parameterType="decision">
+	update decision set dc_yn='Y', dc_decision=#{dcDecision}, dc_comment=#{dcComment} where dc_post_no=#{dcPostNo}
+	</update>
+	
+	<update id="updatePostProgress" parameterType="post">
+	update post set post_progress=#{postProgress} where post_no=#{postNo}
+	</update>
 
 
 </mapper>

@@ -72,9 +72,6 @@ public class FaqServiceImpl implements FaqService{
 
 
 
-
-
-
 	public Page searchNotice(int currentPage, String search, String searchOption) {	
 	
 		int recordCountPerPage = 10;
@@ -98,6 +95,29 @@ public class FaqServiceImpl implements FaqService{
 		return page;
 	}
 
+
+
+
+
+
+	public int insertNotice(Notice notice) {
+		int result = faqDAO.insertNotice(sqlSession, notice);
+		return result;
+	}
+
+
+
+
+
+
+	public int deleteNotice(int noticeNo) {
+
+		int result = faqDAO.deleteNotice(sqlSession, noticeNo);
+
+		return result;
+	}
 	
+	
+
 	
 }

@@ -73,4 +73,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.postWriterMemberList(sqlSession, postWriterNumberList);
 	}
 
+	public ArrayList<Post> searchProMyPostList(int proNo, int memberNo) {
+		return projectDAO.searchProMyPostList(sqlSession, proNo, memberNo);
+	}
+
 }
