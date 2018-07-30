@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- JSTL 선언 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -16,29 +15,31 @@
 
 <body>
 
-<h3>프라이빗 글</h3>
-<table border=1>
+	
+	<h3>프라이빗 글</h3>
 
-<tr>
-	<th>글제목</th>
-	<th>작성일</th>
-	<th>글쓴이사진</th>
-	<th>글쓴이</th>
-	<th>프로젝트이름</th>
-</tr>
-<c:forEach items="${postList}" var="postList">
+	<table border=1>
 
-<tr>
-	<td>${postList.postTitle}</td>
-	<td>${postList.postDate}</td>
-	<td>이미지주소넣기${member.memberPicture}</td>
-	<td>${member.memberName}</td>
-	<td>프라이빗 공간</td>
-</tr>
+		<tr>
+			<th>글제목</th>
+			<th>작성일</th>
+			<th>글쓴이사진</th>
+			<th>글쓴이</th>
+			<th>프로젝트이름</th>
+		</tr>
+		<c:forEach items="${postList}" var="postList">
 
-</c:forEach>
+			<tr>
+				<td>${postList.postTitle}</td>
+				<td>${postList.postDate}</td>
+				<td>이미지주소넣기${member.memberPicture}</td>
+				<td>${member.memberName}</td>
+				<td>프라이빗 공간</td>
+			</tr>
 
-</table>
+		</c:forEach>
+
+	</table>
 
 
 

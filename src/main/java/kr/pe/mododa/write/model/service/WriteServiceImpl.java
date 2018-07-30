@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.dao.WriteDAOImpl;
 
@@ -23,6 +24,16 @@ public class WriteServiceImpl implements WriteService{
 		return (ArrayList)writeDAO.autoComplete(sqlSession,memberNo);
 		
 		
+	}
+
+	public String currentProName(Project pj) {
+		
+		return writeDAO.currentProName(sqlSession,pj);
+	}
+
+	public ArrayList<Post> relationWriteList(int currentProNo) {
+		
+		return (ArrayList)writeDAO.relationWriteList(sqlSession,currentProNo);
 	}
 
 }

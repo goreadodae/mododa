@@ -330,10 +330,10 @@ jQuery(function($) {
 						
 						<!-- 내가 포함된 프로젝트 -->
 						<c:forEach items="${projectList}" var="projectList" end="5">
-						
 						<li class="list-group-item projectMain" value="${projectList.proNo}">
-							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}
+							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}							
 						</li>
+						<!-- 번호 전송 여기까지 -->
 						
 						<!-- 하위메뉴 -->
 						

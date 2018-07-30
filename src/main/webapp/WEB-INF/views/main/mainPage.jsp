@@ -608,9 +608,11 @@ li[id^="sub_"] a {
 						
 						<!-- 내가 포함된 프로젝트 -->
 						<c:forEach items="${projectList}" var="projectList" end="5">
-						
+
 						<li class="list-group-item projectMain" value="${projectList.proNo}">
+							
 							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}
+							
 						</li>
 						
 						<!-- 하위메뉴 -->
