@@ -211,6 +211,19 @@ public class FaqDAOImpl implements FaqDAO {
 		
 	}
 
+	public int insertNotice(SqlSessionTemplate sqlSession, Notice notice) {
+		
+		int result = sqlSession.insert("faq.insertNotice",notice);
+		
+		return result;
+	}
+
+	public int deleteNotice(SqlSessionTemplate sqlSession, int noticeNo) {
+
+		return sqlSession.delete("faq.noticeDelete",noticeNo);
+	
+	}
+
 
 
 
