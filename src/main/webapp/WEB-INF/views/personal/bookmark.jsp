@@ -1,30 +1,17 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"
-	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-	crossorigin="anonymous"></script>
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-	crossorigin="anonymous"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-	crossorigin="anonymous"></script>
-<!-- CDN방식으로 부트스트랩 링크 추가 -->
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>템플릿</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
 	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
@@ -34,7 +21,18 @@
 <link rel="stylesheet" type="text/css"
 	href="/css/personal/personalPage.css">
 <!-- 개인페이지 공통 style저장. -->
+</head>
 
+<style>
+body {
+	overflow-x: hidden;
+	height: 100%;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
 <script>
 	
 	function searchShow() {
@@ -85,7 +83,10 @@
 						if(data.length==0)
 							{
 							$(".feed-list").empty();
-							$(".feed-list").append("<div>내용없어요</div>");
+							$(".feed-list").append('<div class="row">'+
+								  	'<div class="col-md-12"><center>'+	
+									'<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>'+
+									'<span font-size="12px;">검색결과가 존재하지 않습니다..</span></div></div>');
 							}else{
 						$(".feed-list").empty();
 						var result="";
@@ -93,8 +94,8 @@
 							{
 							result+=
 								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
-								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
+								'<div class="col-md-9"><img id="memberImg2" src="'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a href="#" class="btn btn-link" style="float:none;">'
+								+data[i].proName+'</a></div>'+
 								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
 								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
 								'</button></div>'+
@@ -113,24 +114,26 @@
 				
 				
 				}
-/* 	
-	//글쓰기 버튼 기능 추가 by 영진.
-	function toWriteFn(){
-		$('#toWrite').show();
-	}
-	 */
+	
+	
 </script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>★모두다-Collaboration Tool★</title>
-</head>
+
 <body>
 
+<!-- header -->
+<jsp:include page="/header.do"></jsp:include>
+<!-- header 끝 -->
 
-	<!-- jstl은 나중에~~ -->
+<div class="row">
+	<!-- left bar -->
+	<jsp:include page="/leftbar.do"></jsp:include>
+	<!-- left bar 끝-->
 
 
-	<div class="content">
+	<!-- contents -->
+	<div class="col-6" id="contents" style="padding:0;">
+		<div class="content">
 		<div class="viewHeader">
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
@@ -174,27 +177,34 @@
 						<div class="row">
 							<div class="col-md-12">
 							<div class="btn-group">
-								<button type="button" class="btn btn-link dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<img src="../resources/images/icon/checked-allot.png"></img>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-allot.png"></img> 할당된 할
-										일</a> <a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/play-button.png"></img> 진행중</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/pause.png"></img> 일시중지</a> <a
-										class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-									<a class="dropdown-item" href="#"><img
-										src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
-								</div>
+							<button type="button" class="btn btn-link dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<img src="../resources/images/post/lightbulb.png" />
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" data-value="1"><img
+									src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> <a
+									class="dropdown-item" data-value="2"><img
+									src="../resources/images/icon/play-button.png" /> 진행중</a> <a
+									class="dropdown-item" data-value="3"><img
+									src="../resources/images/icon/pause.png" /> 일시중지</a> <a
+									class="dropdown-item" data-value="4"><img
+									src="../resources/images/icon/checked-allot.png" /> 완료</a>
 							</div>
+						</div>
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
 							</div>
-							<div class="col-md-9"><img id="memberImg2" src="${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
+							<div class="col-md-9">
+							<c:choose>
+							 <c:when test="${book.writerImg !=null}">
+							  <c:set var="writerImg" value="${book.writerImg }"/>
+							 </c:when>
+							 <c:otherwise>
+							 	<c:set var="writerImg" value="../resources/upload/member/whale.png"/>
+							 </c:otherwise>
+							</c:choose>
+							<img id="memberImg2" src="${writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
 							<a href="#" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
@@ -215,26 +225,16 @@
 		
 		
 	</div>
-
-	
-				
-			<!-- 글쓰기 모달!! div!!  -->
- 	
-<%--  		<div id="toWrite" class="modal fade" style="background-color:white;">
-      
-       
-         <div class="offset-md-1 col-md-10 offset-md-1 modal-content" style="padding:0px; border:none;">
-     		
-
-         </div>
-     
-      </div>  --%>
 		
-	<!-- 글쓰기 모달 끝!   -->
-		
-			
+	<jsp:include page="/testareum.do"></jsp:include>
+	</div>
+	<!-- contents 끝 -->
 
-<jsp:include page="/testareum.do"></jsp:include>
+
+	<!-- right bar -->
+	<jsp:include page="/rightbar.do"></jsp:include>
+	<!-- right bar 끝 -->
+</div>
 
 </body>
 </html>

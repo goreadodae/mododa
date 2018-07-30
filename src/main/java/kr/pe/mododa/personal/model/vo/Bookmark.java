@@ -10,14 +10,14 @@ public class Bookmark {
 	private String postWriter;   //북마크한 글의 작성자
 	private Date postDate;       //묵마크한 글 작성 일
 	private String proName;      //북마크한 글 작성된 프로젝트 이름
-	
+	private int proNo;           //프로젝트 번호
 	public Bookmark() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Bookmark(int postNo, String postTitle, String postProgress, String writerImg, String postWriter,
-			Date postDate, String proName) {
+			Date postDate, String proName, int proNo) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
@@ -26,6 +26,7 @@ public class Bookmark {
 		this.postWriter = postWriter;
 		this.postDate = postDate;
 		this.proName = proName;
+		this.proNo = proNo;
 	}
 
 	public int getPostNo() {
@@ -83,10 +84,13 @@ public class Bookmark {
 	public void setProName(String proName) {
 		this.proName = proName;
 	}
-	
-	
-	
-	
 
+	public int getProNo() {
+		return proNo;
+	}
+
+	public void setProNo(int proNo) {
+		this.proNo = proNo;
+	}
 
 }
