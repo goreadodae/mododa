@@ -311,12 +311,13 @@ li[id^="sub_"] a {
 		   });
 		   
 		   $("#library").click(function() {
-			   $("#content-frame").remove();
+			   /* $("#content-frame").remove();
 			   $("#contents").append("<div id='content-frame'></div>");
 			   $("#content-frame").load("/libraryMain.do");
 			   $("#banner").css('background-color','#339966');
 			   $('li[id^="sub_'+beforeShow+'"]').hide();
-			   $(".privateSub").hide();
+			   $(".privateSub").hide(); */
+			   location.href="/todo.do";
 		   });
 		   
 		   $("#calendarAll").click(function() {

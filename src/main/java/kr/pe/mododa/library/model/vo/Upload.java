@@ -10,11 +10,13 @@ public class Upload {
 	private String uploadSubject;
 	private String uploadPath;
 	private String postTitle;
-	
-	public Upload() { }
-	
+	private String fileName;
+	public Upload() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Upload(int uploadNo, int postNo, int memberNo, Date uploadDate, String uploadSubject, String uploadPath,
-			String postTitle) {
+			String postTitle, String fileName) {
 		super();
 		this.uploadNo = uploadNo;
 		this.postNo = postNo;
@@ -23,8 +25,8 @@ public class Upload {
 		this.uploadSubject = uploadSubject;
 		this.uploadPath = uploadPath;
 		this.postTitle = postTitle;
+		this.fileName = fileName;
 	}
-	
 	public int getUploadNo() {
 		return uploadNo;
 	}
@@ -67,6 +69,14 @@ public class Upload {
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	
 	
 	
 	

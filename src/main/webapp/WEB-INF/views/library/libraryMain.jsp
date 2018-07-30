@@ -30,6 +30,8 @@
 
 <body>
 <div>
+	<a href="/todo.do">할 일 페이지 이동</a>
+
 	<!-- 자료실 헤더 -->
 	<table width="100%">
 		<tr>
