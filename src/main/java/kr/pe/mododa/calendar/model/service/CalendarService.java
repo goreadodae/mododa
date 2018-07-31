@@ -15,6 +15,7 @@ public interface CalendarService {
 	public int updateSchedule (Schedule sc);
 	public Schedule infoSchedule (int scheduleNo);
 	public int deleteSchdule (int scheduleNo);
-	public Project selectProjectOne (int proNo); 
+	public Project selectProjectOne (int scheduleNo); 
+	public Post selectPostOne (int scheduleNo);
 	
 }

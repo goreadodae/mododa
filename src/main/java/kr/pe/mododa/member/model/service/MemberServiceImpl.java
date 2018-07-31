@@ -3,12 +3,12 @@ package kr.pe.mododa.member.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import kr.pe.mododa.member.model.dao.MemberDAOImpl;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.ConfirmMailFindPass;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.member.model.vo.Partner;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -38,13 +39,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member loginSHA(Member vo) {
 		Member m = memberDAO.selectOneMember(sqlSession, vo);
-		
 		return m;
 	}
 
 	public boolean checkId(String memberId) {
 		boolean result = false;
-		result = memberDAO.checkId(sqlSession, memberId);
+		int memberNo = memberDAO.checkId(sqlSession, memberId);
+		if(memberNo!=0) {
+			result = true; 
+		} else {
+			result = false;
+		}
 		return result;
 	}
 
@@ -191,9 +196,7 @@ public class MemberServiceImpl implements MemberService {
 	public boolean changeMemberPic(MultipartHttpServletRequest request, Member vo) {
 		boolean isSuccess = false;
 		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거 넘 어렵
-		System.out.println("root1 : "+root_path);
 		root_path = root_path.replaceFirst("webapp", "");
-		System.out.println("root2 : "+root_path);
 		String attach_path = "/resources/upload/member/";
 		String uploadPath = root_path+attach_path;
 		File dir = new File(uploadPath);
@@ -230,5 +233,29 @@ public class MemberServiceImpl implements MemberService {
 			} // if end
 		} // while end
 		return isSuccess;
+	}
+
+	public ArrayList<Partner> selectPartnerList(int memberNo) {
+		return memberDAO.selectPartnerList(sqlSession, memberNo);
+	}
+
+	public String invitePartner(int memberNo, String parId) {
+		String result="";
+		System.out.println(parId);
+		int parNo = memberDAO.checkId(sqlSession, parId);
+		if(parNo!=0) {
+			Partner p = new Partner();
+			p.setMemberNo(memberNo);
+			p.setParNo(parNo);
+			int inviteRes = memberDAO.invitePartner(sqlSession, p);
+			if(inviteRes>0) {
+				result = "success";
+			} else {
+				result = "failed";
+			}
+		} else {
+			result = "nothing";
+		}
+		return result;
 	}
 }

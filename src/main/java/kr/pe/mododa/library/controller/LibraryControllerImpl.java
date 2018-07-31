@@ -28,24 +28,26 @@ public class LibraryControllerImpl implements LibraryController{
 	@Autowired
 	@Qualifier(value="libraryService")
 	private LibraryServiceImpl libraryService;
-
+	
 	// 할 일 페이지로 이동 (=자료실 메인페이지)
 	@RequestMapping(value="/todo.do")
 	public Object todo(HttpSession session) {
 		if(session.getAttribute("member") != null) {
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-			System.out.println(memberNo);
+			
+			// 전체 할 일 리스트
+			ArrayList<Todo> listTodo = libraryService.listTodo(memberNo);
 			
 			// 사용자가 속해 있는 프로젝트 리스트
 			ArrayList<Project> listProject = libraryService.listProject(memberNo);
 
-			// 전체 할 일 리스트
-			ArrayList<Todo> listTodo = libraryService.listTodo(memberNo);
+			// 프라이빗 공간 프로젝트 번호 가져오기
+			int privateNo = libraryService.privateNo(memberNo);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listProject", listProject);
 			view.addObject("listTodo", listTodo);
+			view.addObject("privateNo", privateNo);
 			view.setViewName("library/todo");
 			return view;
 		}
@@ -59,11 +61,20 @@ public class LibraryControllerImpl implements LibraryController{
 	public Object decision (HttpSession session) {
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
+			
+			// 전체 의사결정 리스트
 			ArrayList<Decision> listDecision = libraryService.listDecision(memberNo);
+			
+			// 사용자가 속해 있는 프로젝트 리스트
+			ArrayList<Project> listProject = libraryService.listProject(memberNo);
+			
+			// 프라이빗 공간 프로젝트 번호 가져오기
+			int privateNo = libraryService.privateNo(memberNo);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listDecision", listDecision);
+			view.addObject("listProject", listProject);
+			view.addObject("privateNo", privateNo);
 			view.setViewName("library/decision");
 			return view;
 		}
@@ -80,11 +91,20 @@ public class LibraryControllerImpl implements LibraryController{
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
+			
+			// 이미지 객체 리스트
 			ArrayList<Upload> listImage = libraryService.listImage(memberNo);
+			
+			// 사용자가 속해 있는 프로젝트 리스트
+			ArrayList<Project> listProject = libraryService.listProject(memberNo);
+						
+			// 프라이빗 공간 프로젝트 번호 가져오기
+			int privateNo = libraryService.privateNo(memberNo);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listImage", listImage);
+			view.addObject("listProject", listProject);
+			view.addObject("privateNo", privateNo);
 			view.setViewName("library/image");
 			return view;
 
@@ -102,25 +122,29 @@ public class LibraryControllerImpl implements LibraryController{
 
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
-			// 파일 객체에 대한 리스트
+			// 파일 객체 리스트
 			ArrayList<Upload> listFile = libraryService.listFile(memberNo);
-
-			// 파일명에 대한 리스트
-			ArrayList<String> fileName = new ArrayList<String>();
+			
+			// 사용자가 속해 있는 프로젝트 리스트
+			ArrayList<Project> listProject = libraryService.listProject(memberNo);
+									
+			// 프라이빗 공간 프로젝트 번호 가져오기
+			int privateNo = libraryService.privateNo(memberNo);
 
 			// 파일 경로에서 파일명 추출
 			for(int i=0; i<listFile.size(); i++) {
 				String[] array = listFile.get(i).getUploadPath().split("/");
 				for(int j=0; j<array.length; j++) {
 					if(j == array.length-1) {
-						fileName.add(array[j]);
+						listFile.get(i).setFileName(array[j]);
 					}
 				}
 			}
 
 			ModelAndView view = new ModelAndView();
-			view.addObject("fileName", fileName);
 			view.addObject("listFile", listFile);
+			view.addObject("listProject", listProject);
+			view.addObject("privateNo", privateNo);
 			view.setViewName("library/file");
 			return view;
 		}
@@ -137,10 +161,19 @@ public class LibraryControllerImpl implements LibraryController{
 
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
+			// 링크 객체 리스트
 			ArrayList<Link> listLink = libraryService.listLink(memberNo);
+			
+			// 사용자가 속해 있는 프로젝트 리스트
+			ArrayList<Project> listProject = libraryService.listProject(memberNo);
+												
+			// 프라이빗 공간 프로젝트 번호 가져오기
+			int privateNo = libraryService.privateNo(memberNo);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listLink", listLink);
+			view.addObject("listProject", listProject);
+			view.addObject("privateNo", privateNo);
 			view.setViewName("library/link");
 			return view;
 
@@ -174,7 +207,7 @@ public class LibraryControllerImpl implements LibraryController{
 		int result = libraryService.insertTodo(todo);
 
 		if(result > 0) {
-			return "library/todo";
+			return "library/insertTodo";
 		}
 		else {
 			return "redirect:/index.jsp";
@@ -223,7 +256,6 @@ public class LibraryControllerImpl implements LibraryController{
 	// 전체 의사결정 불러오기
 	@RequestMapping(value="/listDcAll.do")
 	public void listDcAll(HttpSession session, HttpServletResponse response) throws Exception {
-		System.out.println("test");
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
 		ArrayList<Decision> listDcAll = libraryService.listDecision(memberNo);
@@ -279,7 +311,7 @@ public class LibraryControllerImpl implements LibraryController{
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
 		ArrayList<Upload> listImageMe = libraryService.listImageMe(memberNo);
-
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 

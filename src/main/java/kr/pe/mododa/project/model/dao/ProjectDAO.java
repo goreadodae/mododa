@@ -4,18 +4,20 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
-import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
-import kr.pe.mododa.project.model.vo.WorkOn;
+import kr.pe.mododa.project.model.vo.ProjectPostList;
+import kr.pe.mododa.project.model.vo.SearchHelper;
 
 public interface ProjectDAO {
 	
 	public int insertProject(SqlSessionTemplate sqlSession, Project project);
 	public int insertWorkOn(SqlSessionTemplate sqlSession, int proMemberNo);
 	public int searchMemberNo(SqlSessionTemplate sqlSession, String memberId);
-	public ArrayList<Project> searchProjectList(SqlSessionTemplate sqlSession, int memberNo);
 	public int insertInviteMember(SqlSessionTemplate sqlSession, int memberNo);
-	public ArrayList<Post> searchPostList(SqlSessionTemplate sqlSession, int proNo);
-	public Project searchPrivateProject(SqlSessionTemplate sqlSession, int memberNo);
-
+	public ArrayList<Project> searchProjectList(SqlSessionTemplate sqlSession, int memberNo);
+	public Project searchPrivateList(SqlSessionTemplate sqlSession, int memberNo);
+	public ArrayList<ProjectPostList> searchPostList(SqlSessionTemplate sqlSession, int proNo);
+	public ArrayList<ProjectPostList> searchMyPostList(SqlSessionTemplate sqlSession, Project project);
+	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo);
+	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh);
 }

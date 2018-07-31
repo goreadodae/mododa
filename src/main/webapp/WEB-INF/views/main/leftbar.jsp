@@ -50,7 +50,7 @@ div {
 
 /* 지은 스타일 추가 */
 .proIcon {
-	margin-right: 2%;
+	margin-right: 5%;
 	height: 23px;
 	width: 23px;
 }
@@ -82,6 +82,16 @@ li[id^="sub_"] {
 	background-color: #F5F5F5;
 }
 
+
+/* 예진 캘린더 부분 */
+li[id^="subC_"] {
+	display: none;
+	padding: 0;
+	background-color: #F5F5F5;
+}
+
+/* 예진 캘린더 부분 끝 */
+
 li[id^="sub_"] a {
 	padding: 0;
 }
@@ -98,7 +108,7 @@ li[id^="sub_"] a {
 	jQuery(function($) {
 		
 		$("#newsfeed").click(function() {
-			location.href="";
+			location.href="/newsfeed.do";
 		});
 
 		$("#callpost").click(function() {
@@ -106,7 +116,10 @@ li[id^="sub_"] a {
 		});
 
 		$("#bookmark").click(function() {
-			location.href="";
+			location.href="/bookmark.do";
+		});
+		$("#mypost").click(function() {
+			location.href="/mypost.do";
 		});
 
 		$("#project").click(function() {
@@ -116,11 +129,27 @@ li[id^="sub_"] a {
 		$("#library").click(function() {
 			location.href="";
 		});
+		
+		/* 예진 사용 시작  */
 
 		$("#calendarAll").click(function() {
-			location.href="";
+			location.href="/calendar.do";
+		/* });
+		
+		$(".projectMain").click(function() { */
+			var proNo = $(this).attr('value');
+			var displayValue = $('li[id^="sub_' + proNo + '"]').css('display');
+			if (displayValue == 'none') {
+				$(".privateSub").hide();/* 열렸던 창 닫기 */
+				$('li[id^="sub_' + beforeShow + '"]').hide();/* 열렸던 창 닫기 */
+				$('li[id^="sub_' + proNo + '"]').show();
+				beforeShow = proNo;/* 열렸던 창 닫기 */ 
+			} else {
+				$('li[id^="sub_' + proNo + '"]').hide();
+			}
 		});
 		
+		/* 예진 사용 끝  */
 		
 		/* 지은 사용 시작 */
 		// 프로젝트 생성
@@ -145,12 +174,12 @@ li[id^="sub_"] a {
 		// 프라이빗 하위 메뉴 
 		$(".priPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/priPost.do?proNo=" + proNo;
+			location.href="/privatePost.do?proNo=" + proNo;
 		});
 
 		$(".priHashTag").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/privateHashTag.do?proNo=" + proNo;
 		});
 
 		// 프로젝트 목록
@@ -170,12 +199,12 @@ li[id^="sub_"] a {
 		// 프로젝트 하위 메뉴
 		$(".proPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/proPost.do?proNo=" + proNo;
+			location.href="/projectPost.do?proNo=" + proNo;
 		});
 
 		$(".proHashTag").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/projectHashTag.do?proNo=" + proNo;
 		});
 
 		$(".proProgress").click(function() {
@@ -185,7 +214,7 @@ li[id^="sub_"] a {
 
 		$(".proMyPost").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="/proMyPost.do?proNo=" + proNo;
+			location.href="/projectMyPost.do?proNo=" + proNo;
 		});
 
 		$(".proCalendar").click(function() {
@@ -215,6 +244,10 @@ li[id^="sub_"] a {
 					<img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
 				<li class="list-group-item" id="calendarAll">
 					<img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+				<c:forEach items="${projectList}" var="projectList" end="5">
+					<li class="list-group-item projectMain" value="${projectList.proNo}" id="sub_${projectList.proNo}">
+					<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
+				</c:forEach>
 			</ul>
 
 			<br>

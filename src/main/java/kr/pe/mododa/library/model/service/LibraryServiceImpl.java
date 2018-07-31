@@ -89,4 +89,9 @@ public class LibraryServiceImpl implements LibraryService{
 	public ArrayList<Upload> listImageMe(int memberNo) {
 		return libraryDAO.listImageMe(sqlSession, memberNo);
 	}
+
+	// 프라이빗 번호 가져오기
+	public int privateNo(int memberNo) {
+		return libraryDAO.privateNo(sqlSession, memberNo);
+	}
 }

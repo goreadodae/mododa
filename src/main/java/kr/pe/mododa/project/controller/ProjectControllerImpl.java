@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.project.model.vo.ProjectPostList;
+import kr.pe.mododa.project.model.vo.SearchHelper;
 
 
 
@@ -27,27 +28,29 @@ public class ProjectControllerImpl implements ProjectController {
 	private ProjectServiceImpl projectService;
 	
 
+	// --------------------- 프로젝트 생성, 프로젝트 멤버 초대
+	
 	@Override
-	@RequestMapping(value="gotoCreateProject.do")
-	public String gotoCreateProject() { // 이동
+	@RequestMapping(value="gotoCreateProject.do") // 이동
+	public String gotoCreateProject() {
 		return "project/createProject";
 	}
-
+	
+	
 	@Override
 	@RequestMapping(value="createProject.do")
-	public String createProject(HttpSession session, Project project) { // 새 프로젝트 생성 기능
-		
-		//System.out.println(project.toString());
+	public String createProject(HttpSession session, Project project) { // 새 프로젝트 생성
 
 		if(session.getAttribute("member")!=null) { // 세션으로 로그인 정보 가져오기
 			
-			// 로그인이랑 합쳐지면 if문 안으로 옮기기
+			project.setProMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+			
 			int proResult = projectService.insertProject(project);
 			if(proResult>0) { // 프로젝트 생성이 성공하면 insertWorkOn 진행하기
 				
 				int wonResult = projectService.insertWorkOn(project.getProMemberNo());
 				if(wonResult>0) {
-					System.out.println("완전 성공");
+					System.out.println("프로젝트 생성 성공");
 				} else {
 					System.out.println("work_on 실패");
 				}
@@ -65,44 +68,49 @@ public class ProjectControllerImpl implements ProjectController {
 	}
 	
 	
-	
 	@Override
-	@RequestMapping(value="gotoInviteMember.do")
-	public Object gotoInviteMember(HttpSession session) { // 이동
-
-		// 프로젝트 목록 읽어오기
-		ArrayList<Project> projectList = this.projectList(session);
-		//System.out.println(projectList);
-		ModelAndView view = new ModelAndView();
-		view.addObject("projectList", projectList);
-		view.setViewName("project/inviteMemberPage");
-		return view;
+	@RequestMapping(value="gotoInviteMember.do") // 이동
+	public String gotoInviteMember(HttpSession session) {
+		return "project/inviteMemberPage";
 		
 	}
-
+	
 	
 	@Override
 	@RequestMapping(value="inviteMember.do")
-	public String inviteMember(@RequestParam String memberId) {
-		
+	public String inviteMember(@RequestParam String memberId) { // 프로젝트 생성 후 바로 멤버 초대
+
 		// work_on에 insert하기
 		// 1. 회원 번호 검색
-		int memberNo = projectService.searchMemberNo(memberId);
-		// 2. 프로젝트 번호 받기 -> 넘겨 받기
-		// 3. work_on에 insert하기
-		System.out.println(memberNo);
-		int result = projectService.insertInviteMember(memberNo);
+		int memberNo = projectService.searchMemberNo(memberId); // 회원 번호 검색
+		// 2. work_on에 insert하기
+		int result = projectService.insertInviteMember(memberNo);	
 		if(result>0) {
 			return "redirect:/gotoInviteMember.do";
 		} else {
 			System.out.println("멤버초대실패");
 			return null; // 실패했을 경우
 		}
-		
-		
-		
 	}
-
+	
+	
+	@Override
+	@RequestMapping(value="checkInvite.do")
+	public Object checkInvite(@RequestParam String memberId) { // 초대할 회원이 존재하는지 확인
+		
+		int memberNo = projectService.searchMemberNo(memberId); // 회원 번호 검색
+		ModelAndView view = new ModelAndView();
+		view.addObject("memberNo", memberNo);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	// ---------------------
+	
+	
+	
+	// --------------------- 프로젝트 목록 읽어오기 -> leftBar와 연결
+	
 	@Override
 	public ArrayList<Project> projectList(HttpSession session) { // 로그인 한 사용자의 소속 프로젝트 리스트 읽어오기
 		
@@ -120,12 +128,12 @@ public class ProjectControllerImpl implements ProjectController {
 	}
 	
 	@Override
-	public Project privateProject(HttpSession session) { // 로그인 한 사용자의 프라이빗 프로젝트 읽어오기
+	public Project privateList(HttpSession session) { // 로그인 한 사용자의 프라이빗 프로젝트 읽어오기
 		
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
 			
 			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-			Project privateProject = projectService.searchPrivateProject(memberNo);
+			Project privateProject = projectService.searchPrivateList(memberNo);
 			return privateProject;
 			
 		} else {
@@ -134,59 +142,123 @@ public class ProjectControllerImpl implements ProjectController {
 		}
 	}
 	
+	// ---------------------
+	
+	
+	
+	// --------------------- 글 읽어오기
 	
 	@Override
-	@RequestMapping(value="proPost.do")
-	public Object proPost(@RequestParam int proNo) { // 프로젝트 글 목록 읽어오기
-		// System.out.println("proPost: "+proNo);
-		ArrayList<Post> postList = this.searchPostList(proNo);
-		String proTitle = projectService.searchProTitle(proNo);
-		ArrayList<Member> postWriterMemberList = this.postWriterMemberList(postList);
-		// System.out.println(postWriterMemberList.toString());
+	@RequestMapping(value="projectPost.do")
+	public Object projectPost(@RequestParam int proNo) { // 프로젝트 글 목록 읽어오기
+		
+		ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
+		// System.out.println(postList);
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
-		view.addObject("proTitle", proTitle);
-		view.addObject("postWriterMemberList", postWriterMemberList);
-		// 글쓰기에 프로젝트 번호 전달(여기 수정)
-		view.addObject("proNo",proNo);
 		view.setViewName("project/projectPost");
 		return view;
+		
 	}
-	
-
 
 	@Override
-	@RequestMapping(value="priPost.do")
-	public Object priPost(@RequestParam int proNo) { // 프라이빗 글 목록 읽어오기
-		// System.out.println("proPost: "+proNo);
-		ArrayList<Post> postList = this.searchPostList(proNo);
-		Member member = projectService.searchMemberName(proNo);
+	@RequestMapping(value="privatePost.do")
+	public Object privatePost(@RequestParam int proNo) { // 프라이빗 글 목록 읽어오기
+		
+		ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
+		// System.out.println(postList);
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
-		view.addObject("member", member);
 		view.setViewName("project/privatePost");
 		return view;
 	}
-
-
-	private ArrayList<Post> searchPostList(int proNo) { // 글 목록 읽어오는 공통 함수
-		return projectService.searchPostList(proNo);
-	}
 	
-	private ArrayList<Member> postWriterMemberList(ArrayList<Post> postList) {
-		
-		String [] postWriterNumberList = new String[postList.size()];
-		
-		for(int i=0; i<postList.size(); i++) {
-			postWriterNumberList[i] = Integer.toString(postList.get(i).getPostWriter());
+	@Override
+	@RequestMapping(value="projectMyPost.do")
+	public Object projectMyPost(HttpSession session, @RequestParam int proNo) { // 내가 쓴 글 읽어오기
+
+		if(session.getAttribute("member")!=null) {
+			
+			Project project = new Project();
+			project.setProNo(proNo);
+			project.setProMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+			
+			ArrayList<ProjectPostList> postList = projectService.searchMyPostList(project);
+			ModelAndView view = new ModelAndView();
+			view.addObject("postList", postList);
+			view.setViewName("project/projectMyPost");
+			return view;
+		} else {
+			System.out.println("세션 실패");
+			return null;
 		}
-		
-		ArrayList<Member> postWriterMemberList = projectService.postWriterMemberList(postWriterNumberList);
-		return postWriterMemberList;
 	}
 	
+	@Override
+	@RequestMapping(value="projectHashTag.do")
+	public Object projectHashTag(@RequestParam int proNo) { // 해시태그 글 목록 읽어오기(프로젝트)
+		
+		ArrayList<ProjectPostList> postList = projectService.searchHashTagPostList(proNo);
+		// System.out.println(postList);
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/projectHashTag");
+		return view;
+		
+	}
+	
+	@Override
+	@RequestMapping(value="privateHashTag.do")
+	public Object privateHashTag(@RequestParam int proNo) { // 해시태그 글 목록 읽어오기(프라이빗)
+		
+		ArrayList<ProjectPostList> postList = projectService.searchHashTagPostList(proNo);
+		// System.out.println(postList);
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/privateHashTag");
+		return view;
+		
+	}
+
+
+	// ---------------------
 	
 	
+	
+	// --------------------- 검색
+	
+	@Override
+	@RequestMapping(value="searchProTitleOrMemberName.do")
+	public Object searchProTitleOrMemberName(@RequestParam String keyword, @RequestParam int proNo) {
+		
+		SearchHelper sh = new SearchHelper();
+		sh.setKeyword(keyword);
+		sh.setProNo(proNo);
+		
+		ArrayList<ProjectPostList> searchResult = projectService.searchProTitleOrMemberName(sh);
+		ModelAndView view = new ModelAndView();
+		view.addObject("searchResult", searchResult);
+		view.setViewName("jsonView");
+		return view;
+
+		
+	}
+	
+/*	int memberNo = projectService.searchMemberNo(memberId); // 회원 번호 검색
+	ModelAndView view = new ModelAndView();
+	view.addObject("memberNo", memberNo);
+	view.setViewName("jsonView");
+	return view;
+	
+	ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
+		// System.out.println(postList);
+		ModelAndView view = new ModelAndView();
+		view.addObject("postList", postList);
+		view.setViewName("project/privatePost");
+		return view;
+	*/
+	
+
 	
 	@RequestMapping(value="gotoMoreProject.do")
 	public Object gotoMoreProject(HttpSession session) { // 이동
@@ -199,17 +271,7 @@ public class ProjectControllerImpl implements ProjectController {
 	}
 
 	
-	
-	@RequestMapping(value="proMyPost.do")
-	public Object proMyPost(HttpSession session, @RequestParam int proNo) { // 프로젝트 내 글 읽어오기
-		// System.out.println("proPost: "+proNo);
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-		ArrayList<Post> postList = projectService.searchProMyPostList(proNo, memberNo); // 프로젝트 글 전부 읽어오기
-		ModelAndView view = new ModelAndView();
-		view.addObject("postList", postList);
-		view.setViewName("project/proMyPost");
-		return view;
-	}
+
 
 
 	

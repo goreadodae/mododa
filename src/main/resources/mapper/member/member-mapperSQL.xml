@@ -12,9 +12,9 @@
   	member_email_certify as memberEmailCertify
   	from member where member_id = #{memberId} and member_pw = #{memberPw}
   </select>
-  <select id="checkId" resultType="String">
+  <select id="checkId" resultType="Integer">
   	SELECT
-  	member_id as memberId
+  	member_no as memberNo
   	from member where member_id = #{memberId}
   </select>
   <select id="checkPw" parameterType="member" resultType="String">
@@ -103,4 +103,20 @@
   	</choose>
   	where member_no = #{memberNo}
   </update>
+  <select id="selectPartnerList" resultType="partner">
+	select p.member_no as memberNo,
+  	p.par_explain as parExplain,
+  	p.par_yn as parYN,
+  	p.par_no as parNo,
+  	m.member_id as parId,
+  	m.member_name as parName,
+  	m.member_picture as parPicture,
+  	m.member_depart_name as parDepartName,
+  	m.member_main_task as parMainTask
+	from partner p join member m on(m.member_no=p.par_no)
+	where p.member_no=#{memberNo}
+  </select>
+  <insert id="invitePartner" parameterType="partner">
+  	insert into partner values(#{memberNo},#{parNo},null,'N')
+  </insert>
 </mapper>

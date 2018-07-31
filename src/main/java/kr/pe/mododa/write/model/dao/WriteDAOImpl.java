@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.vo.RelationSearchKey;
+import kr.pe.mododa.write.model.vo.RelationWriting;
 
 @Repository("writeDAO")
 public class WriteDAOImpl implements WriteDAO {
@@ -20,9 +22,24 @@ public class WriteDAOImpl implements WriteDAO {
 		return sqlSession.selectOne("write.loadProjectName",pj);
 	}
 
-	public ArrayList<Post> relationWriteList(SqlSessionTemplate sqlSession, int currentProNo) {
+	public ArrayList<RelationWriting> relationWritingList(SqlSessionTemplate sqlSession, int currentProNo) {
 		
-		return (ArrayList)sqlSession.selectList("write.relationwriteList",currentProNo);
+		return (ArrayList)sqlSession.selectList("write.relationwritingList",currentProNo);
+	}
+
+	public ArrayList<RelationWriting> searchWriting(SqlSessionTemplate sqlSession, RelationSearchKey rsKey) {
+		
+		return (ArrayList)sqlSession.selectList("write.searchWriting",rsKey);
+	}
+
+	public ArrayList<Project> myProject(SqlSessionTemplate sqlSession, int memberNo) {
+		
+		return (ArrayList)sqlSession.selectList("write.myProject",memberNo);
+	}
+
+	public ArrayList<RelationWriting> loadByProName(SqlSessionTemplate sqlSession, RelationWriting rw) {
+		
+		return (ArrayList)sqlSession.selectList("write.loadByProName",rw);
 	}
 	
 	
