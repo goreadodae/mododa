@@ -20,6 +20,10 @@
 		<input type="submit" value="글삭제"> 
 		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
 	</form>
+<form action="/noticeUpdateReady.do">
+		<input type="submit" value="글수정"> 
+		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
+	</form>	
 
 </body>
 </html>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="faq">
+<mapper namespace="notice">
 
 
-
-	
 	<select id="listNotice" parameterType="listNotice" resultType="notice">
 	
 	select notice_no as noticeNo,
@@ -75,4 +73,15 @@
 		delete from notice where NOTICE_NO = #{noticeNo}	
 	</delete>
 	
+	<select id="noticeUpdateReady" parameterType="Integer" resultType="notice">
+	select notice_no as noticeNo,
+	notice_title as noticeTitle,
+	notice_contents as noticeContents,
+	notice_write_date as noticeWriteDate,
+	notice_view_count as noticeViewCount from notice where NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<update id="noticeUpdate">
+	 update notice set NOTICE_TITLE=#{noticeTitle}, NOTICE_CONTENTS=#{noticeContents} where NOTICE_NO=#{noticeNo}
+	</update>
 </mapper>

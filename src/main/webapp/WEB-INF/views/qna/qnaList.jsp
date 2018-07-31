@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-글쓰기
+qna리스트페이지
 </body>
 </html>
