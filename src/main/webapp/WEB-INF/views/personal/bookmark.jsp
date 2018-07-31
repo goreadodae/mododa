@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+ --><script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
 	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
@@ -43,7 +43,8 @@ div {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-		$("#content-frame").load("/bookmark.do");
+	
+		location.href="bookmark.do";
 	}
 	
 	function delBookmark(bookNo){
@@ -144,7 +145,7 @@ div {
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
 					<button type="button" class="btn btn-outline-light btn-lg"
 						id="searchShow" onclick="searchShow();">
-						<i class="fab fa-searchengin" style="color: grey;"></i>
+						<i class="fas fa-search" style="color: grey;"></i>
 					</button>
 
 
@@ -157,7 +158,7 @@ div {
 			</div>
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
-				<i class="fab fa-searchengin" style="color: grey;"></i> <input
+				<i class="fas fa-search" style="color: grey;"></i> <input
 					type="text" id="keyword" name="keyword" placeholder="제목&글 작성자로 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
@@ -180,17 +181,13 @@ div {
 							<button type="button" class="btn btn-link dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">
-								<img src="../resources/images/post/lightbulb.png" />
+								<img id="statusImg" src="../resources/images/post/lightbulb.png" />
 							</button>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" data-value="1"><img
-									src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> <a
-									class="dropdown-item" data-value="2"><img
-									src="../resources/images/icon/play-button.png" /> 진행중</a> <a
-									class="dropdown-item" data-value="3"><img
-									src="../resources/images/icon/pause.png" /> 일시중지</a> <a
-									class="dropdown-item" data-value="4"><img
-									src="../resources/images/icon/checked-allot.png" /> 완료</a>
+								<a class="dropdown-item" onclick="changeProgress('발의된 이슈');"><img src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> 
+								<a class="dropdown-item" onclick="changeProgress('진행 중');"><img src="../resources/images/icon/play-button.png" /> 진행 중</a> 
+								<a class="dropdown-item" onclick="changeProgress('일시중지');"><img src="../resources/images/icon/pause.png" /> 일시중지</a> 
+								<a class="dropdown-item" onclick="changeProgress('완료');"><img src="../resources/images/icon/checked-allot.png" /> 완료</a>
 							</div>
 						</div>
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
@@ -220,13 +217,9 @@ div {
 				<span>마지막입니다.</span>
 			</ul>
 		</div>
-		
-		
-		
-		
 	</div>
 		
-	<jsp:include page="/testareum.do"></jsp:include>
+	<jsp:include page="/post.do"></jsp:include>
 	</div>
 	<!-- contents 끝 -->
 

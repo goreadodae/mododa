@@ -59,8 +59,7 @@ div {
 
 		<!-- contents -->
 		<div class="col-6" id="contents" style="padding: 0;">
-			<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-			<%-- <jsp:include page="/newsfeed.do"></jsp:include> --%>
+			<jsp:include page="/firstNewsfeed.do"></jsp:include>
 		</div>
 		<!-- contents 끝 -->
 

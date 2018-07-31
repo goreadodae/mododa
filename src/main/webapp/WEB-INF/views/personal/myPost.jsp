@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
@@ -31,7 +30,7 @@
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-		$("#content-frame").load("/mypost.do");
+		location.href="mypost.do";
 
 		//검색 이후 결과가 나오거나 없으면, 어쨋든 실행 후 취소 버튼 누르면 다시 내가 쓴 글 보여줄 수 있도록 새로 로드필요
 	}
@@ -77,6 +76,7 @@
 			})
 		}
 	}
+	
 </script>
 </head>
 
@@ -98,14 +98,14 @@ div {
 <!-- header 끝 -->
 
 <div class="row">
-	<!-- left bar -->a
+	<!-- left bar -->
 	<jsp:include page="/leftbar.do"></jsp:include>
 	<!-- left bar 끝-->
 
 
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
-		v class="content">
+		<div class="content">
 		<div class="viewHeader">
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
@@ -116,7 +116,7 @@ div {
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
 					<button type="button" class="btn btn-outline-light btn-lg"
 						id="searchShow" onclick="searchShow();">
-						<i class="fab fa-searchengin" style="color: grey;"></i>
+						<i class="fas fa-search" style="color: grey;"></i>
 					</button>
 
 					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
@@ -127,7 +127,7 @@ div {
 			</div>
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
-				<i class="fab fa-searchengin" style="color: grey;"></i> 
+				<i class="fas fa-search" style="color: grey;"></i> 
 				<input type="text" id="keyword" name="keyword" 
 				 placeholder="제목 검색" />
 				<div class="headerFunction" id="searchFun">
@@ -148,23 +148,6 @@ div {
 				<li class="feed-contents">
 					<div class="row">
 						<div class="col-md-12">
-						<div class="btn-group">
-							<button type="button" class="btn btn-link dropdown-toggle"
-								data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">
-								<img src="../resources/images/post/lightbulb.png" />
-							</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#"><img
-									src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/play-button.png" /> 진행중</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/pause.png" /> 일시중지</a> <a
-									class="dropdown-item" href="#"><img
-									src="../resources/images/icon/checked-allot.png" /> 완료</a>
-							</div>
-						</div>
 						<span onclick="getPost(${my.postNo})" class="btn btn-link" style="float:left;">"${my.postTitle }"</span>
 						</div>
 						<div class="col-md-9">
@@ -185,7 +168,7 @@ div {
 				</c:forEach>
 				</ul>
 		</div>
-	
+	</div>
 <jsp:include page="/post.do"></jsp:include>
 		
 	
