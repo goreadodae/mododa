@@ -145,11 +145,40 @@
   			m.member_picture as memberPicture
   		from post p, member m
   		where p.post_writer = m.member_no 
+  		<if test="memberNo != 0"> <!-- 내가 쓴 글 -->
+  		and p.post_writer = #{memberNo}
+  		</if>
   		and p.post_pro_no = #{proNo}
-  		and (p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
+  		and (p.post_title like '%'||#{keyword}||'%' 
+  		<if test="projectValue != null and projectValue.equals('pro')">
+  			or m.member_name like '%'||#{keyword}||'%'
+  		</if>
+  		)
   		order by p.post_no desc
 	</select>
 	
+	
+	<select id="searchHashTag" parameterType="searchHelper" resultType="projectPostList">
+		select
+			p.post_no as postNo,
+  			p.post_title as postTitle,
+  			p.post_progress as postProgress,
+  			p.post_date as postDate,
+  			p.post_content as postContent,
+  			p.post_writer as postWriter,
+  			p.post_temp as postTemp,
+  			p.post_pro_no as postProNo,
+  			p.post_tag as postTag,
+  			m.member_name as memberName,
+  			m.member_picture as memberPicture
+  		from post p, member m
+  		where p.post_writer = m.member_no 
+  		and p.post_pro_no = #{proNo}
+		<foreach item="searchHelper.hashTags" collection="hashTags" open="and(" separator="or" close=")">
+		p.post_tag like '%'||#{searchHelper.hashTags}||'%' 
+  		</foreach> 
+  		order by p.post_no desc
+	</select>
 
   
 </mapper>

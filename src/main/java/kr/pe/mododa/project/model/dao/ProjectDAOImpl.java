@@ -60,15 +60,24 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return (ArrayList<ProjectPostList>)postList;
 	}
 
+	@Override
 	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo) {
 		List postList = sqlSession.selectList("project.searchHashTagPostList", proNo);
 		return (ArrayList<ProjectPostList>)postList;
 	}
 
+	@Override
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh) {
 		List postList = sqlSession.selectList("project.searchProTitleOrMemberName", sh);
 		return (ArrayList<ProjectPostList>)postList;
 	}
+
+	@Override
+	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh) {
+		List postList = sqlSession.selectList("project.searchHashTag", sh);
+		return (ArrayList<ProjectPostList>)postList;
+	}
+
 
 
 

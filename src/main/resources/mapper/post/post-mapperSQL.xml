@@ -19,6 +19,8 @@
 		post_date as postDate,
 		post_content as postContent,
 		post_writer as postWriter,
+		(select member_name from member where member_no=post_writer) as postWriterName,
+        (select member_picture from member where member_no=post_writer) as postWriterPicture,
 		post_temp as postTemp,
 		post_pro_no as postProNo,
 		post_Tag as postTag
@@ -33,15 +35,16 @@
 		todo_title as todoTitle,
 		todo_content as todoContent,
 		todo_writer as todoWriter,
-		todo_member astodoMember,
+		todo_member as todoMember,
 		todo_start_date as todoStartDate,
-		todo_end_date astodoEndDate,
+		todo_end_date as todoEndDate,
 		todo_progress as todoProgress,
 		(select member_name from member where member_no=todo_writer) as todoWriterName,
 		(select member_name from member where member_no=todo_member) as todoMemberName,
 		(select member_picture from member where member_no=todo_member) as todoMemberPicture
 		from todo
 		where todo_post_no=#{postNo}
+		order by todo_no desc
 	</select>
 	
 	<select id="selectMembers" resultType="member">
@@ -74,6 +77,14 @@
     (select member_name from member where member_no=dc_maker) as dcMakerName
 	from decision where dc_Post_No=#{postNo}
 	</select>
+	
+	<select id="selectBookmark" parameterType="bookmark" resultType="bookmark">
+	select 
+	post_no as postNo,
+	member_no as memberNo
+	from bookmark
+	where post_no=#{postNo} and member_no=#{memberNo}
+	</select>
 
 	<insert id="insertSchedule" parameterType="schedule">
 		insert into schedule
@@ -82,7 +93,7 @@
 
 	<insert id="insertTodo" parameterType="todo">
 		insert into todo
-		values(todo_SEQ.NEXTVAL,#{todoPostNo},(select post_pro_no from post where post_no=#{todoPostNo}),#{todoTitle},#{todoContent},#{todoWriter},#{todoMember},SYSDATE,SYSDATE,'')
+		values(todo_SEQ.NEXTVAL,#{todoPostNo},(select post_pro_no from post where post_no=#{todoPostNo}),#{todoTitle},#{todoContent},#{todoWriter},#{todoMember},SYSDATE,SYSDATE,'suggest')
 	</insert>
 	
 	<select id="selectMemberInfo" resultType="member">
@@ -108,6 +119,26 @@
 	<update id="updateTodoProgress" parameterType="todo">
 	update todo set todo_progress=#{todoProgress} where todo_no=#{todoNo}
 	</update>
-
+	
+	<insert id="insertBookmark" parameterType="bookmark">
+	insert into bookmark values(#{postNo},#{memberNo})
+	</insert>
+	
+	<delete id="deleteBookmark" parameterType="bookmark">
+	delete bookmark where post_no=#{postNo} and member_no=#{memberNo}
+	</delete>
+  
+  <select id="selectComment" resultType="comment">
+		select 
+		m.member_name as writeNick, 
+		m.member_picture as writePicture, 
+		to_char(cm_date,'yy-mm-dd am hh24:mi:ss')as writeTime , 
+		ct.cm_tag as content, 
+		ct.CM_POST as postNo, 
+		ct.cmember_no as commentNo  
+		from comment_tbl ct
+		join member m on (ct.cm_writer = m.member_no)
+		where cm_post = #{postNo}
+	</select>
 
 </mapper>

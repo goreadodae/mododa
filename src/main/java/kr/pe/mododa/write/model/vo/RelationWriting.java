@@ -14,12 +14,13 @@ public class RelationWriting {
 	private String postTag;
 	private String memberName;
 	private String memberPicture;
+	private String proTitle;
 
 	
 	
 	
 	public RelationWriting(int postNo, String postTitle, String postProgress, Date postDate, String postContent,
-			int postWriter, String postTemp, int postProNo, String postTag, String memberName, String memberPicture) {
+			int postWriter, String postTemp, int postProNo, String postTag, String memberName, String memberPicture, String proTitle) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
@@ -32,6 +33,7 @@ public class RelationWriting {
 		this.postTag = postTag;
 		this.memberName = memberName;
 		this.memberPicture = memberPicture;
+		this.proTitle = proTitle;
 	
 		
 	}
@@ -105,13 +107,19 @@ public class RelationWriting {
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
 	}
-
 	public String getMemberPicture() {
 		return memberPicture;
 	}
 	public void setMemberPicture(String memberPicture) {
 		this.memberPicture = memberPicture;
 	}
+	public String getProTitle() {
+		return proTitle;
+	}
+	public void setProTitle(String proTitle) {
+		this.proTitle = proTitle;
+	}
+	
 
 	
 	

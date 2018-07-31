@@ -83,14 +83,6 @@ li[id^="sub_"] {
 }
 
 
-/* 예진 캘린더 부분 */
-li[id^="subC_"] {
-	display: none;
-	padding: 0;
-	background-color: #F5F5F5;
-}
-
-/* 예진 캘린더 부분 끝 */
 
 li[id^="sub_"] a {
 	padding: 0;
@@ -130,26 +122,11 @@ li[id^="sub_"] a {
 			location.href="";
 		});
 		
-		/* 예진 사용 시작  */
-
 		$("#calendarAll").click(function() {
 			location.href="/calendar.do";
-		/* });
-		
-		$(".projectMain").click(function() { */
-			var proNo = $(this).attr('value');
-			var displayValue = $('li[id^="sub_' + proNo + '"]').css('display');
-			if (displayValue == 'none') {
-				$(".privateSub").hide();/* 열렸던 창 닫기 */
-				$('li[id^="sub_' + beforeShow + '"]').hide();/* 열렸던 창 닫기 */
-				$('li[id^="sub_' + proNo + '"]').show();
-				beforeShow = proNo;/* 열렸던 창 닫기 */ 
-			} else {
-				$('li[id^="sub_' + proNo + '"]').hide();
-			}
 		});
 		
-		/* 예진 사용 끝  */
+		
 		
 		/* 지은 사용 시작 */
 		// 프로젝트 생성
@@ -209,7 +186,7 @@ li[id^="sub_"] a {
 
 		$(".proProgress").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/projectProgress.do?proNo=" + proNo;
 		});
 
 		$(".proMyPost").click(function() {
@@ -244,10 +221,6 @@ li[id^="sub_"] a {
 					<img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
 				<li class="list-group-item" id="calendarAll">
 					<img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
-				<c:forEach items="${projectList}" var="projectList" end="5">
-					<li class="list-group-item projectMain" value="${projectList.proNo}" id="sub_${projectList.proNo}">
-					<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
-				</c:forEach>
 			</ul>
 
 			<br>

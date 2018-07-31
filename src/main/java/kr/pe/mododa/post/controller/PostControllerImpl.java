@@ -1,19 +1,19 @@
 package kr.pe.mododa.post.controller;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
-import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
@@ -21,13 +21,11 @@ import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.service.PostServiceImpl;
+import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Controller
 public class PostControllerImpl {
@@ -54,6 +52,8 @@ public class PostControllerImpl {
 		List<Todo> listTodo = postService.selectTodo(postNo);
 		List<Member> listMember = postService.selectMembers(postNo);
 		Decision decision = postService.selectDecision(postNo);
+		List<Comment> listComment = postService.selectComment(postNo); //댓글 읽어오는거 (준석 추가)
+		
 
 		JSONArray scheduleArray = new JSONArray();
 		for(Schedule sc : listSc) {
@@ -83,6 +83,18 @@ public class PostControllerImpl {
 			member.put("memberName", mem.getMemberName());
 			memberArray.add(member);
 		}
+		
+		JSONArray commentArray = new JSONArray();
+		for(Comment com : listComment) {
+			JSONObject comment = new JSONObject();
+			comment.put("writeNick", com.getWriteNick());
+			comment.put("writePicture", com.getWritePicture());
+			comment.put("writeTime", com.getWriteTime());
+			comment.put("content", com.getContent());
+			comment.put("postNo", com.getPostNo());
+			comment.put("commentNo", com.getCommentNo());
+			commentArray.add(comment);
+		}
 
 
 		ModelAndView view = new ModelAndView();
@@ -93,6 +105,7 @@ public class PostControllerImpl {
 		view.addObject("todo", todoArray);
 		view.addObject("decision",decision);
 		view.addObject("member",memberArray);
+		view.addObject("comment",commentArray);
 		view.setViewName("jsonView");
 		return view;
 	}

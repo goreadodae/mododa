@@ -12,6 +12,7 @@ import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.dao.PostDAOImpl;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
@@ -31,6 +32,13 @@ public class PostServiceImpl implements PostService{
 	
 	public Post selectOnePost(int postNo) {
 		return postDAO.selectOnePost(sqlSession, postNo);
+	}
+	
+	public Bookmark selectBookmark(int postNo, int memberNo) {
+		Bookmark vo = new Bookmark();
+		vo.setPostNo(postNo);
+		vo.setMemberNo(memberNo);
+		return postDAO.selectBookmark(sqlSession, vo);
 	}
 	
 	public List<Schedule> selectSchedule(int postNo) {
@@ -81,5 +89,17 @@ public class PostServiceImpl implements PostService{
 		return postDAO.updateTodoProgress(sqlSession, vo);
 	}
 	
+	public int insertBookmark(Bookmark vo) {
+		return postDAO.insertBookmark(sqlSession, vo);
+	}
+	
+	public int deleteBookmark(Bookmark vo) {
+		return postDAO.deleteBookmark(sqlSession, vo);
+	}
+  
+	public List<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 추가)
+		return postDAO.selectComment(sqlSession, postNo);
+	}
 
 }
+

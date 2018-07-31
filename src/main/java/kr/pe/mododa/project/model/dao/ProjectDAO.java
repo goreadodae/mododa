@@ -20,4 +20,7 @@ public interface ProjectDAO {
 	public ArrayList<ProjectPostList> searchMyPostList(SqlSessionTemplate sqlSession, Project project);
 	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo);
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh);
+	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh);
+
+
 }

@@ -6,11 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
 </head>
 
 <style>
@@ -43,7 +39,7 @@ div {
 	<table width="100%">
 		<tr>
 			<td width="20%">
-				<h4 id="subject">할 일</h4>
+				<h4 id="subject">파일</h4>
 			</td>
 			<td width="35%">
 				<select class="form-control" style="width:150px;">
@@ -83,16 +79,17 @@ div {
 			<!-- 파일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">전체 파일</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm">내 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="listFileAll();" class="btn btn-outline-success btn-sm">전체 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="listFileMe();" class="btn btn-outline-success btn-sm">내 파일</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>
 			<div class="dropdown-divider"></div>
 			<!-- 파일 메뉴 끝 -->
 			
-			<!-- 파일 내용 -->		
-			<table width="100%" height="100px" border="1" style="margin:0; padding:0;">
+			<!-- 파일 내용 -->
+			<div id="fileTableContainer">
+				<table id="fileTable" width="100%" height="100px" border="1" style="margin:0; padding:0;">
 				<c:forEach items="${listFile }" var="f">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
@@ -103,8 +100,9 @@ div {
 						<td colspan="3">${f.postTitle }</td>
 					</tr>
 				</c:forEach>
-			</table>
-			<div class="dropdown-divider"></div>
+				</table>
+			</div>	
+			
 			<!-- 파일 내용 끝 -->
 			
 			
@@ -122,4 +120,66 @@ div {
 </div>
 
 </body>
+
+<script>
+/* 전체 파일 */
+function listFileAll() {
+	$.ajax({
+		url:"/listFileAll.do",
+		type:"POST",
+		success : function(data) {
+			$("#fileTable").remove();
+			$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
+			for(var i=0; i<data.length; i++) {
+				$("#fileTable").append(
+						"<tr>" +
+							"<td rowspan='2' width='7%''>아이콘</td>" + 
+							"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
+							"<td width='23%'>"+data[i].uploadDate+"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='3'>"+data[i].postTitle+"</td>" +
+						"</tr>"
+				);
+			}
+		},
+		error : function(data) {
+			console.log("오류");
+		}
+	});
+}
+
+/* 내 파일 */
+function listFileMe() {
+	$.ajax({
+		url:"/listFileMe.do",
+		type:"POST",
+		success : function(data) {
+			$("#fileTable").remove();
+			$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
+			for(var i=0; i<data.length; i++) {
+				$("#fileTable").append(
+						"<tr>" +
+							"<td rowspan='2' width='7%''>아이콘</td>" + 
+							"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
+							"<td width='23%'>"+data[i].uploadDate+"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='3'>"+data[i].postTitle+"</td>" +
+						"</tr>"
+				);
+			}
+		},
+		error : function(data) {
+			console.log("오류");
+		}
+	});
+}
+
+
+
+</script>
+
+
+
 </html>

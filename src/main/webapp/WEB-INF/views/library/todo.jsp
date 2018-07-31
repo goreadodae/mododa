@@ -6,11 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
 </head>
 
 <style>
@@ -102,45 +98,6 @@ div {
 	
 	<!-- 본문 -->
 	<div style="padding:10px; top:0;">
-		<!-- 할 일 작성 -->
-		<div style="width:100%; height:150px; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
-			<form action="/insertTodo.do" method="post">
-			<table width="100%" height="100%" style="margin:0; padding:0;">
-				<tr>
-					<td>
-						<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
-  							<option value="0">프로젝트 선택</option>
-  							<option value="${privateNo }">프라이빗 공간</option>
-  							<c:forEach items="${listProject }" var="p">
-  								<option value="${p.proNo }">${p.proTitle }</option>
-  							</c:forEach>
-						</select>
-					</td>
-					<td>
-						<button type="button" onclick="openModal();" class="btn btn-light" style="width:100%">확장 모드</button>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<input class="form-control" type="text" id="todoTitle" name="todoTitle" placeholder="새 할 일을 입력해주세요">
-					</td>
-				</tr>
-				<tr>
-					<td width="90%">
-						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
-							<option value="0">멤버 선택</option>
-						</select>
-					</td>
-					<td width="10%">
-						<button type="button" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
-					</td>
-				</tr>
-			</table>
-			</form>
-		</div>
-		<br>
-		<!-- 할 일 작성 끝 -->
-		
 		<!-- 할 일 목록 -->
 		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
 			<!-- 할 일 메뉴 -->
@@ -149,7 +106,7 @@ div {
 					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoAll();">전체 할 일</button></td>
 					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoMe();">내 할 일</button></td>
 					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoRequest();">요청한 할 일</button></td>
-					<td width="68%"></td>
+					<td width="68%"><button type="button" style="width:15%;" class="btn btn-outline-warning btn-sm" onclick="openModal();">할 일 작성</button></td>
 				</tr>
 			</table>
 			<div class="dropdown-divider"></div>
@@ -180,7 +137,7 @@ div {
 							</div>
 						</td>
 						<td width="15%">${t.todoProjectName }</td>
-						<td width="53%">${t.todoTitle }</td>
+						<td width="53%"><a href="#" onclick="openContentModal(${t.todoNo});">${t.todoTitle }</a></td>
 						<td width="25%">${t.todoWriterName } -> ${t.todoMemberName }</td>
 					</tr>
 					</c:forEach>
@@ -195,7 +152,13 @@ div {
 		<!-- 할 일 목록 끝 -->
 	</div>
 	
-	
+	</div>
+	<!-- contents 끝 -->
+
+
+	<!-- right bar -->
+	<jsp:include page="/rightbar.do"></jsp:include>
+	<!-- right bar 끝 -->
 	
 	
 	
@@ -228,7 +191,7 @@ div {
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td colspan="2">
-						<input class="form-control" type="text" name="todoTitle" placeholder="새 할 일을 입력해주세요">
+						<input class="form-control" type="text" id="todoTitle" name="todoTitle" placeholder="새 할 일을 입력해주세요">
 					</td>
 				</tr>
 				<tr>
@@ -245,7 +208,7 @@ div {
 						</select>
 					</td>
 					<td width="10%">
-						<button type="button" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
+						<button type="submit" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
 					</td>
 				</tr>
 			</table>
@@ -257,15 +220,61 @@ div {
 	<!-- 팝업모달 끝 -->
 	
 	
-	
-	
+<c:forEach items="${listTodo }" var="t">
+	<!-- 할 일 내용보기 모달 -->
+	<div id="todoContentModal_${t.todoNo }" class="modal">
+
+		<!-- Modal 내용 -->
+		<div class="modal-content" style="width:40%;">
+			<!-- 닫기 버튼 -->
+			<div align="right">
+				<img src="../resources/images/post/close.png" onclick="closeContentModal(${t.todoNo});" /><br>
+			</div>
+			<!-- 할 일 내용  -->
+			<table border="1">
+				<tr>
+					<td>${t.todoProgress }</td>
+					<td colspan="3"><input class="form-control" type="text" id="" name="todoTitle" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요"></td>
+				</tr>
+				<tr>
+					<td>
+						<select class="form-control" id="" name="todoMember" style="width:150px;">
+							<option value="0">${t.todoWriter }</option>
+						</select>  
+					</td>
+					<td>
+					->
+					</td>
+					<td>
+						<select class="form-control" id="" name="todoMember" style="width:150px;">
+							<option value="0">todoMember</option>
+						</select>
+					</td>
+					<td width="40%" align="right">todoDate</td>
+				</tr>
+				<tr>
+					<td colspan="4" height="200px;">
+					<textarea class="form-control" aria-label="With textarea" rows="10"
+							style="width:100%; resize:none;" name="todoContent" placeholder="할 일 설명(선택)">${t.todoContent }</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" align="center"><button type="submit" class="btn btn-light" onclick="return updateTodo();">수정</button></td>
+				</tr>
+			</table>
+				
+		</div>
+		<!-- Modal 내용 끝 -->
 	</div>
-	<!-- contents 끝 -->
-
-
-	<!-- right bar -->
-	<jsp:include page="/rightbar.do"></jsp:include>
-	<!-- right bar 끝 -->
+	<!-- 내용보기 모달 끝 -->
+</c:forEach>	
+	
+	
+	
+	
+	
+	
+	
 </div>
 
 </body>
@@ -311,7 +320,7 @@ div {
 	function closeModal() {
 		$('#todoModal').hide();
 	}
-	
+
 	/* 전체 할 일 눌렀을 때 */
 	function todoAll() {
 		$.ajax({
@@ -325,8 +334,8 @@ div {
 							"<tr>" + 
 							"<td width='7%'>아이콘</td>" +
 							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='15%'>"+data[i].todoTitle+"</td>" +
-							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
 					);
 				}
 			},
@@ -349,8 +358,8 @@ div {
 							"<tr>" + 
 							"<td width='7%'>아이콘</td>" +
 							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='15%'>"+data[i].todoTitle+"</td>" +
-							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
 					);
 				}
 			},
@@ -373,8 +382,8 @@ div {
 							"<tr>" + 
 							"<td width='7%'>아이콘</td>" +
 							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='15%'>"+data[i].todoTitle+"</td>" +
-							"<td width='15%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
+							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
 					);
 				}
 			},
@@ -385,7 +394,7 @@ div {
 		
 	}
 	
-	/* 프로젝트 선택 안할 시 경고창 */
+	/* 할 일 작성 시 주의사항(?) */
 	function submitTodo() {
 		var selectProject = $('#selectProject option:selected').val();
 		var memberList = $('#memberList option:selected').val();
@@ -410,8 +419,25 @@ div {
 			return false;
 		}
 		
+		console.log("test");
+		
 		return true;
 	}
+	
+	
+	/* 할 일 내용보기 모달 열기 */
+	function openContentModal(id) {
+		$("#todoContentModal_"+id).show();
+	}
+	
+	/* 할 일 내용보기 모달 닫기 */
+	function closeContentModal(id) {
+		$("#todoContentModal_"+id).hide();
+	}
+	
+	
+	
+	
 	
 </script>
 

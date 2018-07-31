@@ -84,8 +84,9 @@
 	p.post_pro_no as postProNo,
 	p.post_tag as postTag,
 	m.member_name as memberName,
-	m.member_picture as memberPicture
-	from post p	left join member m on p.post_writer = m.member_no  
+	m.member_picture as memberPicture,
+	pr.pro_title as proTitle
+	from post p	left join member m on (p.post_writer = m.member_no) left join project pr on(p.post_pro_no = pr.pro_no)  
 	where p.post_pro_no = #{postProNo} and p.post_writer = #{postWriter} 
 	
 	
