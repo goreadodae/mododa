@@ -18,6 +18,8 @@ public interface ProjectService {
 	public ArrayList<ProjectPostList> searchMyPostList(Project project);
 	public ArrayList<ProjectPostList> searchHashTagPostList(int proNo);
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SearchHelper sh);
-
-
+	public ArrayList<ProjectPostList> searchHashTag(SearchHelper sh);
+	
+	
+	
 }
