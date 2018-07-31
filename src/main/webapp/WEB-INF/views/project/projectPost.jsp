@@ -128,17 +128,15 @@ div {
 	 $('#toWrite').show();
 	 }
 	 */
-	 
-	 
-	 function onLocation() { // 글쓰기 찾아가는 메소드
-		 
-		var proNoStr = $("#proNo").val();
-	 	var proNo = proNoStr.substring(6);
-		//proNo=?
-	 	console.log(proNo);
-		location.href = "/writePage.do?currentProjectNo="+proNo;
-		 
-	 }
+	    function onLocation() {
+	       
+	      var proNoStr = $("#proNo").val();
+	       var proNo = proNoStr.substring(6);
+	      //proNo=?
+	       console.log(proNo);
+	      location.href = "/writePage.do?currentProjectNo="+proNo;
+	       
+	    }
 </script>
 
 
@@ -176,9 +174,9 @@ div {
 
 						<!-- 한영진이 버튼 연결 -->
 						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
-						<button type="button" onclick="onLocation();"class="btn btn-outline-success">
-							<i class="fas fa-edit"></i>글쓰기
-						</button>
+	     <button type="button" onclick="onLocation();"class="btn btn-outline-success">
+                     <i class="fas fa-edit"></i>글쓰기
+                  </button>
 					</div>
 				
 			</div>
@@ -211,17 +209,18 @@ div {
 							
 							<div class="col-md-9">
 							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
-							</div>
+							</div>	
+
 						</div>
 						<hr style="color: grey;">
 					</li>
 					
 				</c:forEach>
 			</ul>
-			<div align="center">
-			<span>마지막입니다.</span>
-			<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
-			</div>
+				         <div align="center">
+         <span>마지막입니다.</span>
+         <input type="text" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+         </div>
 		</div>
 
 
