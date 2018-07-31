@@ -10,6 +10,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>프로젝트 글</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
+<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
+<!-- 개인페이지 공통 style저장. -->
 </head>
 
 
@@ -125,15 +135,13 @@ div {
 	 $('#toWrite').show();
 	 }
 	 */
-	    function onLocation() {
-	       
-	      var proNoStr = $("#proNo").val();
-	       var proNo = proNoStr.substring(6);
-	      //proNo=?
-	       console.log(proNo);
-	      location.href = "/writePage.do?currentProjectNo="+proNo;
-	       
-	    }
+	 function onLocation() {
+		 var proNoStr = $("#proNo").val();
+	     var proNo = proNoStr.substring(6);
+	     //proNo=?
+	     console.log(proNo);
+	     location.href = "/writePage.do?currentProjectNo="+proNo;
+	 }
 </script>
 
 
@@ -164,30 +172,26 @@ div {
 				
 				<div class="headerFunction" id="headerFun">
 						<!-- 검색기능버튼과 글쓰기 버튼. -->
-						<button type="button" class="btn btn-outline-light btn-lg"
-							id="searchShow" onclick="searchShow();">
+						<button type="button" class="btn btn-outline-light btn-lg" id="searchShow" onclick="searchShow();">
 							<i class="fas fa-search" style="color: grey;"></i>
 						</button>
 
 						<!-- 한영진이 버튼 연결 -->
 						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
-	     <button type="button" onclick="onLocation();"class="btn btn-outline-success">
-                     <i class="fas fa-edit"></i>글쓰기
-                  </button>
-					</div>
-				
+	     				<button type="button" onclick="onLocation();"class="btn btn-outline-success">
+                    	<i class="fas fa-edit"></i>글쓰기
+                  		</button>
+				</div>
 			</div>
 			
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
-				&nbsp;&nbsp;<i class="fas fa-search" style="color: grey;"></i> 
-				<input type="text" id="keyword" name="keyword" placeholder="제목 또는 글 작성자로 검색" />
+			<i class="fas fa-search" style="color: grey; padding-left: 2%;"></i>
+			<input type="text" id="keyword" name="keyword" placeholder="제목 또는 글 작성자로 검색" />
 				<div class="headerFunction" id="searchFun">
-					<!-- 검색과 취소버튼 -->
-					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="searchProject()" style="float:left; padding:10px;">검색</button>
-					<button type="button" class="btn btn-outline-secondary btn-sm"
-						onclick="searchCancle();" style="padding:10px;">취소</button>
+				<!-- 검색과 취소버튼 -->
+				<button type="button" class="btn btn-outline-success btn-sm" onclick="searchProject()" style="float:left; padding:10px;">검색</button>
+					<button type="button" class="btn btn-outline-secondary btn-sm" onclick="searchCancle();" style="padding:10px;">취소</button>
 				</div>
 			</div>
 		</div>
@@ -214,23 +218,21 @@ div {
 					
 				</c:forEach>
 			</ul>
-				         <div align="center">
-         <span>마지막입니다.</span>
-         <input type="text" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
-         </div>
+		 	<div align="center">
+         	<span>마지막입니다.</span>
+         	<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+         	</div>
 		</div>
 
-
-
-		</div>
+	</div>
 	<!-- contents 끝 -->
 
 
 	<!-- right bar -->
 	<jsp:include page="/rightbar.do"></jsp:include>
 	<!-- right bar 끝 -->
+	
 </div>
-
 
 <jsp:include page="/post.do"></jsp:include> <!-- 게시글 보기 -->
 

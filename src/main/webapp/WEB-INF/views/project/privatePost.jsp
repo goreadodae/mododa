@@ -11,7 +11,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>프라이빗 글</title>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
+<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
+<!-- 개인페이지 공통 style저장. -->
 </head>
 
 
@@ -135,13 +143,13 @@ div {
 	 
 	 function onLocation() { // 글쓰기 찾아가는 메소드
 		 
-			var proNoStr = $("#proNo").val();
-		 	var proNo = proNoStr.substring(6);
-			//proNo=?
-		 	console.log(proNo);
-			location.href = "/writePage.do?currentProjectNo="+proNo;
+		var proNoStr = $("#proNo").val();
+		var proNo = proNoStr.substring(6);
+		//proNo=?
+		console.log(proNo);
+		location.href = "/writePage.do?currentProjectNo="+proNo;
 			 
-	}
+	 }
 	 
 </script>
 
@@ -177,18 +185,18 @@ div {
 						<i class="fas fa-search" style="color: grey;"></i>
 					</button>
 
-						<!-- 한영진이 버튼 연결 -->
-						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
-						<button type="button" onclick="onLocation();"class="btn btn-outline-success">
-							<i class="fas fa-edit"></i>글쓰기
-						</button>
+					<!-- 한영진이 버튼 연결 -->
+					<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
+					<button type="button" onclick="onLocation();"class="btn btn-outline-success">
+						<i class="fas fa-edit"></i>글쓰기
+					</button>
 				</div>
 				
 			</div>
 			
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
-				&nbsp;&nbsp;<i class="fas fa-search" style="color: grey;"></i> 
+				<i class="fas fa-search" style="color: grey; padding-left: 2%;"></i> 
 				<input type="text" id="keyword" name="keyword" placeholder="제목 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
