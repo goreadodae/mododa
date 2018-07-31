@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title><c:out value="${currentProName}" /> - 모두다</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
 	crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<head>
+
 <!--   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> -->
 <!-- <script src="http://cdn.embed.ly/jquery.embedly-3.0.5.min.js" type="text/javascript"></script>
 <script src="http://cdn.embed.ly/jquery.preview-0.3.2.min.js" type="text/javascript"></script>
@@ -348,62 +348,184 @@
 
 	//관련 글 불러오기
 
+	var preventStack = true;
 	function bringRelativeWrite() {
 		var currentProNo = $("#currentProNo").val()
 		console.log(currentProNo);
 
-		$.ajax({
-			url : "/relationWriteList.do",
+		$
+				.ajax({
+					url : "/relationWritingList.do",
+					type : "get",
+					data : {
+
+						currentProNo : currentProNo
+
+					},
+
+					success : function(data) {
+
+						console.log("성공");
+
+						if (preventStack) {
+
+							for (var i = 0; i < data.length; i++) {
+
+								$('#relationList')
+										.append(
+												'<li class="list-group-item" style="padding-top: 10px;">'
+														+ '<div class="row" style="height: 50%">'
+														+ '<div class="col-md-12" style="height: 100%">'
+														+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
+														+ '<span>'
+														+ data[i].postTitle
+														+ '</span>'
+														+ '</div>'
+														+ '</div>'
+														+ '<div class="row" style="height: 50%">'
+														+ '<div class="col-md-12" style="height: 100%">'
+														+ '<h6 style="display: inline">'
+														+ '<span>'
+														+ data[i].memberName
+														+ '</span>'
+														+ '</h6>&nbsp;&nbsp;'
+														+ '<h6 style="display: inline">'
+														+ '<span>'
+														+ data[i].postDate
+														+ '</span>' + '</h6>'
+														+ '</div>' + '</div>'
+														+ '</li>')
+
+							}
+							preventStack = false;
+						}
+
+					},
+					error : function(data) {
+						console.log("실패");
+					}
+
+				})
+
+	}
+
+	$(document).ready(function(){
+		$('#relationSearch').keyup(function(){
+			var searchKeyword = $("#relationSearch").val();
+			var currentProNo = $("#currentProNo").val();
+			$.ajax({
+			url : "/searchWriting.do",
 			type : "get",
 			data : {
-
-				currentProNo : currentProNo
-
+					searchKeyword : searchKeyword,
+					currentProNo : currentProNo
 			},
-			
-			
-			
-			
-			
 			success : function(data) {
+			$('#relationList').text(" ");
+				for (var i = 0; i < data.length; i++) {
+					$('#relationList').append(
+											'<li class="list-group-item" style="padding-top: 10px;">'
+											+ '<div class="row" style="height: 50%">'
+											+ '<div class="col-md-12" style="height: 100%">'
+											+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
+											+ '<span>'
+											+ data[i].postTitle
+											+ '</span>'
+											+ '</div>'
+											+ '</div>'
+											+ '<div class="row" style="height: 50%">'
+											+ '<div class="col-md-12" style="height: 100%">'
+											+ '<h6 style="display: inline">'
+											+ '<span>'
+											+ data[i].memberName
+											+ '</span>'
+											+ '</h6>&nbsp;&nbsp;'
+											+ '<h6 style="display: inline">'
+											+ '<span>'
+											+ data[i].postDate
+											+ '</span>'
+											+ '</h6>'
+											+ '</div>'
+											+ '</div>'
+											+ '</li>')
+				}
+			},
+			error : function(data) {
+				console.log("검색 실패");
+			}
 
+			})
+						
+		})
+
+	})
+	
+	function loadByProName(no){
+		var proNo = $('#proNo'+no).val();
+		
+		$.ajax({
+			url : "/loadByProName.do",
+			type : "post",
+			data : {
+				proNo :proNo
+			},
+			success : function(data){
 				console.log("성공");
-				
-				
-				for(var i=0;i<data.length;i++){
-					
-					$('#relationList').append('<li class="list-group-item" style="padding-top: 10px;">'
-											+'<div class="row" style="height: 50%">'
-											+'<div class="col-md-12" style="height: 100%">'
-											+'	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
-											+'<span>'+data[i].postTitle+'</span>'
-											+'</div>'
-											+'</div>'
-											+'<div class="row" style="height: 50%">'
-											+'<div class="col-md-12" style="height: 100%">'
-											+'<h6 style="display: inline">'
-											+'<span>'+data[i].post+'</span>'
-											+'</h6>&nbsp;&nbsp;'
-											+'<h6 style="display: inline">'
-											+'<span>2018.7.8</span>'
-											+'</h6>'
-											+'</div>'
-											+'</div>'
-											+'</li>')
-					
-					
+				console.log(proNo);
+				$('#relationList').text(" ");
+				for (var i = 0; i < data.length; i++) {
+					$('#relationList').append(
+											'<li class="list-group-item" style="padding-top: 10px;">'
+											+ '<div class="row" style="height: 50%">'
+											+ '<div class="col-md-12" style="height: 100%">'
+											+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
+											+ '<span>'
+											+ data[i].postTitle
+											+ '</span>'
+											+ '</div>'
+											+ '</div>'
+											+ '<div class="row" style="height: 50%">'
+											+ '<div class="col-md-12" style="height: 100%">'
+											+ '<h6 style="display: inline">'
+											+ '<span>'
+											+ data[i].memberName
+											+ '</span>'
+											+ '</h6>&nbsp;&nbsp;'
+											+ '<h6 style="display: inline">'
+											+ '<span>'
+											+ data[i].postDate
+											+ '</span>'
+											+ '</h6>'
+											+ '</div>'
+											+ '</div>'
+											+ '</li>')
 				}
 				
 				
 				
+				
+				
 			},
-			error : function(data) {
+			error : function(data){
 				console.log("실패");
 			}
-
-		})
-
+		});
+		
+		
+		
+		
+		
+		
 	}
+			
+			
+			
+			
+			
+
+					
+	
+					
 </script>
 
 <style>
@@ -837,9 +959,27 @@ div.tarea {
 										<div class="modal-header" style="height: 10%; border: none !important;">
 											<h4 class="modal-title" id="exampleModalLongTitle">관련 글 추가</h4>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<h6 style="color: #339966; padding-top: 5px;">
-												<c:out value="${currentProName}"></c:out>
-											</h6>
+											<!-- 프로젝트 이름 가져오기  -->
+
+											<div class="dropdown">
+												<h6 style="color: #339966; padding-top: 5px;" id="byProNameDD" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+													<c:out value="${currentProName}"></c:out>
+												</h6>
+												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
+												<c:forEach items="${proList}" var="proList">
+													<button class="dropdown-item" id ="proNo${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
+													<c:out value="${proList.proTitle}"/></button>
+													
+												
+												
+												</c:forEach>
+												</div>
+
+											</div>
+
+
+
+
 											<c:set var="currentProNo" value="${currentProNo}"></c:set>
 											<input type="hidden" id="currentProNo" value="${currentProNo}">
 
@@ -861,29 +1001,6 @@ div.tarea {
 										<div class="modal-body" style="height: 70%; padding: 0px">
 											<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%; padding: 0px">
 												<ul class="list-group" id="relationList">
-													<li class="list-group-item" style="padding-top: 10px;">
-
-														<div class="row" style="height: 50%">
-															<div class="col-md-12" style="height: 100%">
-																<input type="checkbox" style="height: 100% !important; vertical-align: middle"><span>모두다 기획의도</span>
-															</div>
-														</div>
-														<div class="row" style="height: 50%">
-
-															<div class="col-md-12" style="height: 100%">
-
-																<h6 style="display: inline">
-																	<span>고래두대</span>
-																</h6>
-																&nbsp;&nbsp;
-																<h6 style="display: inline">
-																	<span>2018.7.8</span>
-																</h6>
-															</div>
-
-
-														</div>
-													</li>
 
 												</ul>
 
@@ -894,7 +1011,7 @@ div.tarea {
 										</div>
 										<div class="modal-footer">
 
-											<button type="button" class="btn btn-primary" style="background-color: #CFF09E">저장</button>
+											<button type="button" class="btn btn-primary" style="background-color: #CFF09E; border: none">저장</button>
 
 
 										</div>
