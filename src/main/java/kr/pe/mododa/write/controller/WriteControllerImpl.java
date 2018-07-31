@@ -17,9 +17,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.service.WriteServiceImpl;
+import kr.pe.mododa.write.model.vo.RelationSearchKey;
+import kr.pe.mododa.write.model.vo.RelationWriting;
 
 @Controller
 public class WriteControllerImpl implements WriteController {
@@ -63,33 +64,92 @@ public class WriteControllerImpl implements WriteController {
 	@RequestMapping(value ="/writePage.do")
 	public ModelAndView currentProName(HttpServletResponse response, @RequestParam int currentProjectNo, HttpSession session) {
 		Project pj = new Project();
-		pj.setProMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		pj.setProMemberNo(memberNo);
 		pj.setProNo(currentProjectNo);
+		
+		System.out.println("currentProName"+pj.getProMemberNo());
+		System.out.println("currentProName"+pj.getProNo());
+		
 		String currentProName = writeService.currentProName(pj);
-		System.out.println(currentProjectNo);
+		System.out.println(currentProName +"컨트롤러");
+		ArrayList<Project> proList = writeService.myProject(memberNo);
 		
 		ModelAndView view = new ModelAndView();
 		view.setViewName("/write/writePage");
 		view.addObject("currentProName",currentProName);
 		view.addObject("currentProNo",currentProjectNo);
+		view.addObject("proList",proList);
 		return view;
 		
 
 	}
 	
-	@RequestMapping(value="/relationWriteList.do")
-	public void relationWriteList(HttpServletResponse response, @RequestParam int currentProNo) throws Exception{
+	@RequestMapping(value="/relationWritingList.do")
+	public void relationWritingList(HttpServletResponse response, @RequestParam int currentProNo) throws Exception{
 		
-		ArrayList<Post> list = writeService.relationWriteList(currentProNo);
+		ArrayList<RelationWriting> list = writeService.relationWritingList(currentProNo);
+		response.setContentType("aplication/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(list,response.getWriter());
+	}
+	
+	
+	@RequestMapping(value="/searchWriting.do")
+	public void searchWriting(HttpServletResponse response, @RequestParam String searchKeyword, @RequestParam int currentProNo) throws Exception{
+		
+		RelationSearchKey rsKey = new RelationSearchKey();
+		rsKey.setSearchKeyword(searchKeyword);
+		rsKey.setCurrentProNo(currentProNo);
+		
 		ModelAndView view = new ModelAndView();
+		ArrayList<RelationWriting> list = writeService.searchWriting(rsKey);
+		
+		response.setContentType("aplication/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(list,response.getWriter());
+	}
+	
+	@RequestMapping(value="/loadByProName.do")
+	public void loadByProName(HttpServletResponse response, @RequestParam int proNo, HttpSession session) throws JsonIOException, IOException {
+		RelationWriting rw = new RelationWriting();
+		rw.setPostWriter((((Member)session.getAttribute("member")).getMemberNo()));
+		rw.setPostProNo(proNo);
+		ArrayList<RelationWriting> list = writeService.loadByProName(rw);
 		response.setContentType("aplication/json");
 		response.setCharacterEncoding("utf-8");
 		new Gson().toJson(list,response.getWriter());
 		
 		
-		
-		
 	}
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

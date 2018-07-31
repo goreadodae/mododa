@@ -21,27 +21,79 @@
 	where pro_member_no = #{proMemberNo} and pro_no = #{proNo}
 	</select>
 	
-	<select id="relationwriteList" resultType="post">
+	<select id="relationwritingList" resultType="relationWriting">
 	select
-	post_no as postNo,
-	post_title as postTitle,
-	post_progress as postProgress,
-	post_date as postDate,
-	post_content as postContent,
-	post_writer as postWriter,
-	post_temp as postTemp,
-	post_pro_no as postProNo,
-	post_tag as postTag
-	
-	from post
-	join member
+	p.post_no as postNo,
+	p.post_title as postTitle,
+	p.post_progress as postProgress,
+	p.post_date as postDate,
+	p.post_content as postContent,
+	p.post_writer as postWriter,
+	p.post_temp as postTemp,
+	p.post_pro_no as postProNo,
+	p.post_tag as postTag,
+	m.member_name as memberName,
+	m.member_picture as memberPicture
+	from post p
+	left join member m on p.post_writer = m.member_no  
 	where post_pro_no = #{currentProNo}
+	</select>
 	
+	<select id="searchWriting" resultType="relationWriting" parameterType="relationSearchKey">
 	
+	select
+	p.post_no as postNo,
+	p.post_title as postTitle,
+	p.post_progress as postProgress,
+	p.post_date as postDate,
+	p.post_content as postContent,
+	p.post_writer as postWriter,
+	p.post_temp as postTemp,
+	p.post_pro_no as postProNo,
+	p.post_tag as postTag,
+	m.member_name as memberName,
+	m.member_picture as memberPicture
+	from post p	left join member m on p.post_writer = m.member_no  
+	where p.post_pro_no = #{currentProNo} and m.member_name like '%'||#{searchKeyword}||'%' or p.post_title like '%'||#{searchKeyword}||'%'
 	
+	</select>
+	
+	<select id="myProject" resultType="project">
+	select
+	pro_no as proNo,
+	pro_title as proTitle,
+	pro_progress as proProgress,
+	pro_start_date as proStartDate,
+	pro_end_date as proEndDate,
+	pro_member_no as proMemberNo
+	from project
+	where pro_member_no = #{memberNo}
 	
 	
 	</select>
+	
+	<select id="loadByProName"  parameterType="relationWriting" resultType="relationWriting">
+	select
+	p.post_no as postNo,
+	p.post_title as postTitle,
+	p.post_progress as postProgress,
+	p.post_date as postDate,
+	p.post_content as postContent,
+	p.post_writer as postWriter,
+	p.post_temp as postTemp,
+	p.post_pro_no as postProNo,
+	p.post_tag as postTag,
+	m.member_name as memberName,
+	m.member_picture as memberPicture
+	from post p	left join member m on p.post_writer = m.member_no  
+	where p.post_pro_no = #{postProNo} and p.post_writer = #{postWriter} 
+	
+	
+	</select>
+	
+
+	
+	
 	
 
   
