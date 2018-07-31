@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Bookmark {
 	private int postNo;       //북마크한 글의 글 번호
+	private int memberNo;		//북마크 설정한 유저 번호
 	private String postTitle;    //북마크한 글 제목
 	private String postProgress; //북마크한 글의 진행 상태
 	private String writerImg;    //북마크한 글의 작성자 이미지 경로
@@ -16,10 +17,11 @@ public class Bookmark {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bookmark(int postNo, String postTitle, String postProgress, String writerImg, String postWriter,
-			Date postDate, String proName, int proNo) {
+	public Bookmark(int postNo, int memberNo, String postTitle, String postProgress, String writerImg,
+			String postWriter, Date postDate, String proName, int proNo) {
 		super();
 		this.postNo = postNo;
+		this.memberNo = memberNo;
 		this.postTitle = postTitle;
 		this.postProgress = postProgress;
 		this.writerImg = writerImg;
@@ -35,6 +37,14 @@ public class Bookmark {
 
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
+	}
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
 	}
 
 	public String getPostTitle() {
