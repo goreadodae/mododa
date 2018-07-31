@@ -90,9 +90,12 @@ span {
 }
 </style>
 
-<!-- 모달 스크립트 -->
+
 <script type="text/javascript">
-      
+     
+     
+<!-- 모달 스크립트 -->
+
     jQuery(document).ready(function() {
         $('#inviteMemberModal').show();
     });
@@ -101,18 +104,61 @@ span {
     function close_pop(flag) {
         $('#inviteMemberModal').hide();
         location.href="/mainPage.do";
-        /* 메인페이지로 보낼 지? 프로젝트를 볼 때는 색을 바꾸고 싶은데... */
     };
      
-	function submitCheck() {
-		if(document.getElementById('memberId').value == "") {
-			alert("초대 멤버 이메일을 입력해주세요.");
-			return false;
+	
+	function inviteMember() {
+		
+		var memberId = $("#memberId").val();
+		
+		if(memberId == "") {
+			$("#inviteMemberCheck").text('초대 멤버 이메일을 입력해주세요.');
+			$('#inviteMemberCheck').css('color','red');
+			//alert("초대 멤버 이메일을 입력해주세요.");
+			
+		} else if(memberId == "${sessionScope.member.memberId}") {
+			$("#inviteMemberCheck").text('자신은 초대할 수 없습니다.');
+			$('#inviteMemberCheck').css('color','red');
+			//alert("자신은 초대할 수 없습니다.");
+			
 		} else {
-			return true;
+			
+			$.ajax({
+				url : "/checkInvite.do",
+				type : "post",
+				data : {
+					memberId : memberId
+				},
+				success : function(data) {
+					
+					$.ajax({
+						url : "/inviteMember.do",
+						type : "post",
+						data : {
+							memberId : memberId
+						},
+						success : function() {
+							$("#inviteMemberCheck").text('[ '+memberId+' ] 초대 완료');
+							$('#inviteMemberCheck').css('color','blue');
+							console.log("insert성공");
+						},
+						error : function() {
+							$("#inviteMemberCheck").text('이미 초대된 멤버입니다.');
+							$('#inviteMemberCheck').css('color','red');
+							console.log("insert실패");
+						}
+						
+					});
+					
+				},
+				error : function() {
+					$("#inviteMemberCheck").text('존재하지 않는 회원입니다.');
+					$('#inviteMemberCheck').css('color','red');
+					console.log("실패");
+				}
+			});
 		}
 	}
-        
 </script>
 
 <body>
@@ -141,16 +187,16 @@ span {
       	<div class="modal-header" id="m_header"><img src="/resources/images/project/delete-button.png" onClick="close_pop();"></div>
       	<div class="modal-body">
                 <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">프로젝트 멤버 초대</span></b></span></p>
-                <form action="/inviteMember.do" method="get">
+                
                 <p style="text-align: center; line-height: 1.5;"><br />
-  					초대 멤버 이메일 입력 : <input type="text" name="memberId" id="memberId"> <br>
-					<!-- 프로젝트 번호, 회원 번호 필요 -->
+  					초대 멤버 이메일 입력 : <input type="text" id="memberId"> <br>
+					<label id="inviteMemberCheck"></label>
 				</p>
                 <!-- submit 버튼 -->
                 <div class="divStyle">
-                <button class="btnStyle" onClick="return submitCheck();"><span>초대</span></button>
+                <button class="btnStyle" onclick="inviteMember();"><span>초대</span></button>
                 </div>
-                </form>
+                
       	</div>
       </div>
  

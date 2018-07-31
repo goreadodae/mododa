@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <!-- 준석이 스타일 -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -56,45 +55,64 @@ div {
 		$("#content-frame").load("/bookmark.do");
 	}
 	
+	
+	
 	function searchPrivate() // 검색
 	{
-		var keyword=$("#keyword").val();
-		console.log(keyword);
-		if(keyword =="")
-			{
+		var keyword = $("#keyword").val();
+		var proNo = $("#proNo").val();
+		console.log(keyword+"/"+proNo);
+		
+		
+		if(keyword == "") {
 			alert("검색어를 입력하세요.");
-			}else{
+		} else {
+			
 				$.ajax({
-					url:"",
-					type:"post",
-					data:{"keyword":keyword},
-					dataType:"json",
-					success:function(data){
-						if(data.length==0)
-							{
+					url : "/searchProTitleOrMemberName.do",
+					type : "post",
+					data : { 
+						keyword : keyword,
+						proNo : proNo
+					},
+					
+					success : function(data) {
+						
+						var searchResult = data.searchResult;
+						
+						console.log(searchResult.length);
+						
+						if(searchResult.length == 0) {
+							
 							$(".feed-list").empty();
 							$(".feed-list").append("<div>내용없어요</div>");
-							}else{
-						$(".feed-list").empty();
-						var result="";
-						for(var i=0;i<data.length;i++)
-							{
-/* 							result+=
-								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
-								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
-								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
-								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
-								'</button></div>'+
-								'</div><hr style="color:grey;"></li>'; */
+							$(".feed-list").append('<input type="hidden" id="proNo" value="'+proNo+'">');
+							// 얘가 있어야지 검색 결과가 없던 상황에서도 나중에 검색이 가능함!
+							
+						} else {
+								
+							$(".feed-list").empty();
+								
+							var result="";
+							
+							for(var i=0 ; i<searchResult.length ; i++) {
+
+  								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">'
+	 									  + '<span onclick="getPost('+searchResult[i].postNo+');" class="btn btn-link" style="float:left;">'+searchResult[i].postTitle+'</span></div>'
+	 									  + '<div class="col-md-9"><img id="memberImg2" src="'+searchResult[i].memberPicture+'">&nbsp;&nbsp;'+searchResult[i].memberName
+	 									  + '&nbsp;&nbsp;&nbsp;&nbsp;'+searchResult[i].postDate+'</div>'
+	 									  + '<input type="hidden" id="proNo" value="'+searchResult[i].postProNo+'"></span><!-- 프로젝트 번호 --></div><hr style="color: grey;"></li>';
+
 							}
-						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
-					   } 
-				   },
-					error:function()
-					{
-						alert("error");
+								
+							$(".feed-list").append(result);
+							$(".feed-list").append("<span>마지막입니다.</sapn>");
+							
+						}
+
+				    },
+					error:function() {
+						console.log("실패");
 					}
 				})
 			}
@@ -153,11 +171,11 @@ div {
 			<!-- 돋보기 아이콘 눌렀을 때 출력되는 헤더 -->
 			<div id="contentSearch" class="headertitle" style="display: none;">
 				&nbsp;&nbsp;<i class="fas fa-search" style="color: grey;"></i> 
-				<input type="text" id="keyword" name="keyword" placeholder="제목 또는 글 작성자로 검색" />
+				<input type="text" id="keyword" name="keyword" placeholder="제목 검색" />
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="searchPrivate()" style="float:left; padding:10px;">검색</button>
+						onclick="searchPrivate();" style="float:left; padding:10px;">검색</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onclick="searchCancle();" style="padding:10px;">취소</button>
 				</div>
@@ -172,10 +190,13 @@ div {
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
-							<span onclick="getPost();" class="btn btn-link" style="float:left;">${postList.postTitle}</span>
+							<span onclick="getPost(${postList.postNo});" class="btn btn-link" style="float:left;">${postList.postTitle}</span>
 							</div>
-							<div class="col-md-9"><img id="memberImg2" src="${member.memberPicture}">&nbsp;&nbsp;${member.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
-							<a href="#" class="btn btn-link" style="float:none;" >프라이빗 공간</a></div>
+							
+							<div class="col-md-9">
+							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
+							</div>
+							<input type="hidden" id="proNo" value="${postList.postProNo}"></span> <!-- 프로젝트 번호 -->
 						</div>
 						<hr style="color: grey;">
 					</li>

@@ -156,7 +156,6 @@ span {
   					프로젝트 이름 : <input type="text" name="proTitle" id="proTitle"> <br>
 					기간 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
 					<br><label id="periodLabel"></label><br>
-					<input type="hidden" name="proMemberNo" value="${sessionScope.member.memberNo}"> <!-- 세션 정보 -->
 				</p>
                 <!-- submit 버튼 -->
                 <div class="divStyle">
