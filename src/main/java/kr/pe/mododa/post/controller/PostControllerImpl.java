@@ -20,6 +20,7 @@ import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.model.service.PostServiceImpl;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
@@ -48,8 +49,10 @@ public class PostControllerImpl {
 		if(session.getAttribute("member")!=null) {
 			memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 		}
+		
 		Project pro = postService.selectProject(postNo);
 		Post p = postService.selectOnePost(postNo);
+		Bookmark bookmark = postService.selectBookmark(postNo, memberNo);
 		List<Schedule> listSc = postService.selectSchedule(postNo);
 		List<Todo> listTodo = postService.selectTodo(postNo);
 		List<Member> listMember = postService.selectMembers(postNo);
@@ -71,8 +74,10 @@ public class PostControllerImpl {
 			JSONObject todo = new JSONObject();
 			todo.put("todoNo", td.getTodoNo());
 			todo.put("todoContent", td.getTodoContent());
-			todo.put("todoMember", td.getTodoMemberName());
+			todo.put("todoMember", td.getTodoMember());
+			todo.put("todoMemberName", td.getTodoMemberName());
 			todo.put("todoMemberPicture", td.getTodoMemberPicture());
+			todo.put("todoProgress", td.getTodoProgress());
 			todoArray.add(todo);
 		}
 
@@ -85,10 +90,12 @@ public class PostControllerImpl {
 		}
 
 
+		System.out.println("postdate" + p.getPostDate());
 		ModelAndView view = new ModelAndView();
 		view.addObject("memberNo",memberNo);
 		view.addObject("project",pro);
 		view.addObject("post", p);
+		view.addObject("bookmark",bookmark);
 		view.addObject("schedule",scheduleArray);
 		view.addObject("todo", todoArray);
 		view.addObject("decision",decision);
@@ -97,10 +104,10 @@ public class PostControllerImpl {
 		return view;
 	}
 
-	//�븷�씪 異붽�
+	//할일 추가
 	@RequestMapping(value="/postInsertTodo.do")
 	public ModelAndView insertTodo(HttpSession session, int postNo, String todoContent, int todoMember) {
-		if(session.getAttribute("member")!=null) { // 濡쒓렇�씤 �꽭�뀡�쓣 媛��졇�삤湲�
+		if(session.getAttribute("member")!=null) {
 			int todoWriter = ((Member)session.getAttribute("member")).getMemberNo();
 			Todo vo = new Todo();
 			vo.setTodoPostNo(postNo);
@@ -110,10 +117,15 @@ public class PostControllerImpl {
 			vo.setTodoMember(todoMember);
 			int result = postService.insertTodo(vo);
 
+			//방금 추가한 todo의 번호 가져오기
+			List<Todo> listTodo = postService.selectTodo(postNo);
+			int todoNo = listTodo.get(0).getTodoNo();
+
 			Member mem = postService.selectMemberInfo(todoMember);
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("result", result);
+			view.addObject("todoNo",todoNo);
 			view.addObject("todoMember",mem);
 			view.setViewName("jsonView");
 			return view;
@@ -126,7 +138,7 @@ public class PostControllerImpl {
 		}
 	}
 
-	//�씪�젙 異붽�
+	//일정 추가
 	@RequestMapping(value="/postInsertSchedule.do")
 	public ModelAndView insertSchedule(HttpSession session, int postNo, @RequestParam String scTitle, @RequestParam Date startDate, @RequestParam Date endDate) {
 		if(session.getAttribute("member")!=null) {
@@ -262,13 +274,13 @@ public class PostControllerImpl {
 		vo.setPostNo(postNo);
 		vo.setPostProgress(postProgress);
 		int result = postService.updatePostProgress(vo);
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//할일 진행과정 변경
 	@RequestMapping(value="/postUpdateTodoProgress.do")
 	public ModelAndView updateTodoProgress(int todoNo, String todoProgress) {
@@ -276,7 +288,35 @@ public class PostControllerImpl {
 		vo.setTodoNo(todoNo);
 		vo.setTodoProgress(todoProgress);
 		int result = postService.updateTodoProgress(vo);
-		
+
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+
+	//북마크 설정
+	@RequestMapping(value="/postBookmarkOn.do")
+	public ModelAndView insertBookmark(int postNo, int memberNo) {
+		Bookmark vo = new Bookmark();
+		vo.setPostNo(postNo);
+		vo.setMemberNo(memberNo);
+		int result = postService.insertBookmark(vo);
+
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+
+	//북마크 해제
+	@RequestMapping(value="/postBookmarkOff.do")
+	public ModelAndView deleteBookmark(int postNo, int memberNo) {
+		Bookmark vo = new Bookmark();
+		vo.setPostNo(postNo);
+		vo.setMemberNo(memberNo);
+		int result = postService.deleteBookmark(vo);
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.setViewName("jsonView");
