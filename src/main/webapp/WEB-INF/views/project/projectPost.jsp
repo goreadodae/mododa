@@ -11,15 +11,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>프로젝트 글</title>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-<!-- 준석이 스타일 -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
-<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
-<!-- 개인페이지 공통 style저장. -->
+
+
 </head>
 
 
@@ -52,52 +45,80 @@ div {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-		/* $("#content-frame").load("/bookmark.do"); */
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+	 	location.href = "/projectPost.do?proNo=" + proNo;
 	}
 	
-	function searchPrivate() // 검색
+	function searchProject() // 검색
 	{
-		var keyword=$("#keyword").val();
-		console.log(keyword);
-		if(keyword =="")
-			{
+		var keyword = $("#keyword").val();
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+		//console.log(keyword+"/"+proNo);
+		
+		
+		if(keyword == "") {
 			alert("검색어를 입력하세요.");
-			}else{
+		} else {
+			
 				$.ajax({
-					url:"",
-					type:"post",
-					data:{"keyword":keyword},
-					dataType:"json",
-					success:function(data){
-						if(data.length==0)
-							{
+					url : "/searchProTitleOrMemberName.do",
+					type : "post",
+					data : { 
+						keyword : keyword,
+						proNo : proNo,
+						projectValue : "pro"
+					},
+					
+					success : function(data) {
+						
+						var searchResult = data.searchResult;
+						
+						console.log(searchResult.length);
+						
+						if(searchResult.length == 0) {
+							
 							$(".feed-list").empty();
 							$(".feed-list").append("<div>내용없어요</div>");
-							}else{
-						$(".feed-list").empty();
-						var result="";
-						for(var i=0;i<data.length;i++)
-							{
-/* 							result+=
-								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
-								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
-								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
-								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
-								'</button></div>'+
-								'</div><hr style="color:grey;"></li>'; */
+							
+						} else {
+								
+							$(".feed-list").empty();
+								
+							var result="";
+							
+							for(var i=0 ; i<searchResult.length ; i++) {
+								
+								
+								var date = new Date(searchResult[i].postDate.time);
+								var dateStr = date.toString();
+								var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
+								
+								// Mon Jul 30 2018 18:56:04 GMT+0900 (한국 표준시)
+								// Mon Jul 30 18:56:04 KST 2018
+								
+								console.log(printDate);
+
+
+  								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">'
+	 									  + '<span onclick="getPost('+searchResult[i].postNo+');" class="btn btn-link" style="float:left;">'+searchResult[i].postTitle+'</span></div>'
+	 									  + '<div class="col-md-9"><img id="memberImg2" src="'+searchResult[i].memberPicture+'">&nbsp;&nbsp;'+searchResult[i].memberName
+	 									  + '&nbsp;&nbsp;&nbsp;&nbsp;'+printDate+'</div>'
+	 									  + '</div><hr style="color: grey;"></li>';
 							}
-						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
-					   } 
-				   },
-					error:function()
-					{
-						alert("error");
+								
+							$(".feed-list").append(result);
+
+							
+						}
+
+				    },
+					error:function() {
+						console.log("실패");
 					}
 				})
 			}
-				
 				
 	}
 	
@@ -107,6 +128,17 @@ div {
 	 $('#toWrite').show();
 	 }
 	 */
+	 
+	 
+	 function onLocation() { // 글쓰기 찾아가는 메소드
+		 
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+		//proNo=?
+	 	console.log(proNo);
+		location.href = "/writePage.do?currentProjectNo="+proNo;
+		 
+	 }
 </script>
 
 
@@ -144,10 +176,7 @@ div {
 
 						<!-- 한영진이 버튼 연결 -->
 						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
-						<c:url var="url" value="/writePage.do">
-							<c:param name="currentProjectNo" value="${proNo}"></c:param>
-						</c:url>
-						<button type="button" onclick="location='${url}'"class="btn btn-outline-success">
+						<button type="button" onclick="onLocation();"class="btn btn-outline-success">
 							<i class="fas fa-edit"></i>글쓰기
 						</button>
 					</div>
@@ -161,7 +190,7 @@ div {
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="searchPrivate()" style="float:left; padding:10px;">검색</button>
+						onclick="searchProject()" style="float:left; padding:10px;">검색</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onclick="searchCancle();" style="padding:10px;">취소</button>
 				</div>
@@ -183,13 +212,16 @@ div {
 							<div class="col-md-9">
 							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
 							</div>
-							
 						</div>
 						<hr style="color: grey;">
 					</li>
+					
 				</c:forEach>
-				<span>마지막입니다.</span>
 			</ul>
+			<div align="center">
+			<span>마지막입니다.</span>
+			<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+			</div>
 		</div>
 
 

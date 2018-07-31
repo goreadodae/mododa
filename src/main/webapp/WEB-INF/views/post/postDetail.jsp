@@ -101,10 +101,25 @@ div {
 #modal-close {
 	width: 20px;
 	float: right;
+  margin : 0px;
 }
 
 #post-title {
 	font-size: 30px;
+}
+  
+	/* 상단 부분 */
+#postBookmarkImg{
+	width: 20px;
+	float:right;
+	
+}
+ #postMoreImg{
+	width: 20px;
+	margin-right : 20px;
+	margin-left : 20px;
+	float : right;
+	
 }
 
 /* 댓글 */
@@ -192,17 +207,29 @@ font-size:12px;
 
 /* 프로젝트 진행상황 */
 #statusImg{
-	height : 30px;
+	height : 40px;
+	width : 52px;
 }
-
-/* 프로필 이미지 */
+  
+#postWriterProfileImg{
+	margin-bottom: 3px;
+	height : 30px;		height : 30px;
+	border : 1px solid white;
+	border-radius : 100px;
+}
+  
+/* 할일 프로필 이미지 */
 #profileImg{
 	margin-bottom: 3px;
 	height : 15px;
 	border : 1px solid grey;
 	border-radius : 100px;
 }
-
+/* 할일 */
+img[class="btn btn-link dropdown-toggle"]{
+	height : 30px;
+	width : 43px;
+}
 /* 내용 제목 */
 .contents-title {
 	color: #282828;
@@ -380,7 +407,8 @@ font-size:12px;
 
 <script type="text/javascript">
 	var postNo=0;
-	var memberNo=0; //로그인한 계정
+	var postMemberNo=0; //로그인한 계정
+	var postBookmarkOnOff=0;//북마크 상태
 	
 	//게시글 불러옴
 	function getPost(postNumber) {
@@ -398,14 +426,21 @@ font-size:12px;
 			success : function(data) {
 				if (data.post != null) {
 					//로그인한 계정 정보
-					memberNo = data.memberNo;
+					postMemberNo = data.memberNo;
+					
+					//북마크 설정
+					if(data.bookmark!=null){
+						$('#postBookmarkImg').attr("src","../resources/images/post/bookmarkOn.png");
+						postBookmarkOnOff = 1;
+					}
 					
 					//프로젝트 이름과 게시글 제목,내용들
 					$('#viewProjectTitle').html(data.project.proTitle);
 					$('#post-title').html(data.post.postTitle);
 					$('#post-content').html(data.post.postContent);
 					$('#post-date').html(data.post.postDate);
-					
+					$('#postWriterProfileImg').attr("src",data.post.postWriterPicture);
+					$('#post-writer').html(data.post.postWriterName);					
 					//프로젝트 진행상황 표시
 					if(data.post.postProgress=="suggest"){ //프로젝트 진행상황이 발의된 이슈일때,
 						$('#statusImg').attr("src","../resources/images/post/light-bulbOn.png");
@@ -440,16 +475,23 @@ font-size:12px;
 					$('#appendforTodo').html(strTodo);
 					for(var i=0; i<data.todo.length; i++){
 						countTodo++;
-						strTodo += "<div class='btn-group'>" + 
-									"<button type='button' class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-										"<img class='statusImgforTodo' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />" +
-									"</button>" +
-									"<div class='dropdown-menu'>"
-										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
-										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
-										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'stop');\"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
-										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
-								+ "</div></div>";
+						strTodo += "<div class='btn-group'>";
+									"<button type='button' class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +							
+										"<img class='statusImgforTodo' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />" +							switch(data.todo[i].todoProgress){
+									"</button>" +							case "suggest" : 
+									"<div class='dropdown-menu'>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />";break;
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"							case "working" : 
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/play-buttonOn.png' />"; break;
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'stop');\"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"							case "stop" : 
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/pauseOn.png' />"; break;
+						case "finish" : 
+						strTodo += "<div class='appendInfo'>" + data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMemberName + "</div><br>";						}
+			
+						strTodo += "<div class='dropdown-menu'>"
+								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"								+ "</div></div>";
 				
 						strTodo += "<div class='appendInfo'>" + data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMember + "</div><br>";
 					}
@@ -518,7 +560,7 @@ font-size:12px;
 					$('#post-title').html('db에 글이 없음');
 				}
 
-				open_pop();
+				open_postDetail();
 			},
 			error : function(data) {
 				console.log("실패");
@@ -528,12 +570,12 @@ font-size:12px;
 	
 
 	//팝업 open 기능
-	function open_pop(flag) {
+	function open_postDetail(flag) {
 		$('#myModal').show();
 	};
 
 	//팝업 Close 기능
-	function close_pop(flag) {
+	function close_postDetail(flag) {
 		$('#myModal').hide();
 	};
 
@@ -632,7 +674,15 @@ font-size:12px;
 					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 				}
 				else{
-					var str = "<div class='appendInfo'>" + todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todoMember.memberName +"</div>";
+					var str = "<div class='btn-group'>"
+					+ "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todoNo + "' src='../resources/images/icon/play-button.png' />"
+					+ "<div class='dropdown-menu'>"
+					+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ todoMember +"," + data.todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+					+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ todoMember +"," + data.todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+					+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ todoMember +"," + data.todoNo +",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+					+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ todoMember +"," + data.todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+					+ "</div></div>"
+					+ "<div class='appendInfo'>" + todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todoMember.memberName +"</div><br>";
 					
 					$('#appendforTodo').append(str);
 					
@@ -650,44 +700,52 @@ font-size:12px;
 	};
 	
 	//할일 진행과정 변경
-	function changeProgressTodo(todoNo,status){
+function changeProgressTodo(todoMember,todoNo,status){
+		console.log("tdMember : " + todoMember);
+		console.log("todoNo : " + todoNo);
+		console.log("postMemberNo : " + postMemberNo);
+		if(todoMember==postMemberNo){ //로그인한 계정과 할일을 해야하는 사람과 같으면 진행과정 변경가능
 		$.ajax({
-			url : "/postUpdateTodoProgress.do",
-			type : "post",
-			data : {
-				todoNo : todoNo,
-				todoProgress : status
-			},
-			success : function(data) {
-				if(data.result<0){
-					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
-				}
+		url : "/postUpdateTodoProgress.do",
+		type : "post",
+		data : {
+		todoNo : todoNo,
+		todoProgress : status
+		},
+		success : function(data) {
+		if(data.result<0){
+		alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+		}
 				else{
 					if(status=='suggest'){
 						$('#[todoNo]').attr("src","../resources/images/post/light-bulbOn.png");
 					}
-					else if(status=='working'){
-						var know = $(this);
-						console.log(know);
-						var know2 = this;
-						console.log(know2);
-						$('#[todoNo]').attr("src","../resources/images/post/play-buttonOn.png");
+					else{
+					if(status=='suggest'){
+					$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+						}
+						else if(status=='working'){
+							$('#'+todoNo).attr("src","../resources/images/post/play-buttonOn.png");
 					}
-					else if(status=='stop'){
-						$('#'+todoNo).attr("src","../resources/images/post/pauseOn.png");
-					}
-					else if(status=='finish'){
-						$('#'+todoNo).attr("src","../resources/images/post/checked.png");
+						else if(status=='stop'){
+							$('#'+todoNo).attr("src","../resources/images/post/pauseOn.png");
+							}
+						else if(status=='finish'){
+							$('#'+todoNo).attr("src","../resources/images/post/checked.png");
+						}
 					}
 				}
-			},
-			error : function(data) {
-				console.log("할일 진행과정 변경 실패");
-			},
-			complete : function(data) {
-				
-			}
-		});
+				},
+				error : function(data) {
+					console.log("할일 진행과정 변경 실패");
+				},
+				complete : function(data) {
+					
+					}
+				});
+				}else{	//다르면 변경 권한 없음
+					alert("진행상태의 수정 권한이 없습니다.");
+				}
 	}
 
 	//일정 추가
@@ -765,7 +823,7 @@ font-size:12px;
 					var str = "<span class='memberIdForDecision'>" + data.writerMem.memberName + "</span>님의 요청 : " + dcContent + "<br>" +
 							"<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>" + data.makerMem.memberName + "</span>님의 결정 기다리는 중" + 
 							"&nbsp;&nbsp;&nbsp;<div id='deleteForDecision' onclick='deleteDecision();'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
-					if(memberNo==dcMaker){
+					if(postMemberNo==dcMaker){
 						str+=" <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
 					}
 		
@@ -860,10 +918,10 @@ font-size:12px;
 						strDecision +=  "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>" + data.decision.dcMakerName + "</span>님의 결정 : " + data.decision.dcComment + "&nbsp;&nbsp;&nbsp;<br>";
 					}
 					
-					if(memberNo==data.decision.dcWriter){//로그인한 계정이 결정 요청자일 경우
+					if(postMemberNo==data.decision.dcWriter){//로그인한 계정이 결정 요청자일 경우
 						strDecision += " <div id='deleteForDecision' onclick='deleteDecision();'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
 					}
-					if(memberNo==data.decision.dcMaker){ //로그인한 계정이 결정자일경우
+					if(postMemberNo==data.decision.dcMaker){ //로그인한 계정이 결정자일경우
 						strDecision += " <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
 					}
 					
@@ -880,7 +938,45 @@ font-size:12px;
 			}
 		});
 	}
-
+  	
+	//북마크 설정
+	function postBookmark(){
+		if(postBookmarkOnOff==0){
+			$.ajax({
+				url : "/postBookmarkOn.do",
+				type : "post",
+				data : {
+					postNo : postNo,
+					memberNo : postMemberNo
+				},
+				success : function(data){
+					$('#postBookmarkImg').attr("src","../resources/images/post/bookmarkOn.png");
+					postBookmarkOnOff = 1;
+				},
+				error : function(data){
+					console.log("북마크 실패");
+				}
+			});
+		}
+		else{
+			$.ajax({
+				url : "/postBookmarkOff.do",
+				type : "post",
+				data : {
+					postNo : postNo,
+					memberNo : postMemberNo
+				},
+				success : function(data){
+					$('#postBookmarkImg').attr("src","../resources/images/post/bookmark.png");
+					postBookmarkOnOff = 0;
+				},
+				error : function(data){
+					console.log("북마크 실패");
+				}
+			});
+		}
+		
+	}
 
 </script>
 </head>
@@ -893,20 +989,23 @@ font-size:12px;
 			<!-- Modal 내용 -->
 			<div class="modal-content" style="width: 65%; height: 80%;">
 				<div class="row" style="margin-left: 10px; margin-bottom: 20px;">
-					<div class="col-11" id="viewProjectTitle">게시글의 프로젝트 명</div>
-					<div class="col-1">
-						<img src="../resources/images/post/close.png" id="modal-close"
-							onclick="close_pop();" />
+					<div class="col-5" id="viewProjectTitle">게시글의 프로젝트 명</div>
+					<div class="col-2">
+						<img src="../resources/images/post/more.png" id="postMoreImg" />
+							<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" />
+						
+					</div>
+					<div class="col-5">
+						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
 					</div>
 				</div>
 
 				<div class="row">
 					<!-- left side (post내용) -->
 					<div class="col-7" style="overflow-y: scroll; padding-left: 30px;">
-						<div class="btn-group">
-							<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img id="statusImg" src="../resources/images/post/lightbulb.png" />
-							</button>
+					<br>
+							<div class="btn-group" style="margin-bottom : 15px;">
+								<img id="statusImg" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="../resources/images/post/lightbulb.png" />
 							<div class="dropdown-menu">
 								<a class="dropdown-item" onclick="changeProgress('suggest');"><img src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> 
 								<a class="dropdown-item" onclick="changeProgress('working');"><img src="../resources/images/icon/play-button.png" /> 진행 중</a> 
@@ -919,7 +1018,8 @@ font-size:12px;
 						<hr>
 						<div style="margin-left : 15px; margin-right : 10px;">
 						<span id="post-content">글내용</span> <br><br>
-						<span id="post-date">작성날짜</span>
+						<img src="" id="postWriterProfileImg" onerror="this.src='../resources/upload/member/whale.png'"/>
+						<span id="post-writer">작성자</span><span id="post-date">작성날짜</span>
 						<span id="like-count"><img src="../resources/images/post/like.png" id="like-icon" /> 좋아요 3개</span><br>
 						</div>
 						
@@ -1071,7 +1171,7 @@ font-size:12px;
 		<div id="scheduleModal" class="modal">
 			<!-- Modal 내용 --> 
 			<div id="modal-schedule">
-				<img src="../resources/images/post/add-event.png" style="margin-bottom:5px;" /><span style="color :#339966; ">&nbsp;&nbsp;일정 추가하기</span>
+				<img src="../resources/images/post/add-event.png" style="margin-bottom:5px;" /><span style="color :#339966;">&nbsp;&nbsp;일정 추가하기</span>
 				<img src="../resources/images/post/close.png" onclick="close_schedule();" style="float:right; height : 20px;"/><br><br>
 				<center>
 				<input type="text" id="scTitle" placeholder="일정 제목을 입력해주세요." /><br><br>

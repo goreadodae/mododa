@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import kr.pe.mododa.project.model.vo.Project;
 
 public interface ProjectController {
@@ -32,5 +34,11 @@ public interface ProjectController {
 	
 	
 	// 검색
-	public Object searchProTitleOrMemberName(String keyword, int proNo);
+	public Object searchProTitleOrMemberName(String keyword, int proNo, String projectValue);
+	public Object searchMyPostProTitle(HttpSession session, String keyword, int proNo);
+	public Object searchHashTag(String keyword, int proNo);
+	
+	
+	// 프로젝트 진행 현황
+	public Object projectProgress(int proNo);
 }

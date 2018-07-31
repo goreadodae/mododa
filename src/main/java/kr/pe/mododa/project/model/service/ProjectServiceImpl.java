@@ -79,6 +79,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.searchProTitleOrMemberName(sqlSession, sh);
 	}
 
+	@Override
+	public ArrayList<ProjectPostList> searchHashTag(SearchHelper sh) {
+		return projectDAO.searchHashTag(sqlSession, sh);
+	}
+
 
 
 
