@@ -197,11 +197,12 @@ public class LibraryControllerImpl implements LibraryController{
 
 	// 할 일 추가
 	@RequestMapping(value="/insertTodo.do")
-	public String insertTodo(HttpSession session, @RequestParam int todoProNo, @RequestParam String todoTitle, @RequestParam int todoMember) {
+	public String insertTodo(HttpSession session, @RequestParam int todoProNo, @RequestParam String todoTitle, @RequestParam int todoMember, @RequestParam String todoContent) {
 		Todo todo = new Todo();
 		todo.setTodoProNo(todoProNo);
 		todo.setTodoTitle(todoTitle);
 		todo.setTodoMember(todoMember);
+		todo.setTodoContent(todoContent);
 		todo.setTodoWriter(((Member)session.getAttribute("member")).getMemberNo());
 
 		int result = libraryService.insertTodo(todo);
@@ -317,8 +318,78 @@ public class LibraryControllerImpl implements LibraryController{
 
 		new Gson().toJson(listImageMe,response.getWriter());
 	}
+	
+	// 전체 파일 불러오기
+	@RequestMapping(value="/listFileAll.do")
+	public void listFileAll(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 
+		ArrayList<Upload> listFileAll = libraryService.listFile(memberNo);
+		
+		// 파일 경로에서 파일명 추출
+		for(int i=0; i<listFileAll.size(); i++) {
+			String[] array = listFileAll.get(i).getUploadPath().split("/");
+			for(int j=0; j<array.length; j++) {
+				if(j == array.length-1) {
+					listFileAll.get(i).setFileName(array[j]);
+				}
+			}
+		}
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
 
+		new Gson().toJson(listFileAll,response.getWriter());
+	}
+	
+	// 내 파일 불러오기
+	@RequestMapping(value="/listFileMe.do")
+	public void listFileMe(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Upload> listFileMe = libraryService.listFileMe(memberNo);
+		
+		// 파일 경로에서 파일명 추출
+		for(int i=0; i<listFileMe.size(); i++) {
+			String[] array = listFileMe.get(i).getUploadPath().split("/");
+			for(int j=0; j<array.length; j++) {
+				if(j == array.length-1) {
+					listFileMe.get(i).setFileName(array[j]);
+				}
+			}
+		}
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listFileMe,response.getWriter());
+	}
+
+	// 전체 링크 불러오기
+	@RequestMapping(value="/listLinkAll.do")
+	public void listLinkAll(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Link> listLinkAll = libraryService.listLink(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listLinkAll,response.getWriter());
+	}
+	
+	// 내 링크 불러오기
+	@RequestMapping(value="/listLinkMe.do")
+	public void listLinkMe(HttpSession session, HttpServletResponse response) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+
+		ArrayList<Link> listLinkMe = libraryService.listLinkMe(memberNo);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(listLinkMe,response.getWriter());
+	}
 
 	
 	
