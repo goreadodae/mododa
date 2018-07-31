@@ -209,7 +209,7 @@ li[id^="sub_"] a {
 
 		$(".proProgress").click(function() {
 			var proNo = $(this).attr('value');
-			location.href="";
+			location.href="/projectProgress.do?proNo=" + proNo;
 		});
 
 		$(".proMyPost").click(function() {
