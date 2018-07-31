@@ -78,6 +78,10 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.update("post.updateTodoProgress",vo);
 	}
 	
+	public List<Comment> selectComment(SqlSessionTemplate sqlSession, int postNo) {
+		return sqlSession.selectList("post.selectComment",postNo);
+	}
+  
 	public int insertBookmark(SqlSessionTemplate sqlSession, Bookmark vo) {
 		return sqlSession.insert("post.insertBookmark",vo);
 	}

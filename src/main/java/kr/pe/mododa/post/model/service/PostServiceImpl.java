@@ -96,6 +96,10 @@ public class PostServiceImpl implements PostService{
 	public int deleteBookmark(Bookmark vo) {
 		return postDAO.deleteBookmark(sqlSession, vo);
 	}
-	
+  
+	public List<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 추가)
+		return postDAO.selectComment(sqlSession, postNo);
+	}
 
 }
+

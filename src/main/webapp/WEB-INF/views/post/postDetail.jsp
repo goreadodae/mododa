@@ -6,8 +6,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-
-
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- 글씨체 -->
 <link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo" rel="stylesheet">
 
@@ -87,17 +101,94 @@ div {
 #modal-close {
 	width: 20px;
 	float: right;
-	margin : 0px;
+  margin : 0px;
 }
 
 #post-title {
 	font-size: 30px;
+}
+  
+	/* 상단 부분 */
+#postBookmarkImg{
+	width: 20px;
+	float:right;
+	
+}
+ #postMoreImg{
+	width: 20px;
+	margin-right : 20px;
+	margin-left : 20px;
+	float : right;
+	
 }
 
 /* 댓글 */
 #comment {
 	background-color: #F5F5F5;
 }
+
+.comment-box {
+	height: 99%;
+	width: 100%;
+	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
+}
+
+.comment-header {
+	width: 100%;
+	height: 30px;
+	border-bottom:1px solid gray;
+}
+.comment-no {
+	color: gray;
+	margin-left: 15px;
+	margin-top: 5px;
+}
+.comment-area {
+	height: 75%;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#input-box {
+	margin: 5px;
+	border:2px solid gray;
+	border-radius: 5px;
+}
+
+.comment-input {
+	width: 100%;
+	height: 100%;
+	resize:none;
+	border-bottom:1px solid gray;
+}
+
+.comment-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	float:left;
+}
+
+.comment-footer {
+
+	border-bottom: 5;
+}
+
+#comment-wr {
+	float: right;
+}
+
+.comment.btn {
+	margin-top: 1;
+	}
+.comment-item{
+font-size:12px;
+}	
+
+/**/
+
+
 
 #like-count {
 	float: right;
@@ -107,21 +198,6 @@ div {
 
 #like-icon {
 	height: 15px;
-}
-
-/* 상단 부분 */
-#postBookmarkImg{
-	width: 20px;
-	float:right;
-	
-}
-
-#postMoreImg{
-	width: 20px;
-	margin-right : 20px;
-	margin-left : 20px;
-	float : right;
-	
 }
 
 /* 프로젝트 이름 */
@@ -134,14 +210,14 @@ div {
 	height : 40px;
 	width : 52px;
 }
-
+  
 #postWriterProfileImg{
 	margin-bottom: 3px;
-	height : 30px;
+	height : 30px;		height : 30px;
 	border : 1px solid white;
 	border-radius : 100px;
 }
-
+  
 /* 할일 프로필 이미지 */
 #profileImg{
 	margin-bottom: 3px;
@@ -149,7 +225,11 @@ div {
 	border : 1px solid grey;
 	border-radius : 100px;
 }
-
+/* 할일 */
+img[class="btn btn-link dropdown-toggle"]{
+	height : 30px;
+	width : 43px;
+}
 /* 내용 제목 */
 .contents-title {
 	color: #282828;
@@ -177,11 +257,6 @@ div {
 	top: 25px;
 }
 
-/* 할일 */
-img[class="btn btn-link dropdown-toggle"]{
-	height : 30px;
-	width : 43px;
-}
 /* 할일 등록 */
 .appendInfo{
 	font-size : 15px;
@@ -365,8 +440,7 @@ img[class="btn btn-link dropdown-toggle"]{
 					$('#post-content').html(data.post.postContent);
 					$('#post-date').html(data.post.postDate);
 					$('#postWriterProfileImg').attr("src",data.post.postWriterPicture);
-					$('#post-writer').html(data.post.postWriterName);
-					
+					$('#post-writer').html(data.post.postWriterName);					
 					//프로젝트 진행상황 표시
 					if(data.post.postProgress=="suggest"){ //프로젝트 진행상황이 발의된 이슈일때,
 						$('#statusImg').attr("src","../resources/images/post/light-bulbOn.png");
@@ -402,26 +476,24 @@ img[class="btn btn-link dropdown-toggle"]{
 					for(var i=0; i<data.todo.length; i++){
 						countTodo++;
 						strTodo += "<div class='btn-group'>";
-						
-						switch(data.todo[i].todoProgress){
-						case "suggest" : 
-							strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />";break;
-						case "working" : 
-							strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/play-buttonOn.png' />"; break;
-						case "stop" : 
-							strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/pauseOn.png' />"; break;
+									"<button type='button' class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +							
+										"<img class='statusImgforTodo' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />" +							switch(data.todo[i].todoProgress){
+									"</button>" +							case "suggest" : 
+									"<div class='dropdown-menu'>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/icon/play-button.png' />";break;
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"							case "working" : 
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/play-buttonOn.png' />"; break;
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'stop');\"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"							case "stop" : 
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"								strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/pauseOn.png' />"; break;
 						case "finish" : 
-							strTodo += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todo[i].todoNo + "' src='../resources/images/post/checked.png' />"; break;
-						}
+						strTodo += "<div class='appendInfo'>" + data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMemberName + "</div><br>";						}
 			
 						strTodo += "<div class='dropdown-menu'>"
 								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
 								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
 								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
-								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
-								+ "</div></div>";
+								+ "<a class='dropdown-item' onclick=\"changeProgressTodo("+ data.todo[i].todoMember +"," + data.todo[i].todoNo +",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"								+ "</div></div>";
 				
-						strTodo += "<div class='appendInfo'>" + data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMemberName + "</div><br>";
+						strTodo += "<div class='appendInfo'>" + data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMember + "</div><br>";
 					}
 					$('#appendforTodo').html(strTodo);
 					$('#countTodo').html(countTodo);
@@ -465,6 +537,24 @@ img[class="btn btn-link dropdown-toggle"]{
 						$('#selectMember').append(strMember);
 						$('#selectMemberForDecision').append(strMember);
 					}
+					
+					//댓글 출력.
+					if(data.comment!=null)
+						{
+						$('#commentNum').html(data.comment.length);
+						/* $('.coment-list').empty();
+						var outComment="";
+						for(var i=0;i<data.comment.length;i++){
+							outComment+="<li class='comment-item'>"+
+							"<div id='writeInfo'><img id='wPicture' src='"+data.comment[i].writePicture+"'/>&nbsp;&nbsp;&nbsp;<span id='writer'>"+data.comment[i].writeNick+"</span>"+
+							"&nbsp;&nbsp;&nbsp;<span id='wDate'>"+data.comment[i].writetime+"</span>"+
+							
+						} */
+							
+						}
+					
+					
+					
 					
 				} else {
 					$('#post-title').html('db에 글이 없음');
@@ -523,7 +613,6 @@ img[class="btn btn-link dropdown-toggle"]{
 	
 	//진행과정 변경
 	function changeProgress(status){
-		
 		$.ajax({
 			url : "/postUpdatePostProgress.do",
 			type : "post",
@@ -611,48 +700,52 @@ img[class="btn btn-link dropdown-toggle"]{
 	};
 	
 	//할일 진행과정 변경
-	function changeProgressTodo(todoMember,todoNo,status){
+function changeProgressTodo(todoMember,todoNo,status){
 		console.log("tdMember : " + todoMember);
 		console.log("todoNo : " + todoNo);
 		console.log("postMemberNo : " + postMemberNo);
 		if(todoMember==postMemberNo){ //로그인한 계정과 할일을 해야하는 사람과 같으면 진행과정 변경가능
-			$.ajax({
-				url : "/postUpdateTodoProgress.do",
-				type : "post",
-				data : {
-					todoNo : todoNo,
-					todoProgress : status
-				},
-				success : function(data) {
-					if(data.result<0){
-						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+		$.ajax({
+		url : "/postUpdateTodoProgress.do",
+		type : "post",
+		data : {
+		todoNo : todoNo,
+		todoProgress : status
+		},
+		success : function(data) {
+		if(data.result<0){
+		alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+		}
+				else{
+					if(status=='suggest'){
+						$('#[todoNo]').attr("src","../resources/images/post/light-bulbOn.png");
 					}
 					else{
-						if(status=='suggest'){
-							$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+					if(status=='suggest'){
+					$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
 						}
 						else if(status=='working'){
 							$('#'+todoNo).attr("src","../resources/images/post/play-buttonOn.png");
-						}
+					}
 						else if(status=='stop'){
 							$('#'+todoNo).attr("src","../resources/images/post/pauseOn.png");
-						}
+							}
 						else if(status=='finish'){
 							$('#'+todoNo).attr("src","../resources/images/post/checked.png");
 						}
 					}
+				}
 				},
 				error : function(data) {
 					console.log("할일 진행과정 변경 실패");
 				},
 				complete : function(data) {
 					
+					}
+				});
+				}else{	//다르면 변경 권한 없음
+					alert("진행상태의 수정 권한이 없습니다.");
 				}
-			});
-		}else{	//다르면 변경 권한 없음
-			alert("진행상태의 수정 권한이 없습니다.");
-		}
-		
 	}
 
 	//일정 추가
@@ -845,7 +938,7 @@ img[class="btn btn-link dropdown-toggle"]{
 			}
 		});
 	}
-	
+  	
 	//북마크 설정
 	function postBookmark(){
 		if(postBookmarkOnOff==0){
@@ -885,7 +978,6 @@ img[class="btn btn-link dropdown-toggle"]{
 		
 	}
 
-
 </script>
 </head>
 
@@ -900,7 +992,7 @@ img[class="btn btn-link dropdown-toggle"]{
 					<div class="col-5" id="viewProjectTitle">게시글의 프로젝트 명</div>
 					<div class="col-2">
 						<img src="../resources/images/post/more.png" id="postMoreImg" />
-						<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" />
+							<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" />
 						
 					</div>
 					<div class="col-5">
@@ -912,7 +1004,7 @@ img[class="btn btn-link dropdown-toggle"]{
 					<!-- left side (post내용) -->
 					<div class="col-7" style="overflow-y: scroll; padding-left: 30px;">
 					<br>
-						<div class="btn-group" style="margin-bottom : 15px;">
+							<div class="btn-group" style="margin-bottom : 15px;">
 								<img id="statusImg" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="../resources/images/post/lightbulb.png" />
 							<div class="dropdown-menu">
 								<a class="dropdown-item" onclick="changeProgress('suggest');"><img src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> 
@@ -977,8 +1069,97 @@ img[class="btn btn-link dropdown-toggle"]{
 					</div>
 
 					<!-- right side (댓글 부분) -->
-					<div class="col-5" id="comment">댓글창</div>
+
+					<div class="col-5" id="comment">
+
+						<div class="comment-box col-md-12">
+							<div class="comment-header ">
+								<!-- 댓글 갯수 출력.-->
+								<span class="comment-no">댓글 <span
+									class="badge badge-pill badge-success" id="commentNum"></span></span>
+							</div>
+							<div class="comment-area">
+								<!-- 댓글 내용 출력.-->
+								<ul class="comment-list">
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해라
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+									<li class="comment-item">
+									<div id="commentK" class="col-md-12">
+										<div id="comment1" class="col-md-3">
+											<img id="wPicture" src="../resources/images/post/add-event.png" style="height:20px;width:20px;border-radius:50%;"/>&nbsp;&nbsp;&nbsp;
+										</div>
+										<div id="writeInfo" class="col-md-9">
+											<span id="writer">aaaa</span>&nbsp;&nbsp;&nbsp;
+											<span id="wDate">17/07/06 오후14:45</span>
+										</div>
+										<div id="comment2" class="col-md-12" style="padding-left=35;">
+											<span id="comment3">
+											김기태 빨리도망가라 제발 좀 개색갸 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+											</span>
+										</div>
+										</div> 이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+									<li class="comment-item">이런젠장 크흠<br> 2018.07.22 야구좀
+										제대로 해
+									</li>
+								</ul>
+									</div>
+							<div class="comment-footer">
+								<div id="input-box">
+									<textarea class="comment-input" placeholder="댓글 입력!!!"></textarea>
+									<div class="comment-fun"
+										style="background-color: white; width: 100%; height: 30px;">
+										<!-- 글감첨부, 댓글버튼 -->
+										<button class="btn btn-outline-primary btn-sm">글감첨부</button>
+										<span class="badge badge-pill badge-warning">10</span>
+										<button id="comment-wr" class="btn btn-outline-success btn-sm">댓글
+											작성!</button>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+			
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>
