@@ -1,4 +1,4 @@
-package kr.pe.mododa.faq.model.dao;
+package kr.pe.mododa.notice.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.pe.mododa.faq.model.vo.Notice;
-import kr.pe.mododa.faq.model.vo.NoticeList;
-import kr.pe.mododa.faq.model.vo.SearchList;
+import kr.pe.mododa.notice.model.vo.Notice;
+import kr.pe.mododa.notice.model.vo.NoticeList;
+import kr.pe.mododa.notice.model.vo.SearchList;
 
 
-@Repository("faqDAO")
-public class FaqDAOImpl implements FaqDAO {
+
+@Repository("noticeDAO")
+public class NoticeDAOImpl implements NoticeDAO {
 	
 	
 
@@ -36,7 +37,7 @@ public class FaqDAOImpl implements FaqDAO {
 		
 		
 			
-		return sqlSession.selectList("faq.listNotice",listNotice);
+		return sqlSession.selectList("notice.listNotice",listNotice);
 		
 	}
 
@@ -45,7 +46,7 @@ public class FaqDAOImpl implements FaqDAO {
 		// 게시물 총개수
 		int TotalCount = 0;
 		
-		TotalCount = sqlSession.selectOne("faq.listCount");
+		TotalCount = sqlSession.selectOne("notice.listCount");
 		int pageTotalCount = 0;
 
 		if (TotalCount % listPerCountPage != 0) {
@@ -99,13 +100,13 @@ public class FaqDAOImpl implements FaqDAO {
 
 	public int viewCount(SqlSessionTemplate sqlSession, int noticeNo) {
 		
-		return sqlSession.update("faq.viewCount", noticeNo);
+		return sqlSession.update("notice.viewCount", noticeNo);
 	}
 
 
 	public Notice selectNoticeOne(SqlSessionTemplate sqlSession, int noticeNo) {
 				
-		return sqlSession.selectOne("faq.noticeDetail",noticeNo);
+		return sqlSession.selectOne("notice.noticeDetail",noticeNo);
 	}
 
 	public List<Notice> getSearchCurrentPage(SqlSessionTemplate sqlSession, int currentPage, int listPerCountPage,
@@ -131,7 +132,7 @@ public class FaqDAOImpl implements FaqDAO {
 			searchList.setSearch(search);
 			
 			
-		   List<Notice> noticeList =  sqlSession.selectList("faq.searchList",searchList);
+		   List<Notice> noticeList =  sqlSession.selectList("notice.searchList",searchList);
 		   return noticeList;
 	}
 
@@ -155,7 +156,7 @@ public class FaqDAOImpl implements FaqDAO {
 		   searchCount.setOption(option);
 		   searchCount.setSearch(search);
 		   
-		  TotalCount = sqlSession.selectOne("faq.searchCount",searchCount);
+		  TotalCount = sqlSession.selectOne("notice.searchCount",searchCount);
 
 		
 		int pageTotalCount = 0;
@@ -213,25 +214,32 @@ public class FaqDAOImpl implements FaqDAO {
 
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice notice) {
 		
-		int result = sqlSession.insert("faq.insertNotice",notice);
+		int result = sqlSession.insert("notice.insertNotice",notice);
 		
 		return result;
 	}
 
 	public int deleteNotice(SqlSessionTemplate sqlSession, int noticeNo) {
 
-		return sqlSession.delete("faq.noticeDelete",noticeNo);
+		return sqlSession.delete("notice.noticeDelete",noticeNo);
 	
 	}
 
+	public Notice noticeUpdateReady(SqlSessionTemplate sqlSession, int noticeNo) {
+		
+		return sqlSession.selectOne("notice.noticeUpdateReady",noticeNo);
+		
+	}
+
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice notice) {
+		
+		return sqlSession.update("notice.noticeUpdate",notice);
+	}
+
+	
+	
 
 
-
-	
-	
-	
-	
-	
 
 
 

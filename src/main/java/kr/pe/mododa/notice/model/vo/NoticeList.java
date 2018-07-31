@@ -1,21 +1,19 @@
-package kr.pe.mododa.faq.model.vo;
+package kr.pe.mododa.notice.model.vo;
 
-public class SearchList {
+public class NoticeList {
 	private int startTotalBoard;
 	private int endTotalBoard;
-	private String option;
-	private String search;
 	
-	public SearchList() {
+
+	
+	public NoticeList() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SearchList(int startTotalBoard, int endTotalBoard, String option, String search) {
+	public NoticeList(int startTotalBoard, int endTotalBoard) {
 		super();
 		this.startTotalBoard = startTotalBoard;
 		this.endTotalBoard = endTotalBoard;
-		this.option = option;
-		this.search = search;
 	}
 	public int getStartTotalBoard() {
 		return startTotalBoard;
@@ -29,19 +27,7 @@ public class SearchList {
 	public void setEndTotalBoard(int endTotalBoard) {
 		this.endTotalBoard = endTotalBoard;
 	}
-	public String getOption() {
-		return option;
-	}
-	public void setOption(String option) {
-		this.option = option;
-	}
-	public String getSearch() {
-		return search;
-	}
-	public void setSearch(String search) {
-		this.search = search;
-	}
 	
-	
-	
+
+
 }

@@ -1,4 +1,4 @@
-package kr.pe.mododa.faq.model.vo;
+package kr.pe.mododa.notice.model.vo;
 
 import java.util.List;
 

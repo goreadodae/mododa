@@ -271,7 +271,7 @@
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/noticeList.do?currentPage=1">FAQ</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="">1:1 QNA</a>
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/qnaList.do">1:1 QNA</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#join-modal">Join</a>
