@@ -98,7 +98,7 @@ li[id^="sub_"] a {
 	jQuery(function($) {
 		
 		$("#newsfeed").click(function() {
-			location.href="";
+			location.href="/newsfeed.do";
 		});
 
 		$("#callpost").click(function() {
@@ -106,7 +106,10 @@ li[id^="sub_"] a {
 		});
 
 		$("#bookmark").click(function() {
-			location.href="";
+			location.href="/bookmark.do";
+		});
+		$("#mypost").click(function() {
+			location.href="/mypost.do";
 		});
 
 		$("#project").click(function() {

@@ -1,57 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-	crossorigin="anonymous"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-	crossorigin="anonymous"></script>
-<!-- CDN방식으로 부트스트랩 링크 추가 -->
-
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-	crossorigin="anonymous">
-<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
-
-<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
-<!-- 개인페이지 공통 style저장. -->
-
-<script>
-	function searchShow() {
-		$("#showHeader").css("display", "none");
-		$("#contentSearch").css("display", "");
-	}
-	function searchCancle() {
-		$("#keyword").val("");
-		$("#showHeader").css("display", "");
-		$("#contentSearch").css("display", "none");
-
-	}
-</script>
-
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>★모두다-Collaboration Tool★</title>
+<title>템플릿</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" type="text/css"
+	href="/css/personal/personalPage.css">
+<!-- 개인페이지 공통 style저장. -->
 </head>
+
+<style>
+/* 기본 구조 스타일 시작 */
+body {
+	overflow-x: hidden;
+	height: 100%;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+#background {
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
+}
+/* 기본 구조 스타일 끝 */
+</style>
+
 <body>
 
+<!-- header -->
+<jsp:include page="/header.do"></jsp:include>
+<!-- header 끝 -->
 
-	<!-- jstl은 나중에~~ -->
+<div class="row">
+	<!-- left bar -->
+	<jsp:include page="/leftbar.do"></jsp:include>
+	<!-- left bar 끝-->
 
+
+	<!-- contents -->
+	<div class="col-6" id="contents" style="padding:0;">
 	<div class="content">
 				<div class="viewHeader">
 					<div id="showHeader">
@@ -136,8 +132,77 @@
 
 				</div>
 			</div>
+		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
+		<jsp:include page="/post.do"></jsp:include>
+	
+	</div>
+	<!-- contents 끝 -->
+
+
+	<!-- right bar -->
+	<jsp:include page="/rightbar.do"></jsp:include>
+	<!-- right bar 끝 -->
+</div>
+
+</body>
+</html>
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+	integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+	integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+	crossorigin="anonymous"></script>
+<!-- CDN방식으로 부트스트랩 링크 추가 -->
+
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+	crossorigin="anonymous">
+<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
+
+<link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
+<!-- 개인페이지 공통 style저장. -->
+
+<script>
+	function searchShow() {
+		$("#showHeader").css("display", "none");
+		$("#contentSearch").css("display", "");
+	}
+	function searchCancle() {
+		$("#keyword").val("");
+		$("#showHeader").css("display", "");
+		$("#contentSearch").css("display", "none");
+
+	}
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>★모두다-Collaboration Tool★</title>
+
+</head>
+<body>
+
+
+	<!-- jstl은 나중에~~ -->
+
+	
 	
 
 
 </body>
-</html>
+</html> --%>

@@ -33,12 +33,27 @@ public class PersonalControllerImpl implements PersonalController{
 	@Qualifier(value="personalService")
 	private PersonalServiceImpl personalService;
 	
+	@RequestMapping(value="firstNewsfeed.do")
+	@Override
+	public ModelAndView firstNewsfeed(HttpSession session) //처음 로그인 했을 때 뜨는 뉴스피드창
+	{
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo(); //세션에서 회원번호 추출
+		System.out.println(memberNo);
+		ArrayList<Newsfeed> newsfeed = personalService.selectAllNewsFeed(memberNo);
+		System.out.println(newsfeed);
+		ModelAndView view = new ModelAndView();
+		view.addObject("newsfeed",newsfeed);
+		view.setViewName("personal/firstNewsfeed");
+		return view;
+	}
+	
 	@RequestMapping(value="newsfeed.do") //뉴스피드....
 	@Override
 	public ModelAndView newsfeed(HttpSession session) //속한 프로젝트의 모든 글을 가져옴..
 	{
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo(); //세션에서 회원번호 추출
 		ArrayList<Newsfeed> newsfeed = personalService.selectAllNewsFeed(memberNo);
+		System.out.println(memberNo);
 		System.out.println(newsfeed);
 		ModelAndView view = new ModelAndView();
 		view.addObject("newsfeed",newsfeed);
