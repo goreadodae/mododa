@@ -249,8 +249,10 @@ public class MemberControllerImpl implements MemberController {
 	@RequestMapping(value="/selectPartnerList.do")
 	public ModelAndView selectPartnerList(@RequestParam int memberNo) {
 		ModelAndView mav = new ModelAndView();
-		ArrayList<Partner> list = memberService.selectPartnerList(memberNo);
-		mav.addObject("partnerList", list);
+		ArrayList<Partner> list1 = memberService.selectPartnerList(memberNo);
+		ArrayList<Partner> list2 = memberService.selectInvitingPartnerList(memberNo);
+		mav.addObject("partnerList", list1);
+		mav.addObject("invitingPartnerList", list2);
 		mav.setViewName("jsonView");
 		return mav;
 	}
@@ -260,6 +262,30 @@ public class MemberControllerImpl implements MemberController {
 		String result = memberService.invitePartner(memberNo, parId);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", result);
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/inviteCancel.do")
+	public ModelAndView inviteCancel(@RequestParam int memberNo, @RequestParam int parNo) {
+		int result = memberService.inviteCancel(memberNo, parNo);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/acceptPartner.do")
+	public ModelAndView acceptPartner(@RequestParam int memberNo, @RequestParam int parNo) {
+		int result = memberService.acceptPartner(memberNo, parNo);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	@RequestMapping(value="/searchPartner.do")
+	public ModelAndView searchPartner(@RequestParam int memberNo, @RequestParam String searchPartnerText) {
+		ArrayList<Partner> list = memberService.searchPartner(memberNo, searchPartnerText);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("searchPartnerList", list);
 		mav.setViewName("jsonView");
 		return mav;
 	}

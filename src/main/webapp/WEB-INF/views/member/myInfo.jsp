@@ -6,11 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 
 <style>
@@ -124,14 +119,7 @@ div {
 		<div class="card-body active">
 			<div class="row">
 			<div class="col-md-4">
-				<c:choose>
-					<c:when test="${sessionScope.member.memberPicture!=null }">
-						<c:set var="memberPic" value="../resources/upload/member/${sessionScope.member.memberPicture }"/>
-					</c:when>
-					<c:otherwise>
-						<c:set var="memberPic" value="../resources/upload/member/whale.png"/>
-					</c:otherwise>
-				</c:choose>
+				<c:set var="memberPic" value="../resources/upload/member/${sessionScope.member.memberPicture }"/>
 				<img src="${memberPic }" class="img-circle rounded-circle border myInfoImg">
 				<form action="/changeMemberPic.do" method="post" enctype="multipart/form-data" name="memberPic">
 				<input type="file" name="inputFileMemberPic" id="inputFileMemberPic" accept="image/*" onchange="submitFile();" required/>

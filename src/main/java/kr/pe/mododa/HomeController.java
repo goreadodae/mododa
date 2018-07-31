@@ -27,6 +27,11 @@ public class HomeController {
 		return "main/header";
 	}
 	
+	@RequestMapping(value="/projectHeader.do")
+	public String projectHeader() {
+		return "main/projectHeader";
+	}
+	
 	@RequestMapping(value="/leftbar.do")
 	public Object leftbar(HttpSession session) {
 		// 프로젝트 목록 읽어오기
