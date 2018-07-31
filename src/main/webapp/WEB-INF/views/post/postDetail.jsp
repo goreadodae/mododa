@@ -189,7 +189,6 @@ font-size:12px;
 /**/
 
 
-
 #like-count {
 	float: right;
 	font-size: 13px;
@@ -409,7 +408,7 @@ img[class="btn btn-link dropdown-toggle"]{
 	var postNo=0;
 	var postMemberNo=0; //로그인한 계정
 	var postBookmarkOnOff=0;//북마크 상태
-	
+
 	//게시글 불러옴
 	function getPost(postNumber) {
 		postNo = postNumber; //게시글 번호
@@ -552,7 +551,6 @@ img[class="btn btn-link dropdown-toggle"]{
 						} */
 							
 						}
-					
 					
 					
 					

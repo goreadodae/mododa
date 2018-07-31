@@ -24,6 +24,7 @@ import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.ConfirmMailFindPass;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.member.model.vo.Partner;
+import kr.pe.mododa.member.model.vo.SearchPartner;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -200,7 +201,6 @@ public class MemberServiceImpl implements MemberService {
 		String attach_path = "/resources/upload/member/";
 		String uploadPath = root_path+attach_path;
 		File dir = new File(uploadPath);
-		System.out.println(dir);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
@@ -215,8 +215,10 @@ public class MemberServiceImpl implements MemberService {
 					saveFileName = System.currentTimeMillis()+"_"+saveFileName;
 				}
 				if(vo.getMemberPicture()!=null) {
-					File delFile = new File(uploadPath+vo.getMemberPicture());
-					delFile.delete();
+					if(!vo.getMemberPicture().equals("defaultUserImg.png")) {
+						File delFile = new File(uploadPath+vo.getMemberPicture());
+						delFile.delete();
+					}
 				}
 				try {
 					mFile.transferTo(new File(uploadPath + saveFileName));
@@ -241,21 +243,53 @@ public class MemberServiceImpl implements MemberService {
 
 	public String invitePartner(int memberNo, String parId) {
 		String result="";
-		System.out.println(parId);
 		int parNo = memberDAO.checkId(sqlSession, parId);
 		if(parNo!=0) {
 			Partner p = new Partner();
 			p.setMemberNo(memberNo);
 			p.setParNo(parNo);
-			int inviteRes = memberDAO.invitePartner(sqlSession, p);
-			if(inviteRes>0) {
-				result = "success";
+			p.setParYN('N');
+			if(memberDAO.checkParNo(sqlSession, p)) {
+				result = "having";
 			} else {
-				result = "failed";
+				int inviteRes = memberDAO.invitePartner(sqlSession, p);
+				if(inviteRes>0) {
+					result = "success";
+				}
+				else {
+					result = "failed";
+				}
 			}
 		} else {
 			result = "nothing";
 		}
 		return result;
+	}
+
+	public int inviteCancel(int memberNo, int parNo) {
+		Partner p = new Partner();
+		p.setMemberNo(memberNo);
+		p.setParNo(parNo);
+		return memberDAO.inviteCancel(sqlSession, p);
+	}
+
+	public ArrayList<Partner> selectInvitingPartnerList(int memberNo) {
+		return memberDAO.selectInvitingPartnerList(sqlSession, memberNo);
+	}
+
+	public int acceptPartner(int memberNo, int parNo) {
+		Partner p = new Partner();
+		p.setMemberNo(memberNo);
+		p.setParNo(parNo);
+		p.setParYN('Y');
+		memberDAO.invitePartner(sqlSession, p);
+		return memberDAO.acceptPartner(sqlSession, p);
+	}
+
+	public ArrayList<Partner> searchPartner(int memberNo, String searchPartnerText) {
+		SearchPartner sp = new SearchPartner();
+		sp.setMemberNo(memberNo);
+		sp.setSearchPartnerText(searchPartnerText);
+		return memberDAO.searchPartner(sqlSession, sp);
 	}
 }

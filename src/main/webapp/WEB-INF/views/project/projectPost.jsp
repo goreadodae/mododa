@@ -10,9 +10,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>프로젝트 글</title>
-
-
-
 </head>
 
 
@@ -143,7 +140,7 @@ div {
 <body>
 
 <!-- header -->
-<jsp:include page="/header.do"></jsp:include>
+<jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
 
 <div class="row">

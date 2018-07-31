@@ -8,8 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
 
-
-
 <link rel="stylesheet" type="text/css"
 	href="/css/personal/personalPage.css">
 <!-- 개인페이지 공통 style저장. -->

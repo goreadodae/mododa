@@ -23,7 +23,7 @@
   	from member where member_id = #{memberId} and member_pw = #{memberPw}
   </select>
   <insert id="insertMember" parameterType="member">
-  	insert into member values(member_SEQ.NEXTVAL,#{memberId},#{memberPw},#{memberName},null,null,null,'N')
+  	insert into member values(member_SEQ.NEXTVAL,#{memberId},#{memberPw},#{memberName},'defaultUserImg.png',null,null,'N')
   </insert>
       <!--
         로그인된 경우 해당 세션id와 유효시간을 사용자 테이블에 세팅한다.
@@ -117,6 +117,41 @@
 	where p.member_no=#{memberNo}
   </select>
   <insert id="invitePartner" parameterType="partner">
-  	insert into partner values(#{memberNo},#{parNo},null,'N')
+  	insert into partner values(#{memberNo},#{parNo},null,#{parYN})
   </insert>
+  <delete id="inviteCancel" parameterType="partner">
+  	delete partner where member_no=#{memberNo} and par_no=#{parNo}
+  </delete>
+  <select id="checkParNo" resultType="Integer">
+  	select par_no as parNo from partner where par_no=#{parNo} and member_no=#{memberNo}
+  </select>
+  <select id="selectInvitingPartnerList" resultType="partner">
+  	select p.member_no as memberNo,
+  	p.par_explain as parExplain,
+  	p.par_yn as parYN,
+  	p.par_no as parNo,
+  	m.member_id as parId,
+  	m.member_name as parName,
+  	m.member_picture as parPicture,
+  	m.member_depart_name as parDepartName,
+  	m.member_main_task as parMainTask
+	from partner p join member m on(m.member_no=p.member_no)
+	where p.par_no=#{memberNo} and p.par_yn='N'
+  </select>
+  <update id="acceptPartner" parameterType="partner">
+  	update partner set par_yn=#{parYN} where member_no=#{parNo} and par_no=#{memberNo}
+  </update>
+  <select id="searchPartner" resultType="partner" parameterType="searchPartner">
+  	select p.member_no as memberNo,
+  	p.par_explain as parExplain,
+  	p.par_yn as parYN,
+  	p.par_no as parNo,
+  	m.member_id as parId,
+  	m.member_name as parName,
+  	m.member_picture as parPicture,
+  	m.member_depart_name as parDepartName,
+  	m.member_main_task as parMainTask
+	from partner p join member m on(m.member_no=p.par_no)
+	where p.member_no=#{memberNo} and (m.member_id like '%'||#{searchPartnerText}||'%' or m.member_name like '%'||#{searchPartnerText}||'%')
+  </select>
 </mapper>

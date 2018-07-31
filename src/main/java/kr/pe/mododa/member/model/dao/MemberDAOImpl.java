@@ -9,6 +9,7 @@ import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.ConfirmMailFindPass;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.member.model.vo.Partner;
+import kr.pe.mododa.member.model.vo.SearchPartner;
 
 @Repository("memberDAO")
 public class MemberDAOImpl implements MemberDAO{
@@ -26,7 +27,6 @@ public class MemberDAOImpl implements MemberDAO{
 		} else {
 			memberNo=0;
 		}
-		System.out.println(result);
 		return memberNo;
 	}
 
@@ -100,6 +100,31 @@ public class MemberDAOImpl implements MemberDAO{
 
 	public int invitePartner(SqlSessionTemplate sqlSession, Partner p) {
 		return sqlSession.insert("member.invitePartner", p);
+	}
+
+	public int inviteCancel(SqlSessionTemplate sqlSession, Partner p) {
+		return sqlSession.delete("member.inviteCancel", p);
+	}
+
+	public boolean checkParNo(SqlSessionTemplate sqlSession, Partner p) {
+		Integer result = sqlSession.selectOne("member.checkParNo", p);
+		if(result==null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public ArrayList<Partner> selectInvitingPartnerList(SqlSessionTemplate sqlSession, int memberNo) {
+		return (ArrayList)sqlSession.selectList("member.selectInvitingPartnerList", memberNo);
+	}
+
+	public int acceptPartner(SqlSessionTemplate sqlSession, Partner p) {
+		return sqlSession.update("member.acceptPartner", p);
+	}
+
+	public ArrayList<Partner> searchPartner(SqlSessionTemplate sqlSession, SearchPartner sp) {
+		return (ArrayList)sqlSession.selectList("member.searchPartner", sp);
 	}
 
 }

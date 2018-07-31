@@ -357,7 +357,7 @@ a:hover{
 						</div>
 						<div class="col-md-3 topbar">
 						<!-- 파트너 목록 -->
-						<a class="dropdown-toggle partnerListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showPartnerList();">파트너 목록</a>
+						<a class="dropdown-toggle partnerListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showPartnerList();">멤버 목록</a>
 						<div class="dropdown-menu dropdown-menu-right" id="partnerList">
 							<div class="row" style="margin: 20px;">
 								<div class="col-md-12">
