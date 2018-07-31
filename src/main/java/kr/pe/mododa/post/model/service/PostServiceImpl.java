@@ -13,6 +13,7 @@ import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.dao.PostDAOImpl;
+import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -52,6 +53,10 @@ public class PostServiceImpl implements PostService{
 	public Member selectMemberInfo(int memberNo) {
 		return postDAO.selectMemberInfo(sqlSession, memberNo);
 	}
+	
+	public List<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 추가)
+		return postDAO.selectComment(sqlSession, postNo);
+	}
 
 	public int insertTodo(Todo vo) {
 		return postDAO.insertTodo(sqlSession, vo);
@@ -80,6 +85,8 @@ public class PostServiceImpl implements PostService{
 	public int updateTodoProgress(Todo vo) {
 		return postDAO.updateTodoProgress(sqlSession, vo);
 	}
+
+	
 	
 
 }

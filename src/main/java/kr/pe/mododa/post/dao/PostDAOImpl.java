@@ -9,6 +9,7 @@ import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -44,6 +45,10 @@ public class PostDAOImpl implements PostDAO{
 	public Member selectMemberInfo(SqlSessionTemplate sqlSession, int memberNo) {
 		return sqlSession.selectOne("post.selectMemberInfo", memberNo);
 	}
+	
+	public List<Comment> selectComment(SqlSessionTemplate sqlSession, int postNo) {
+		return sqlSession.selectList("post.selectComment",postNo);
+	}
 
 	public int insertTodo(SqlSessionTemplate sqlSession, Todo vo) {
 		return sqlSession.insert("post.insertTodo",vo);
@@ -72,4 +77,6 @@ public class PostDAOImpl implements PostDAO{
 	public int updateTodoProgress(SqlSessionTemplate sqlSession, Todo vo) {
 		return sqlSession.update("post.updateTodoProgress",vo);
 	}
+
+
 }

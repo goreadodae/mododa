@@ -74,6 +74,19 @@
     (select member_name from member where member_no=dc_maker) as dcMakerName
 	from decision where dc_Post_No=#{postNo}
 	</select>
+	
+	<select id="selectComment" resultType="comment">
+		select 
+		m.member_name as writeNick, 
+		m.member_picture as writePicture, 
+		to_char(cm_date,'yy-mm-dd am hh24:mi:ss')as writeTime , 
+		ct.cm_tag as content, 
+		ct.CM_POST as postNo, 
+		ct.cmember_no as commentNo  
+		from comment_tbl ct
+		join member m on (ct.cm_writer = m.member_no)
+		where cm_post = #{postNo}
+	</select>
 
 	<insert id="insertSchedule" parameterType="schedule">
 		insert into schedule
