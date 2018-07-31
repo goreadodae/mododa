@@ -1,6 +1,7 @@
 package kr.pe.mododa.member.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
@@ -23,6 +23,7 @@ import kr.pe.mododa.common.SHA256Util;
 import kr.pe.mododa.member.model.service.MemberServiceImpl;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.member.model.vo.Partner;
 
 @Controller
 public class MemberControllerImpl implements MemberController {
@@ -245,4 +246,21 @@ public class MemberControllerImpl implements MemberController {
 		return "redirect:/index.jsp";
 	}
 	
+	@RequestMapping(value="/selectPartnerList.do")
+	public ModelAndView selectPartnerList(@RequestParam int memberNo) {
+		ModelAndView mav = new ModelAndView();
+		ArrayList<Partner> list = memberService.selectPartnerList(memberNo);
+		mav.addObject("partnerList", list);
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/invitePartner.do")
+	public ModelAndView invitePartner(@RequestParam int memberNo, @RequestParam String parId) {
+		String result = memberService.invitePartner(memberNo, parId);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+		mav.setViewName("jsonView");
+		return mav;
+	}
 }
