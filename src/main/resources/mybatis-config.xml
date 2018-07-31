@@ -5,6 +5,7 @@
       <typeAlias type="kr.pe.mododa.member.model.vo.Member" alias="member"/>
       <typeAlias type="kr.pe.mododa.member.model.vo.AutoLogin" alias="autoLogin"/>
       <typeAlias type="kr.pe.mododa.member.model.vo.ConfirmMailFindPass" alias="cmfp"/>
+      <typeAlias type="kr.pe.mododa.member.model.vo.Partner" alias="partner"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.Project" alias="project"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.WorkOn" alias="workon"/>
       <typeAlias type="kr.pe.mododa.faq.model.vo.Notice" alias="notice"/>

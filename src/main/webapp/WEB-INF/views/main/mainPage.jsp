@@ -22,6 +22,28 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+.btn-primary {
+    background-color: #CFF09E;
+    border-color: #CFF09E
+}
+
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:click {
+    background-color: #339966 !important;
+    border-color: #339966 !important;
+}
+
+.btn-secondary {
+	background-color: #339966;
+	border-color: #339966
+}
+
+.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover {
+	background-color: #CFF09E;
+	border-color: #CFF09E
+}
 </style>
 <body>
 
@@ -48,7 +70,6 @@ div {
 		<!-- right bar 끝 -->
 		<!-- 메일인증 모달 -->
 		<div id="mailModal" class="modal">
-
 			<!-- Modal 내용 -->
 			<div class="modal-content" style="width: 30%; height: auto;">
 				<div class="row" style="margin-bottom: 20px;">

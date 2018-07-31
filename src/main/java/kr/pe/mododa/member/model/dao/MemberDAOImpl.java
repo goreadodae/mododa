@@ -1,8 +1,6 @@
 package kr.pe.mododa.member.model.dao;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.ConfirmMailFindPass;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.member.model.vo.Partner;
 
 @Repository("memberDAO")
 public class MemberDAOImpl implements MemberDAO{
@@ -19,13 +18,16 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSession.selectOne("member.selectOneMember", m);
 	}
 
-	public boolean checkId(SqlSessionTemplate sqlSession, String memberId) {
-		String id = sqlSession.selectOne("member.checkId", memberId);
-		if(id==null) {
-			return false;
+	public int checkId(SqlSessionTemplate sqlSession, String memberId) {
+		int memberNo;
+		Integer result = sqlSession.selectOne("member.checkId", memberId);
+		if(result!=null) {
+			memberNo=result;
 		} else {
-			return true;
+			memberNo=0;
 		}
+		System.out.println(result);
+		return memberNo;
 	}
 
 	public boolean checkPw(SqlSessionTemplate sqlSession, Member vo) {
@@ -90,6 +92,14 @@ public class MemberDAOImpl implements MemberDAO{
 
 	public int changeMyInfo(SqlSessionTemplate sqlSession, Member vo) {
 		return sqlSession.update("member.changeMyInfo", vo);
+	}
+
+	public ArrayList<Partner> selectPartnerList(SqlSessionTemplate sqlSession, int memberNo) {
+		return (ArrayList)sqlSession.selectList("member.selectPartnerList", memberNo);
+	}
+
+	public int invitePartner(SqlSessionTemplate sqlSession, Partner p) {
+		return sqlSession.insert("member.invitePartner", p);
 	}
 
 }

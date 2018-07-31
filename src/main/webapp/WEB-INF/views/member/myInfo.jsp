@@ -23,8 +23,8 @@ div {
 	padding: 0px;
 }
 .myInfoImg {
-	width: 70%;
-	height: 30%;
+	width: 25vmin;
+	height: 25vmin;
 }
 
 .card-body {
