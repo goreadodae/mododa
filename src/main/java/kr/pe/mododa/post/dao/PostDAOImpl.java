@@ -68,4 +68,8 @@ public class PostDAOImpl implements PostDAO{
 	public int updatePostProgress(SqlSessionTemplate sqlSession, Post vo) {
 		return sqlSession.update("post.updatePostProgress",vo);
 	}
+	
+	public int updateTodoProgress(SqlSessionTemplate sqlSession, Todo vo) {
+		return sqlSession.update("post.updateTodoProgress",vo);
+	}
 }
