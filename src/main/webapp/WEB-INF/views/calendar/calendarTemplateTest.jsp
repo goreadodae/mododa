@@ -8,6 +8,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<script type='text/javascript' src='/js/jquery/jquery.min.js'></script>
+<script type='text/javascript' src='/js/jquery/moment.min.js'></script>
+
+<script type='text/javascript' src='/js/fullcalendar/fullcalendar.js'></script>
+<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='/js/fullcalendar/fullcalendar.print.min.css' media='print'/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
 
 
@@ -18,24 +36,7 @@ var scheduleNo = 0;
 	$(document).ready(function() {
 		
 		createCal();
-		
-		/* 프로젝트 리스트 불러오는 ajax */
-		
-		$.ajax({
-            url : "/selectProject.do",
-            type : "post",
-            success : function(data) {
-    
-   			$('#proList').find("input").remove();
-            	
-   				for(var i=0;i<data.length;i++){
-   					$('#proList').append("<input type='checkbox' id='"+data[i].proNo+"' value='"+data[i].proTitle+"'>");
-   				}			
-            },
-            error : function(data) {
-               console.log("실패");
-               }
-            });
+		myProList ();
 		
 	});
 	
@@ -348,11 +349,16 @@ var scheduleNo = 0;
            type : "post",
            success : function(data) {
    
-  			$('#myPjListDropDown').find("option").remove();
+  			$('#postList').find("div").remove();
            	
-  				for(var i=0;i<data.length;i++){
+  				/* for(var i=0;i<data.length;i++){
   					$('#myPjListDropDown').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
-  				}			
+  				} */
+  				
+  			for(var i=0;i<data.length;i++){
+					$('#postList').append("<div id='post_"+data[i].proNo+"'><input type='checkbox'/>"+data[i].proTitle+"</div>");
+				}
+  				$('#postList').append("<div id='post_0'><button class='btn btn-success'>저장</button></div>");
            },
            error : function(data) {
               console.log("실패");
@@ -418,6 +424,14 @@ div {
             border: 1px solid #888;
             width: 30%; /* Could be more or less, depending on screen size */                          
         }
+        
+   div[id^="post_"] {
+	display: none;
+	padding: 0;
+	background-color: #F5F5F5;
+	}
+	
+	
 
 </style>
 
@@ -438,23 +452,26 @@ div {
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row">
-		<div class="col-md-2">　</div>
-		<!-- <button type="button" class="btn btn-success" onclick="myProList();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button> -->
-			<div class="col-md-2 dropdown topbar" id="proListDiv" onclick="myProList();">
+		<div class="col-md-2">
+		<button type="button" class="btn btn-success" onclick="myProList();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
+			<!-- <div class="col-md-2 dropdown topbar" id="proListDiv" onclick="myProList();">
 					<img src="../resources/images/calendar/wish.png" class="btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<div class="dropdown-menu dropdown-menu-right">
 						<div class="row" style="margin: 20px;">
-    						<!-- <a class="dropdown-item" href="/myInfo.do">내정보</a>
+    						<a class="dropdown-item" href="/myInfo.do">내정보</a>
     						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
-    						<a class="dropdown-item" href="/logout.do">로그아웃</a> -->
+    						<a class="dropdown-item" href="/logout.do">로그아웃</a>
     						<ul>
     						<li></li>
     						</ul>
     						
  						</div>
  						</div>
-			</div>
-		<div class="col-md-4">　</div>
+			</div> -->
+			<div id="postList"></div>
+		</div>	
+		<div class="col-md-2">　</div>
+		<div class="col-md-4">，</div>
 		<div class="col-md-4">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="col-md" id="calendar"></div>
