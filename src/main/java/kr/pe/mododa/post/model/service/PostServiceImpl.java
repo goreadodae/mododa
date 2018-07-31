@@ -14,6 +14,7 @@ import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.dao.PostDAOImpl;
+import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
