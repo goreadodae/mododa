@@ -68,11 +68,9 @@ public class WriteControllerImpl implements WriteController {
 		pj.setProMemberNo(memberNo);
 		pj.setProNo(currentProjectNo);
 		
-		System.out.println("currentProName"+pj.getProMemberNo());
-		System.out.println("currentProName"+pj.getProNo());
 		
 		String currentProName = writeService.currentProName(pj);
-		System.out.println(currentProName +"컨트롤러");
+
 		ArrayList<Project> proList = writeService.myProject(memberNo);
 		
 		ModelAndView view = new ModelAndView();
@@ -96,18 +94,17 @@ public class WriteControllerImpl implements WriteController {
 	
 	
 	@RequestMapping(value="/searchWriting.do")
-	public void searchWriting(HttpServletResponse response, @RequestParam String searchKeyword, @RequestParam int currentProNo) throws Exception{
-		
+	public ModelAndView searchWriting(HttpServletResponse response, @RequestParam String searchKeyword, @RequestParam int currentProNo) throws Exception{
+		ModelAndView view = new ModelAndView();		
 		RelationSearchKey rsKey = new RelationSearchKey();
 		rsKey.setSearchKeyword(searchKeyword);
 		rsKey.setCurrentProNo(currentProNo);
+		ArrayList<RelationWriting> searchProlist = writeService.searchWriting(rsKey);
+		view.setViewName("/write/writePage");
+		view.addObject("searchProlist",searchProlist);
+	
+		return view;
 		
-		ModelAndView view = new ModelAndView();
-		ArrayList<RelationWriting> list = writeService.searchWriting(rsKey);
-		
-		response.setContentType("aplication/json");
-		response.setCharacterEncoding("utf-8");
-		new Gson().toJson(list,response.getWriter());
 	}
 	
 	@RequestMapping(value="/loadByProName.do")

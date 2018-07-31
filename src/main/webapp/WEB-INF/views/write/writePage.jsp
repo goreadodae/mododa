@@ -7,23 +7,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><c:out value="${currentProName}" /> - 모두다</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 
 
 <script src="/resources/js/jquery/jquery-3.3.1.min.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 
-<!--   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> -->
-<!-- <script src="http://cdn.embed.ly/jquery.embedly-3.0.5.min.js" type="text/javascript"></script>
-<script src="http://cdn.embed.ly/jquery.preview-0.3.2.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="http://cdn.embed.ly/jquery.preview-0.3.2.css" />
-</head> -->
 
 
 
@@ -348,9 +335,10 @@
 
 	//관련 글 불러오기
 
-	var preventStack = true;
+	 var preventStack = true;
 	function bringRelativeWrite() {
 		var currentProNo = $("#currentProNo").val()
+		var str="";
 		console.log(currentProNo);
 
 		$
@@ -370,31 +358,37 @@
 						if (preventStack) {
 
 							for (var i = 0; i < data.length; i++) {
-
-								$('#relationList')
-										.append(
-												'<li class="list-group-item" style="padding-top: 10px;">'
-														+ '<div class="row" style="height: 50%">'
-														+ '<div class="col-md-12" style="height: 100%">'
-														+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
-														+ '<span>'
-														+ data[i].postTitle
-														+ '</span>'
-														+ '</div>'
-														+ '</div>'
-														+ '<div class="row" style="height: 50%">'
-														+ '<div class="col-md-12" style="height: 100%">'
-														+ '<h6 style="display: inline">'
-														+ '<span>'
-														+ data[i].memberName
-														+ '</span>'
-														+ '</h6>&nbsp;&nbsp;'
-														+ '<h6 style="display: inline">'
-														+ '<span>'
-														+ data[i].postDate
-														+ '</span>' + '</h6>'
-														+ '</div>' + '</div>'
-														+ '</li>')
+								str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+								str += '<div class="row" style="height: 50%">';
+								str += '<div class="col-md-12" style="height: 100%">';
+								str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
+								str += '<span style="font-size:23px; padding-left:15px">';
+								str += data[i].postTitle;
+								str += '</span>';
+								str += '</div>';
+								str += '</div>';
+								str += '<div class="row" style="height: 50%"><div class="col-md-12">';
+								str += '<h6 style="display: inline">';
+									if(data[i].memberPicture == null)
+										{
+											str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+										}
+									else
+										{
+											str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+											
+										}
+								str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
+								str += '</span>&nbsp;&nbsp;';
+								str += '<span>'+data[i].postDate+'</span>';
+								str += '</h6>&nbsp;&nbsp;';
+								str += '</div>';
+								str += '</div>';
+								str += '</li>';
+								
+								$('#relationList').append(str);
+								
+									str ="";
 
 							}
 							preventStack = false;
@@ -407,12 +401,18 @@
 
 				})
 
-	}
+	} 
 
 	$(document).ready(function(){
-		$('#relationSearch').keyup(function(){
+		$('#relationSearch').keypress(function(){
 			var searchKeyword = $("#relationSearch").val();
 			var currentProNo = $("#currentProNo").val();
+			var str="";
+			var failed ="";
+			 if(event.which == 13) {
+				
+				
+				
 			$.ajax({
 			url : "/searchWriting.do",
 			type : "get",
@@ -421,40 +421,85 @@
 					currentProNo : currentProNo
 			},
 			success : function(data) {
-			$('#relationList').text(" ");
+				console.log("검색 성공");
+				console.log(data.searchProlist);
+				$('#relationList').text(" ");
+
 				for (var i = 0; i < data.length; i++) {
-					$('#relationList').append(
-											'<li class="list-group-item" style="padding-top: 10px;">'
-											+ '<div class="row" style="height: 50%">'
-											+ '<div class="col-md-12" style="height: 100%">'
-											+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
-											+ '<span>'
-											+ data[i].postTitle
-											+ '</span>'
-											+ '</div>'
-											+ '</div>'
-											+ '<div class="row" style="height: 50%">'
-											+ '<div class="col-md-12" style="height: 100%">'
-											+ '<h6 style="display: inline">'
-											+ '<span>'
-											+ data[i].memberName
-											+ '</span>'
-											+ '</h6>&nbsp;&nbsp;'
-											+ '<h6 style="display: inline">'
-											+ '<span>'
-											+ data[i].postDate
-											+ '</span>'
-											+ '</h6>'
-											+ '</div>'
-											+ '</div>'
-											+ '</li>')
+							
+	
+  					
+  				
+  				
+					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+					str += '<div class="row" style="height: 50%">';
+					str += '<div class="col-md-12" style="height: 100%">';
+					str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
+					str += '<span style="font-size:23px; padding-left:15px">';
+					str += data[i].postTitle;
+					str += '</span>';
+					str += '</div>';
+					str += '</div>';
+					str += '<div class="row" style="height: 50%"><div class="col-md-12">';
+					str += '<h6 style="display: inline">';
+						if(data[i].memberPicture == null)
+							{
+								str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+							}
+						else
+							{
+								str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+								
+							}
+					str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
+					str += '</span>&nbsp;&nbsp;';
+					str += '<span>'+data[i].postDate+'</span>';
+					str += '</h6>&nbsp;&nbsp;';
+					str += '</div>';
+					str += '</div>';
+					str += '</li>';
+					
+					
+					$('#relationList').append(str);
+					str="";
+					
+					
+					
+					
 				}
+				
+				if(data.searchProlist == null)
+				{
+				
+					console.log("이프");
+					console.log(data.searchProlist);
+					failed += '<li class="list-group-item" style="padding-top: 10px; height:600px !important;" >'
+					failed += '<div class="row">';
+					failed += '<div class="col-md-12">';
+					failed += '<img id="searchImg" src="/resources/images/writeImages/search.png" />';
+					failed += '</div>';
+					failed += '</div><br><br>';
+					failed += '<div class="row">';
+					failed += '<div class="offset-md-4">';
+					failed += '<h5 style="color:#A1A1A1; font-weight:bold;">검색 결과가 없습니다.</h5>';
+					failed += '</div></div></li>';	
+
+					$('#relationList').append(failed);
+					failed = "";
+					
+				}
+				
+				
+				
+				
+				$('#relationSearch').val("");
 			},
 			error : function(data) {
 				console.log("검색 실패");
 			}
 
 			})
+		}
 						
 		})
 
@@ -462,6 +507,7 @@
 	
 	function loadByProName(no){
 		var proNo = $('#proNo'+no).val();
+		var str ="";
 		
 		$.ajax({
 			url : "/loadByProName.do",
@@ -473,34 +519,44 @@
 				console.log("성공");
 				console.log(proNo);
 				$('#relationList').text(" ");
-				for (var i = 0; i < data.length; i++) {
-					$('#relationList').append(
-											'<li class="list-group-item" style="padding-top: 10px;">'
-											+ '<div class="row" style="height: 50%">'
-											+ '<div class="col-md-12" style="height: 100%">'
-											+ '	<input type="checkbox" style="height: 100% !important; vertical-align: middle">'
-											+ '<span>'
-											+ data[i].postTitle
-											+ '</span>'
-											+ '</div>'
-											+ '</div>'
-											+ '<div class="row" style="height: 50%">'
-											+ '<div class="col-md-12" style="height: 100%">'
-											+ '<h6 style="display: inline">'
-											+ '<span>'
-											+ data[i].memberName
-											+ '</span>'
-											+ '</h6>&nbsp;&nbsp;'
-											+ '<h6 style="display: inline">'
-											+ '<span>'
-											+ data[i].postDate
-											+ '</span>'
-											+ '</h6>'
-											+ '</div>'
-											+ '</div>'
-											+ '</li>')
-				}
 				
+				for (var i = 0; i < data.length; i++) {
+					
+					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+					str += '<div class="row" style="height: 50%">';
+					str += '<div class="col-md-12" style="height: 100%">';
+					str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
+					str += '<span id="pro"style="font-size:23px; padding-left:15px">';
+					str += data[i].postTitle;
+					str += '</span>';
+					str += '</div>';
+					str += '</div>';
+					str += '<div class="row" style="height: 50%"><div class="col-md-12">';
+					str += '<h6 style="display: inline">';
+						if(data[i].memberPicture == null)
+							{
+								str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+							}
+						else
+							{
+								str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+								
+							}
+					str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
+					str += '</span>&nbsp;&nbsp;';
+					str += '<span>'+data[i].postDate+'</span>';
+					str += '</h6>&nbsp;&nbsp;';
+					str += '</div>';
+					str += '</div>';
+					str += '</li>';
+								
+					$('#relationList').append(str);
+					
+						str ="";
+					
+				}
+				console.log(data[0].proTitle);
+				$('#currentReProName').text(data[0].proTitle);
 				
 				
 				
@@ -676,32 +732,26 @@ div.tarea {
 	height: 220px;
 	overflow: hidden;
 }
-/* .moreViewDiv {
-	/* height: 40%; 
-	overflow: hidden;
-	
-	} */
+
 #relationList li {
 	height: 100px;
 	padding-top: 0;
 }
-
-/* #modalBody {
-	overflow-y: scroll;
-} */
-
-/* 음 다시 생각 해봐야할듯  */
-/* #relationList input{
-	width:14px;
-	height:14px;
-	border-radius:7px;
-	backgroud-color:#bcbcbc;
-	cursor: pointer;
+.memPic{
+height : 2.4em;
+width : 2.4em;
+position : relative;
+top : 0;
+bottom:0;
+margin:auto;
 }
-#relationList input:checked{
-	background-color: #339966;
-	
-} */
+
+#searchImg{
+	position :relative;
+	top:40%;
+	left:40%;
+}
+
 </style>
 
 
@@ -963,7 +1013,7 @@ div.tarea {
 
 											<div class="dropdown">
 												<h6 style="color: #339966; padding-top: 5px;" id="byProNameDD" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-													<c:out value="${currentProName}"></c:out>
+													<span id="currentReProName"><c:out value="${currentProName}"></c:out></span>
 												</h6>
 												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
 												<c:forEach items="${proList}" var="proList">
@@ -1000,10 +1050,18 @@ div.tarea {
 
 										<div class="modal-body" style="height: 70%; padding: 0px">
 											<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%; padding: 0px">
-												<ul class="list-group" id="relationList">
+											
 
-												</ul>
+ 												<ul class="list-group" id="relationList" style="height:100%">
+												
 
+							
+												</ul> 
+													
+												
+	
+
+												
 
 
 											</div>

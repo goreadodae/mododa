@@ -107,6 +107,15 @@ div {
 	 $('#toWrite').show();
 	 }
 	 */
+	    function onLocation() {
+	       
+	      var proNoStr = $("#proNo").val();
+	       var proNo = proNoStr.substring(6);
+	      //proNo=?
+	       console.log(proNo);
+	      location.href = "/writePage.do?currentProjectNo="+proNo;
+	       
+	    }
 </script>
 
 
@@ -144,12 +153,10 @@ div {
 
 						<!-- 한영진이 버튼 연결 -->
 						<!-- 페이지 클릭시 글쓰기 페이지에 현재 프로젝트 번호 전송  -->
-						<c:url var="url" value="/writePage.do">
-							<c:param name="currentProjectNo" value="${proNo}"></c:param>
-						</c:url>
-						<button type="button" onclick="location='${url}'"class="btn btn-outline-success">
-							<i class="fas fa-edit"></i>글쓰기
-						</button>
+	     <button type="button" onclick="onLocation();"class="btn btn-outline-success">
+                     <i class="fas fa-edit"></i>글쓰기
+                  </button>
+
 					</div>
 				
 			</div>
@@ -182,14 +189,16 @@ div {
 							
 							<div class="col-md-9">
 							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
-							</div>
-							
+							</div>	
 						</div>
 						<hr style="color: grey;">
 					</li>
 				</c:forEach>
-				<span>마지막입니다.</span>
 			</ul>
+				         <div align="center">
+         <span>마지막입니다.</span>
+         <input type="text" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+         </div>
 		</div>
 
 
