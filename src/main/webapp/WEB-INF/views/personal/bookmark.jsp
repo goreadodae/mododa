@@ -7,16 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
- --><script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-	crossorigin="anonymous">
-<!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
+
+
 
 <link rel="stylesheet" type="text/css"
 	href="/css/personal/personalPage.css">
@@ -177,19 +169,6 @@ div {
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
-							<div class="btn-group">
-							<button type="button" class="btn btn-link dropdown-toggle"
-								data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">
-								<img id="statusImg" src="../resources/images/post/lightbulb.png" />
-							</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" onclick="changeProgress('발의된 이슈');"><img src="../resources/images/post/lightbulb.png" /> 발의된 이슈</a> 
-								<a class="dropdown-item" onclick="changeProgress('진행 중');"><img src="../resources/images/icon/play-button.png" /> 진행 중</a> 
-								<a class="dropdown-item" onclick="changeProgress('일시중지');"><img src="../resources/images/icon/pause.png" /> 일시중지</a> 
-								<a class="dropdown-item" onclick="changeProgress('완료');"><img src="../resources/images/icon/checked-allot.png" /> 완료</a>
-							</div>
-						</div>
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
 							</div>
 							<div class="col-md-9">

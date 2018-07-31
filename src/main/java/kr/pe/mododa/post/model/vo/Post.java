@@ -9,14 +9,16 @@ public class Post {
 	private Date postDate;
 	private String postContent;
 	private int postWriter;
+	private String postWriterName;
+	private String postWriterPicture;
 	private String postTemp;
 	private int postProNo;
 	private String postTag;
 	
 	public Post() {}
-	
+
 	public Post(int postNo, String postTitle, String postProgress, Date postDate, String postContent, int postWriter,
-			String postTemp, int postProNo, String postTag) {
+			String postWriterName, String postWriterPicture, String postTemp, int postProNo, String postTag) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
@@ -24,10 +26,14 @@ public class Post {
 		this.postDate = postDate;
 		this.postContent = postContent;
 		this.postWriter = postWriter;
+		this.postWriterName = postWriterName;
+		this.postWriterPicture = postWriterPicture;
 		this.postTemp = postTemp;
 		this.postProNo = postProNo;
 		this.postTag = postTag;
 	}
+
+
 
 	public int getPostNo() {
 		return postNo;
@@ -65,6 +71,23 @@ public class Post {
 	public void setPostWriter(int postWriter) {
 		this.postWriter = postWriter;
 	}
+	
+	public String getPostWriterName() {
+		return postWriterName;
+	}
+
+	public void setPostWriterName(String postWriterName) {
+		this.postWriterName = postWriterName;
+	}
+
+	public String getPostWriterPicture() {
+		return postWriterPicture;
+	}
+
+	public void setPostWriterPicture(String postWriterPicture) {
+		this.postWriterPicture = postWriterPicture;
+	}
+
 	public String getPostTemp() {
 		return postTemp;
 	}

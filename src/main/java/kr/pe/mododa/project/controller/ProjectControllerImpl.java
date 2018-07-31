@@ -1,6 +1,7 @@
 package kr.pe.mododa.project.controller;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpSession;
 
@@ -228,35 +229,93 @@ public class ProjectControllerImpl implements ProjectController {
 	// --------------------- 검색
 	
 	@Override
-	@RequestMapping(value="searchProTitleOrMemberName.do")
-	public Object searchProTitleOrMemberName(@RequestParam String keyword, @RequestParam int proNo) {
+	@RequestMapping(value="searchProTitleOrMemberName.do") // 프로젝트 또는 프라이빗 글
+	public Object searchProTitleOrMemberName(@RequestParam String keyword, @RequestParam int proNo, @RequestParam String projectValue) {
 		
 		SearchHelper sh = new SearchHelper();
 		sh.setKeyword(keyword);
 		sh.setProNo(proNo);
-		
+		sh.setProjectValue(projectValue);
+		// memberNo = 0
 		ArrayList<ProjectPostList> searchResult = projectService.searchProTitleOrMemberName(sh);
 		ModelAndView view = new ModelAndView();
 		view.addObject("searchResult", searchResult);
 		view.setViewName("jsonView");
 		return view;
+	
+	}
+	
+	
+	@Override
+	@RequestMapping(value="searchMyPostProTitle.do") // 내가 쓴 글
+	public Object searchMyPostProTitle(HttpSession session, @RequestParam String keyword, @RequestParam int proNo) {
+		
+		if(session.getAttribute("member")!=null) {
+			SearchHelper sh = new SearchHelper();
+			sh.setKeyword(keyword);
+			sh.setProNo(proNo);
+			sh.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+			// memberNo != 0
+			ArrayList<ProjectPostList> searchResult = projectService.searchProTitleOrMemberName(sh);
+			ModelAndView view = new ModelAndView();
+			view.addObject("searchResult", searchResult);
+			view.setViewName("jsonView");
+			return view;
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+	
+	}
+	
+	
+	@Override
+	@RequestMapping(value="searchHashTag.do") // 해시태그 검색
+	public Object searchHashTag(@RequestParam String keyword, @RequestParam int proNo) {
+		
+		
+		SearchHelper sh = new SearchHelper();
+		sh.setProNo(proNo);
+		
+		StringTokenizer st = new StringTokenizer(keyword.replaceAll(" ", ""), ","); // 해시태그 공백없애고 쪼개서 저장
+		int cnt = st.countTokens();
+		String[] tagArr = new String[cnt];
+		for(int i=0; i<cnt; i++) {
+			tagArr[i] = st.nextToken();	
+		}
+		sh.setHashTags(tagArr);
 
+		// memberNo = 0
+		ArrayList<ProjectPostList> searchResult = projectService.searchHashTag(sh);
+		ModelAndView view = new ModelAndView();
+		view.addObject("searchResult", searchResult);
+		view.setViewName("jsonView");
+		return view;
 		
 	}
 	
-/*	int memberNo = projectService.searchMemberNo(memberId); // 회원 번호 검색
-	ModelAndView view = new ModelAndView();
-	view.addObject("memberNo", memberNo);
-	view.setViewName("jsonView");
-	return view;
+	// ---------------------
 	
-	ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
+	
+	// --------------------- 프로젝트 진행 현황
+	
+	@Override
+	@RequestMapping(value="projectProgress.do")
+	public Object projectProgress(@RequestParam int proNo) {
+		
+		// 프로젝트 글 목록 읽어오기
+		ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
 		// System.out.println(postList);
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
-		view.setViewName("project/privatePost");
+		view.setViewName("project/projectProgress");
 		return view;
-	*/
+		
+	}
+	
+	
+	
+	
 	
 
 	
