@@ -94,4 +94,14 @@ public class LibraryServiceImpl implements LibraryService{
 	public int privateNo(int memberNo) {
 		return libraryDAO.privateNo(sqlSession, memberNo);
 	}
+
+	// 내 파일 
+	public ArrayList<Upload> listFileMe(int memberNo) {
+		return libraryDAO.listFileMe(sqlSession, memberNo);
+	}
+	
+	// 내 링크
+	public ArrayList<Link> listLinkMe(int memberNo) {
+		return libraryDAO.listLinkMe(sqlSession, memberNo);
+	}
 }

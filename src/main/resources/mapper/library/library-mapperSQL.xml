@@ -56,28 +56,29 @@
 	
 	<select id="listImage" resultType="upload">
 		select
-		upload_no as uploadNo,
+        upload_no as uploadNo,
 		post_no as postNo,
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_path as uploadPath
 		from upload
-		where member_no = #{memberNo} and upload_subject='이미지'
+		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
+		and upload_subject='이미지'
 	</select>
 	
 	<select id="listFile" resultType="upload">
 		select
-		upload_no as uploadNo,
+        upload_no as uploadNo,
 		u.post_no as postNo,
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_path as uploadPath,
-		p.post_title as postTitle
+        p.post_title as postTitle
 		from upload u, post p
 		where u.post_no = p.post_no
-		and member_no = #{memberNo}
+        and u.post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
 		and upload_subject='파일'
 	</select>
 	
@@ -92,7 +93,7 @@
         m.member_name as memberName
 		from link l, member m
         where l.member_no = m.member_no
-		and m.member_no = #{memberNo}
+        and post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
 	</select>
 	
 	<select id="selectMemberList" resultType="member">
@@ -107,7 +108,15 @@
 	<insert id="insertTodo" parameterType="todo">
 		insert into todo values (
 		todo_seq.nextval, null, #{todoProNo}, #{todoTitle}, 
-		null, #{todoWriter}, #{todoMember}, null, null,'progress')
+		<choose>
+			<when test="todoContent!=null">
+				#{todoContent}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>
+		, #{todoWriter}, #{todoMember}, null, null,'suggest')
 	</insert>
 	
 	<select id="listTodoMe" resultType="todo">
@@ -201,13 +210,45 @@
 	<select id="listImageMe" resultType="upload">
 		select
 		upload_no as uploadNo,
-		post_no as postNo,
+		u.post_no as postNo,
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
-		upload_path as uploadPath
-		from upload
-		where member_no = #{memberNo} and upload_subject='이미지'
+		upload_path as uploadPath,
+		p.post_title as postTitle
+		from upload u, post p
+		where u.post_no = p.post_no
+		and member_no = #{memberNo}
+		and upload_subject='이미지'
+	</select>
+	
+	<select id="listFileMe" resultType="upload">
+		select
+		upload_no as uploadNo,
+		u.post_no as postNo,
+		member_no as memberNo,
+		upload_date as uploadDate,
+		upload_subject as uploadSubject,
+		upload_path as uploadPath,
+		p.post_title as postTitle
+		from upload u, post p
+		where u.post_no = p.post_no
+		and member_no = #{memberNo}
+		and upload_subject='파일'
+	</select>
+	
+	<select id="listLinkMe" resultType="link">
+		select
+		link_no as linkNo,
+		post_no as postNo,
+		l.member_no as memberNo,
+		link_date as linkDate,
+		link_title as linkTitle,
+		link_address as linkAddress,
+        m.member_name as memberName
+		from link l, member m
+        where l.member_no = m.member_no
+		and m.member_no = #{memberNo}
 	</select>
 	
 	<select id="privateNo" resultType="int">
