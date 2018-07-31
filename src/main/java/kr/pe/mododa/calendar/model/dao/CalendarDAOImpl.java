@@ -22,9 +22,9 @@ public class CalendarDAOImpl implements CalendarDAO {
 	}
 	
 	@Override
-	public Project selectProjectOne(SqlSessionTemplate sqlSession, int proNo) {
+	public Project selectProjectOne(SqlSessionTemplate sqlSession, int scheduleNo) {
 		
-		return sqlSession.selectOne("calendar.projectOne",proNo);
+		return sqlSession.selectOne("calendar.projectOne",scheduleNo);
 	}
 
 	@Override
@@ -33,6 +33,13 @@ public class CalendarDAOImpl implements CalendarDAO {
 		List list = sqlSession.selectList("calendar.postList",postProNo);
 		
 		return (ArrayList<Post>)list;
+		
+	}
+	
+	@Override
+	public Post selectPostOne(SqlSessionTemplate sqlSession, int scheduleNo) {
+		
+		return sqlSession.selectOne("calendar.postOne",scheduleNo);
 		
 	}
 
@@ -70,6 +77,8 @@ public class CalendarDAOImpl implements CalendarDAO {
 		return sqlSession.delete("calendar.calendarDeleteSchedule",scheduleNo);
 		
 	}
+
+
 
 
 

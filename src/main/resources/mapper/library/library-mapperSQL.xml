@@ -107,7 +107,7 @@
 	<insert id="insertTodo" parameterType="todo">
 		insert into todo values (
 		todo_seq.nextval, null, #{todoProNo}, #{todoTitle}, 
-		null, #{todoWriter}, #{todoMember}, null, null,'吏꾪뻾')
+		null, #{todoWriter}, #{todoMember}, null, null,'progress')
 	</insert>
 	
 	<select id="listTodoMe" resultType="todo">
@@ -208,6 +208,10 @@
 		upload_path as uploadPath
 		from upload
 		where member_no = #{memberNo} and upload_subject='이미지'
+	</select>
+	
+	<select id="privateNo" resultType="int">
+		select min(pro_no) from project where pro_member_no = #{memberNo}
 	</select>
 
 </mapper>

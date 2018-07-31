@@ -20,6 +20,7 @@ public interface CalendarDAO {
 	public int updateSchedule (SqlSessionTemplate sqlSession,Schedule sc);
 	public Schedule infoSchedule (SqlSessionTemplate sqlSession,int scheduleNo);
 	public int deleteSchdule (SqlSessionTemplate sqlSession,int scheduleNo);
-	public Project selectProjectOne (SqlSessionTemplate sqlSession,int proNo);
+	public Project selectProjectOne (SqlSessionTemplate sqlSession,int scheduleNo);
+	public Post selectPostOne (SqlSessionTemplate sqlSession,int scheduleNo);
 	
 }

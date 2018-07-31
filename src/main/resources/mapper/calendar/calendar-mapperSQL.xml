@@ -15,10 +15,8 @@
 		select pro_no as proNo,
 		pro_title as proTitle,
 		pro_progress as proProgress,
-		pro_start_Date as proStartDate,
-		pro_end_Date as proEndDate,
 		PRO_MEMBER_NO as proMNo
-		from Project where pro_no = #{proNo}
+		from schedule join project using(pro_no) where sc_no = #{scheduleNo}
 	</select>
 	<select id="calendarList" resultType="schedule">
 		select sc_no as scheduleNo,
@@ -40,6 +38,17 @@
 		post_pro_no as postProNo,
 		post_tag as postTag
 		from post where post_pro_no = #{postProNo}
+	</select>
+	<select id="postOne" resultType="post">
+		select post_no as postNo,
+		post_title as postTitle,
+		post_progress as postProgress,
+		post_content as postContent,
+		post_writer as postWriter,
+		post_temp as postTemp,
+		post_pro_no as postProNo,
+		post_tag as postTag
+		from schedule join post using(post_no) where sc_no = #{scheduleNo}
 	</select>
 	<select id="calendarScheduleList" resultType="schedule">
 		select sc_no as scheduleNo,

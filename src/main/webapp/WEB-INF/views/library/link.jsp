@@ -43,12 +43,12 @@ div {
 	<table width="100%">
 		<tr>
 			<td width="20%">
-				<h4 id="subject">링크</h4>
+				<h4 id="subject">할 일</h4>
 			</td>
 			<td width="35%">
 				<select class="form-control" style="width:150px;">
   					<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  					<option value="프라이빗 공간">프라이빗 공간</option>
+  					<option value="${privateNo }">프라이빗 공간</option>
   					<c:forEach items="${listProject }" var="p">
   						<option value="${p.proNo }">${p.proTitle }</option>
   					</c:forEach>

@@ -55,7 +55,7 @@ public class CalendarControllerImpl implements CalendarController {
 		 
 	}
 	
-	@Override
+	/*@Override
 	@RequestMapping(value="selectProjectOne.do")
 	public void selectProjectOne(HttpServletResponse response,@RequestParam int proNo) throws Exception {
 		
@@ -66,7 +66,7 @@ public class CalendarControllerImpl implements CalendarController {
 		 
 		 new Gson().toJson(p,response.getWriter());
 		
-	}
+	}*/
 	
 	@Override
 	@RequestMapping(value="selectLinkPost.do")
@@ -154,11 +154,12 @@ public class CalendarControllerImpl implements CalendarController {
 	
 	@Override
 	@RequestMapping(value="infoSchedule.do")
-	public void infoSchedule(HttpServletResponse response,@RequestParam int scheduleNo) throws Exception {
+	public ModelAndView infoSchedule(HttpServletResponse response,@RequestParam int scheduleNo) throws Exception {
 	
 		Schedule sc = CalendarService.infoSchedule(scheduleNo);
-		/*Project pj = CalendarService.infoProject(scheduleNo);
-		Post p = CalendarService.infoPost(scheduleNo);*/
+		Project pj = CalendarService.selectProjectOne(scheduleNo);
+		Post p = CalendarService.selectPostOne(scheduleNo);
+		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
 		
@@ -166,15 +167,18 @@ public class CalendarControllerImpl implements CalendarController {
 		 
 		startDateUp = sdf.format(sc.getStartDate());
 		sc.setStStartDate(startDateUp); //시작 날짜를 format
-		
+		sc.setStartDate(null);
 		endDateUp = sdf.format(sc.getEndDate());
 		sc.setStEndDate(endDateUp); //끝 날짜를 format	
+		sc.setEndDate(null);
 		
-		 response.setContentType("application/json");
-		 response.setCharacterEncoding("utf-8");
 		 
-		 new Gson().toJson(sc,response.getWriter());
-		 
+		 ModelAndView view = new ModelAndView();
+			view.addObject("sc",sc);
+			view.addObject("pj",pj);
+			view.addObject("p",p);
+			view.setViewName("jsonView");
+			return view;
 	}
 
 	@Override
@@ -189,10 +193,6 @@ public class CalendarControllerImpl implements CalendarController {
 		 new Gson().toJson(result,response.getWriter());
 		
 	}
-
-	
-	
-	
 
 
 }

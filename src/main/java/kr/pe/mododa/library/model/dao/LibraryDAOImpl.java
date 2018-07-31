@@ -82,4 +82,8 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return (ArrayList<Upload>)listImageMe;
 	}
 
+	public int privateNo(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("library.privateNo", memberNo);
+	}
+
 }

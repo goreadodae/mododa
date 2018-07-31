@@ -71,7 +71,7 @@ div {
 			<td width="35%">
 				<select class="form-control" style="width:150px;">
   					<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  					<option value="프라이빗 공간">프라이빗 공간</option>
+  					<option value="${privateNo }">프라이빗 공간</option>
   					<c:forEach items="${listProject }" var="p">
   						<option value="${p.proNo }">${p.proTitle }</option>
   					</c:forEach>
@@ -109,8 +109,8 @@ div {
 				<tr>
 					<td>
 						<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
-  							<option value="">프로젝트 선택</option>
-  							<option value="0">프라이빗 공간</option>
+  							<option value="0">프로젝트 선택</option>
+  							<option value="${privateNo }">프라이빗 공간</option>
   							<c:forEach items="${listProject }" var="p">
   								<option value="${p.proNo }">${p.proTitle }</option>
   							</c:forEach>
@@ -122,16 +122,17 @@ div {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input class="form-control" type="text" name="todoTitle" placeholder="새 할 일을 입력해주세요">
+						<input class="form-control" type="text" id="todoTitle" name="todoTitle" placeholder="새 할 일을 입력해주세요">
 					</td>
 				</tr>
 				<tr>
 					<td width="90%">
 						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
+							<option value="0">멤버 선택</option>
 						</select>
 					</td>
 					<td width="10%">
-						<button type="submit" class="btn btn-light" style="width:100%">저장</button>
+						<button type="button" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
 					</td>
 				</tr>
 			</table>
@@ -159,7 +160,25 @@ div {
 				<table border="1" id="todoTable" width="100%" height="100px;" style="margin:0; padding:0;">
 					<c:forEach items="${listTodo }" var="t">
 					<tr>
-						<td width="7%">아이콘</td>
+						<td width="7%">
+							<div class="btn-group">
+							<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="../resources/images/icon/checked-allot.png"></img>
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">
+								<img src="../resources/images/icon/checked-allot.png"></img> 할당된 할 일</a> 
+								<a class="dropdown-item" href="#">
+								<img src="../resources/images/icon/play-button.png"></img> 진행중</a>
+								<a class="dropdown-item" href="#">
+								<img src="../resources/images/icon/pause.png"></img> 일시중지</a> 
+								<a class="dropdown-item" href="#">
+								<img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
+								<a class="dropdown-item" href="#">
+								<img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
+							</div>
+							</div>
+						</td>
 						<td width="15%">${t.todoProjectName }</td>
 						<td width="53%">${t.todoTitle }</td>
 						<td width="25%">${t.todoWriterName } -> ${t.todoMemberName }</td>
@@ -191,12 +210,13 @@ div {
 			</div>
 			
 			<!-- 작성 -->
-			<form action="/insertTodo" method="post">
+			<form action="/insertTodo.do" method="post">
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td>
-						<select class="form-control" name="todoProNo" style="width:150px;">
-  							<option value="0">프라이빗 공간</option>
+						<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
+  							<option value="0">프로젝트 선택</option>
+  							<option value="${privateNo }">프라이빗 공간</option>
   							<c:forEach items="${listProject }" var="p">
   								<option value="${p.proNo }">${p.proTitle }</option>
   							</c:forEach>
@@ -204,7 +224,7 @@ div {
 					</td>
 				</tr>
 			</table>
-			
+	
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td colspan="2">
@@ -221,10 +241,11 @@ div {
 				<tr>
 					<td width="90%">
 						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
+							<option value="0">멤버 선택</option>
 						</select>
 					</td>
 					<td width="10%">
-						<button type="submit" class="btn btn-light" style="width:100%">저장</button>
+						<button type="button" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
 					</td>
 				</tr>
 			</table>
@@ -249,31 +270,31 @@ div {
 
 </body>
 
-<script type="text/javascript">
+<script>
 	/* 프로젝트 선택에 따라 팀원 변경 */
 	$("#selectProject").change(function() {
 		var proNo = $("#selectProject option:selected").val();
 		console.log(proNo);
 		
-		if(proNo >= 1) {
-			$.ajax({
-				url : "/selectMemberList.do",
-				type : "post",
-				data : {proNo : proNo},
-				success : function(data) {
-					$('#memberList').find("option").remove();
-					$('#memberList').append("<option value=''>할 사람 선택</option>");
+		$.ajax({
+			url : "/selectMemberList.do",
+			type : "post",
+			data : {proNo : proNo},
+			success : function(data) {
+				$('#memberList').find("option").remove();
+				$('#memberList').append("<option value='0'>멤버 선택</option>");
+				if(data.length != 0) {
 					for(var i=0;i<data.length;i++){
 						$('#memberList').append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
 					}
-				},
-				error : function(data) { console.log("회원 리스트 불러오기 실패"); }
-			});
-		}
-		else {
-			$('#memberList').find("option").remove();
-			$('#memberList').append("<option value='" + <%=((Member)session.getAttribute("member")).getMemberNo()%> + "'>나</option>");
-		}
+				}
+				else {
+					$('#memberList').append("<option value='"+<%=((Member)session.getAttribute("member")).getMemberNo()%>+"'>나</option>");
+				}
+				
+			},
+			error : function(data) { console.log("회원 리스트 불러오기 실패"); }
+		});
 	});
 
 	$("#memberList").change(function() {
@@ -362,6 +383,34 @@ div {
 			}
 		});
 		
+	}
+	
+	/* 프로젝트 선택 안할 시 경고창 */
+	function submitTodo() {
+		var selectProject = $('#selectProject option:selected').val();
+		var memberList = $('#memberList option:selected').val();
+		var todoTitle = $('#todoTitle').val();
+		
+		console.log(selectProject);
+		console.log(memberList);
+		console.log(todoTitle);
+		
+		if(selectProject == 0) {
+			alert("프로젝트를 선택해주세요.");
+			return false;
+		}
+		
+		if(memberList == 0) {
+			alert("멤버를 선택해주세요.");
+			return false;
+		}
+		
+		if(todoTitle == null) {
+			alert("내용을 입력해주세요.");
+			return false;
+		}
+		
+		return true;
 	}
 	
 </script>
