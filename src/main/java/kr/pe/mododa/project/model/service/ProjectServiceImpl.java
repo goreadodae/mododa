@@ -8,13 +8,13 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.dao.ProjectDAOImpl;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
 import kr.pe.mododa.project.model.vo.WorkOn;
+import kr.pe.mododa.project.model.vo.WorkOnMember;
+import kr.pe.mododa.project.model.vo.WorkOnProject;
 
 
 
@@ -84,11 +84,43 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.searchHashTag(sqlSession, sh);
 	}
 
+	public String inviteMemberAtHeader(int proNo, String inviteMemberId) {
+		String result="";
+		int inviteMemberNo = projectDAO.searchMemberNo(sqlSession, inviteMemberId);
+		if(inviteMemberNo!=0) {
+			WorkOn wo = new WorkOn();
+			wo.setProNo(proNo);
+			wo.setMemberNo(inviteMemberNo);
+			if(projectDAO.checkMemberNoInWorkOn(sqlSession, wo)) {
+				result = "having";
+			} else {
+				int inviteRes = projectDAO.inviteMemberAtHeader(sqlSession, wo);
+				if(inviteRes>0) {
+					result = "success";
+				}
+				else {
+					result = "failed";
+				}
+			}
+		} else {
+			result = "nothing";
+		}
+		return result;
+	}
 
+	public ArrayList<WorkOnMember> selectMemberList(int proNo) {
+		return projectDAO.selectMemberList(sqlSession, proNo);
+	}
 
+	public int inviteProMemberCancel(int memberNo, int proNo) {
+		WorkOnMember wom = new WorkOnMember();
+		wom.setMemberNo(memberNo);
+		wom.setProNo(proNo);
+		return projectDAO.inviteProMemberCancel(sqlSession, wom);
+	}
 
-
-
-
+	public ArrayList<WorkOnProject> selectInvitingMemberList(int memberNo) {
+		return projectDAO.selectInvitingMemberList(sqlSession, memberNo);
+	}
 
 }

@@ -156,6 +156,9 @@ a:hover{
 			},
 			success: function(data){
 				var str="";
+				if(data.partnerList.length==0){
+					str += "<div class='col-md-12' style='color: gray; text-align: center;'>파트너가 없습니다.</div>";
+				}
 				for(var i=0; i<data.invitingPartnerList.length; i++){
 					str+=
 	 					"<div class='col-md-4' style='margin-top: 10px;'>"
@@ -251,8 +254,8 @@ a:hover{
 			url: "/acceptPartner.do",
 			type: "post",
 			data: {
-				memberNo,
-				parNo
+				memberNo: memberNo,
+				parNo: parNo
 			}
 		});
 	}
@@ -366,9 +369,9 @@ a:hover{
 								<div class="col-md-12">
 									<input type="text" id="searchPartnerText" placeholder="파트너 검색...">
 								</div>
-								
+								<div class="col-md-12">
 								<div class="row" id="partnerListDiv">
-								
+								</div>
 								</div>
 							</div>
  						</div>
