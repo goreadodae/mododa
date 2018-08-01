@@ -7,17 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-		<form action="/noticeWrite.do">
-			글제목:<input type="text" size=90 name="title" /><br>
-			<textarea rows="20" cols="100" name="contents"
+	<form action="/qnaWrite.do">
+			제목:<input type="text" size=90 name="queTitle" /><br>
+			<textarea rows="20" cols="100" name="queContents"
 				style="resize: none;"></textarea>
 			<br> <input type="submit" value="작성하기">
 		</form>
 		<button type="button" onclick="back();">목록</button>
-
-	
-
-	
 </body>
 </html>

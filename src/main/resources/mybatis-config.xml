@@ -24,6 +24,7 @@
       <typeAlias type="kr.pe.mododa.personal.model.vo.Mypost" alias="mypost"/>
       <typeAlias type="kr.pe.mododa.personal.model.vo.SerDelPost" alias="SerDel"/>
       <typeAlias type="kr.pe.mododa.qna.model.vo.Qna" alias="qna"/>
+       <typeAlias type="kr.pe.mododa.qna.model.vo.QnaList" alias="qnaList"/>
       <typeAlias type="kr.pe.mododa.write.model.vo.RelationWriting" alias="relationWriting"/>
       <typeAlias type="kr.pe.mododa.write.model.vo.RelationSearchKey" alias="relationSearchKey"/>    
    </typeAliases>

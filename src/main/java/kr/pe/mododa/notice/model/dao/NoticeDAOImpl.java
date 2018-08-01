@@ -29,7 +29,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 		
     
-		List<Notice> list = new ArrayList<Notice>();
+//		List<Notice> list = new ArrayList<Notice>();
 
 		NoticeList listNotice = new NoticeList();
 		listNotice.setStartTotalBoard(startTotalBoard);
