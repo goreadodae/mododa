@@ -411,7 +411,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							for (var i = 0; i < data.schedule.length; i++) {
 								countSchedule++;
 
-								strSchedule += "<div class='scheduleList' onclick='open_updateScheduleModal();'>"
+								strSchedule += "<div class='scheduleList' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +");'>"
 										+ "<img src='../resources/images/post/calendar.png' />"
 										+ "<span class='scheduleDate'>&nbsp;&nbsp;"
 										+ data.schedule[i].startDate + " ~ "
@@ -569,8 +569,8 @@ img[class="btn btn-link dropdown-toggle"] {
 	
 	//일정수정 모달 open
 	function open_updateScheduleModal(flag) {
-		document.getElementById('scStartDate').valueAsDate = new Date();
-		document.getElementById('scEndDate').valueAsDate = new Date();
+		$('#scStartDate').valueAsDate = new Date();
+		$('#scEndDate').valueAsDate = new Date();
 		$('#updateScheduleModal').show();
 	}
 
@@ -1043,8 +1043,27 @@ img[class="btn btn-link dropdown-toggle"] {
 	}
 	
 	//일정 수정
-	function updateSchedule(){
+	function updateSchedule(scNo){
+		var scTitle = $('#updateScTitle').val();
+		var scStartDate = $('#updateScStartDate').val();
+		var scEndDate = $('#updateScEndDate').val();
 		
+		$.ajax({
+			url:"/updateSchedule.do",
+			type:"post",
+			data:{
+				scheduleNo : scNo,
+				startDate : scStartDate,
+				endDate : scEndDate,
+				scTitle : scTitle
+			},
+			success : function(data){
+				
+			},
+			error : function(data){
+				console.log("일정수정 실패");
+			}
+		});
 	}
 
 	//댓글추가(준석)

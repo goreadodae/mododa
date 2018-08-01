@@ -363,7 +363,22 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
+	//일정 수정
+	@RequestMapping(value="/updateSchedule.do")
+	public ModelAndView updateSchedule(int scheduleNo, Date startDate, Date endDate, String scTitle) {
+		Schedule vo = new Schedule();
+		vo.setScheduleNo(scheduleNo);
+		vo.setStartDate(startDate);
+		vo.setEndDate(endDate);
+		vo.setScTitle(scTitle);
+		int result = postService.updateSchedule(vo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+
 	//댓글 읽어오는거 (준석추가)
 	@RequestMapping(value="/comment.do")
 	public ModelAndView comment(@RequestParam int postNo)
@@ -375,25 +390,27 @@ public class PostControllerImpl {
 		view.setViewName("/post/postComment");
 		return view;
 	}
-	
+
 	@RequestMapping(value="/insertComment.do")
 	public Object insertComment(HttpSession session,@RequestParam int postNo, @RequestParam String insertCom)
 	{
 		System.out.println("글 번호:"+postNo + "내용:"+insertCom);
 		Post vo = new Post();
-		
+
 		vo.setPostNo(postNo);//댓글 작성할 글 번호
 		vo.setPostContent(insertCom); //댓글 내용
 		vo.setPostWriter(((Member)session.getAttribute("member")).getMemberNo());//댓글 작성한 회원 번호(세션에서 가져옴.)
 		int result = postService.insertComment(vo);
-		
+
 		System.out.println(result);
 		ArrayList<Comment> commentList = postService.selectComment(postNo);
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("comment",commentList);
 		view.addObject("cmPostNo",postNo); //댓글이 없을경우를 대비해 글번호를 넘겨줌.(댓글 작성시 필요함.)
 		view.setViewName("/post/postComment");
 		return view;
 	}
+
+
 }
