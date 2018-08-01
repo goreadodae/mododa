@@ -7,10 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><c:out value="${currentProName}" /> - 모두다</title>
-
-
 <script src="/resources/js/jquery/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
 
@@ -367,7 +371,7 @@
 								str += '</span>';
 								str += '</div>';
 								str += '</div>';
-								str += '<div class="row" style="height: 50%"><div class="col-md-12">';
+								str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
 								str += '<h6 style="display: inline">';
 									if(data[i].memberPicture == null)
 										{
@@ -422,15 +426,30 @@
 			},
 			success : function(data) {
 				console.log("검색 성공");
-				console.log(data.searchProlist);
 				$('#relationList').text(" ");
-
+				
+				
+				if(data.length == 0)
+				{	
+					console.log("이프");
+					console.log(data);
+					failed += '<li class="list-group-item" style="padding-top: 10px; height:600px !important;" >'
+					failed += '<div class="row">';
+					failed += '<div class="col-md-12">';
+					failed += '<img id="searchImg" src="/resources/images/writeImages/search.png" />';
+					failed += '</div>';
+					failed += '</div><br><br>';
+					failed += '<div class="row">';
+					failed += '<div class="offset-md-4">';
+					failed += '<h5 style="color:#A1A1A1; font-weight:bold;">검색 결과가 없습니다.</h5>';
+					failed += '</div></div></li>';	
+					$('#relationList').append(failed);
+					failed = "";
+					
+				}
+				else{
+					console.log("엘스");
 				for (var i = 0; i < data.length; i++) {
-							
-	
-  					
-  				
-  				
 					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
 					str += '<div class="row" style="height: 50%">';
 					str += '<div class="col-md-12" style="height: 100%">';
@@ -468,34 +487,16 @@
 					
 				}
 				
-				if(data.searchProlist == null)
-				{
-				
-					console.log("이프");
-					console.log(data.searchProlist);
-					failed += '<li class="list-group-item" style="padding-top: 10px; height:600px !important;" >'
-					failed += '<div class="row">';
-					failed += '<div class="col-md-12">';
-					failed += '<img id="searchImg" src="/resources/images/writeImages/search.png" />';
-					failed += '</div>';
-					failed += '</div><br><br>';
-					failed += '<div class="row">';
-					failed += '<div class="offset-md-4">';
-					failed += '<h5 style="color:#A1A1A1; font-weight:bold;">검색 결과가 없습니다.</h5>';
-					failed += '</div></div></li>';	
-
-					$('#relationList').append(failed);
-					failed = "";
-					
 				}
-				
-				
-				
+
 				
 				$('#relationSearch').val("");
 			},
 			error : function(data) {
 				console.log("검색 실패");
+			
+				
+				
 			}
 
 			})

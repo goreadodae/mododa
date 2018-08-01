@@ -94,16 +94,17 @@ public class WriteControllerImpl implements WriteController {
 	
 	
 	@RequestMapping(value="/searchWriting.do")
-	public ModelAndView searchWriting(HttpServletResponse response, @RequestParam String searchKeyword, @RequestParam int currentProNo) throws Exception{
+	public void searchWriting(HttpServletResponse response, @RequestParam String searchKeyword, @RequestParam int currentProNo) throws Exception{
 		ModelAndView view = new ModelAndView();		
 		RelationSearchKey rsKey = new RelationSearchKey();
 		rsKey.setSearchKeyword(searchKeyword);
-		rsKey.setCurrentProNo(currentProNo);
-		ArrayList<RelationWriting> searchProlist = writeService.searchWriting(rsKey);
-		view.setViewName("/write/writePage");
-		view.addObject("searchProlist",searchProlist);
-	
-		return view;
+		rsKey.setCurrentProNo(currentProNo);	
+		ArrayList<RelationWriting> searchProList = writeService.searchWriting(rsKey);
+		response.setContentType("aplication/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(searchProList,response.getWriter());
+		
+		
 		
 	}
 	
