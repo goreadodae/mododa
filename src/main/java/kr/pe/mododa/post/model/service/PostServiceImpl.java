@@ -16,6 +16,7 @@ import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.dao.PostDAOImpl;
 import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
+import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
 
 
@@ -40,6 +41,17 @@ public class PostServiceImpl implements PostService{
 		vo.setPostNo(postNo);
 		vo.setMemberNo(memberNo);
 		return postDAO.selectBookmark(sqlSession, vo);
+	}
+	
+	public PostLike selectPostLike(int postNo, int memberNo) {
+		PostLike vo = new PostLike();
+		vo.setPostNo(postNo);
+		vo.setMemberNo(memberNo);
+		return postDAO.selectPostLike(sqlSession, vo);
+	}
+	
+	public int selectPostLikeCount(int postNo) {	//0801 아름 추가
+		return postDAO.selectPostLikeCount(sqlSession, postNo);
 	}
 	
 	public List<Schedule> selectSchedule(int postNo) {
@@ -77,6 +89,10 @@ public class PostServiceImpl implements PostService{
 	public int deleteDecision(int postNo) {
 		return postDAO.deleteDecision(sqlSession,postNo);
 	}
+	
+	public int updateSchedule(Schedule vo) {	//0801 아름 추가
+		return postDAO.updateSchedule(sqlSession, vo);
+	}
 
 	public int updateDecision(Decision vo) {
 		return postDAO.updateDecision(sqlSession,vo);
@@ -101,6 +117,16 @@ public class PostServiceImpl implements PostService{
 	public List<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 추가)
 		return postDAO.selectComment(sqlSession, postNo);
 	}
+	
+	public int insertPostLike(PostLike vo) {	//0801 아름 추가
+		return postDAO.insertPostLike(sqlSession, vo);
+	}
+	
+	public int deletePostLike(PostLike vo) {	//0801 아름 추가
+		return postDAO.deletePostLike(sqlSession, vo);
+	}
+	
+	
 
 }
 

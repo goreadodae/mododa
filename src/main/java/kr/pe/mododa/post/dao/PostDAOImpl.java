@@ -12,6 +12,7 @@ import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
+import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
 
 
@@ -29,6 +30,15 @@ public class PostDAOImpl implements PostDAO{
 	public Bookmark selectBookmark(SqlSessionTemplate sqlSession, Bookmark vo) {
 		return sqlSession.selectOne("post.selectBookmark",vo);                           
 	}
+	
+	public PostLike selectPostLike(SqlSessionTemplate sqlSession, PostLike vo) {
+		return sqlSession.selectOne("post.selectPostLike",vo);
+	}
+	
+	public int selectPostLikeCount(SqlSessionTemplate sqlSession, int postNo) { //0801 아름 추가
+		return sqlSession.selectOne("post.selectPostLikeCount", postNo);
+	}
+	
 	
 	public List<Schedule> selectSchedule(SqlSessionTemplate sqlSession, int postNo) {
 		return sqlSession.selectList("post.selectSchedule", postNo);
@@ -67,6 +77,10 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.delete("post.deleteDecision",postNo);
 	}
 	
+	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule vo) {	//0801 아름 추가
+		return sqlSession.update("post.updateSchedule",vo);
+	}
+	
 	public int updateDecision(SqlSessionTemplate sqlSession, Decision vo) {
 		return sqlSession.update("post.updateDecision",vo);
 	}
@@ -90,4 +104,15 @@ public class PostDAOImpl implements PostDAO{
 	public int deleteBookmark(SqlSessionTemplate sqlSession, Bookmark vo) {
 		return sqlSession.insert("post.deleteBookmark",vo);
 	}
+	
+	public int insertPostLike(SqlSessionTemplate sqlSession, PostLike vo) { //0801 아름 추가
+		return sqlSession.insert("post.insertPostLike", vo);
+	}
+	
+	public int deletePostLike(SqlSessionTemplate sqlSession, PostLike vo) { //0801 아름 추가
+		return sqlSession.delete("post.deletePostLike",vo);
+	}
+	
+	
+	
 }
