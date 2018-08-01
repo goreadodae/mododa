@@ -1,5 +1,6 @@
 package kr.pe.mododa.post.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -79,8 +80,9 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.update("post.updateTodoProgress",vo);
 	}
 	
-	public List<Comment> selectComment(SqlSessionTemplate sqlSession, int postNo) {
-		return sqlSession.selectList("post.selectComment",postNo);
+	public ArrayList<Comment> selectComment(SqlSessionTemplate sqlSession, int postNo) { //준석 수정.
+		List listComment = sqlSession.selectList("post.selectComment",postNo);
+		return (ArrayList<Comment>)listComment;
 	}
   
 	public int insertBookmark(SqlSessionTemplate sqlSession, Bookmark vo) {
@@ -89,5 +91,9 @@ public class PostDAOImpl implements PostDAO{
 	
 	public int deleteBookmark(SqlSessionTemplate sqlSession, Bookmark vo) {
 		return sqlSession.insert("post.deleteBookmark",vo);
+	}
+
+	public int insertComment(SqlSessionTemplate sqlSession, Post vo) { //준석 추가(댓글 입력)
+		return sqlSession.insert("post.insertComment",vo);
 	}
 }
