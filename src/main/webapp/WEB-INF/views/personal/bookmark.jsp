@@ -11,6 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<!-- icon -->
+
 <title>템플릿</title>
 
 <link rel="stylesheet" type="text/css"
@@ -175,15 +178,7 @@ div {
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
 							</div>
 							<div class="col-md-9">
-							<c:choose>
-							 <c:when test="${book.writerImg !=null}">
-							  <c:set var="writerImg" value="${book.writerImg }"/>
-							 </c:when>
-							 <c:otherwise>
-							 	<c:set var="writerImg" value="../resources/upload/member/whale.png"/>
-							 </c:otherwise>
-							</c:choose>
-							<img id="memberImg2" src="${writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
+							<img id="memberImg2" src="${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
 							<a href="#" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">

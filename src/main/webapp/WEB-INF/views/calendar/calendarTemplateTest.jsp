@@ -350,23 +350,60 @@ var scheduleNo = 0;
            success : function(data) {
    
   			$('#postList').find("div").remove();
-           	
-  				/* for(var i=0;i<data.length;i++){
-  					$('#myPjListDropDown').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
-  				} */
   				
   			for(var i=0;i<data.length;i++){
-					$('#postList').append("<div id='post_"+data[i].proNo+"'><input type='checkbox'/>"+data[i].proTitle+"</div>");
+					$('#postList').append("<div id='post_"+data[i].proNo+"' value='"+data[i].proNo+"' class='projectDiv'><input type='checkbox' name='projectListName' value='"+data[i].proNo+"'/>"+data[i].proTitle+"</div>");
 				}
-  				$('#postList').append("<div id='post_0'><button class='btn btn-success'>저장</button></div>");
+  				$('#postList').append("<div id='post_0' class='projectDiv'><input type='button' class='btn btn-success' value='저장' onclick='projectSC();'></div>");
            },
            error : function(data) {
               console.log("실패");
               }
            });
 	  
-  }
+  	}
+  
+   function prjectListOpen () {
+	   
+		var displayValue = $(".projectDiv").css('display');
+		if (displayValue == 'none') {
+			$(".projectDiv").show();/* 열렸던 창 닫기 */
+			
+		} else {
+			$(".projectDiv").hide();
+		}
 
+   }
+   
+   function projectSC(){
+	   
+	  var checkboxValues = [];	   
+
+	    for(i=0; i < my_form.projectListName.length; i++) {
+	    	if(my_form.projectListName[i].checked) {
+				checkboxValues[i] =my_form.projectListName[i].value;
+			}
+		}	
+	  
+		console.log(checkboxValues);
+	   	
+	   	$.ajax({
+	        url : "/selectDozenProject.do",
+	        type : "post",
+	        data :  {checkboxValues : checkboxValues},
+	        success : function(data) {
+	           console.log("성공");
+	           //window.location.reload(true);//새로고침코드
+	        },
+	        error : function(data) {
+	           console.log("실패");
+	        },
+	        complete : function(data) {
+	        	prjectListOpen ();
+	        }
+		});
+	   
+   }
 
    
    
@@ -425,12 +462,12 @@ div {
             width: 30%; /* Could be more or less, depending on screen size */                          
         }
         
-   div[id^="post_"] {
+	
+	.projectDiv {
 	display: none;
 	padding: 0;
 	background-color: #F5F5F5;
 	}
-	
 	
 
 </style>
@@ -453,28 +490,23 @@ div {
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row">
 		<div class="col-md-2">
-		<button type="button" class="btn btn-success" onclick="myProList();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
-			<!-- <div class="col-md-2 dropdown topbar" id="proListDiv" onclick="myProList();">
-					<img src="../resources/images/calendar/wish.png" class="btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<div class="dropdown-menu dropdown-menu-right">
-						<div class="row" style="margin: 20px;">
-    						<a class="dropdown-item" href="/myInfo.do">내정보</a>
-    						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
-    						<a class="dropdown-item" href="/logout.do">로그아웃</a>
-    						<ul>
-    						<li></li>
-    						</ul>
-    						
- 						</div>
- 						</div>
-			</div> -->
-			<div id="postList"></div>
+		<button type="button" class="btn btn-success" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
+			<form name='my_form'><div id="postList"></div></form>
 		</div>	
 		<div class="col-md-2">　</div>
 		<div class="col-md-4">，</div>
 		<div class="col-md-4">　</div></div>
-		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="col-md" id="calendar"></div>
+		
+		<!-- <div class="row">
+		<div class="col-md-3 max-auto">
+		<button type="button" class="btn btn-success" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
+			<div id="postList"></div>
+		</div>
+		<div class="col-md" id="calendar">　</div>
+		<div class="col-md-1">　</div>
+		</div> -->
+
 	</div>
 	<!-- contents 끝 -->
 

@@ -104,4 +104,9 @@ public class LibraryServiceImpl implements LibraryService{
 	public ArrayList<Link> listLinkMe(int memberNo) {
 		return libraryDAO.listLinkMe(sqlSession, memberNo);
 	}
+
+	// 의사결정 선택
+	public int updateDecision(Decision dc) {
+		return libraryDAO.updateDecision(sqlSession, dc);
+	}
 }

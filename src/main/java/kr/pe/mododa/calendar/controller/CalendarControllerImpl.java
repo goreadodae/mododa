@@ -2,10 +2,12 @@ package kr.pe.mododa.calendar.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
@@ -191,6 +193,20 @@ public class CalendarControllerImpl implements CalendarController {
 		 response.setCharacterEncoding("utf-8");
 		 
 		 new Gson().toJson(result,response.getWriter());
+		
+	}
+
+	@Override
+	@RequestMapping(value="selectDozenProject.do")
+	public void selectDozenProject(HttpServletResponse response,@RequestParam(value = "checkboxValues[]") List<String> checkboxValues) throws Exception {
+
+		ArrayList<Schedule> sclist = CalendarService.selectDozenProject(checkboxValues);
+		 
+		 response.setContentType("application/json");
+		 response.setCharacterEncoding("utf-8");
+		 
+		 new Gson().toJson(sclist,response.getWriter());
+
 		
 	}
 

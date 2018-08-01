@@ -27,6 +27,15 @@
 		pro_no as proNo
 		from schedule
 	</select>
+	<select id="selectDozenProject" resultType="schedule">
+		select sc_no as scheduleNo,
+		post_no as postNo,
+		member_no as memNO,
+		pro_start_Date as startDate,
+		pro_end_Date as endDate,
+		pro_no as proNo
+		from schedule where pro_no = #{proNo}
+	</select>
 	<select id="postList" resultType="post">
 		select post_no as postNo,
 		post_title as postTitle,

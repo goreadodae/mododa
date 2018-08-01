@@ -1,5 +1,6 @@
 package kr.pe.mododa.post.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -114,7 +115,7 @@ public class PostServiceImpl implements PostService{
 		return postDAO.deleteBookmark(sqlSession, vo);
 	}
   
-	public List<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 추가)
+	public ArrayList<Comment> selectComment(int postNo) { //댓글 읽어오기 (준석 수정)
 		return postDAO.selectComment(sqlSession, postNo);
 	}
 	
@@ -127,6 +128,11 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	
+
+	public int insertComment(Post vo) { //댓글 입력(준석추가)
+		// TODO Auto-generated method stub
+		return postDAO.insertComment(sqlSession,vo);
+	}
 
 }
 

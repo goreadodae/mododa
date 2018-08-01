@@ -1,6 +1,7 @@
 package kr.pe.mododa.calendar.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -22,5 +23,6 @@ public interface CalendarDAO {
 	public int deleteSchdule (SqlSessionTemplate sqlSession,int scheduleNo);
 	public Project selectProjectOne (SqlSessionTemplate sqlSession,int scheduleNo);
 	public Post selectPostOne (SqlSessionTemplate sqlSession,int scheduleNo);
+	public ArrayList<Schedule> selectDozenProject (SqlSessionTemplate sqlSession,List<String> checkboxValues);
 	
 }

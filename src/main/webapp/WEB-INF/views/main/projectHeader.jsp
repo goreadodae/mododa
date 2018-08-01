@@ -69,26 +69,26 @@
 .dropdown-item:active{
 	background-color: #CFF09E !important;
 }
-#partnerList{
+#proMemberList{
 	height: auto; width: 20rem;
 }
 .partnerListPic{
 	height: 4rem; width: 4rem;
 }
-.partnerListDropdown{
+.proMemberListDropdown{
 	height: 70%; width: auto; position:absolute; top:0; bottom:0; margin:auto; margin-top: 10px;
 }
-#invitePartnerBtn, #searchPartnerText{
+#inviteMemberBtn, #searchMemberText{
 	width: 100%; margin-bottom: 15px;
 }
-.invietMemberId {
+.inviteMemberId {
 	width: 100%;
 	background-color: transparent;
 	border: 0px solid;
 	margin-bottom: 10%;
 	border-bottom: 1px solid gray;
 }
-.invietMemberId:focus {
+.inviteMemberId:focus {
 	outline: none;
 }
 /* The Modal (background) */
@@ -146,56 +146,51 @@ a:hover{
 		});
 	}
 	/* 기본 구조 구성하는 스크립트 끝 */
-	/* 파트너 리스트를 보여주는 함수 */
-	function showPartnerList(){
+	/* 멤버 리스트를 보여주는 함수 */
+	function showMemberList(){
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+	 	var memberNo= ${sessionScope.member.memberNo};
 		$.ajax({
-			url: "/selectPartnerList.do",
+			url: "/selectWorkOnMemberList.do",
 			type: "post",
 			data: {
-				memberNo: ${sessionScope.member.memberNo}
+				proNo: proNo,
+				memberNo: memberNo
 			},
 			success: function(data){
 				var str="";
-				for(var i=0; i<data.invitingPartnerList.length; i++){
-					str+=
-	 					"<div class='col-md-4' style='margin-top: 10px;'>"
-	 					+"<img src='../resources/upload/member/"+data.invitingPartnerList[i].parPicture+"'"
-						+"class='img-circle rounded-circle border partnerListPic'>"
-						+"</div>"
-						+"<div class='col-md-8' style='margin-top: 10px;'>"
-						+"<div class='row'>"
-						+"<div class='col-md-12'>"+data.invitingPartnerList[i].parName+"</div>"			
-						+"<div class='col-md-12'>"+data.invitingPartnerList[i].parId+"</div>"
-						+"<div class='col-md-12'><a style='color: #339966; float: left;' onclick='acceptPartner("
-						+data.invitingPartnerList[i].parNo+","+data.invitingPartnerList[i].memberNo
-						+");'>수락하기</a>"
-						+"<a onclick='inviteCancel("
-						+data.invitingPartnerList[i].memberNo+","+data.invitingPartnerList[i].parNo
-						+");' style='color: gray; float: right;'>거절하기</a></div>"
-						+"</div>"
-						+"</div>";
+				if(data.memberList.length==0){
+					str += "<div class='col-md-12' style='color: gray; text-align: center;'>멤버가 없습니다.</div>";
 				}
-				for(var i=0; i<data.partnerList.length; i++){
+				for(var i=0; i<data.memberList.length; i++){
  					str+=
  					"<div class='col-md-4' style='margin-top: 10px;'>"
- 					+"<img src='../resources/upload/member/"+data.partnerList[i].parPicture+"'"
+ 					+"<img src='../resources/upload/member/"+data.memberList[i].memberPicture+"'"
 					+"class='img-circle rounded-circle border partnerListPic'>"
 					+"</div>"
 					+"<div class='col-md-8' style='margin-top: 10px;'>"
 					+"<div class='row'>"
-					+"<div class='col-md-12'>"+data.partnerList[i].parName+"</div>";
-					if(data.partnerList[i].parYN=='Y'){						
-						str+="<div class='col-md-12'>"+data.partnerList[i].parId+"</div>";
+					+"<div class='col-md-12'>"+data.memberList[i].memberName;
+					if(data.memberList[i].leader=='Y'){
+						str+="<img src='../resources/images/project/crown.png'>";
+					}
+					if(data.memberList[i].memberNo==memberNo){
+						str+="<label style='color: gray'>(me)</label>";
+					}
+					str+="</div>";
+					if(data.memberList[i].inviteYN=='Y'){						
+						str+="<div class='col-md-12'>"+data.memberList[i].memberId+"</div>";
 					} else {
 						str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
 						+"<a onclick='inviteCancel("
-						+data.partnerList[i].memberNo+","+data.partnerList[i].parNo
+						+data.memberList[i].proNo+","+data.memberList[i].memberNo
 						+");' style='color: gray; float: right;'>취소하기</a></div>";
 					}
 					str+="</div>"
 					+"</div>";
 				}
-				$('#partnerListDiv').html(str);
+				$('#proMemberListDiv').html(str);
 			},
 			error: function(data){
 				console.log("실패");
@@ -204,29 +199,31 @@ a:hover{
 		});
 	}
 	/*  */
-	function invitePartnerFunc(){
+	function inviteMemberFunc(){
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
 		$.ajax({
-			url: "/invitePartner.do",
+			url: "/inviteMemberAtHeader.do",
 			type: "post",
 			data:{
-				parId : $('#invietMemberId').val(),
-				memberNo : ${sessionScope.member.memberNo}
+				inviteMemberId : $('#inviteMemberId').val(),
+				proNo : proNo
 			},
 			success: function(data){
 				switch(data.result){
 				case "success": alert("초대에 성공하였습니다.");
-				$('#invietMemberId').val('');
-					$(".invietMemberId").css('border-bottom','1px solid gray');
+				$('#inviteMemberId').val('');
+					$(".inviteMemberId").css('border-bottom','1px solid gray');
 					$('#nothingLabel').text('');
 					break;
 				case "failed": alert("초대에 실패하였습니다.");break;
 				case "nothing": 
 					$('#nothingLabel').text('없는 아이디입니다');
-					$(".invietMemberId").css('border-bottom','1px solid red');
+					$(".inviteMemberId").css('border-bottom','1px solid red');
 					break;
 				case "having":
 					$('#nothingLabel').text('초대중이거나 이미 파트너인 아이디입니다');
-					$(".invietMemberId").css('border-bottom','1px solid red');
+					$(".inviteMemberId").css('border-bottom','1px solid red');
 					break;
 				}
 			},
@@ -236,44 +233,35 @@ a:hover{
 		});
 	}
 	/* 초대취소 */
-	function inviteCancel(memberNo, parNo){
+	function inviteCancel(proNo, memberNo){
 		$.ajax({
-			url: "/inviteCancel.do",
+			url: "/inviteProMemberCancel.do",
 			type: "post",
 			data: {
 				memberNo: memberNo,
-				parNo: parNo
+				proNo: proNo
 			}
 		});
 	}
-	function acceptPartner(memberNo, parNo){
-		$.ajax({
-			url: "/acceptPartner.do",
-			type: "post",
-			data: {
-				memberNo,
-				parNo
-			}
-		});
-	}
-	function ipm_open_pop(flag) {
-		$('#invitePartnerModal').show();
+
+	function imm_open_pop(flag) {
+		$('#inviteMemberModal').show();
 	};
 	//팝업 Close 기능
-	function ipm_close_pop(flag) {
-		$('#invitePartnerModal').hide();
+	function imm_close_pop(flag) {
+		$('#inviteMemberModal').hide();
 		$('#nothingLabel').text('');
-		$(".invietMemberId").css('border-bottom','1px solid gray');
-		$("#invietMemberId").val('');
+		$(".inviteMemberId").css('border-bottom','1px solid gray');
+		$("#inviteMemberId").val('');
 	};
 	$(document).ready(function(){
-		$('#searchPartnerText').keyup(function(){
+		$('#searchMemberText').keyup(function(){
 			$.ajax({
 				url: "/searchPartner.do",
 				type: "post",
 				data: {
 					memberNo: ${sessionScope.member.memberNo},
-					searchPartnerText: $('#searchPartnerText').val()
+					searchMemberText: $('#searchMemberText').val()
 				}, success: function(data){
 					var str="";
 					for(var i=0; i<data.searchPartnerList.length; i++){
@@ -296,7 +284,7 @@ a:hover{
 						str+="</div>"
 						+"</div>";
 					}
-					$('#partnerListDiv').html(str);
+					$('#proMemberListDiv').html(str);
 				}
 			});
 		});
@@ -353,22 +341,23 @@ a:hover{
 						</div>
 						<div class="col-md-1 topbar">
 						<!-- 파트너추가 -->
-					<img src="../resources/upload/member/add-friend.png" class="myInfo" onclick="ipm_open_pop();">
+					<img src="../resources/upload/member/add-friend.png" class="myInfo" onclick="imm_open_pop();">
 						</div>
 						<div class="col-md-3 topbar">
 						<!-- 파트너 목록 -->
-						<a class="dropdown-toggle partnerListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showPartnerList();">멤버 목록</a>
-						<div class="dropdown-menu dropdown-menu-right" id="partnerList">
+						<a class="dropdown-toggle proMemberListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showMemberList();">멤버 목록</a>
+						<div class="dropdown-menu dropdown-menu-right" id="proMemberList">
 							<div class="row" style="margin: 20px;">
 								<div class="col-md-12">
-									<button class="btn btn-secondary btn-xl" id="invitePartnerBtn" onclick="ipm_open_pop();">파트너 초대하기</button>
+									<button class="btn btn-secondary btn-xl" id="inviteMemberBtn" onclick="imm_open_pop();">멤버 초대하기</button>
 								</div>
 								<div class="col-md-12">
-									<input type="text" id="searchPartnerText" placeholder="파트너 검색...">
+									<input type="text" id="searchMemberText" placeholder="멤버 검색...">
 								</div>
+								<div class="col-md-12">
+								<div class="row" id="proMemberListDiv">
 								
-								<div class="row" id="partnerListDiv">
-								
+								</div>
 								</div>
 							</div>
  						</div>
@@ -380,35 +369,36 @@ a:hover{
 			</div>
 		</div>
 		<!-- header 끝 -->
-		<div id="invitePartnerModal" class="modal">
+		<div id="inviteMemberModal" class="modal">
 			<!-- Modal 내용 -->
 			<div class="modal-content" style="width: 30%; height: auto;">
 				<div class="row" style="margin-bottom: 20px;">
 					<div class="col-11"></div>
 					<div class="col-1">
 						<img src="../resources/images/post/close.png" id="modal-close"
-							onclick="ipm_close_pop();" />
+							onclick="imm_close_pop();" />
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="col-md-12">
 						<h2
-							style="float: left; margin-left: 40px; color: #339966; font-weight: bold;">파트너초대하기</h2>
+							style="float: left; margin-left: 40px; color: #339966; font-weight: bold;">멤버 초대하기</h2>
 					</div>
 					<div class="offset-md-1 col-md-10 inviteContext" style="margin-top: 5%;">
 						<label id="nothingLabel" style="color: red;">&nbsp;</label>
-						<input class="invietMemberId" id="invietMemberId" type="text" placeholder="이메일을 입력하세요">
+						<input class="inviteMemberId" id="inviteMemberId" type="text" placeholder="이메일을 입력하세요">
 					</div>
 					<div class="col-md-4"></div>
 					<div class="col-md-4" style="margin-top: 5%; margin-bottom: 10%;">
-						<button onclick="invitePartnerFunc();" class="btn btn-secondary">초대하기</button>
+						<button onclick="inviteMemberFunc();" class="btn btn-secondary">초대하기</button>
 					</div>
 					<div class="col-md-4"></div>
 				</div>
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>
+		<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
 		<!-- 팝업모달 끝 -->
 </body>
 </html>

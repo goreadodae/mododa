@@ -9,6 +9,8 @@
       <typeAlias type="kr.pe.mododa.member.model.vo.SearchPartner" alias="searchPartner"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.Project" alias="project"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.WorkOn" alias="workon"/>
+      <typeAlias type="kr.pe.mododa.project.model.vo.WorkOnMember" alias="wom"/>
+      <typeAlias type="kr.pe.mododa.project.model.vo.WorkOnProject" alias="wop"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.Notice" alias="notice"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.NoticeList" alias="listNotice"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.SearchList" alias="searchList"/>

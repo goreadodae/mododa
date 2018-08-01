@@ -6,11 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- 글씨체 -->
 <link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo"
@@ -525,6 +527,22 @@ img[class="btn btn-link dropdown-toggle"] {
 						console.log("실패");
 					}
 				});
+		//준석 추가(댓글읽으려면 글번호 필요해서 다른 .do로 글번호 넘김.)
+		$.ajax({
+			url:"/comment.do",
+			type:"post",
+			data:{
+				postNo : postNo
+		},
+		success:function(data)
+		{
+			$("#comment").html(data);
+		},
+		error:function(data)
+		{
+			console.log("error");
+		}
+		});
 	};
 
 	//팝업 open 기능
@@ -974,7 +992,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		}
 
 	}
-	
+
 	//좋아요 설정
 	function postLike(){
 		if (postLikeOnOff == 0) {
@@ -1028,7 +1046,30 @@ img[class="btn btn-link dropdown-toggle"] {
 	function updateSchedule(){
 		
 	}
-	
+
+	//댓글추가(준석)
+	function insertComment(postNo)
+	{
+		var insertCom = $(".comment-input").val();
+		
+		if(insertCom=="")
+			{
+			alert("댓글입력후 누르세요~~");
+			}
+		else{
+			$.ajax({
+				url:"/insertComment.do",
+				type:"post",
+				data:{postNo:postNo,
+					"insertCom":insertCom},
+				success:function(data){
+					$('#comment').empty();
+					$("#comment").html(data);
+				}
+				
+			});
+		}
+	}
 </script>
 </head>
 
@@ -1135,8 +1176,7 @@ img[class="btn btn-link dropdown-toggle"] {
 					<!-- right side (댓글 부분) -->
 
 					<div class="col-5" id="comment">
-
-						
+				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>
 				</div>
 

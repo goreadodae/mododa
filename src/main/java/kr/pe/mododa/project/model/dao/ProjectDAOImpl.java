@@ -6,11 +6,12 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
+import kr.pe.mododa.project.model.vo.WorkOn;
+import kr.pe.mododa.project.model.vo.WorkOnMember;
+import kr.pe.mododa.project.model.vo.WorkOnProject;
 
 
 
@@ -76,6 +77,31 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh) {
 		List postList = sqlSession.selectList("project.searchHashTag", sh);
 		return (ArrayList<ProjectPostList>)postList;
+	}
+
+	public boolean checkMemberNoInWorkOn(SqlSessionTemplate sqlSession, WorkOn wo) {
+		Integer result = sqlSession.selectOne("project.checkMemberNoInWorkOn", wo);
+		if(result==null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public int inviteMemberAtHeader(SqlSessionTemplate sqlSession, WorkOn wo) {
+		return sqlSession.insert("project.inviteMemberAtHeader", wo);
+	}
+
+	public ArrayList<WorkOnMember> selectMemberList(SqlSessionTemplate sqlSession, int proNo) {
+		return (ArrayList)sqlSession.selectList("project.selectMemberList", proNo);
+	}
+
+	public int inviteProMemberCancel(SqlSessionTemplate sqlSession, WorkOnMember wom) {
+		return sqlSession.delete("project.inviteProMemberCancel", wom);
+	}
+
+	public ArrayList<WorkOnProject> selectInvitingMemberList(SqlSessionTemplate sqlSession, int memberNo) {
+		return (ArrayList)sqlSession.selectList("project.selectInvitingMemberList", memberNo);
 	}
 
 

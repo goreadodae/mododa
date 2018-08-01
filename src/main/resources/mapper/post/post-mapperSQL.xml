@@ -156,6 +156,17 @@
 		ct.cm_tag as content,
 		ct.CM_POST as postNo,
 		ct.cmember_no as commentNo
+
+  <select id="selectComment" resultType="comment">
+		select 
+		m.member_name as writeNick,
+		m.member_no as writerNo, 
+		m.member_picture as writePicture, 
+		to_char(cm_date,'yy-mm-dd am hh24:mi:ss')as writeTime , 
+		ct.cm_tag as content, 
+		ct.CM_POST as postNo, 
+		ct.cmember_no as commentNo  
+
 		from comment_tbl ct
 		join member m on (ct.cm_writer = m.member_no)
 		where
@@ -192,4 +203,9 @@
 		sc_title=#{scTitle} 
 		where sc_no=#{scheduleNo}
 	</update>
+
+	<insert id="insertComment" parameterType="post">
+		insert into comment_tbl values(comment_tbl_SEQ.nextval,#{postWriter}, #{postNo},#{postContent},sysdate)
+	</insert>
+
 </mapper>

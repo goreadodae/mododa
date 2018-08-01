@@ -254,5 +254,9 @@
 	<select id="privateNo" resultType="int">
 		select min(pro_no) from project where pro_member_no = #{memberNo}
 	</select>
+	
+	<update id="updateDecision" parameterType="decision">
+		update decision set dc_yn='Y', dc_decision=#{dcDecision}, dc_comment=#{dcComment} where dc_no=#{dcNo}
+	</update>
 
 </mapper>

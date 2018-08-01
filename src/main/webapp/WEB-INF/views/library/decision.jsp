@@ -6,7 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 
 <style>
@@ -19,81 +23,107 @@ div {
 	padding: 0px;
 }
 
+#decideYes {
+	color: #00837a;
+	font-size: 30px;
+	font-weight: 550;
+	display: inline-block;
+}
+
 /* 의사결정 등록 */
-#decisionContent,#decisionComment{
-	width : 100%;
-	height : 50px;
+#modal-decide {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 25px;
+	border: 1px solid #888;
+	width: 60px;
+	border-radius: 5px;
+	width: 550px;
+	height: 260px;
+}
+#decisionContent, #decisionComment {
+	width: 100%;
+	height: 50px;
 }
 
-.memberIdForDecision{
-	font-weight:bold;
+.memberIdForDecision {
+	font-weight: bold;
 }
 
-#decisionWait{
-	background-color : #aaaaaa;
-	color : white;
-	width : 50px;
-	text-align : center;
+#decisionWait {
+	background-color: #aaaaaa;
+	color: white;
+	width: 50px;
+	text-align: center;
 	border-radius: 20px;
-	margin : 0px;
-	display : inline-block;
+	margin: 0px;
+	display: inline-block;
 }
 
-#decisionApproval{
-	background-color : #00837a;
-	color : white;
-	width : 50px;
-	text-align : center;
+#decisionApproval {
+	background-color: #00837a;
+	color: white;
+	width: 50px;
+	text-align: center;
 	border-radius: 20px;
-	margin : 0px;
-	display : inline-block;
+	margin: 0px;
+	display: inline-block;
 }
 
-#decisionCancel{
-	background-color : #B93232;
-	color : white;
-	width : 50px;
-	text-align : center;
+#decisionCancel {
+	background-color: #B93232;
+	color: white;
+	width: 50px;
+	text-align: center;
 	border-radius: 20px;
-	margin : 0px;
-	display : inline-block;
+	margin: 0px;
+	display: inline-block;
 }
 
-#deleteForDecision{
-	padding : 5px;
-	border : 1px solid #d2d2d2;
-	background-color : #dcdcdc;
-	color : #505050;
-	display : inline-block;
-	float : right;
+#deleteForDecision {
+	padding: 5px;
+	border: 1px solid #d2d2d2;
+	background-color: #dcdcdc;
+	color: #505050;
+	display: inline-block;
+	float: right;
 }
 
-#decideForDecision{
-	padding : 5px;
-	border : 1px solid #d2d2d2;
-	background-color : #CFF09E;
-	color : #505050;
-	display : inline-block;
-	float : right;
+#decideForDecision {
+	padding: 5px;
+	border: 1px solid #d2d2d2;
+	background-color: #CFF09E;
+	color: #505050;
+	display: inline-block;
+	float: right;
 }
 
-#decideYes{
-	color : #00837a;
-	font-size : 30px;
-	font-weight : 550;
-	display : inline-block;
+#decideYes {
+	color: #00837a;
+	font-size: 30px;
+	font-weight: 550;
+	display: inline-block;
 }
 
-#decideNo{
-	color : #b80004;
-	font-size : 30px;
-	font-weight : 550;
-	display : inline-block;
+#decideNo {
+	color: #b80004;
+	font-size: 30px;
+	font-weight: 550;
+	display: inline-block;
 }
 
-.decideIcon{
-	height : 30px;
-	padding-bottom : 7px;
+.decideIcon {
+	height: 30px;
+	padding-bottom: 7px;
+}
+.insertButton2 {
+	background-color: #339966;
+	color: #F8FAFF;
+	width: 80px;
+	border: 0px;
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 30px;
 }
 </style>
 
@@ -172,12 +202,19 @@ div {
 					<c:forEach items="${listDecision }" var="d">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
-						<td width="70%" colspan="3"><a href="#" onclick="openContentModal(${d.dcNo});">${d.dcContent }</a></td>
+						<td width="70%" colspan="3"><a href="#" onclick="open_decide(${d.dcNo});">${d.dcContent }</a></td>
 					</tr>
 					<tr>
 						<td>${d.dcPostTitle }</td>
 						<td>${d.dcWriterName } -> ${d.dcMakerName }</td>
-						<td>${d.dcDecision }</td>
+						<c:choose>
+							<c:when test="${d.dcDecision eq 'N'.charAt(0) }">
+								<td id='dc_${d.dcNo }'>결정대기중</td>
+							</c:when>
+							<c:otherwise>
+								<td id='dc_${d.dcNo }'>결정완료</td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					</c:forEach>
 					
@@ -199,44 +236,36 @@ div {
 	<!-- right bar 끝 -->
 	
 	
-	
+<!-- 의사결정/변경하기 팝업모달 시작 -->
 <c:forEach items="${listDecision }" var="d">
-	<!-- 의사결정 내용보기 모달 -->
-	<div id="dcContentModal_${d.dcNo }" class="modal">
-
 		<!-- Modal 내용 -->
-		<div class="modal-content" style="width:40%;">
-			<!-- 닫기 버튼 -->
-			<div align="right">
-				<img src="../resources/images/post/close.png" onclick="closeContentModal(${d.dcNo});" /><br>
+		<div id="decideModal_${d.dcNo }" class="modal">
+			<div id="modal-decide">
+				<img src="../resources/images/post/select.png" /><span
+					style="color: #339966;">&nbsp;&nbsp;의사 결정하기</span> <img
+					src="../resources/images/post/close.png" onclick="close_decide(${d.dcNo});"
+					style="float: right; height: 20px;" /><br>
+				<br> <input type="text" id="decisionComment_${d.dcNo }" style="width:100%; height:50px;" placeholder="의사결정 의견을 입력해 주세요." /><br>
+				<br>
+				<div id="decideYes" onclick="decideYes(${d.dcNo});">
+					<img src="../resources/images/post/yes.png" class="decideIcon" />
+					승인
+				</div>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<div id="decideNo" onclick="decideNo(${d.dcNo});" style="color: #888888">
+					<img src="../resources/images/post/nooff.png" class="decideIcon" />
+					반려
+				</div>
+				<br>
+				<button class="insertButton2" onclick="updateDecision(${d.dcNo});"
+					style="float: right; margin-top: 10px;">결정</button>
 			</div>
-			
-			<table border="1">
-				<tr>
-					<td>
-						<p>${d.dcContent }</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="decideYes" onclick="decideYes();"><img src="../resources/images/post/yes.png" class="decideIcon" /> 승인</div>&nbsp;&nbsp;&nbsp;&nbsp; <div id="decideNo" onclick="decideNo();" style="color : #888888"><img src="../resources/images/post/nooff.png" class="decideIcon" /> 반려</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<button class="insertButton2" onclick="updateDecision();" style="float:right; margin-top:10px;">결정</button>
-					</td>
-				</tr>
-				
-			</table>
-			
-			
-				
 		</div>
 		<!-- Modal 내용 끝 -->
-	</div>
-	<!-- 내용보기 모달 끝 -->
-</c:forEach>	
+</c:forEach>
+
+
+
 	
 	
 	
@@ -256,14 +285,18 @@ div {
 					$("#dcTable").append(
 							"<tr>" + 
 							"<td rowspan='2' width='7%'>아이콘</td>" +
-							"<td width='70%' colspan='3'>"+ data[i].dcContent +"</td>" +
+							"<td width='70%' colspan='3'><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
 							"</tr>" +
 							"<tr>" +
-							"<td><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+data[i].dcPostTitle +"</a></td>" +
-							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
-							"<td>"+data[i].dcDecision +"</td>" +
-							"</tr>" 
+							"<td>"+data[i].dcPostTitle +"</td>" +
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
+					if(data[i].dcDecision == 'N') {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
+					}
+					else {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정완료</td></tr>");
+					}
 				}
 			},
 			error : function(data) {
@@ -287,11 +320,15 @@ div {
 							"<td width='70%' colspan='3'><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
 							"</tr>" +
 							"<tr>" +
-							"<td><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+data[i].dcPostTitle +"</td>" +
-							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
-							"<td>"+data[i].dcDecision +"</td>" +
-							"</tr>" 
+							"<td>"+data[i].dcPostTitle +"</td>" +
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
+					if(data[i].dcDecision == 'N') {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
+					}
+					else {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정완료</td></tr>");
+					}
 				}
 			},
 			error : function(data) {
@@ -316,10 +353,14 @@ div {
 							"</tr>" +
 							"<tr>" +
 							"<td>"+data[i].dcPostTitle +"</td>" +
-							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>" +
-							"<td>"+data[i].dcDecision +"</td>" +
-							"</tr>" 
+							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
+					if(data[i].dcDecision == 'N') {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
+					}
+					else {
+						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정완료</td></tr>");
+					}
 				}
 			},
 			error : function(data) {
@@ -328,37 +369,65 @@ div {
 		});
 	}
 	
-	/* 의사결정 내용보기 모달 열기 */
-	function openContentModal(id) {
-		$("#dcContentModal_"+id).show();
-	}
 	
-	/* 할 일 내용보기 모달 닫기 */
-	function closeContentModal(id) {
-		$("#dcContentModal_"+id).hide();
+	//의사결정하기 모달 open
+	function open_decide(id) {
+		$('#decideModal_'+id).show();
+	}
+
+	//의사결정하기 모달 close
+	function close_decide(id) {
+		$('#decideModal_'+id).hide();
 	}
 	
 	//의사결정 승인 선택시
 	var decideResult = 'Y'; //의사결정 결과 전역변수
-	function decideYes(){
+	function decideYes(id) {
 		decideResult = 'Y';
+		console.log(decideResult);
 		var strYes = "<img src='../resources/images/post/yes.png' class='decideIcon' /> 승인";
-		$('#decideYes').html(strYes);
-		$('#decideYes').css("color","#00837a");
+		$('#decideYes_'+id).html(strYes);
+		$('#decideYes_'+id).css("color", "#00837a");
 		var strNo = "<img src='../resources/images/post/nooff.png' class='decideIcon' /> 반려";
-		$('#decideNo').html(strNo);
-		$('#decideNo').css("color","#888888");
+		$('#decideNo_'+id).html(strNo);
+		$('#decideNo_'+id).css("color", "#888888");
+	}
+
+	//의사결정 반려 선택시
+	function decideNo(id) {
+		decideResult = 'N';
+		console.log(decideResult);
+		var strYes = "<img src='../resources/images/post/yesoff.png' class='decideIcon' /> 승인";
+		$('#decideYes_'+id).html(strYes);
+		$('#decideYes_'+id).css("color", "#888888");
+		var strNo = "<img src='../resources/images/post/no.png' class='decideIcon' /> 반려";
+		$('#decideNo_'+id).html(strNo);
+		$('#decideNo_'+id).css("color", "#b80004");
 	}
 	
-	//의사결정 반려 선택시
-	function decideNo(){
-		decideResult = 'N';
-		var strYes = "<img src='../resources/images/post/yesoff.png' class='decideIcon' /> 승인";
-		$('#decideYes').html(strYes);
-		$('#decideYes').css("color","#888888");
-		var strNo = "<img src='../resources/images/post/no.png' class='decideIcon' /> 반려";
-		$('#decideNo').html(strNo);
-		$('#decideNo').css("color","#b80004");
+	//의사결정 선택시
+	function updateDecision(id) {
+		var dcComment = $('#decisionComment_'+id).val();
+		console.log(id);
+		console.log(dcComment);
+		console.log(decideResult);
+		$.ajax({
+			url : "/updateDecision.do",
+			type : "post",
+			data : {
+				dcNo : id,
+				dcDecision : decideResult,
+				dcComment : dcComment
+			},
+			success : function(data) {
+				close_decide(id);
+				$('#dc_'+id).text("결정완료");
+				alert("의사결정 완료");
+			},
+			error : function(data) {
+				console.log("updateDecision 실패");
+			}
+		});
 	}
 	
 	

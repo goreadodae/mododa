@@ -17,6 +17,8 @@ import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
+import kr.pe.mododa.project.model.vo.WorkOnMember;
+import kr.pe.mododa.project.model.vo.WorkOnProject;
 
 
 
@@ -310,7 +312,6 @@ public class ProjectControllerImpl implements ProjectController {
 		view.addObject("postList", postList);
 		view.setViewName("project/projectProgress");
 		return view;
-		
 	}
 	
 	
@@ -328,11 +329,43 @@ public class ProjectControllerImpl implements ProjectController {
 		view.setViewName("project/moreProject");
 		return view;
 	}
-
 	
 
-
-
+	/*멤버 초대 관련 함수(기존 멤버초대와 다른 쿼리여야하기 때문에)*/
+	@RequestMapping(value="inviteMemberAtHeader.do")
+	public ModelAndView inviteMemberAtHeader(@RequestParam int proNo, @RequestParam String inviteMemberId) {
+		ModelAndView view = new ModelAndView();
+		String result = projectService.inviteMemberAtHeader(proNo, inviteMemberId);
+		view.addObject("result",result);
+		view.setViewName("jsonView");
+		return view;
+	}
 	
-
+	@RequestMapping(value="selectWorkOnMemberList.do")
+	public ModelAndView selectMemberList(@RequestParam int proNo, @RequestParam int memberNo) {
+		ModelAndView view = new ModelAndView();
+		ArrayList<WorkOnMember> womList = projectService.selectMemberList(proNo);
+		ArrayList<WorkOnProject> invitingMemberList = projectService.selectInvitingMemberList(memberNo);
+		view.addObject("memberList", womList);
+		view.addObject("memberInvitingProList", invitingMemberList);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	@RequestMapping(value="/inviteProMemberCancel.do")
+	public ModelAndView inviteProMemberCancel(@RequestParam int memberNo, @RequestParam int proNo) {
+		int result = projectService.inviteProMemberCancel(memberNo, proNo);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/invitingWorkOnMemberList.do")
+	public ModelAndView invitingWorkOnMemberList(@RequestParam int memberNo) {
+		ModelAndView view = new ModelAndView();
+		ArrayList<WorkOnProject> invitingMemberList = projectService.selectInvitingMemberList(memberNo);
+		view.addObject("memberInvitingProList", invitingMemberList);
+		view.setViewName("jsonView");
+		return view;
+	}
 }

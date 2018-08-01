@@ -9,6 +9,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<!-- icon -->
 
 <link rel="stylesheet" type="text/css" href="/css/personal/personalPage.css">
 
@@ -144,7 +146,7 @@
 									</c:otherwise>
 									</c:choose>
 									<img id="memberImg2" src=${statusImg }/>&nbsp;
-									<a onclick="#" class="btn btn-link" style="float:none;" >${news.proName }</a>
+									<a onclick="# " class="btn btn-link" style="float:none;" >${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">
