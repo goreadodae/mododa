@@ -6,7 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>템플릿</title>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 
 <style>
@@ -118,22 +122,14 @@ div {
 					<c:forEach items="${listTodo }" var="t">
 					<tr>
 						<td width="7%">
-							<div class="btn-group">
-							<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img src="../resources/images/icon/checked-allot.png"></img>
-							</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">
-								<img src="../resources/images/icon/checked-allot.png"></img> 할당된 할 일</a> 
-								<a class="dropdown-item" href="#">
-								<img src="../resources/images/icon/play-button.png"></img> 진행중</a>
-								<a class="dropdown-item" href="#">
-								<img src="../resources/images/icon/pause.png"></img> 일시중지</a> 
-								<a class="dropdown-item" href="#">
-								<img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-								<a class="dropdown-item" href="#">
-								<img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
-							</div>
+							<div class='btn-group'>
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/icon/play-button.png' />
+								<div class='dropdown-menu'>
+								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+								</div>
 							</div>
 						</td>
 						<td width="15%">${t.todoProjectName }</td>
@@ -219,9 +215,10 @@ div {
 	</div>
 	<!-- 팝업모달 끝 -->
 	
-	
+
+<!-- 할 일 내용보기 모달 -->
 <c:forEach items="${listTodo }" var="t">
-	<!-- 할 일 내용보기 모달 -->
+	
 	<div id="todoContentModal_${t.todoNo }" class="modal">
 
 		<!-- Modal 내용 -->
@@ -266,9 +263,9 @@ div {
 		</div>
 		<!-- Modal 내용 끝 -->
 	</div>
-	<!-- 내용보기 모달 끝 -->
+
 </c:forEach>	
-	
+<!-- 할 일 내용보기 모달 끝 -->	
 	
 	
 	
@@ -435,6 +432,45 @@ div {
 		$("#todoContentModal_"+id).hide();
 	}
 	
+	// 할일 진행과정 변경
+	function changeProgressTodo(todoMember, todoNo, status) {
+		console.log("tdMember : " + todoMember);
+		console.log("todoNo : " + todoNo);
+		
+			$.ajax({
+				url : "/postUpdateTodoProgress.do",
+				type : "post",
+				data : {
+					todoNo : todoNo,
+					todoProgress : status
+				},
+				success : function(data) {
+					if (data.result < 0) {
+						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+					} else {
+						if (status == 'suggest') {
+							$('#'+todoNo).attr("src","../resources/images/post/light-bulbOn.png");
+						} else {
+							if (status == 'suggest') {
+								$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
+							} else if (status == 'working') {
+								$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
+							} else if (status == 'stop') {
+								$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
+							} else if (status == 'finish') {
+								$('#' + todoNo).attr("src","../resources/images/post/checked.png");
+							}
+						}
+					}
+				},
+				error : function(data) {
+					console.log("할일 진행과정 변경 실패");
+				},
+				complete : function(data) {
+					
+				}
+			});
+	}
 	
 	
 	

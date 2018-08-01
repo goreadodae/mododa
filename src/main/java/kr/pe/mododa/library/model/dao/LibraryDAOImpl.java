@@ -96,4 +96,8 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return (ArrayList<Link>)listLinkMe;
 	}
 
+	public int updateDecision(SqlSessionTemplate sqlSession, Decision dc) {
+		return sqlSession.update("library.updateDecision", dc);
+	}
+
 }
