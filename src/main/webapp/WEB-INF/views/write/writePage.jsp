@@ -365,8 +365,9 @@
 								str +=	'<li class="list-group-item" style="padding-top: 10px;">';
 								str += '<div class="row" style="height: 50%">';
 								str += '<div class="col-md-12" style="height: 100%">';
-								str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
-								str += '<span style="font-size:23px; padding-left:15px">';
+								str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
+								str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';
+								str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 								str += data[i].postTitle;
 								str += '</span>';
 								str += '</div>';
@@ -382,7 +383,7 @@
 											str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
 											
 										}
-								str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
+								str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
 								str += '</span>&nbsp;&nbsp;';
 								str += '<span>'+data[i].postDate+'</span>';
 								str += '</h6>&nbsp;&nbsp;';
@@ -393,9 +394,10 @@
 								$('#relationList').append(str);
 								
 									str ="";
-
+							/* console.log($('"#checked_'+data[i].postNo+'"').val()); */
 							}
 							preventStack = false;
+							
 						}
 
 					},
@@ -413,6 +415,7 @@
 			var currentProNo = $("#currentProNo").val();
 			var str="";
 			var failed ="";
+			console.log(checkedInfoList);
 			 if(event.which == 13) {
 				
 				
@@ -449,48 +452,66 @@
 				}
 				else{
 					console.log("엘스");
-				for (var i = 0; i < data.length; i++) {
-					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
-					str += '<div class="row" style="height: 50%">';
-					str += '<div class="col-md-12" style="height: 100%">';
-					str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
-					str += '<span style="font-size:23px; padding-left:15px">';
-					str += data[i].postTitle;
-					str += '</span>';
-					str += '</div>';
-					str += '</div>';
-					str += '<div class="row" style="height: 50%"><div class="col-md-12">';
-					str += '<h6 style="display: inline">';
-						if(data[i].memberPicture == null)
+					
+					
+						for(var j= 0; j < checkedInfoList.length; j++)
 							{
-								str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+								for (var i = 0; i < data.length; i++) 
+								{
+									
+									
+									str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+									str += '<div class="row" style="height: 50%">';
+									str += '<div class="col-md-12" style="height: 100%">';
+									
+						
+											if(checkedInfoList[j] != data[i].postNo)
+												{
+													str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
+													str += 'value="'+data[i].postTitle+','+data[i].memberName+'">';										
+												}
+																			
+									
+									
+									str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
+									str += data[i].postTitle;
+									str += '</span>';
+									str += '</div>';
+									str += '</div>';
+									str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
+									str += '<h6 style="display: inline">';
+									
+									
+										if(data[i].memberPicture == null)
+											{
+												str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+											}
+										else
+											{
+												str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+												
+											}
+									str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
+									str += '</span>&nbsp;&nbsp;';
+									str += '<span>'+data[i].postDate+'</span>';
+									str += '</h6>&nbsp;&nbsp;';
+									str += '</div>';
+									str += '</div>';
+									str += '</li>';
+									
+									$('#relationList').append(str);
+									
+										str ="";
+			
+								}
 							}
-						else
-							{
-								str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-								
-							}
-					str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
-					str += '</span>&nbsp;&nbsp;';
-					str += '<span>'+data[i].postDate+'</span>';
-					str += '</h6>&nbsp;&nbsp;';
-					str += '</div>';
-					str += '</div>';
-					str += '</li>';
 					
-					
-					$('#relationList').append(str);
-					str="";
-					
-					
-					
-					
-				}
 				
 				}
+							$('#relationList').text(" ");
 
 				
-				$('#relationSearch').val("");
+				
 			},
 			error : function(data) {
 				console.log("검색 실패");
@@ -526,13 +547,14 @@
 					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
 					str += '<div class="row" style="height: 50%">';
 					str += '<div class="col-md-12" style="height: 100%">';
-					str += '<input type="checkbox" style="height: 100% !important; vertical-align: middle">';
-					str += '<span id="pro"style="font-size:23px; padding-left:15px">';
+					str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
+					str += 'value="'+data[i].postTitle+','+data[i].memberName+'">';
+					str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 					str += data[i].postTitle;
 					str += '</span>';
 					str += '</div>';
 					str += '</div>';
-					str += '<div class="row" style="height: 50%"><div class="col-md-12">';
+					str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
 					str += '<h6 style="display: inline">';
 						if(data[i].memberPicture == null)
 							{
@@ -543,14 +565,14 @@
 								str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
 								
 							}
-					str += '<span>'+data[i].memberName+'</span>&nbsp;&nbsp;';
+					str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
 					str += '</span>&nbsp;&nbsp;';
 					str += '<span>'+data[i].postDate+'</span>';
 					str += '</h6>&nbsp;&nbsp;';
 					str += '</div>';
 					str += '</div>';
 					str += '</li>';
-								
+					
 					$('#relationList').append(str);
 					
 						str ="";
@@ -575,7 +597,44 @@
 		
 	}
 			
+	var checkedInfoList = [];  
+	$(document).ready(function(){
+		$('#saveRelationWriting').click(function(){
+			var str ="";
+			var postInfo ="";
+
 			
+			$('input:checkbox[name=checkedWriting]:checked').each(function(index, item){
+					 str = $(this).val();
+					 postInfo = str.split(',');	
+					 
+				$(
+						  '<div class="col-md-6" style="height:100px; padding-top:5%;">'
+						+ '<div class="col-md-12" style="border:1px solid #E6E6E6; padding:0px; height: 80px;">'
+						+ '<div class="col-md-12" style="padding:5px; color:#A1A1A1;"><img src="/resources/images/writeImages/invention.png" style="padding:0;"/>&nbsp;&nbsp;'
+						+ postInfo[1] + '</div><div class="col-md-12" style="color:#A1A1A1; font-size:11px; text-overflow:ellipsis">'
+						+ postInfo[0] + '</div></div></div>').appendTo($('#addRelationWriting'));
+				
+		
+				$('#writingCnt').text(index+1);
+				
+				checkedInfoList[index] = postInfo[2];
+				
+				console.log(checkedInfoList);
+				
+				$('input:checkbox[name=checkedWriting]:checked').remove();
+				
+				
+				str="";
+				postInfo="";
+				
+			
+	
+				
+			});
+		});	
+	})
+	
 			
 			
 			
@@ -950,7 +1009,7 @@ margin:auto;
 							<div class="col-md-12">
 								링크 <span>0</span>
 							</div>
-							<div class="row"></div>
+							
 						</div>
 						<br>
 						<!-- 일정 창  -->
@@ -984,17 +1043,22 @@ margin:auto;
 						<!--  관련 글  -->
 						<div class="row">
 							<div class="col-md-12">
-								관련 글 <span>0</span>
+								관련 글 <span id="writingCnt">0</span>
 							</div>
-							<!-- 모달 버튼 시작  -->
-							<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
-								<!-- <br -->
-								<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="bringRelativeWrite();">
+							<div class="col-md-12">
+								<!-- 모달 버튼 시작  -->
+								<div class="row" id="addRelationWriting">
+									<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
+										<!-- <br -->
+										<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="bringRelativeWrite();">
 
-									<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
+											<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
+										</div>
+									</div>
+
+
+
 								</div>
-
-
 
 
 							</div>
@@ -1017,13 +1081,14 @@ margin:auto;
 													<span id="currentReProName"><c:out value="${currentProName}"></c:out></span>
 												</h6>
 												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
-												<c:forEach items="${proList}" var="proList">
-													<button class="dropdown-item" id ="proNo${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
-													<c:out value="${proList.proTitle}"/></button>
-													
-												
-												
-												</c:forEach>
+													<c:forEach items="${proList}" var="proList">
+														<button class="dropdown-item" id="proNo${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
+															<c:out value="${proList.proTitle}" />
+														</button>
+
+
+
+													</c:forEach>
 												</div>
 
 											</div>
@@ -1051,18 +1116,18 @@ margin:auto;
 
 										<div class="modal-body" style="height: 70%; padding: 0px">
 											<div class="col-md-12" id="modalBody" style="overflow-y: auto; height: 100%; padding: 0px">
-											
 
- 												<ul class="list-group" id="relationList" style="height:100%">
-												
 
-							
-												</ul> 
-													
-												
-	
+												<ul class="list-group" id="relationList" style="height: 100%">
 
-												
+
+
+												</ul>
+
+
+
+
+
 
 
 											</div>
@@ -1070,7 +1135,7 @@ margin:auto;
 										</div>
 										<div class="modal-footer">
 
-											<button type="button" class="btn btn-primary" style="background-color: #CFF09E; border: none">저장</button>
+											<button type="button" class="btn btn-primary" id="saveRelationWriting" style="background-color: #CFF09E; border: none">저장</button>
 
 
 										</div>
