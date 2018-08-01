@@ -1,6 +1,7 @@
 package kr.pe.mododa.calendar.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,7 +21,7 @@ public interface CalendarController {
 			@RequestParam Date startDate,@RequestParam Date endDate) throws Exception;
 	public ModelAndView infoSchedule (HttpServletResponse response,@RequestParam int scheduleNo) throws Exception;
 	public void deleteSchdule (HttpServletResponse response,@RequestParam int scheduleNo)throws Exception;	
-
+	public void selectDozenProject(HttpServletResponse response,@RequestParam(value = "checkboxValues[]") List<String> checkboxValues) throws Exception;
 	
 	
 }

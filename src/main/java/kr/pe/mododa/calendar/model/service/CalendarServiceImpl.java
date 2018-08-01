@@ -1,6 +1,7 @@
 package kr.pe.mododa.calendar.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -94,6 +95,14 @@ public class CalendarServiceImpl implements CalendarService {
 		int result = CalendarDAO.deleteSchdule(sqlSession,scheduleNo);
 		
 		return result;
+	}
+
+	@Override
+	public ArrayList<Schedule> selectDozenProject(List<String> checkboxValues) {
+
+		ArrayList<Schedule> sclist = CalendarDAO.selectDozenProject(sqlSession,checkboxValues);
+		
+		return sclist;
 	}
 
 

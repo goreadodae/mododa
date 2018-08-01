@@ -1,6 +1,7 @@
 package kr.pe.mododa.calendar.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.post.model.vo.Post;
@@ -17,5 +18,6 @@ public interface CalendarService {
 	public int deleteSchdule (int scheduleNo);
 	public Project selectProjectOne (int scheduleNo); 
 	public Post selectPostOne (int scheduleNo);
+	public ArrayList<Schedule> selectDozenProject (List<String> checkboxValues);
 	
 }
