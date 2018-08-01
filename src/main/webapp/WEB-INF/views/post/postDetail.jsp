@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- 글씨체 -->
@@ -524,6 +525,22 @@ img[class="btn btn-link dropdown-toggle"] {
 						console.log("실패");
 					}
 				});
+		//준석 추가(댓글읽으려면 글번호 필요해서 다른 .do로 글번호 넘김.)
+		$.ajax({
+			url:"/comment.do",
+			type:"post",
+			data:{
+				postNo : postNo
+		},
+		success:function(data)
+		{
+			$("#comment").html(data);
+		},
+		error:function(data)
+		{
+			console.log("error");
+		}
+		});
 	};
 
 	//팝업 open 기능
@@ -978,6 +995,30 @@ img[class="btn btn-link dropdown-toggle"] {
 		}
 
 	}
+	
+	//댓글추가(준석)
+	function insertComment(postNo)
+	{
+		var insertCom = $(".comment-input").val();
+		
+		if(insertCom=="")
+			{
+			alert("댓글입력후 누르세요~~");
+			}
+		else{
+			$.ajax({
+				url:"/insertComment.do",
+				type:"post",
+				data:{postNo:postNo,
+					"insertCom":insertCom},
+				success:function(data){
+					$('#comment').empty();
+					$("#comment").html(data);
+				}
+				
+			});
+		}
+	}
 </script>
 </head>
 
@@ -1093,8 +1134,7 @@ img[class="btn btn-link dropdown-toggle"] {
 					<!-- right side (댓글 부분) -->
 
 					<div class="col-5" id="comment">
-
-						
+				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>
 				</div>
 

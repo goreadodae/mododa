@@ -130,7 +130,8 @@
   
   <select id="selectComment" resultType="comment">
 		select 
-		m.member_name as writeNick, 
+		m.member_name as writeNick,
+		m.member_no as writerNo, 
 		m.member_picture as writePicture, 
 		to_char(cm_date,'yy-mm-dd am hh24:mi:ss')as writeTime , 
 		ct.cm_tag as content, 
@@ -141,4 +142,7 @@
 		where cm_post = #{postNo}
 	</select>
 
+	<insert id="insertComment" parameterType="post">
+		insert into comment_tbl values(comment_tbl_SEQ.nextval,#{postWriter}, #{postNo},#{postContent},sysdate)
+	</insert>
 </mapper>

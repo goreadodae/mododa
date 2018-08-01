@@ -3,6 +3,7 @@ package kr.pe.mododa.post.model.vo;
 public class Comment {
 
 	private String writeNick; //댓글 작성한 사람의 닉네임
+	private int writerNo; //댓글 작성한 회원의 회원번호 (댓글 삭제하려면 세션의 회원번호와 작성자의 회원번호를 비교해야 함)
 	private String writePicture;//댓글 작성한 사람의 이미지 경로
 	private String writeTime;//댓글 작성한 시간(to_char이용하여 년,월,일, 시,분,초 변환하여 받아옴.)
 	private String content; //댓글 내용
@@ -11,9 +12,10 @@ public class Comment {
 	public Comment() {
 		super();
 	}
-	public Comment(String writeNick, String writePicture, String writeTime, String content, int postNo, int commentNo) {
+	public Comment(String writeNick, int writerNo, String writePicture, String writeTime, String content, int postNo, int commentNo) {
 		super();
 		this.writeNick = writeNick;
+		this.writerNo = writerNo;
 		this.writePicture = writePicture;
 		this.writeTime = writeTime;
 		this.content = content;
@@ -25,6 +27,13 @@ public class Comment {
 	}
 	public void setWriteNick(String writeNick) {
 		this.writeNick = writeNick;
+	}
+	
+	public int getWriterNo() {
+		return writerNo;
+	}
+	public void setWriterNo(int writerNo) {
+		this.writerNo = writerNo;
 	}
 	public String getWritePicture() {
 		return writePicture;
