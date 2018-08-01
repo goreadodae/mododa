@@ -23,7 +23,7 @@
 	
 	
 	<insert id="insertWorkOn"> <!-- 프로젝트 생성하면서 바로 멤버 초대 -->
-		insert into work_on values(#{proMemberNo},project_seq.currval,'Y')
+		insert into work_on values(#{proMemberNo},project_seq.currval,'Y','Y')
 	</insert>
 	
 	<select id="searchMemberNo" resultType="int"> 
@@ -31,7 +31,7 @@
 	</select>
 	
 	<insert id="insertInviteMember"> <!-- 멤버 초대 -->
-		insert into work_on values(#{memberNo},project_seq.currval,'N')
+		insert into work_on values(#{memberNo},project_seq.currval,'N','N')
 	</insert>
 	
 
@@ -47,7 +47,7 @@
 			pro_end_date as proEndDate,
 			pro_member_no as proMemberNo
 		from project
-		where pro_no in (select pro_no from work_on where member_no = #{memberNo})
+		where pro_no in (select pro_no from work_on where member_no = #{memberNo} and invite_yn='Y')
 		and pro_no != (select min(pro_no) from project where pro_member_no = #{memberNo})
 		order by pro_no desc
 	</select>
@@ -180,5 +180,42 @@
   		order by p.post_no desc
 	</select>
 
-  
+  	<!-- 멤버추가관련 쿼리 -->
+  	<select id="checkMemberNoInWorkOn" resultType="Integer" parameterType="workon">
+  		select pro_no as proNo from work_on where pro_no=#{proNo} and member_no=#{memberNo}
+  	</select>
+	<insert id="inviteMemberAtHeader" parameterType="workon">
+		insert into work_on values(#{memberNo},#{proNo},'N','N')
+	</insert>
+	<select id="selectMemberList" resultType="wom">
+	select
+	m.member_no as memberNo,
+	wo.pro_no as proNo,
+	wo.leader as leader,
+	wo.invite_yn as inviteYN,
+	m.member_id as memberId,
+	m.member_name as memberName,
+	m.member_picture as memberPicture,
+	m.member_depart_name as memberDepartName,
+	m.member_main_task as memberMainTask,
+	m.MEMBER_EMAIL_CERTIFY as memberEmailCertify
+	from work_on wo join member m on (wo.member_no=m.member_no) where pro_no=#{proNo}
+	</select>
+	<delete id="inviteProMemberCancel" parameterType="wom">
+		delete work_on where member_no=#{memberNo} and pro_no=#{proNo}
+	</delete>
+	<select id="selectInvitingMemberList" resultType="wop">
+select
+m.member_no as memberNo,
+wo.pro_no as proNo,
+p.pro_title as proTitle,
+p.pro_start_date as proStartDate,
+p.pro_end_date as proEndDate,
+m2.member_id as leaderId,
+m2.member_name as leaderName
+from work_on wo join member m on (wo.member_no=m.member_no)
+join project p on (wo.pro_no=p.pro_no)
+join member m2 on (p.pro_member_no=m2.member_no)
+where wo.member_no=#{memberNo} and wo.invite_yn='N'
+	</select>
 </mapper>
