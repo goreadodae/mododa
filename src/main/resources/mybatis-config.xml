@@ -23,6 +23,7 @@
       <typeAlias type="kr.pe.mododa.library.model.vo.Upload" alias="upload"/>
       <typeAlias type="kr.pe.mododa.post.model.vo.Post" alias="post"/>
       <typeAlias type="kr.pe.mododa.post.model.vo.Comment" alias="comment"/>
+      <typeAlias type="kr.pe.mododa.post.model.vo.PostLike" alias="postLike"/>
       <typeAlias type="kr.pe.mododa.calendar.model.vo.Schedule" alias="schedule"/>
       <typeAlias type="kr.pe.mododa.personal.model.vo.Bookmark" alias="bookmark"/>
       <typeAlias type="kr.pe.mododa.personal.model.vo.Mypost" alias="mypost"/>
@@ -30,6 +31,7 @@
       <typeAlias type="kr.pe.mododa.qna.model.vo.Qna" alias="qna"/>
        <typeAlias type="kr.pe.mododa.qna.model.vo.QnaList" alias="qnaList"/>
       <typeAlias type="kr.pe.mododa.write.model.vo.RelationWriting" alias="relationWriting"/>
-      <typeAlias type="kr.pe.mododa.write.model.vo.RelationSearchKey" alias="relationSearchKey"/>    
+      <typeAlias type="kr.pe.mododa.write.model.vo.RelationSearchKey" alias="relationSearchKey"/>  
+        
    </typeAliases>
 </configuration>
