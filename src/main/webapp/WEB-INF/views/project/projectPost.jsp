@@ -31,6 +31,7 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 div {
@@ -200,7 +201,7 @@ div {
 			</div>
 		</div>
 
-		<div class="viewContents  col-md-12">
+		<div class="viewContents col-md-12" style="overflow:auto; height:84%;">
 		
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
