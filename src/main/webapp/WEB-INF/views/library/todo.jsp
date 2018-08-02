@@ -123,7 +123,20 @@ div {
 					<tr>
 						<td width="7%">
 							<div class='btn-group'>
-								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/icon/play-button.png' />
+								<c:choose>
+									<c:when test="${t.todoProgress.equals('suggest')}">
+										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/icon/play-button.png' />
+									</c:when>
+									<c:when test="${t.todoProgress.equals('working')}">
+										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/play-buttonOn.png' />
+									</c:when>
+									<c:when test="${t.todoProgress.equals('stop')}">
+										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/pauseOn.png' />
+									</c:when>
+									<c:otherwise>
+										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/checked.png' />
+									</c:otherwise>
+								</c:choose>
 								<div class='dropdown-menu'>
 								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
 								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
@@ -324,17 +337,41 @@ div {
 			url:"/listTodoAll.do",
 			type:"POST",
 			success : function(data) {
+				var str ="";
 				$("#todoTable").remove();
 				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
 				for(i=0; i<data.length; i++) {
-					$("#todoTable").append(
-							"<tr>" + 
-							"<td width='7%'>아이콘</td>" +
-							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
-							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
-					);
+					str += 
+						"<tr>" + 
+						"<td width='7%'>"+
+						"<div class='btn-group'>";
+					
+					if(data[i].todoProgress == 'suggest') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
+					}
+					else if(data[i].todoProgress == 'working') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
+					}
+					else if(data[i].todoProgress == 'stop') {
+						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+					}
+					else {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
+					}
+						
+					str += 	
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+ "</div></div>"+
+						"</td>" +
+						"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+						"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+						"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>";
 				}
+				$("#todoTable").append(str);
 			},
 			error : function(data) {
 				console.log("오류");
@@ -348,17 +385,41 @@ div {
 			url:"/listTodoMe.do",
 			type:"POST",
 			success : function(data) {
+				var str ="";
 				$("#todoTable").remove();
 				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
 				for(i=0; i<data.length; i++) {
-					$("#todoTable").append(
-							"<tr>" + 
-							"<td width='7%'>아이콘</td>" +
-							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
-							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
-					);
+					str += 
+						"<tr>" + 
+						"<td width='7%'>"+
+						"<div class='btn-group'>";
+					
+					if(data[i].todoProgress == 'suggest') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
+					}
+					else if(data[i].todoProgress == 'working') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
+					}
+					else if(data[i].todoProgress == 'stop') {
+						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+					}
+					else {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
+					}
+						
+					str += 	
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+ "</div></div>"+
+						"</td>" +
+						"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+						"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+						"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>";
 				}
+				$("#todoTable").append(str);
 			},
 			error : function(data) {
 				console.log("오류");
@@ -372,17 +433,41 @@ div {
 			url:"/listTodoRequest.do",
 			type:"POST",
 			success : function(data) {
+				var str ="";
 				$("#todoTable").remove();
 				$("#todoTableContainer").append("<table border='1' id='todoTable' width='100%' height='100px' style='margin:0; padding:0;'></table>");
 				for(i=0; i<data.length; i++) {
-					$("#todoTable").append(
-							"<tr>" + 
-							"<td width='7%'>아이콘</td>" +
-							"<td width='15%'>"+data[i].todoProjectName+"</td>" +
-							"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
-							"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>"
-					);
+					str += 
+						"<tr>" + 
+						"<td width='7%'>"+
+						"<div class='btn-group'>";
+					
+					if(data[i].todoProgress == 'suggest') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
+					}
+					else if(data[i].todoProgress == 'working') {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
+					}
+					else if(data[i].todoProgress == 'stop') {
+						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+					}
+					else {
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
+					}
+						
+					str += 	
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ", 'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+ "</div></div>"+
+						"</td>" +
+						"<td width='15%'>"+data[i].todoProjectName+"</td>" +
+						"<td width='53%'><a href='#' onclick='openContentModal("+data[i].todoNo+");'>"+data[i].todoTitle+"</a></td>" +
+						"<td width='25%'>"+data[i].todoWriterName+"->"+data[i].todoMemberName+"</td>";
 				}
+				$("#todoTable").append(str);
 			},
 			error : function(data) {
 				console.log("오류");
@@ -437,39 +522,39 @@ div {
 		console.log("tdMember : " + todoMember);
 		console.log("todoNo : " + todoNo);
 		
-			$.ajax({
-				url : "/postUpdateTodoProgress.do",
-				type : "post",
-				data : {
-					todoNo : todoNo,
-					todoProgress : status
-				},
-				success : function(data) {
-					if (data.result < 0) {
-						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+		$.ajax({
+			url : "/postUpdateTodoProgress.do",
+			type : "post",
+			data : {
+				todoNo : todoNo,
+				todoProgress : status
+			},
+			success : function(data) {
+				if (data.result < 0) {
+					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+				} else {
+					if (status == 'suggest') {
+						$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
 					} else {
 						if (status == 'suggest') {
-							$('#'+todoNo).attr("src","../resources/images/post/light-bulbOn.png");
-						} else {
-							if (status == 'suggest') {
-								$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
-							} else if (status == 'working') {
-								$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
-							} else if (status == 'stop') {
-								$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
-							} else if (status == 'finish') {
-								$('#' + todoNo).attr("src","../resources/images/post/checked.png");
-							}
+							$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
+						} else if (status == 'working') {
+							$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
+						} else if (status == 'stop') {
+							$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
+						} else if (status == 'finish') {
+							$('#' + todoNo).attr("src","../resources/images/post/checked.png");
 						}
 					}
-				},
-				error : function(data) {
-					console.log("할일 진행과정 변경 실패");
-				},
-				complete : function(data) {
-					
 				}
-			});
+			},
+			error : function(data) {
+				console.log("할일 진행과정 변경 실패");
+			},
+			complete : function(data) {
+					
+			}
+		});
 	}
 	
 	
