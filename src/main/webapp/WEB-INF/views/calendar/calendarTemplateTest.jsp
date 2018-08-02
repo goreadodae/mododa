@@ -40,7 +40,7 @@ var scheduleNo = 0;
 		
 	});
 	
-	
+	var calendar;
 	//캘린더 생성 기능
 	function createCal(){
 		
@@ -49,7 +49,7 @@ var scheduleNo = 0;
 		var m = date.getMonth()+1;
 		var y = date.getFullYear();
 		
-		var calendar = $('#calendar').fullCalendar({
+	 calendar = $('#calendar').fullCalendar({
 			/* monthNames: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
 	    	monthNamesShort: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
 	    	dayNames: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
@@ -72,13 +72,20 @@ var scheduleNo = 0;
 			contentHeight: 700,
 			select: function(start, end, allDay) {
          
-         modalProjectPrice();
-         open_sc_pop();
+				var start = start.format();
+				var end = end.format();		
+				
+				var endDate = new Date(end);
+				endDate.setDate(endDate.getDate() - 1);
+				
+				endDate = dateToYYYYMMDD(endDate);
 
-              /*title = document.getElementById("scheduleTitle").value;
-               console.log(title);
-                
-				 if (title) {					
+				
+         modalProjectPrice();
+         open_sc_pop(start,endDate);
+
+ 
+				/* if (title) {					
 					calendar.fullCalendar('renderEvent',
 						{
 							title: title,
@@ -100,20 +107,30 @@ var scheduleNo = 0;
 			         url : "/calendarSchedule.do",
 			         type : "post",
 			         success : function(data) {
-			        	 var events = [];
-			        	 console.log(data[0].stStartDate);
-			        	 console.log(data[0].stEndDate);
-			        	 
-			        	 for(var i=0;i<data.length;i++){			        	
-			        		 events.push({
-				        		 title : data[i].scTitle,
-				        		 start : data[i].stStartDate,
-				        		 end : data[i].stEndDate,
-				        		 color : '#CFF09E',
-				        		 url: data[i].scheduleNo
-				        	 });			  
-			        	 }
+			        	 var events = [];							
+							
+							
+							for(var i=0;i<data.length;i++){	
+											
+								var start = data[i].stStartDate;
+								var end = data[i].stEndDate;		
+									
+									var endDate = new Date(end);
+									endDate.setDate(endDate.getDate() + 1);
+									
+									endDate = dateToYYYYMMDD(endDate);
+
+			 					events.push({
+					        		 title : data[i].scTitle,
+					        		 start : data[i].stStartDate,
+					        		 end : endDate,
+					        		 color : '#FF5F2E',
+					        		 url: data[i].scheduleNo
+					        	 });				 					  
+			        	 } 
+							
 			        	 callback(events);
+			        	 			        	 
 			         },
 			         error : function(data) {
 			            console.log("실패");
@@ -128,14 +145,75 @@ var scheduleNo = 0;
 				    	updateModal(scheduleNo);
 				        return false;
 				      }
-			 }		
+			 },
+			  editable: true,
+			  eventDrop: function(event, delta, revertFunc) {
+			    
+			   scheduleNo = event.url;
+
+			   var title = event.title;
+			   var start = event.start.format();
+			   var end = event.end.format();	
+					
+					var endDate = new Date(end);
+					endDate.setDate(endDate.getDate() -1);
+					
+					endDate = dateToYYYYMMDD(endDate);
+			   
+			   if (!confirm("날짜를 수정하시겠습니까?")) {
+				   revertFunc();
+				   $('#failedAlertMessage').text('일정 수정을 취소하셨습니다.');
+		            $('#failedAlert').show('slow');
+		            setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
+				}else{
+ 
+					   $.ajax({
+					        url : "/updateSchedule.do",
+					        type : "post",
+					        data :  {
+					        	title : title,
+					        	startDate : start,
+					        	endDate : endDate,    
+					        	scheduleNo : scheduleNo
+					        },
+					        success : function(data) {
+					           console.log("성공");    					           
+					           $('#successAlertMessage').text('일정 수정이 완료되었습니다.');
+					             $('#successAlert').show('slow');
+					             setTimeout(function () { $('#successAlert').hide('slow');}, 1500);					           
+					        },
+					        error : function(data) {
+					           console.log("실패");					           
+					            $('#failedAlertMessage').text('일정 수정에 실패하였습니다.');
+					            $('#failedAlert').show('slow');
+					            setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);					           
+					        }
+						}); 
+					   
+				   }
+			    
+			  }
 		});
 	}
 	
 	
+	//데이트 포멧 
+	function dateToYYYYMMDD(date){
+	    function pad(num) {
+	        num = num + '';
+	        return num.length < 2 ? '0' + num : num;
+	    }
+	    return date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate());
+	}
+
+	
 	//팝업 Open 기능
-    function open_sc_pop(flag) {
-         $('#myModalSc').show();
+    function open_sc_pop(start,end) {
+
+    	$('#startDate').attr('value',start);
+		$('#endDate').attr('value',end);
+
+         $('#myModalSc').show();         
     };
 	
 	
@@ -170,8 +248,18 @@ var scheduleNo = 0;
             },
             success : function(data) {
                console.log("성공");
+
+               close_sc_pop();
                
-               window.location.reload(true);//새로고침코드
+               $('#successAlertMessage').text('일정을 저장하였습니다.');
+               $('#successAlert').show('slow');
+               setTimeout(function () {
+            	   $('#successAlert').hide('slow');
+            	}, 1500);
+        	   setTimeout(function () { 
+        		   window.location.reload();
+        	   }, 2000);
+               
             },
             error : function(data) {
                console.log("실패");
@@ -244,9 +332,9 @@ var scheduleNo = 0;
             		
             		$('#scUpdatePro').find("label").remove();
             		$('#scUpdatePost').find("label").remove(); 					
-           
- 					$('#scUpdatePro').append("<label>"+data.pj.proTitle+"</label>");
- 					$('#scUpdatePost').append("<label>"+data.p.postTitle+"</label>");
+            		
+ 					$('#scUpdatePro').append("<label onclick='postChangePage("+data.pj.proNo+")'>"+data.pj.proTitle+"</label>");
+ 					$('#scUpdatePost').append("<label onclick='getPost("+data.p.postNo+")'>"+data.p.postTitle+"</label>");
  					$('#scheduleTitleUpdate').attr('value',data.sc.scTitle);
  					$('#startDateUpdate').attr('value',data.sc.stStartDate);
  					$('#endDateUpdate').attr('value',data.sc.stEndDate);
@@ -279,13 +367,29 @@ var scheduleNo = 0;
         success : function(data) {
            console.log("성공");
            
-           window.location.reload(true);//새로고침코드
+           close_up_pop();
+           
+           $('#successAlertMessage').text('일정을 수정하였습니다.');
+           $('#successAlert').show('slow');
+           setTimeout(function () {
+        	   $('#successAlert').hide('slow');
+        	}, 1500);
+    	   setTimeout(function () { 
+    		   window.location.reload();
+    	   }, 2000);
         },
         error : function(data) {
-           console.log("실패");
+        	close_up_pop();
+        	
+        	 $('#failedAlertMessage').text('일정 수정에 실패하였습니다.');
+	            $('#failedAlert').show('slow');
+	            setTimeout(function () {
+	         	   $('#failedAlert').hide('slow');
+	         	}, 1500);
+        	
         },
         complete : function(data) {
-        	close_pop();
+        	close_up_pop();
         }
 	}); 
 	   
@@ -303,14 +407,29 @@ var scheduleNo = 0;
 	           
 	        	var deleteCheck = confirm("정말로 삭제하시겠습니까?");
 	        	if(deleteCheck){
-	        		window.location.reload(true);
+	        		close_up_pop();
+	        		 $('#successAlertMessage').text('일정을 삭제하였습니다.');
+	                 $('#successAlert').show('slow');
+	                 setTimeout(function () {
+	              	   $('#successAlert').hide('slow');
+	              	}, 1500);
+	          	   setTimeout(function () { 
+	          		   window.location.reload();
+	          	   }, 2000);
 	        	}
 	        },
 	        error : function(data) {
-	           console.log("실패");
+	        	close_up_pop();
+	           
+	           $('#failedAlertMessage').text('일정 삭제에 실패하였습니다.');
+	            $('#failedAlert').show('slow');
+	            setTimeout(function () {
+	         	   $('#failedAlert').hide('slow');
+	         	}, 1500);
+	           
 	        },
 	        complete : function(data) {
-	        	close_pop();
+	        	close_up_pop();
 	        }
 		}); 
 	   
@@ -354,7 +473,7 @@ var scheduleNo = 0;
   			for(var i=0;i<data.length;i++){
 					$('#postList').append("<div id='post_"+data[i].proNo+"' value='"+data[i].proNo+"' class='projectDiv'><input type='checkbox' name='projectListName' value='"+data[i].proNo+"'/>"+data[i].proTitle+"</div>");
 				}
-  				$('#postList').append("<div id='post_0' class='projectDiv'><input type='button' class='btn btn-success' value='저장' onclick='projectSC();'></div>");
+  				$('#postList').append("<div id='post_0' class='projectDiv'><input type='button' class='btn btn-secondary' value='저장' onclick='projectSC();'></div>");
            },
            error : function(data) {
               console.log("실패");
@@ -382,44 +501,49 @@ var scheduleNo = 0;
 	    for(i=0; i < my_form.projectListName.length; i++) {
 	    	if(my_form.projectListName[i].checked) {
 				checkboxValues[i] =my_form.projectListName[i].value;
+				my_form.projectListName[i].checked=false;
 			}
 		}	
+	    
+	   $("#calendar").fullCalendar('removeEvents', function(eventObject) {return true;});
 
-	   $.ajax({
-	        url : "/selectDozenProject.do",
-	        type : "post",
-	        data :  {checkboxValues : checkboxValues},
-	        success : function(data) {
-	           console.log("성공");
-	           console.log(data[0].scTitle);	           
-	           var events = [];
-	        	 
-	         for(var i=0;i<data.length;i++){			        	
-	        		 events.push({
-		        		 title : data[i].scTitle,
-		        		 start : data[i].stStartDate,
-		        		 end : data[i].stEndDate,
-		        		 color : '#CFF09E',
-		        		 url: data[i].scheduleNo
-		        	 });			  
-	        	 } 
-	        	// callback(events);
-          
-	           //window.location.reload(true);//새로고침코드
-	        },
-	        error : function(data) {
-	           console.log("실패");
-	        },
-	        complete : function(data) {
-	        	prjectListOpen ();
-	        }
-		});
-	   	
+	    
+			 $.ajax({
+				        url : "/selectDozenProject.do",
+				        type : "post",
+				        data :  {checkboxValues : checkboxValues},
+				        success : function(data) {
+         
+				           var events = [];
+				        	 
+				         for(var i=0;i<data.length;i++){	
+				        	 var event={
+				        			 title:data[i].scTitle,  
+				        			 start : data[i].stStartDate,
+					        		 end : data[i].stEndDate,
+					        		 color : '#CFF09E',
+					        		 url: data[i].scheduleNo};
 
-
+				     	    $('#calendar').fullCalendar('renderEvent', event, true);
+				        		 
+				        	 } 
+				        },
+				        error : function(data) {
+				           console.log("실패");
+				        },
+				        complete : function(data) {
+				        	prjectListOpen ();
+				        }
+					});
    }
 
-   
+	 //프로젝트 글 목록으로 이동
+	function postChangePage(postProNo){
+		close_up_pop();
+		location.href="/projectPost.do?proNo="+postProNo;
+	}
+	 
+
    
 </script>
 
@@ -500,18 +624,20 @@ div {
 
 	<!-- contents -->
 	<div class="col-9" id="contents" style="padding:0;">
+
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row">
 		<div class="col-md-2">
-		<button type="button" class="btn btn-success" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
-			<form name='my_form'><div id="postList"></div></form>
+		<button type="button" class="btn btn-secondary" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
+			<form name='my_form'><div id="postList" style="width: 200px; position: absolute; left:20px; top:50px;"></div></form>
 		</div>	
 		<div class="col-md-2">　</div>
 		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
 		<div class="col-md" id="calendar"></div>
-
+		
+		<%-- <jsp:include page="/post.do"></jsp:include> --%>
 	</div>
 	<!-- contents 끝 -->
 
@@ -541,7 +667,7 @@ div {
             <input type="date" id="startDate" onchange="dateCheck();"> ~ <input type="date" id="endDate" onchange="dateCheck();">
             </div></div></div>
             <div class="modal-footer">
-             <button type="button" class="btn btn-primary" onClick="saveSchedule();">저장</button>
+             <button type="button" class="btn btn-secondary" onClick="saveSchedule();">저장</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_sc_pop();">닫기</button></div>
             <!-- </div> -->
          </div>
@@ -567,8 +693,8 @@ div {
             <input type="date" id="startDateUpdate" > ~ <input type="date" id="endDateUpdate">
             </div></div></div>
             <div class="modal-footer">
-             <button type="button" class="btn btn-primary" onClick="saveUpdateSchedule();">수정</button>
-             <button type="button" class="btn btn-primary" onClick="deleteSchedule();">삭제</button>
+             <button type="button" class="btn btn-secondary" onClick="saveUpdateSchedule();">수정</button>
+             <button type="button" class="btn btn-secondary" onClick="deleteSchedule();">삭제</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal"  onClick="close_up_pop();">닫기</button></div>
             <!-- </div> -->
          </div>
@@ -577,7 +703,12 @@ div {
 <!--팝업모달 끝 -->
 
 
-
+   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; bottom:0px;">
+      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+   </div>
+   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
+      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+   </div>
 
 
 
