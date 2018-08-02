@@ -81,7 +81,9 @@ public class CalendarDAOImpl implements CalendarDAO {
 	@Override
 	public ArrayList<Schedule> selectDozenProject(SqlSessionTemplate sqlSession, List<String> checkboxValues) {
 		
-		ArrayList<Schedule> scList = new ArrayList<Schedule>();
+		//ArrayList<Schedule> scList = new ArrayList<Schedule>();
+		
+		List scList = null;
 		
 		for(int i =0;i<checkboxValues.size();i++) {
 			
@@ -89,16 +91,14 @@ public class CalendarDAOImpl implements CalendarDAO {
 				
 			}else {
 				int proNo = Integer.parseInt(checkboxValues.get(i));
-				System.out.println(proNo);
+
+				scList = sqlSession.selectList("calendar.selectDozenProject", proNo);
+				
 			}
-			
-			
-			/*Schedule sc = sqlSession.selectOne("calendar.selectDozenProject", proNo);
-			
-			scList.add(sc);*/
+
 		}
 		
-		return scList;
+		return (ArrayList<Schedule>)scList;
 		
 	}
 

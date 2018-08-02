@@ -384,15 +384,27 @@ var scheduleNo = 0;
 				checkboxValues[i] =my_form.projectListName[i].value;
 			}
 		}	
-	  
-		console.log(checkboxValues);
-	   	
-	   	$.ajax({
+
+	   $.ajax({
 	        url : "/selectDozenProject.do",
 	        type : "post",
 	        data :  {checkboxValues : checkboxValues},
 	        success : function(data) {
 	           console.log("성공");
+	           console.log(data[0].scTitle);	           
+	           var events = [];
+	        	 
+	         for(var i=0;i<data.length;i++){			        	
+	        		 events.push({
+		        		 title : data[i].scTitle,
+		        		 start : data[i].stStartDate,
+		        		 end : data[i].stEndDate,
+		        		 color : '#CFF09E',
+		        		 url: data[i].scheduleNo
+		        	 });			  
+	        	 } 
+	        	// callback(events);
+          
 	           //window.location.reload(true);//새로고침코드
 	        },
 	        error : function(data) {
@@ -402,7 +414,9 @@ var scheduleNo = 0;
 	        	prjectListOpen ();
 	        }
 		});
-	   
+	   	
+
+
    }
 
    
@@ -494,18 +508,9 @@ div {
 			<form name='my_form'><div id="postList"></div></form>
 		</div>	
 		<div class="col-md-2">　</div>
-		<div class="col-md-4">，</div>
+		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
 		<div class="col-md" id="calendar"></div>
-		
-		<!-- <div class="row">
-		<div class="col-md-3 max-auto">
-		<button type="button" class="btn btn-success" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
-			<div id="postList"></div>
-		</div>
-		<div class="col-md" id="calendar">　</div>
-		<div class="col-md-1">　</div>
-		</div> -->
 
 	</div>
 	<!-- contents 끝 -->

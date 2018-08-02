@@ -18,22 +18,14 @@
 		PRO_MEMBER_NO as proMNo
 		from schedule join project using(pro_no) where sc_no = #{scheduleNo}
 	</select>
-	<select id="calendarList" resultType="schedule">
-		select sc_no as scheduleNo,
-		post_no as postNo,
-		member_no as memNO,
-		pro_start_Date as startDate,
-		pro_end_Date as endDate,
-		pro_no as proNo
-		from schedule
-	</select>
 	<select id="selectDozenProject" resultType="schedule">
 		select sc_no as scheduleNo,
 		post_no as postNo,
 		member_no as memNO,
-		pro_start_Date as startDate,
-		pro_end_Date as endDate,
-		pro_no as proNo
+		pro_no as proNo,
+		sc_start_date as startDate,
+		sc_end_date as endDate,
+		sc_title as scTitle
 		from schedule where pro_no = #{proNo}
 	</select>
 	<select id="postList" resultType="post">
