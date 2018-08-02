@@ -129,6 +129,115 @@ input[type=checkbox] {
 <script>
 
 	function changeCheckBox(category) { // 이미지랑 체크박스 변화
+    
+	    // 체크한 것이 없을 경우 창 꺼짐
+    	var hideValue = $(".checkBox:checked").length;
+	    if(hideValue==0) {
+        
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	    }
+    
+	    switch(category) {
+    
+ 	   case 'sug': 
+	       $(".sugImg").hide();
+	       $(".sugCheckBox").show();
+       
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	       break;
+	    case 'work': 
+	       $(".workImg").hide();
+	       $(".workCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	       break;
+	    case 'stop': 
+	       $(".stopImg").hide();
+	       $(".stopCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+       
+	       break;
+	    case 'fin': 
+ 	      $(".finImg").hide();
+	       $(".finCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+ 	      $(".sugImg").show();
+ 	      $(".sugCheckBox").hide();
+ 	      $(".workImg").show();
+	      $(".workCheckBox").hide();
+	      $(".stopImg").show();
+ 	      $(".stopCheckBox").hide();
+       
+	       break;
+    
+	    }
+   
+ 	}
+	
+	
+	
+	
+	function check(category) { // 체크한 포스트를 함수 hidden의 value로 저장하기
+		
 		
 		// 체크한 것이 없을 경우 창 꺼짐
 		var hideValue = $(".checkBox:checked").length;
@@ -145,99 +254,6 @@ input[type=checkbox] {
 			
 		}
 		
-		switch(category) {
-		
-		case 'sug': 
-			$(".sugImg").hide();
-			$(".sugCheckBox").show();
-			
-			$(".checkBox:checked").prop('checked',false); // 체크 해제
-			// value 초기화
-			$('#sugToWork').val('sugToWork');
-			$('#workToStop').val('workToStop');
-			$('#workToSug').val('workToSug');
-			$('#stopToFin').val('stopToFin');
-			$('#stopToWork').val('stopToWork');
-			$('#finToStop').val('finToStop');
-			
-			$(".workImg").show();
-			$(".workCheckBox").hide();
-			$(".finImg").show();
-			$(".finCheckBox").hide();
-			$(".stopImg").show();
-			$(".stopCheckBox").hide();
-			
-			break;
-		case 'work': 
-			$(".workImg").hide();
-			$(".workCheckBox").show();
-			$(".checkBox:checked").prop('checked',false); // 체크 해제
-			// value 초기화
-			$('#sugToWork').val('sugToWork');
-			$('#workToStop').val('workToStop');
-			$('#workToSug').val('workToSug');
-			$('#stopToFin').val('stopToFin');
-			$('#stopToWork').val('stopToWork');
-			$('#finToStop').val('finToStop');
-			
-			$(".sugImg").show();
-			$(".sugCheckBox").hide();
-			$(".finImg").show();
-			$(".finCheckBox").hide();
-			$(".stopImg").show();
-			$(".stopCheckBox").hide();
-			
-			break;
-		case 'stop': 
-			$(".stopImg").hide();
-			$(".stopCheckBox").show();
-			$(".checkBox:checked").prop('checked',false); // 체크 해제
-			// value 초기화
-			$('#sugToWork').val('sugToWork');
-			$('#workToStop').val('workToStop');
-			$('#workToSug').val('workToSug');
-			$('#stopToFin').val('stopToFin');
-			$('#stopToWork').val('stopToWork');
-			$('#finToStop').val('finToStop');
-			
-			$(".sugImg").show();
-			$(".sugCheckBox").hide();
-			$(".workImg").show();
-			$(".workCheckBox").hide();
-			$(".finImg").show();
-			$(".finCheckBox").hide();
-			
-			break;
-		case 'fin': 
-			$(".finImg").hide();
-			$(".finCheckBox").show();
-			$(".checkBox:checked").prop('checked',false); // 체크 해제
-			// value 초기화
-			$('#sugToWork').val('sugToWork');
-			$('#workToStop').val('workToStop');
-			$('#workToSug').val('workToSug');
-			$('#stopToFin').val('stopToFin');
-			$('#stopToWork').val('stopToWork');
-			$('#finToStop').val('finToStop');
-			
-			$(".sugImg").show();
-			$(".sugCheckBox").hide();
-			$(".workImg").show();
-			$(".workCheckBox").hide();
-			$(".stopImg").show();
-			$(".stopCheckBox").hide();
-			
-			break;
-		
-		}
-
-		
-	}
-	
-	
-	
-	
-	function check(category) { // 체크한 포스트를 함수 hidden의 value로 저장하기
 		
 		var postNo = [];
 
@@ -269,9 +285,9 @@ input[type=checkbox] {
 				 });
 				$('#finToStop').val(postNo);
 				break;
-			
 		}
-		 
+		
+		// console.log("check:" + postNo);
 
 	}
 	
@@ -279,57 +295,159 @@ input[type=checkbox] {
 	
 	function updateProgress(category) { // ajax로 비즈니스 로직(hidden의 value사용)
 		
+		var postNoStr = "";
+		var postProgress = "";
+		
+		var proNoStr = $("#proNo").val();
+	    var proNo = proNoStr.substring(6);
+	
 		switch(category) {
 		case 'sugToWork': 
-			var postNo = $('#sugToWork').val();
-			if(postNo=='sugToWork') {
+			postNoStr = $('#sugToWork').val();
+			if(postNoStr=='sugToWork') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#sugToWork').val()); // 비즈니스 로직
+				postProgress = 'working';
 			}
 			break;
 		case 'workToSug': 
-			var postNo = $('#workToSug').val();
-			if(postNo=='workToSug') {
+			postNoStr = $('#workToSug').val();
+			if(postNoStr=='workToSug') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#workToSug').val()); // 비즈니스 로직
+				postProgress = 'suggest';
 			}
 			break;
 		case 'workToStop': 
-			var postNo = $('#workToStop').val();
-			if(postNo=='workToStop') {
+			postNoStr = $('#workToStop').val();
+			if(postNoStr=='workToStop') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#workToStop').val()); // 비즈니스 로직
+				postProgress = 'stop';
 			}
 			break;
 		case 'stopToWork': 
-			var postNo = $('#stopToWork').val();
-			if(postNo=='stopToWork') {
+			postNoStr = $('#stopToWork').val();
+			if(postNoStr=='stopToWork') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#stopToWork').val()); // 비즈니스 로직
+				postProgress = 'working';
 			}
 			break;
 		case 'stopToFin': 
-			var postNo = $('#stopToFin').val();
-			if(postNo=='stopToFin') {
+			postNoStr = $('#stopToFin').val();
+			if(postNoStr=='stopToFin') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#stopToFin').val()); // 비즈니스 로직
+				postProgress = 'finish';
 			}
 			break;
 		case 'finToStop': 
-			var postNo = $('#finToStop').val();
-			if(postNo=='finToStop') {
+			postNoStr = $('#finToStop').val();
+			if(postNoStr=='finToStop') {
 				alert("이동할 이슈를 선택해주세요.");
 			} else {
-				console.log($('#finToStop').val()); // 비즈니스 로직
+				postProgress = 'stop';
 			}
 			break;
 		}
 		
+		
+		
+		if(postNoStr!="" && postProgress!="") { // 비즈니스 로직
+			
+			// console.log("total: "+postNoStr+"/progress: "+postProgress);
+		
+		
+			$.ajax({
+				
+				url : "/updateProgress.do",
+				type : "post",
+				data : {
+					postNoStr : postNoStr,
+					postProgress : postProgress,
+					proNo : proNo
+				},
+				success : function(data) {
+					
+					var postList = data.postList;
+					
+					
+					$(".progressBody").empty();
+					
+					var suggestResult = "";
+					var workingResult = "";
+					var stopResult = "";
+					var finishResult = "";
+					
+					var sug = "'sug'";
+					var work = "'work'";
+					var stop = "'stop'";
+					var fin = "'fin'";
+					
+					
+					for(var i=0 ; i<postList.length ; i++) {
+						
+						var date = new Date(postList[i].postDate.time);
+						var dateStr = date.toString();
+						var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
+						
+						
+						if(postList[i].postProgress=='suggest') {
+							suggestResult += '<div class="progressPost" draggable="true">'
+											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
+											 + '<span class="sugCheckBox" style="display: none;">'
+											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
+											 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+
+						} else if(postList[i].postProgress=='working') {
+							workingResult += '<div class="progressPost" draggable="true">'
+								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
+								 			 + '<span class="workCheckBox" style="display: none;">'
+								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
+								 			 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						} else if(postList[i].postProgress=='stop') {
+							stopResult += '<div class="progressPost" draggable="true">'
+								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
+								 		  + '<span class="stopCheckBox" style="display: none;">'
+								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
+								 		  + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						} else if(postList[i].postProgress=='finish') {
+							finishResult += '<div class="progressPost" draggable="true">'
+								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
+											+ '<span class="finCheckBox" style="display: none;">'
+								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
+								 			+ '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						}
+						
+					
+					}
+					
+					$("#suggestBody").append(suggestResult);
+					$("#workingBody").append(workingResult);
+					$("#stopBody").append(stopResult);
+					$("#finishBody").append(finishResult);
+					
+				},
+				error : function() {
+					console.log("업데이트 실패");
+				}
+				
+				
+				
+			});
+			
+		
+		
+		
+		
+		
+		
+			
+		}
 		
 		
 		
@@ -362,10 +480,10 @@ input[type=checkbox] {
 		<div class="fullProgressBox">
 		
 			<div class="progressTitle">
-				<h5><b>프로젝트 진행 현황</b>
+				<h5><b>프로젝트 이슈 진행 현황</b>
 				<img src="../resources/images/project/help-round-button.png"/>
-				<span style="font-size:small;">진행 상황을 한 눈에 볼 수 있습니다. 해당 이슈의 진행 상태를 변경할 수 있습니다.</span></h5>
-				
+				<span style="font-size:small;">프로젝트 이슈를 한 눈에 볼 수 있습니다. 해당 이슈의 진행 상태를 변경할 수 있습니다.</span></h5>
+				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
 			</div>
 			<div class="titleEmpty"></div>
 			
@@ -379,13 +497,13 @@ input[type=checkbox] {
 			<div class="progressHeader"><h5><b>완료</b></h5></div>
 			</div>
 			
-			<div class="progressBody">
+			<div class="progressBody" id="suggestBody">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='suggest'}">
 					<div class="progressPost" draggable="true">
 						
-						<img src="../resources/images/project/suggest.png" class="sugImg" onclick="changeCheckBox('sug');"/>
+						<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('sug');"/>
 						<span class="sugCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="sug_checkBox" value="${postList.postNo}" onClick="check('sug');">
 						</span>
@@ -407,13 +525,13 @@ input[type=checkbox] {
 				<input type="hidden" id="workToSug" value="workToSug" />
 			</div>
 			
-			<div class="progressBody">
+			<div class="progressBody" id="workingBody">
 
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='working'}">
 					<div class="progressPost" draggable="true">
 						
-						<img src="../resources/images/project/working.png" class="workImg" onclick="changeCheckBox('work');"/>
+						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
 						<span class="workCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="work_checkBox" value="${postList.postNo}" onClick="check('work');">
 						</span>
@@ -435,13 +553,13 @@ input[type=checkbox] {
 				<input type="hidden" id="stopToWork" value="stopToWork" />
 			</div>
 			
-			<div class="progressBody">
+			<div class="progressBody" id="stopBody">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='stop'}">
 					<div class="progressPost" draggable="true">
 						
-						<img src="../resources/images/project/stop.png" class="stopImg" onclick="changeCheckBox('stop');"/>
+						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
 						<span class="stopCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${postList.postNo}" onClick="check('stop');">
 						</span>
@@ -464,13 +582,13 @@ input[type=checkbox] {
 			</div>			
 
 	
-			<div class="progressBody">
+			<div class="progressBody" id="finishBody">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='finish'}">
 					<div class="progressPost" draggable="true">
 						
-						<img src="../resources/images/project/finish.png" class="finImg" onclick="changeCheckBox('fin');"/>
+						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
 						<span class="finCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${postList.postNo}" onClick="check('fin');">
 						</span>

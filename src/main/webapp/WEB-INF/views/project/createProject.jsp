@@ -105,6 +105,7 @@ span {
 	//팝업 Close 기능
 	function close_pop(flag) {
 		$('#createProjectModal').hide();
+		location.href="/mainPage.do";
 	};
 
 	function periodOff() {
