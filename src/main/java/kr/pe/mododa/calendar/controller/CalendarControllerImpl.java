@@ -201,7 +201,21 @@ public class CalendarControllerImpl implements CalendarController {
 	public void selectDozenProject(HttpServletResponse response,@RequestParam(value = "checkboxValues[]") List<String> checkboxValues) throws Exception {
 
 		ArrayList<Schedule> sclist = CalendarService.selectDozenProject(checkboxValues);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
+		
+		String startDateUp =""; String endDateUp="";
+
+		for(int i=0;i<sclist.size();i++) {
+
+		startDateUp = sdf.format(sclist.get(i).getStartDate());
+		sclist.get(i).setStStartDate(startDateUp); //시작 날짜를 format
+		sclist.get(i).setStartDate(null);
+		endDateUp = sdf.format(sclist.get(i).getEndDate());
+		sclist.get(i).setStEndDate(endDateUp); //끝 날짜를 format	
+		sclist.get(i).setEndDate(null);
 		 
+		}
 		 response.setContentType("application/json");
 		 response.setCharacterEncoding("utf-8");
 		 
