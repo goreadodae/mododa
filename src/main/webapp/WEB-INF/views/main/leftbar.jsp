@@ -42,6 +42,7 @@ li {
 
 .list-title {
 	color: #464646;
+	margin-bottom: 0;
 }
 
 div {
@@ -208,8 +209,8 @@ li[id^="sub_"] a {
 	<!-- left bar -->
 	<div class="col-3" id="background">
 		<div class="leftbar">
-			<br>
-			<ul>
+			
+			<ul style="margin-bottom:0;">
 				<li class="list-title">전체 정보</li>
 				<li class="list-group-item" id="newsfeed">
 					<img src="../resources/images/layout-img/lightning.png" class="icon"> 뉴스피드</li>
@@ -222,8 +223,6 @@ li[id^="sub_"] a {
 				<li class="list-group-item" id="calendarAll">
 					<img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
 			</ul>
-
-			<br>
 
 			<ul>
 				<li class="list-title">프로젝트</li>
