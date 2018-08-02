@@ -365,7 +365,7 @@ public class PostControllerImpl {
 	}
 
 	//일정 수정
-	@RequestMapping(value="/updateSchedule.do")
+	@RequestMapping(value="/postUpdateSchedule.do")
 	public ModelAndView updateSchedule(int scheduleNo, Date startDate, Date endDate, String scTitle) {
 		Schedule vo = new Schedule();
 		vo.setScheduleNo(scheduleNo);
