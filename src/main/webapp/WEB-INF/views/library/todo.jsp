@@ -231,6 +231,8 @@ div {
 
 <!-- 할 일 내용보기 모달 -->
 <c:forEach items="${listTodo }" var="t">
+	<input type="hidden" id="writerNo_${t.todoNo }" value="${t.todoWriter }" />
+	<input type="hidden" id="memberNo_${t.todoNo }" value="${t.todoMember }" />
 	
 	<div id="todoContentModal_${t.todoNo }" class="modal">
 
@@ -243,24 +245,47 @@ div {
 			<!-- 할 일 내용  -->
 			<table border="1">
 				<tr>
-					<td>${t.todoProgress }</td>
+					<td>
+						<div class='btn-group'>
+							<c:choose>
+								<c:when test="${t.todoProgress.equals('suggest')}">
+									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/icon/play-button.png' />
+								</c:when>
+								<c:when test="${t.todoProgress.equals('working')}">
+									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/play-buttonOn.png' />
+								</c:when>
+								<c:when test="${t.todoProgress.equals('stop')}">
+									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/pauseOn.png' />
+								</c:when>
+								<c:otherwise>
+									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/checked.png' />
+								</c:otherwise>
+							</c:choose>
+							<div class='dropdown-menu'>
+							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+							</div>
+						</div>
+					</td>
 					<td colspan="3"><input class="form-control" type="text" id="" name="todoTitle" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요"></td>
 				</tr>
 				<tr>
 					<td>
-						<select class="form-control" id="" name="todoMember" style="width:150px;">
-							<option value="0">${t.todoWriter }</option>
+						<select class="form-control" name="todoMember" style="width:150px;">
+							<option value="0">${t.todoWriterName }</option>
 						</select>  
 					</td>
 					<td>
 					->
 					</td>
 					<td>
-						<select class="form-control" id="" name="todoMember" style="width:150px;">
-							<option value="0">todoMember</option>
+						<select class="form-control" name="todoMember" style="width:150px;">
+							<option value="0">${t.todoMemberName }</option>
 						</select>
 					</td>
-					<td width="40%" align="right">todoDate</td>
+					<td width="40%" align="right">${t.todoStartDate }</td>
 				</tr>
 				<tr>
 					<td colspan="4" height="200px;">
@@ -519,42 +544,58 @@ div {
 	
 	// 할일 진행과정 변경
 	function changeProgressTodo(todoMember, todoNo, status) {
-		console.log("tdMember : " + todoMember);
-		console.log("todoNo : " + todoNo);
+		var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
+		var writerNo = $("#writerNo_"+todoNo).val();
+		var memberNo = $("#memberNo_"+todoNo).val();
 		
-		$.ajax({
-			url : "/postUpdateTodoProgress.do",
-			type : "post",
-			data : {
-				todoNo : todoNo,
-				todoProgress : status
-			},
-			success : function(data) {
-				if (data.result < 0) {
-					alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
-				} else {
-					if (status == 'suggest') {
-						$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+		console.log("user : " + user);
+		console.log("writerNo : " + writerNo);
+		console.log("memberNo : " + memberNo);
+		
+		if(user == writerNo || user == memberNo) {
+			$.ajax({
+				url : "/postUpdateTodoProgress.do",
+				type : "post",
+				data : {
+					todoNo : todoNo,
+					todoProgress : status
+				},
+				success : function(data) {
+					if (data.result < 0) {
+						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 					} else {
 						if (status == 'suggest') {
-							$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
-						} else if (status == 'working') {
-							$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
-						} else if (status == 'stop') {
-							$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
-						} else if (status == 'finish') {
-							$('#' + todoNo).attr("src","../resources/images/post/checked.png");
+							$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+							$('#'+todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+						} else {
+							if (status == 'suggest') {
+								$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+							} else if (status == 'working') {
+								$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/play-buttonOn.png");
+							} else if (status == 'stop') {
+								$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/pauseOn.png");
+							} else if (status == 'finish') {
+								$('#' + todoNo).attr("src","../resources/images/post/checked.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/checked.png");
+							}
 						}
 					}
+				},
+				error : function(data) {
+					console.log("할일 진행과정 변경 실패");
+				},
+				complete : function(data) {
+						
 				}
-			},
-			error : function(data) {
-				console.log("할일 진행과정 변경 실패");
-			},
-			complete : function(data) {
-					
-			}
-		});
+			});
+		}
+		else {
+			alert("진행사항 변경 권한이 없습니다.");
+		}
+		
 	}
 	
 	
