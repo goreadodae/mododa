@@ -23,8 +23,8 @@
  -->
 
 
-
 <script>
+
 	$.noConflict
 	//전체화면 사이즈 구하는 jquery
 	function divSize() {
@@ -343,7 +343,6 @@
 	function bringRelativeWrite() {
 		var currentProNo = $("#currentProNo").val()
 		var str="";
-		console.log(currentProNo);
 
 		$
 				.ajax({
@@ -357,7 +356,7 @@
 
 					success : function(data) {
 
-						console.log("성공");
+						
 
 						if (preventStack) {
 
@@ -408,18 +407,20 @@
 				})
 
 	} 
-
+	
 	$(document).ready(function(){
 		$('#relationSearch').keypress(function(){
+			var cycle = 1;
 			var searchKeyword = $("#relationSearch").val();
 			var currentProNo = $("#currentProNo").val();
 			var str="";
 			var failed ="";
-			console.log(checkedInfoList);
-			 if(event.which == 13) {
-				
-				
-				
+			var cnt=1;
+			console.log(checkedInfoList.length+"검색");
+			
+			
+			 if(event.which == 13) {	
+				 
 			$.ajax({
 			url : "/searchWriting.do",
 			type : "get",
@@ -428,9 +429,16 @@
 					currentProNo : currentProNo
 			},
 			success : function(data) {
-				console.log("검색 성공");
-				$('#relationList').text(" ");
+				 $("#relationList").empty(); 
+				if(checkedInfoList.length!=0)
+					{
+						console.log("체크 정보리스트가 0이 아니래");
+						cycle = checkedInfoList.length;
+						console.log(cycle+"지금 사이클의 랭스길이");
+					}
 				
+					console.log("검색 성공");
+					console.log(cycle+"사이클의 인덱스번호");
 				
 				if(data.length == 0)
 				{	
@@ -452,65 +460,104 @@
 				}
 				else{
 					console.log("엘스");
-					
-					
-						for(var j= 0; j < checkedInfoList.length; j++)
-							{
-								for (var i = 0; i < data.length; i++) 
-								{
-									
-									
-									str +=	'<li class="list-group-item" style="padding-top: 10px;">';
-									str += '<div class="row" style="height: 50%">';
-									str += '<div class="col-md-12" style="height: 100%">';
-									
-						
-											if(checkedInfoList[j] != data[i].postNo)
-												{
-													str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
-													str += 'value="'+data[i].postTitle+','+data[i].memberName+'">';										
-												}
-																			
-									
-									
-									str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
-									str += data[i].postTitle;
-									str += '</span>';
-									str += '</div>';
-									str += '</div>';
-									str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
-									str += '<h6 style="display: inline">';
-									
-									
-										if(data[i].memberPicture == null)
-											{
-												str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
-											}
-										else
-											{
-												str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-												
-											}
-									str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
-									str += '</span>&nbsp;&nbsp;';
-									str += '<span>'+data[i].postDate+'</span>';
-									str += '</h6>&nbsp;&nbsp;';
-									str += '</div>';
-									str += '</div>';
-									str += '</li>';
-									
-									$('#relationList').append(str);
-									
-										str ="";
-			
-								}
+					if(checkedInfoList.length==0)
+						{
+							for (var i = 0; i < data.length; i++) 
+							{			
+								str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+								str += '<div class="row" style="height: 50%">';
+								str += '<div class="col-md-12" style="height: 100%">';
+								str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"';
+								str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';					
+								str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
+								str += data[i].postTitle;
+								str += '</span>';
+								str += '</div>';
+								str += '</div>';
+								str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
+								str += '<h6 style="display: inline">';					
+									if(data[i].memberPicture == null)
+										{
+											str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+										}
+									else
+										{
+											str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+											
+										}
+								str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
+								str += '</span>&nbsp;&nbsp;';
+								str += '<span>'+data[i].postDate+'</span>';
+								str += '</h6>&nbsp;&nbsp;';
+								str += '</div>';
+								str += '</div>';
+								str += '</li>';
+								
+								$('#relationList').append(str);
+								
+									str ="";
+									console.log("검색 완료");
+		
 							}
+					}
+					else
+						{
+							for(var j=0; j<checkedInfoList.length; j++)
+								{
+								
+								for(var i=0; i<data.length; i++)
+									{
+									
+										str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+										str += '<div class="row" style="height: 50%">';
+										str += '<div class="col-md-12" style="height: 100%">';
+										console.log(checkedInfoList[j]+"체크된post번호");
+										console.log(data[i].postNo+"체크된post번호");
+									if(checkedInfoList[j] != data[i].postNo)
+									{
+									
+										str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"';
+										str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';										
+										console.log("두개가 다름");
+									}	
+										str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
+										str += data[i].postTitle;
+										str += '</span>';
+										str += '</div>';
+										str += '</div>';
+										str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
+										str += '<h6 style="display: inline">';
+										
+										
+											if(data[i].memberPicture == null)
+												{
+													str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
+												}
+											else
+												{
+													str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
+												}
+										str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
+										str += '</span>&nbsp;&nbsp;';
+										str += '<span>'+data[i].postDate+'</span>';
+										str += '</h6>&nbsp;&nbsp;';
+										str += '</div>';
+										str += '</div>';
+										str += '</li>';
+									}
+								}
+								$('#relationList').append(str);
+								str="";
+								}
+						}
 					
-				
-				}
-							$('#relationList').text(" ");
+					
+					
+						
+			
+			
 
-				
+			
 				
 			},
 			error : function(data) {
@@ -519,10 +566,9 @@
 				
 				
 			}
-
+			 
 			})
-		}
-						
+		}			
 		})
 
 	})
@@ -540,8 +586,7 @@
 			success : function(data){
 				console.log("성공");
 				console.log(proNo);
-				$('#relationList').text(" ");
-				
+				 $("#relationList").empty();
 				for (var i = 0; i < data.length; i++) {
 					
 					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
@@ -603,10 +648,11 @@
 			var str ="";
 			var postInfo ="";
 
-			
 			$('input:checkbox[name=checkedWriting]:checked').each(function(index, item){
 					 str = $(this).val();
 					 postInfo = str.split(',');	
+					 
+				checkedInfoList.push(postInfo[2]);
 					 
 				$(
 						  '<div class="col-md-6" style="height:100px; padding-top:5%;">'
@@ -614,20 +660,12 @@
 						+ '<div class="col-md-12" style="padding:5px; color:#A1A1A1;"><img src="/resources/images/writeImages/invention.png" style="padding:0;"/>&nbsp;&nbsp;'
 						+ postInfo[1] + '</div><div class="col-md-12" style="color:#A1A1A1; font-size:11px; text-overflow:ellipsis">'
 						+ postInfo[0] + '</div></div></div>').appendTo($('#addRelationWriting'));
-				
+				console.log(postInfo[2]);
 		
 				$('#writingCnt').text(index+1);
-				
-				checkedInfoList[index] = postInfo[2];
-				
 				console.log(checkedInfoList);
-				
 				$('input:checkbox[name=checkedWriting]:checked').remove();
-				
-				
 				str="";
-				postInfo="";
-				
 			
 	
 				
@@ -636,8 +674,47 @@
 	})
 	
 			
+/* $(document).ready(function(){
+	var ajaxData=[],
+	data,
+	target = $('.thumb-list');
+	
+	target.each(function(){
+		var $this = $(this),
+		link =$this.find('.thumb-link').attr('href');
+		
+		ajaxData.push(
+			$.ajax({
+				url:link,
+				dataType : "html"
+			})	
+			.done(function(data){
 			
+				var defin = new $.Deffered();
+				checkSort($this,data);
+				
+				
+			})
 			
+		
+		
+		);
+		
+	});
+	
+	function checkSort(target, data){
+		var loadData = data,
+		regImg = '/<meta.*property="og:image".*content=".+cfile.+".*>/'
+		imgData = loadData.match(regImg) ? loadData.match(regImg)[0] : "none";
+
+		console.log(regImg);
+		console.log(imgData);
+		
+	}
+	
+	
+});
+		 */	
 
 					
 	
@@ -951,7 +1028,16 @@ margin:auto;
 								</div>
 								<div class="row" style="height: 90%">
 									<div class="col-md-12" style="height: 100%">
-										<div class="tarea col-md-12" contenteditable="true" style="height: 100%; padding-left: 0px;">this looks like a textarea!</div>
+										<div class="tarea col-md-12" id="inputContents" contenteditable="true" style="height: 100%; padding-left: 0px;">
+										
+								
+
+
+										
+										
+											
+										
+										</div>
 									</div>
 								</div>
 							</div>
