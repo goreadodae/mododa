@@ -32,6 +32,38 @@
 		location.href="newsfeed.do";
 
 	}
+	/* 초대취소 */
+	function inviteReject(proNo, memberNo){
+		console.log(proNo);
+		console.log(memberNo);
+		$.ajax({
+			url: "/inviteProMemberCancel.do",
+			type: "post",
+			data: {
+				memberNo: memberNo,
+				proNo: proNo
+			}, success: function(data){
+				$('#failedAlertMessage').text('거절하셨습니다');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow'); window.location.reload(); }, 1500);
+			}
+		});
+	}
+	/* 초대승인 */
+	function acceptMember(proNo, memberNo){
+		$.ajax({
+			url: "/acceptMember.do",
+			type: "post",
+			data: {
+				memberNo: memberNo,
+				proNo: proNo
+			}, success: function(data){
+				$('#successAlertMessage').text('수락하셨습니다');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow'); window.location.reload(); }, 1500);
+			}
+		});
+	}
 	function searchNews()// 뉴스피드.
 	{
 		var keyword=$("#keyword").val();
@@ -100,7 +132,7 @@
 						+"<label style='float: right;'>"+data.memberInvitingProList[i].leaderName+"</label>"
 						+"</div>"
 						+"<div class='col-md-12'>"
-						+"<a onclick='inviteCancel("
+						+"<a onclick='inviteReject("
 						+data.memberInvitingProList[i].proNo+","+data.memberInvitingProList[i].memberNo
 						+");' style='color: gray; float: right; margin-left: 10px;'>거절하기</a>"
 						+"<a style='color: #339966; float: right;' onclick='acceptMember("
@@ -116,28 +148,7 @@
 			
 		});
 	});
-	/* 초대취소 */
-	function inviteCancel(proNo, memberNo){
-		$.ajax({
-			url: "/inviteProMemberCancel.do",
-			type: "post",
-			data: {
-				memberNo: memberNo,
-				proNo: proNo
-			}
-		});
-	}
-	/* 초대승인 */
-	function acceptMember(proNo, memberNo){
-		$.ajax({
-			url: "/acceptPartner.do",
-			type: "post",
-			data: {
-				memberNo: memberNo,
-				proNo: proNo
-			}
-		});
-	}
+
 	
 	function postChangePage(proNo){ //준석추가
 		location.href="/projectPost.do?proNo="+proNo;

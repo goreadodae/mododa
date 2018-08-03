@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>게시글 상세보기 모달</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -99,7 +99,7 @@ div {
 
 
 /* 마우스 포인터 설정 */
-#viewProjectTitle,#postBookmarkImg,#like-count,.content-box,.scheduleList{
+#viewProjectTitle,#postBookmarkImg,#like-count,.content-box,.scheduleDate{
 	cursor : pointer;
 }
 
@@ -126,7 +126,7 @@ div {
 }
 
 
-/**/
+/* 좋아요 */
 #like-count {
 	float: right;
 	font-size: 13px;
@@ -149,12 +149,22 @@ div {
 	width: 52px;
 }
 
+/* 게시물 작성자 프로필 */
 #postWriterProfileImg {
 	margin-bottom: 3px;
 	height: 30px;
 	height: 30px;
-	border: 1px solid white;
+	border: 1px solid #969696;
 	border-radius: 100px;
+}
+
+/* 게시물 작성자 */
+#post-writer{
+	color : #5a5a5a;
+}
+
+#post-date{
+	color : #969696;
 }
 
 /* 할일 프로필 이미지 */
@@ -210,6 +220,7 @@ img[class="btn btn-link dropdown-toggle"] {
 #scTitle, #updateScTitle {
 	width: 95%;
 	height: 50px;
+	padding-left : 15px;
 }
 
 #scStartDate, #scEndDate, #updateScStartDate, #updateScEndDate {
@@ -243,6 +254,16 @@ img[class="btn btn-link dropdown-toggle"] {
 }
 
 /* 의사결정 등록 */
+.eachDecision{
+	background-color : #F0FFF0;
+	width : 100%;
+	border-radius: 5px;
+	padding : 15px;
+	margin-bottom : 15px;
+	border : 1px solid #C8FAC8;
+	display: inline-block;
+}
+
 #decisionContent, #decisionComment {
 	width: 100%;
 	height: 50px;
@@ -329,6 +350,17 @@ img[class="btn btn-link dropdown-toggle"] {
 	cursor: pointer;
 }
 
+.whiteButton{
+	background-color: white;
+	color: #339966;
+	width: 80px;
+	border: 1px solid #339966;
+	cursor: pointer;
+	padding: 5px;
+	margin-right : 10px;
+	border-radius: 30px;
+}
+
 .insertButton2 {
 	background-color: #339966;
 	color: #F8FAFF;
@@ -347,6 +379,8 @@ img[class="btn btn-link dropdown-toggle"] {
 	var postBookmarkOnOff = 0;//북마크 상태
 	var postLikeOnOff = 0; //좋아요 상태
 	var postProNo = 0;	//프로젝트 번호
+	var postScheduleNo = 0;	//수정할 일정 번호
+	var postDecisionNo = 0; //의사결정 번호
 
 	//게시글 불러옴
 	function getPost(postNumber) {
@@ -355,6 +389,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		//count
 		var countSchedule = 0;
 		var countTodo = 0;
+		var countDecision = 0;
 		$.ajax({
 					url : "/viewPost.do",
 					type : "post",
@@ -379,7 +414,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#viewProjectTitle').html(data.project.proTitle);
 							$('#post-title').html(data.post.postTitle);
 							$('#post-content').html(data.post.postContent);
-							$('#post-date').html(data.post.postDate);
+							$('#post-date').html("&nbsp;" + data.post.stPostData);
 							$('#postWriterProfileImg').attr("src",data.post.postWriterPicture);
 							$('#post-writer').html(data.post.postWriterName);
 							postProNo = data.project.proNo;
@@ -411,9 +446,9 @@ img[class="btn btn-link dropdown-toggle"] {
 							for (var i = 0; i < data.schedule.length; i++) {
 								countSchedule++;
 
-								strSchedule += "<div class='scheduleList' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +");'>"
-										+ "<img src='../resources/images/post/calendar.png' />"
-										+ "<span class='scheduleDate'>&nbsp;&nbsp;"
+								strSchedule += "<div class='scheduleList'>"
+										+ "<img src='../resources/images/post/calendar.png' />&nbsp;&nbsp;"
+										+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");' id='scheduleContent" + data.schedule[i].scNo + "'>"
 										+ data.schedule[i].startDate + " ~ "
 										+ data.schedule[i].endDate
 										+ "&nbsp;&nbsp; : &nbsp;&nbsp;"
@@ -461,48 +496,55 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#countTodo').html(countTodo);
 
 							//의사결정 불러오기
-							if (data.decision == null) {
+							if (data.decision.length == 0) {	//등록된 의사결정이 없으면
 								var strDecision = "<div class='content-box' onclick='open_decision();'>"
 										+ "<img src='../resources/images/post/add.png' id='add-icon' /></div>";
 
 								$('#countDecision').html(0);
 							} else {
-								var strDecision = "<span class='memberIdForDecision'>"
-										+ data.decision.dcWriterName
+								var strDecision = "";
+								for (var i = 0; i < data.decision.length; i++) {
+									countDecision ++;
+									strDecision += "<div class='eachDecision'><div id='postDecision" + data.decision[i].dcNo + "'><span class='memberIdForDecision'>"
+										+ data.decision[i].dcWriterName
 										+ "</span>님의 요청 : "
-										+ data.decision.dcContent + "<br>";
+										+ data.decision[i].dcContent + "<br>";
 
-								if (data.decision.dcYn == 'n'
-										|| data.decision.dcYn == 'N') {//아직 의사결정 안됬을때(대기)
+								if (data.decision[i].dcYn == 'n'
+										|| data.decision[i].dcYn == 'N') {//아직 의사결정 안됬을때(대기)
 									strDecision += "<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"
-											+ data.decision.dcMakerName
+											+ data.decision[i].dcMakerName
 											+ "</span>님의 결정 기다리는 중&nbsp;&nbsp;&nbsp;<br>";
-								} else if (data.decision.dcDecision == 'y'
-										|| data.decision.dcDecision == 'Y') {//의사결정이 승인일때
+								} else if (data.decision[i].dcDecision == 'y'
+										|| data.decision[i].dcDecision == 'Y') {//의사결정이 승인일때
 									strDecision += "<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"
-											+ data.decision.dcMakerName
+											+ data.decision[i].dcMakerName
 											+ "</span>님의 결정 : "
-											+ data.decision.dcComment
+											+ data.decision[i].dcComment
 											+ "&nbsp;&nbsp;&nbsp;<br>";
 								} else {//의사결정이 반려일때
 									strDecision += "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"
-											+ data.decision.dcMakerName
+											+ data.decision[i].dcMakerName
 											+ "</span>님의 결정 : "
-											+ data.decision.dcComment
+											+ data.decision[i].dcComment
 											+ "&nbsp;&nbsp;&nbsp;<br>";
 								}
+								
+								strDecision += "</div>";
 
-								if (data.memberNo == data.decision.dcWriter) {//로그인한 계정이 결정 요청자일 경우
-									strDecision += " <div id='deleteForDecision' onclick='deleteDecision();'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
+								if (data.memberNo == data.decision[i].dcWriter) {//로그인한 계정이 결정 요청자일 경우
+									strDecision += " <div id='deleteForDecision' onclick='deleteDecision(" + data.decision[i].dcNo + ");'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
 								}
-								if (data.memberNo == data.decision.dcMaker) { //로그인한 계정이 결정자일경우
-									strDecision += " <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
+								if (data.memberNo == data.decision[i].dcMaker) { //로그인한 계정이 결정자일경우
+									strDecision += " <div id='decideForDecision' onclick='open_decide(" + data.decision[i].dcNo + ");'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
 								}
-
-								$('#countDecision').html(1);
+								strDecision +="</div>";
+								
 							}
-							$('#appendforDecision').html(
-									strDecision + "<br><br>");
+								$('#countDecision').html(countDecision);
+							}
+							
+							$('#appendforDecision').html(strDecision);
 
 							//게시글 프로젝트의 멤버들
 							$('#selectMember').html("");
@@ -557,8 +599,8 @@ img[class="btn btn-link dropdown-toggle"] {
 
 	//일정 모달 open
 	function open_scheduleModal(flag) {
-		document.getElementById('scStartDate').valueAsDate = new Date();
-		document.getElementById('scEndDate').valueAsDate = new Date();
+		$('#scStartDate').valueAsDate = new Date();
+		$('#scEndDate').valueAsDate = new Date();
 		$('#scheduleModal').show();
 	}
 
@@ -568,9 +610,12 @@ img[class="btn btn-link dropdown-toggle"] {
 	};
 	
 	//일정수정 모달 open
-	function open_updateScheduleModal(flag) {
-		$('#scStartDate').valueAsDate = new Date();
-		$('#scEndDate').valueAsDate = new Date();
+	function open_updateScheduleModal(preScNo,preStartDate,preEndDate,preScTitle) {
+		postScheduleNo = preScNo;
+		$('#updateScStartDate').val(preStartDate);
+		$('#updateScEndDate').val(preEndDate);
+		$('#updateScTitle').val(preScTitle);
+
 		$('#updateScheduleModal').show();
 	}
 
@@ -590,7 +635,8 @@ img[class="btn btn-link dropdown-toggle"] {
 	};
 
 	//의사결정하기 모달 open
-	function open_decide(flag) {
+	function open_decide(dcNo) {
+		postDecisionNo = dcNo;
 		$('#decideModal').show();
 	}
 
@@ -599,7 +645,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		$('#decideModal').hide();
 	}
 
-	//진행과정 변경
+	//게시글 진행과정 변경
 	function changeProgress(status) {
 		$.ajax({
 			url : "/postUpdatePostProgress.do",
@@ -691,9 +737,6 @@ img[class="btn btn-link dropdown-toggle"] {
 
 	//할일 진행과정 변경
 	function changeProgressTodo(todoMember, todoNo, status) {
-		console.log("tdMember : " + todoMember);
-		console.log("todoNo : " + todoNo);
-		console.log("postMemberNo : " + postMemberNo);
 		if (todoMember == postMemberNo) { //로그인한 계정과 할일을 해야하는 사람과 같으면 진행과정 변경가능
 			$
 					.ajax({
@@ -750,8 +793,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		var scStartDate = $('#scStartDate').val();
 		var scEndDate = $('#scEndDate').val();
 
-		$
-				.ajax({
+		$.ajax({
 					url : "/postInsertSchedule.do",
 					type : "post",
 					data : {
@@ -765,16 +807,15 @@ img[class="btn btn-link dropdown-toggle"] {
 							alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 						} else {
 							var str = "<div class='scheduleList'>"
-									+ "<img src='../resources/images/post/calendar.png'/>"
-									+ "<span class='scheduleDate'>&nbsp;&nbsp;"
+									+ "<img src='../resources/images/post/calendar.png'/>&nbsp;&nbsp;"
+									+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.newScNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");' id='scheduleContent" + data.newScNo + "'>"
 									+ scStartDate + " ~ " + scEndDate
 									+ "&nbsp;&nbsp; : &nbsp;&nbsp;" + scTitle
 									+ "</span>" + "</div>";
-
+									
 							$('#appendforSchedule').append(str);
 
-							$('#countSchedule').html(
-									Number($('#countSchedule').html()) + 1);
+							$('#countSchedule').html(Number($('#countSchedule').html()) + 1);
 						}
 					},
 					error : function(data) {
@@ -785,6 +826,58 @@ img[class="btn btn-link dropdown-toggle"] {
 					}
 				});
 	};
+	
+	//일정 수정
+	function updateSchedule(){
+		var scTitle = $('#updateScTitle').val();
+		var scStartDate = $('#updateScStartDate').val();
+		var scEndDate = $('#updateScEndDate').val();
+		
+		$.ajax({
+			url:"/postUpdateSchedule.do",
+			type:"post",
+			data:{
+				scheduleNo : postScheduleNo,
+				startDate : scStartDate,
+				endDate : scEndDate,
+				scTitle : scTitle
+			},
+			success : function(data){
+				var updatedSchedule = scStartDate + " ~ " + scEndDate
+				+ "&nbsp;&nbsp; : &nbsp;&nbsp;"
+				+ scTitle;
+				$('#scheduleContent' + postScheduleNo).html(updatedSchedule);
+				$('#scheduleContent' + postScheduleNo).attr("onclick","open_updateScheduleModal(" + postScheduleNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");");
+			},
+			error : function(data){
+				console.log("일정수정 실패");
+			},
+			complete : function(data) {
+				close_updateScheduleModal();
+			}
+		});
+	};
+	
+	//일정 삭제
+	function deleteSchedule(){
+		$.ajax({
+			url : "/postDeleteSchedule.do",
+			type : "post",
+			data : {
+				scNo : postScheduleNo
+			},
+			success : function(data){
+				$('#scheduleContent' + postScheduleNo).parent().remove();
+				$('#countSchedule').html(Number($('#countSchedule').html()) - 1);
+			},
+			error : function(data){
+				console.log("일정삭제 실패");
+			},
+			complete : function(data) {
+				close_updateScheduleModal();
+			}
+		});
+	}
 
 	// 이미지 추가
 	function readURL(input) {
@@ -805,8 +898,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		var dcMaker = $('#selectMemberForDecision').val();
 		var dcContent = $('#decisionContent').val();
 
-		$
-				.ajax({
+		$.ajax({
 					url : "/postInsertDecision.do",
 					type : "post",
 					data : {
@@ -818,7 +910,8 @@ img[class="btn btn-link dropdown-toggle"] {
 						if (data.result < 0) {
 							alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 						} else {
-							var str = "<span class='memberIdForDecision'>"
+							
+							var str = "<div class='eachDecision'><div id='postDecision" + data.newDcNo + "'><span class='memberIdForDecision'>"
 									+ data.writerMem.memberName
 									+ "</span>님의 요청 : "
 									+ dcContent
@@ -826,13 +919,19 @@ img[class="btn btn-link dropdown-toggle"] {
 									+ "<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"
 									+ data.makerMem.memberName
 									+ "</span>님의 결정 기다리는 중"
-									+ "&nbsp;&nbsp;&nbsp;<div id='deleteForDecision' onclick='deleteDecision();'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
+									+ "<br></div><div id='deleteForDecision' onclick='deleteDecision(" + data.newDcNo + ");'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
 							if (postMemberNo == dcMaker) {
-								str += " <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
+								str += " <div id='decideForDecision' onclick='open_decide(" + data.newDcNo + ");'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
+							}
+							str += "</div>"
+							
+							if(Number($('#countDecision').html())==0){
+								$('#appendforDecision').html(str);
+							}else{
+								$('#appendforDecision').append(str);
 							}
 
-							$('#appendforDecision').html(str);
-							$('#countDecision').html(1);
+							$('#countDecision').html(Number($('#countDecision').html())+1);
 						}
 					},
 					error : function(data) {
@@ -846,28 +945,33 @@ img[class="btn btn-link dropdown-toggle"] {
 	}
 
 	//의사결정 삭제
-	function deleteDecision() {
-		$
-				.ajax({
+	function deleteDecision(postDcNo) {
+		$.ajax({
 					url : "/postDeleteDecision.do",
 					type : "post",
 					data : {
-						postNo : postNo
+						dcNo : postDcNo
 					},
 					success : function(data) {
 						if (data.result < 0) {
-							alert("삭제실패");
+							alert("의사결정 삭제실패");
 						} else {
-							var strDecision = "<div class='content-box' onclick='open_decision();'>"
+							var countDecision2 = Number($('#countDecision').html())-1;
+							console.log(Number($('#countDecision').html()));
+							if(countDecision2==0){
+								var strDecision = "<div class='content-box' onclick='open_decision();'>"
 									+ "<img src='../resources/images/post/add.png' id='add-icon' /></div>";
+								$('#appendforDecision').html(strDecision);
+							}
+							else{
+								$('#postDecision'+postDcNo).parent().remove();
+							}
+							$('#countDecision').html(countDecision2);
 
-							$('#countDecision').html(0);
-							$('#appendforDecision').html(strDecision);
 						}
 					},
 					error : function(data) {
 						console.log("deleteDecision 실패");
-
 					},
 					complete : function(data) {
 					}
@@ -897,15 +1001,14 @@ img[class="btn btn-link dropdown-toggle"] {
 		$('#decideNo').css("color", "#b80004");
 	}
 
-	//의사결정 선택시
+	//의사결정 선택
 	function updateDecision() {
 		var dcComment = $('#decisionComment').val();
-		$
-				.ajax({
+		$.ajax({
 					url : "/postUpdateDecision.do",
 					type : "post",
 					data : {
-						postNo : postNo,
+						dcNo : postDecisionNo,
 						dcDecision : decideResult,
 						dcComment : dcComment
 					},
@@ -931,15 +1034,7 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "&nbsp;&nbsp;&nbsp;<br>";
 							}
 
-							if (postMemberNo == data.decision.dcWriter) {//로그인한 계정이 결정 요청자일 경우
-								strDecision += " <div id='deleteForDecision' onclick='deleteDecision();'><img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</div>";
-							}
-							if (postMemberNo == data.decision.dcMaker) { //로그인한 계정이 결정자일경우
-								strDecision += " <div id='decideForDecision' onclick='open_decide();'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>";
-							}
-
-							$('#appendforDecision').html(
-									strDecision + "<br><br>");
+							$('#postDecision'+postDecisionNo).html(strDecision);
 						}
 					},
 					error : function(data) {
@@ -1042,29 +1137,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		location.href="/projectPost.do?proNo="+postProNo;
 	}
 	
-	//일정 수정
-	function updateSchedule(scNo){
-		var scTitle = $('#updateScTitle').val();
-		var scStartDate = $('#updateScStartDate').val();
-		var scEndDate = $('#updateScEndDate').val();
-		
-		$.ajax({
-			url:"/updateSchedule.do",
-			type:"post",
-			data:{
-				scheduleNo : scNo,
-				startDate : scStartDate,
-				endDate : scEndDate,
-				scTitle : scTitle
-			},
-			success : function(data){
-				
-			},
-			error : function(data){
-				console.log("일정수정 실패");
-			}
-		});
-	}
+	
 
 	//댓글추가(준석)
 	function insertComment(postNo)
@@ -1164,8 +1237,9 @@ img[class="btn btn-link dropdown-toggle"] {
 						<span id="like-count" onclick="postLike();"><img src="../resources/images/post/like.png" id="like-icon" /> 좋아요 <span id="postLikeCount">0</span></span>
 						<br><hr style="margin-top : 0px;">
 						<div style="margin-left: 15px; margin-right: 10px;">
-							<span id="post-content">글내용</span> <br><br>
-							<br> <img src="" id="postWriterProfileImg" onerror="this.src='../resources/upload/member/whale.png'" /> <span id="post-writer">작성자</span><span id="post-date">작성날짜</span>
+							<span id="post-content">글내용</span> <br><br><br>
+							<div style="text-align : right;">
+							<img src="" id="postWriterProfileImg" onerror="this.src='../resources/upload/member/whale.png'" /> <span id="post-writer">작성자</span>&nbsp;&nbsp;<span id="post-date">작성날짜</span></div>
 						</div>
 
 						<hr style="margin-top : 5px; margin-bottom:25px;">
@@ -1186,8 +1260,7 @@ img[class="btn btn-link dropdown-toggle"] {
 						<br><hr>
 						<div>
 							<span class="contents-title">&nbsp;일정 &nbsp;<span id="countSchedule">0</span></span> &nbsp;&nbsp;&nbsp;
-							<button class="insertButton" onclick="open_scheduleModal();"
-								style="float: right;">+ 일정추가</button>
+							<button class="insertButton" onclick="open_scheduleModal();" style="float: right;">+ 일정추가</button>
 							<div id="appendforSchedule"></div>
 							<br>
 						</div>
@@ -1206,8 +1279,9 @@ img[class="btn btn-link dropdown-toggle"] {
 						<br>
 
 						<br><hr>
-						<span class="contents-title">&nbsp;의사결정 &nbsp;<span
-							id="countDecision">0</span></span><br>
+						<span class="contents-title">&nbsp;의사결정 &nbsp;<span id="countDecision">0</span></span>&nbsp;&nbsp;&nbsp;
+						<button class="insertButton" onclick="open_decision();" style="float: right;">+ 의사결정</button>
+						<br><br>
 						<div id="appendforDecision">
 							<div class="content-box" onclick="open_decision();">
 								<img src="../resources/images/post/add.png" id="add-icon" />
@@ -1245,10 +1319,8 @@ img[class="btn btn-link dropdown-toggle"] {
 				<center>
 					<input type="text" id="scTitle" placeholder="일정 제목을 입력해주세요." /><br>
 					<br> <span style="font-size: 18px; color: #aaaaaa;">일정기간
-						&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input
-						type="date" id='scStartDate' />&nbsp;&nbsp;&nbsp;<span
-						style="font-size: 30px; color: #aaaaaa;">~</span>&nbsp;&nbsp;&nbsp;<input
-						type="date" id='scEndDate' /><br>
+						&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="date" id='scStartDate' />&nbsp;&nbsp;&nbsp;<span style="font-size: 30px; color: #aaaaaa;">~</span>&nbsp;&nbsp;&nbsp;
+						<input type="date" id='scEndDate' /><br>
 					<br>
 				</center>
 				<button class="insertButton2" onclick="inputSchedule();"
@@ -1276,6 +1348,8 @@ img[class="btn btn-link dropdown-toggle"] {
 					<br>
 				</center>
 				<button class="insertButton2" onclick="updateSchedule();" style="float: right; margin-top: 10px;">수정</button>
+				<button class="whiteButton" onclick="deleteSchedule();" style="float: right; margin-top: 10px;">삭제</button>
+				
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>

@@ -49,4 +49,9 @@ public class HomeController {
 		return "main/rightbar";
 	}
 	
+	@RequestMapping(value="/loading.do")
+	public String loading() {
+		return "main/loading";
+	}
+	
 }

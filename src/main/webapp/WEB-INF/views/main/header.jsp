@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
 </head>
 
 <style>
@@ -273,11 +274,12 @@ a:hover{
 		$('#searchPartnerText').keyup(function(){
 			$.ajax({
 				url: "/searchPartner.do",
-				type: "post",
+				type: "get",
 				data: {
 					memberNo: ${sessionScope.member.memberNo},
 					searchPartnerText: $('#searchPartnerText').val()
-				}, success: function(data){
+				},
+				success: function(data){
 					var str="";
 					for(var i=0; i<data.searchPartnerList.length; i++){
 	 					str+=
@@ -306,16 +308,14 @@ a:hover{
 	});
 </script>
 <body>
-
+<jsp:include page="/loading.do"></jsp:include>
 <!-- header -->
 		<div class="header">
 
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
-					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. <img id="cancel-img"
-						onclick="bannerClose();"
-						src="../resources/images/layout-img/cancel.png" />
+					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. 
 				</div>
 			</div>
 

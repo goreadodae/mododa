@@ -2,9 +2,11 @@ package kr.pe.mododa.post.controller;
 
 import java.io.File;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
@@ -51,23 +53,27 @@ public class PostControllerImpl {
 		}
 		Project pro = postService.selectProject(postNo);
 		Post p = postService.selectOnePost(postNo);
-		Bookmark bookmark = postService.selectBookmark(postNo, memberNo);//0801아름추가
-		PostLike like = postService.selectPostLike(postNo, memberNo);//0801아름추가
-		int likeCount = postService.selectPostLikeCount(postNo);//0801아름추가
+		Bookmark bookmark = postService.selectBookmark(postNo, memberNo);
+		PostLike like = postService.selectPostLike(postNo, memberNo);
+		int likeCount = postService.selectPostLikeCount(postNo);
 		List<Schedule> listSc = postService.selectSchedule(postNo);
 		List<Todo> listTodo = postService.selectTodo(postNo);
 		List<Member> listMember = postService.selectMembers(postNo);
-		Decision decision = postService.selectDecision(postNo);
+		List<Decision> listDecision = postService.selectDecision(postNo); //0802 아름 수정
 		List<Comment> listComment = postService.selectComment(postNo); //댓글 읽어오는거 (준석 추가)
 
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);//0802 아름 추가수정
+		
+		p.setStPostData(sdf.format(p.getPostDate()));	//게시글 올린 날짜
+		
 		JSONArray scheduleArray = new JSONArray();
 		for(Schedule sc : listSc) {
-			String start = (sc.getStartDate().getYear()+1900) + "-" + sc.getStartDate().getMonth()+ "-" + sc.getStartDate().getDay() ;
-			String end = (sc.getEndDate().getYear()+1900) + "-" + sc.getEndDate().getMonth()+ "-" + sc.getEndDate().getDay() ;
+			sc.setStStartDate(sdf.format(sc.getStartDate()));
+			sc.setStEndDate(sdf.format(sc.getEndDate()));
 			JSONObject schedule = new JSONObject();
 			schedule.put("scNo",sc.getScheduleNo());
-			schedule.put("startDate",start);
-			schedule.put("endDate",end);
+			schedule.put("startDate",sc.getStStartDate());
+			schedule.put("endDate",sc.getStEndDate());
 			schedule.put("scTitle", sc.getScTitle());
 			scheduleArray.add(schedule);
 		}
@@ -77,10 +83,10 @@ public class PostControllerImpl {
 			JSONObject todo = new JSONObject();
 			todo.put("todoNo", td.getTodoNo());
 			todo.put("todoContent", td.getTodoContent());
-			todo.put("todoMemberName", td.getTodoMemberName());//0801아름수정
-			todo.put("todoMember", td.getTodoMember());//0801아름추가
+			todo.put("todoMemberName", td.getTodoMemberName());
+			todo.put("todoMember", td.getTodoMember());
 			todo.put("todoMemberPicture", td.getTodoMemberPicture());
-			todo.put("todoProgress", td.getTodoProgress());	//0801아름추가
+			todo.put("todoProgress", td.getTodoProgress());
 			todoArray.add(todo);
 		}
 
@@ -103,18 +109,33 @@ public class PostControllerImpl {
 			comment.put("commentNo", com.getCommentNo());
 			commentArray.add(comment);
 		}
+		
+		JSONArray decisionArray = new JSONArray();	//0802 아름 수정
+		for(Decision d : listDecision) {
+			JSONObject decision = new JSONObject();
+			decision.put("dcNo", d.getDcNo());
+			decision.put("dcWriter", d.getDcWriter());
+			decision.put("dcMaker", d.getDcMaker());
+			decision.put("dcContent", d.getDcContent());
+			decision.put("dcYn", d.getDcYn());
+			decision.put("dcDecision", d.getDcDecision());
+			decision.put("dcComment", d.getDcComment());
+			decision.put("dcWriterName", d.getDcWriterName());
+			decision.put("dcMakerName", d.getDcMakerName());
+			decisionArray.add(decision);
+		}
 
 
 		ModelAndView view = new ModelAndView();
 		view.addObject("memberNo",memberNo);
 		view.addObject("project",pro);
 		view.addObject("post", p);
-		view.addObject("bookmark", bookmark);	//0801아름추가
-		view.addObject("like", like);	//0801아름추가
-		view.addObject("likeCount",likeCount);	//0801아름추가
+		view.addObject("bookmark", bookmark);
+		view.addObject("like", like);
+		view.addObject("likeCount",likeCount);
 		view.addObject("schedule",scheduleArray);
 		view.addObject("todo", todoArray);
-		view.addObject("decision",decision);
+		view.addObject("decision",decisionArray);//0802아름수정
 		view.addObject("member",memberArray);
 		view.addObject("comment",commentArray);
 		view.setViewName("jsonView");
@@ -170,8 +191,13 @@ public class PostControllerImpl {
 
 			int result = postService.insertSchedule(vo);
 			ModelAndView view = new ModelAndView();
+			
+			List<Schedule> schedule = postService.selectSchedule(postNo);
+			int newScNo = schedule.get(0).getScheduleNo();	//방금 추가한 일정 번호 가져옴
+			
 			if(result>0) {
 				view.addObject("result", result);
+				view.addObject("newScNo", newScNo);
 			}
 			view.setViewName("jsonView");
 			return view;
@@ -231,7 +257,10 @@ public class PostControllerImpl {
 			vo.setDcMaker(dcMaker);
 			vo.setDcContent(dcContent);
 
-			int result = postService.insertDecision(vo);
+			int result = postService.insertDecision(vo);	//의사결정 추가
+			
+			List<Decision> decision = postService.selectDecision(postNo);
+			int newDcNo = decision.get(0).getDcNo();	//방금 추가한 의사결정의 번호
 
 			Member writerMem = postService.selectMemberInfo(dcWriter);
 			Member makerMem = postService.selectMemberInfo(dcMaker);
@@ -239,6 +268,7 @@ public class PostControllerImpl {
 			ModelAndView view = new ModelAndView();
 			if(result>0) {
 				view.addObject("result", result);
+				view.addObject("newDcNo", newDcNo);
 				view.addObject("writerMem", writerMem);
 				view.addObject("makerMem", makerMem);
 			}
@@ -255,8 +285,8 @@ public class PostControllerImpl {
 
 	//의사결정 삭제
 	@RequestMapping(value="/postDeleteDecision.do")
-	public ModelAndView deleteDecision(int postNo) {
-		int result = postService.deleteDecision(postNo);
+	public ModelAndView deleteDecision(int dcNo) {
+		int result = postService.deleteDecision(dcNo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.setViewName("jsonView");
@@ -265,9 +295,9 @@ public class PostControllerImpl {
 
 	//의사결정 승인/반려 선택
 	@RequestMapping(value="/postUpdateDecision.do")
-	public ModelAndView updateDecision(int postNo, char dcDecision, String dcComment) {
+	public ModelAndView updateDecision(int dcNo, char dcDecision, String dcComment) {
 		Decision vo = new Decision();
-		vo.setDcPostNo(postNo);
+		vo.setDcNo(dcNo);
 		vo.setDcDecision(dcDecision);
 		if(dcComment=="") {
 			if(dcDecision=='Y') dcComment="승인합니다.";
@@ -275,7 +305,7 @@ public class PostControllerImpl {
 		}
 		vo.setDcComment(dcComment);
 		int result = postService.updateDecision(vo);
-		Decision decision = postService.selectDecision(postNo);
+		Decision decision = postService.selectOneDecision(dcNo);
 
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
@@ -373,6 +403,16 @@ public class PostControllerImpl {
 		vo.setEndDate(endDate);
 		vo.setScTitle(scTitle);
 		int result = postService.updateSchedule(vo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	//일정 삭제
+	@RequestMapping(value="/postDeleteSchedule.do")
+	public ModelAndView deleteSchedule(int scNo) {
+		int result = postService.deleteSchedule(scNo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.setViewName("jsonView");

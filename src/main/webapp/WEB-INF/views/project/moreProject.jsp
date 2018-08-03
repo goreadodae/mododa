@@ -1,146 +1,591 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
-<!-- JSTL 선언 -->    
+	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
-
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>프로젝트 더보기 관련 모달 입니다.</title>
+<title>프로젝트 진행 현황</title>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </head>
 
-
 <style>
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-    
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 20%; /* Could be more or less, depending on screen size */
-            height: 80%;
-            position: fixed;
-            margin-top: 5%;
-            margin-left: 15%;                   
-        }
-        
-        .divStyle {
-        	cursor:pointer; 
-        	background-color:#CFF09E; 
-        	text-align:center; 
-        	height:100%; 
-        	width:100%; 
-        }
-        
-        .btnStyle {
-        	background-color:#CFF09E; 
-        	height:100%; 
-        	width:100%; 
-        	background:transparent; 
-        	border:none;
-        	outline:0;
-        	padding-top:10px;
-        	padding-bottom:10px;
-        }
-        
-        span {
-        	font-size:13pt;
-        }
-        
-        #m_header {
-        	padding : 0px;
-        	text-align: right;
-        	display: inline-block;
-        	
-        }
-        
-        #m_header img {
-        	height : 25px;
-        	width : 25px;
-        	cursor:pointer;
-        }
-        
-        .moreProjectLi {
-			margin: 1 0;
-		}
-		
-		#moreProjectUl {
-			padding: 0;
-			margin: 10%;
-		}
+/* 기본 구조 스타일 시작 */
+body {
+	overflow-x: hidden;
+	height: 100%;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+#background {
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
+}
+/* 기본 구조 스타일 끝 */
+
+
+.fullProgressBox {
+	width: 100%;
+	height: 100%;
+	background-color: #F5F5F5;
+}
  
+ .progressTitle {
+	width: 100%;
+	height: 5%;
+	float: left;
+ }
+ 
+ .progressTitle h5 {
+  	margin-top: 8px;
+ }
+ 
+ 
+ .progressHeader {
+ 	border-top: 1px solid black;
+ 	border-left: 1px solid black;
+ 	border-right: 1px solid black;
+	width: 30%;
+	height: 100%;
+	background-color: #CFF09E;
+	float: left;
+	text-align: center;
+ }
+ 
+ .progressBody {
+	border: 1px solid black;
+	width: 30%;
+	height: 88%;
+	background-color: #FFF;
+	float: left;
+ }
+
+.bodyEmpty {
+	width: 5%;
+	height: 88%;
+	float: left;
+}
+
+.bodyEmpty{
+	padding-top:22%;
+}
+
+.headEmpty {
+	width: 5%;
+	height: 100%;
+	float: left;
+}
+
+.titleEmpty {
+	border-top: 1px solid black;
+	width: 100%;
+	height: 2%;
+	float: left;
+}
+
+
+.progressPost {
+	border: 1px solid black;
+	float: left;
+	padding: 1% 5%;
+	width: 98%;
+	margin: 1%;
+}
+
+
+.progressPost img {
+	width: 10%;
+	height: 10%;
+	margin-right: 3%;
+	
+}
+
+.progressPost img:hover {
+	cursor: pointer;
+}
+
+
+input[type=checkbox] {
+	transform: scale(1.5);
+	margin-right: 4%;
+	margin-left: 4%;
+	margin-top: 3%;
+}
+
 </style>
 
-<script type="text/javascript">
-      
-        jQuery(document).ready(function() {
-             $('#createProjectModal').show();
-             
- 			// 프로젝트 목록
- 		   	$(".moreProjectLi").click(function() {
- 		   		var proNo = $(this).attr('value');
-				alert(proNo);
- 		    });
-        });
-        
-        //팝업 Close 기능
-        function close_pop(flag) {
-             $('#createProjectModal').hide();
-             $("#banner").css('background-color','#339966');
-        };
 
+<script>
+
+	function changeCheckBox(category) { // 이미지랑 체크박스 변화
+    
+	    // 체크한 것이 없을 경우 창 꺼짐
+    	var hideValue = $(".checkBox:checked").length;
+	    if(hideValue==0) {
+        
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	    }
+    
+	    switch(category) {
+    
+ 	   case 'sug': 
+	       $(".sugImg").hide();
+	       $(".sugCheckBox").show();
+       
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	       break;
+	    case 'work': 
+	       $(".workImg").hide();
+	       $(".workCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+	       $(".stopImg").show();
+	       $(".stopCheckBox").hide();
+       
+	       break;
+	    case 'stop': 
+	       $(".stopImg").hide();
+	       $(".stopCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+	       $(".sugImg").show();
+	       $(".sugCheckBox").hide();
+	       $(".workImg").show();
+	       $(".workCheckBox").hide();
+	       $(".finImg").show();
+	       $(".finCheckBox").hide();
+       
+	       break;
+	    case 'fin': 
+ 	      $(".finImg").hide();
+	       $(".finCheckBox").show();
+	       $(".checkBox:checked").prop('checked',false); // 체크 해제
+	       // value 초기화
+	       $('#sugToWork').val('sugToWork');
+	       $('#workToStop').val('workToStop');
+	       $('#workToSug').val('workToSug');
+	       $('#stopToFin').val('stopToFin');
+	       $('#stopToWork').val('stopToWork');
+	       $('#finToStop').val('finToStop');
+       
+ 	      $(".sugImg").show();
+ 	      $(".sugCheckBox").hide();
+ 	      $(".workImg").show();
+	      $(".workCheckBox").hide();
+	      $(".stopImg").show();
+ 	      $(".stopCheckBox").hide();
+       
+	       break;
+    
+	    }
+   
+ 	}
+	
+	
+	
+	
+	function check(category) { // 체크한 포스트를 함수 hidden의 value로 저장하기
 		
+		
+		// 체크한 것이 없을 경우 창 꺼짐
+		var hideValue = $(".checkBox:checked").length;
+		if(hideValue==0) {
+			 
+			$(".sugImg").show();
+			$(".sugCheckBox").hide();
+			$(".workImg").show();
+			$(".workCheckBox").hide();
+			$(".finImg").show();
+			$(".finCheckBox").hide();
+			$(".stopImg").show();
+			$(".stopCheckBox").hide();
+			
+		}
+		
+		
+		var postNo = [];
+
+		switch(category) {
+			
+			case 'sug': 
+				$("input[name='sug_checkBox']:checked").each(function(i){
+					 postNo.push($(this).val());
+				 });
+				$('#sugToWork').val(postNo);
+				break;
+			case 'work': 
+				$("input[name='work_checkBox']:checked").each(function(i){
+					 postNo.push($(this).val());
+				 });
+				$('#workToStop').val(postNo);
+				$('#workToSug').val(postNo);
+				break;
+			case 'stop': 
+				$("input[name='stop_checkBox']:checked").each(function(i){
+					 postNo.push($(this).val());
+				 });
+				$('#stopToFin').val(postNo);
+				$('#stopToWork').val(postNo);
+				break;
+			case 'fin': 
+				$("input[name='fin_checkBox']:checked").each(function(i){
+					 postNo.push($(this).val());
+				 });
+				$('#finToStop').val(postNo);
+				break;
+		}
+		
+		// console.log("check:" + postNo);
+
+	}
+	
+	
+	
+	function updateProgress(category) { // ajax로 비즈니스 로직(hidden의 value사용)
+		
+		var postNoStr = "";
+		var postProgress = "";
+		
+		var proNoStr = $("#proNo").val();
+	    var proNo = proNoStr.substring(6);
+	
+		switch(category) {
+		case 'sugToWork': 
+			postNoStr = $('#sugToWork').val();
+			if(postNoStr=='sugToWork') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'working';
+			}
+			break;
+		case 'workToSug': 
+			postNoStr = $('#workToSug').val();
+			if(postNoStr=='workToSug') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'suggest';
+			}
+			break;
+		case 'workToStop': 
+			postNoStr = $('#workToStop').val();
+			if(postNoStr=='workToStop') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'stop';
+			}
+			break;
+		case 'stopToWork': 
+			postNoStr = $('#stopToWork').val();
+			if(postNoStr=='stopToWork') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'working';
+			}
+			break;
+		case 'stopToFin': 
+			postNoStr = $('#stopToFin').val();
+			if(postNoStr=='stopToFin') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'finish';
+			}
+			break;
+		case 'finToStop': 
+			postNoStr = $('#finToStop').val();
+			if(postNoStr=='finToStop') {
+				alert("이동할 이슈를 선택해주세요.");
+			} else {
+				postProgress = 'stop';
+			}
+			break;
+		}
+		
+		
+		
+		if(postNoStr!="" && postProgress!="") { // 비즈니스 로직
+			
+			// console.log("total: "+postNoStr+"/progress: "+postProgress);
+		
+		
+			$.ajax({
+				
+				url : "/updateProgress.do",
+				type : "post",
+				data : {
+					postNoStr : postNoStr,
+					postProgress : postProgress,
+					proNo : proNo
+				},
+				success : function(data) {
+					
+					var postList = data.postList;
+					
+					
+					$(".progressBody").empty();
+					
+					var suggestResult = "";
+					var workingResult = "";
+					var stopResult = "";
+					var finishResult = "";
+					
+					var sug = "'sug'";
+					var work = "'work'";
+					var stop = "'stop'";
+					var fin = "'fin'";
+					
+					
+					for(var i=0 ; i<postList.length ; i++) {
+						
+						var date = new Date(postList[i].postDate.time);
+						var dateStr = date.toString();
+						var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
+						
+						
+						if(postList[i].postProgress=='suggest') {
+							suggestResult += '<div class="progressPost" draggable="true">'
+											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
+											 + '<span class="sugCheckBox" style="display: none;">'
+											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
+											 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+
+						} else if(postList[i].postProgress=='working') {
+							workingResult += '<div class="progressPost" draggable="true">'
+								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
+								 			 + '<span class="workCheckBox" style="display: none;">'
+								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
+								 			 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						} else if(postList[i].postProgress=='stop') {
+							stopResult += '<div class="progressPost" draggable="true">'
+								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
+								 		  + '<span class="stopCheckBox" style="display: none;">'
+								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
+								 		  + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						} else if(postList[i].postProgress=='finish') {
+							finishResult += '<div class="progressPost" draggable="true">'
+								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
+											+ '<span class="finCheckBox" style="display: none;">'
+								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
+								 			+ '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+							
+						}
+						
+					
+					}
+					
+					$("#suggestBody").append(suggestResult);
+					$("#workingBody").append(workingResult);
+					$("#stopBody").append(stopResult);
+					$("#finishBody").append(finishResult);
+					
+				},
+				error : function() {
+					console.log("업데이트 실패");
+				}
+				
+				
+				
+			});
+			
+		
+		
+		
+		
+		
+		
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+
 </script>
 
 
 <body>
 
-    <!-- The Modal -->
-    <div id="createProjectModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-      	<!-- 닫기 버튼 -->
-      	<div class="modal-header" id="m_header"><img src="/resources/images/project/delete-button.png" onClick="close_pop();"></div>
-      	<div class="modal-body">
-               <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">프로젝트 더보기</span></b></span></p>
-                
-                
-  					<ul id="moreProjectUl">
-  						<c:forEach items="${projectList}" var="projectList" begin="6">
-  						<li class="list-group-item moreProjectLi" value="${projectList.proNo}">
-							<img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}
-						</li>
-  						</c:forEach>
-  					</ul>
+<!-- header -->
+<jsp:include page="/header.do"></jsp:include>
+<!-- header 끝 -->
+
+<div class="row" style="background-color: #F5F5F5;">
+	<!-- left bar -->
+	<jsp:include page="/leftbar.do"></jsp:include>
+	<!-- left bar 끝-->
+
+
+	<!-- contents -->
+	<div class="col-6" id="contents" style="padding:0;">
+		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
+		
+		<div class="fullProgressBox">
+		
+			<div class="progressTitle">
+				<h5><b>프로젝트 더보기</b>
+				<img src="../resources/images/project/help-round-button.png"/>
+				<span style="font-size:small;">프로젝트를 한 눈에 볼 수 있습니다. 해당 프로젝트의 진행 상태를 변경할 수 있습니다.</span></h5>
+				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+			</div>
+			<div class="titleEmpty"></div>
+			
+			<div class="progressTitle">
+			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
+			<div class="headEmpty"></div>
+			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+			<div class="headEmpty"></div>
+			<div class="progressHeader"><h5><b>완료</b></h5></div>
+			</div>
+			
+			
+			<div class="progressBody" id="workingBody">
+
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='working'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
+						<span class="workCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="work_checkBox" value="${postList.postNo}" onClick="check('work');">
+						</span>
+						${postList.postTitle}<br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			
+			</div>
+			
+			<div class="bodyEmpty" align="center">
+				<img src="../resources/images/project/next.png" onClick="updateProgress('workToStop');" />
+				<input type="hidden" id="workToStop" value="workToStop" />
+				<br><br>
+				<img src="../resources/images/project/pre.png" onClick="updateProgress('stopToWork');" />
+				<input type="hidden" id="stopToWork" value="stopToWork" />
+			</div>
+			
+			<div class="progressBody" id="stopBody">
+			
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='stop'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
+						<span class="stopCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${postList.postNo}" onClick="check('stop');">
+						</span>
+						${postList.postTitle}<br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			
+			</div>
+
+			<div class="bodyEmpty" align="center">
+				<img src="../resources/images/project/next.png" onClick="updateProgress('stopToFin');" />
+				<input type="hidden" id="stopToFin" value="stopToFin" />
+				<br><br>
+				<img src="../resources/images/project/pre.png" onClick="updateProgress('finToStop');" />
+				<input type="hidden" id="finToStop" value="finToStop" />
+			</div>			
+
+	
+			<div class="progressBody" id="finishBody">
+			
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='finish'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
+						<span class="finCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${postList.postNo}" onClick="check('fin');">
+						</span>
+						${postList.postTitle}<br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
 				
-                
-      	</div>
-      </div>
- 
-    </div>
-    <!--End Modal-->
+			
+			</div>
+
+
+		</div>
+	
+	</div>
+	<!-- contents 끝 -->
+
+	<!-- right bar -->
+	<jsp:include page="/rightbar.do"></jsp:include>
+	<!-- right bar 끝 -->
+
+
+</div>
 
 </body>
-
 </html>

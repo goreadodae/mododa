@@ -63,8 +63,12 @@ public class PostServiceImpl implements PostService{
 		return postDAO.selectTodo(sqlSession, postNo);
 	}
 	
-	public Decision selectDecision(int postNo){
+	public List<Decision> selectDecision(int postNo){
 		return postDAO.selectDecision(sqlSession, postNo);
+	}
+	
+	public Decision selectOneDecision(int dcNo) {
+		return postDAO.selectOneDecision(sqlSession, dcNo);
 	}
 	
 	public List<Member> selectMembers(int postNo){
@@ -87,8 +91,12 @@ public class PostServiceImpl implements PostService{
 		return postDAO.insertDecision(sqlSession,vo);
 	}
 
-	public int deleteDecision(int postNo) {
-		return postDAO.deleteDecision(sqlSession,postNo);
+	public int deleteSchedule(int scNo) {
+		return postDAO.deleteSchedule(sqlSession, scNo);
+	}
+	
+	public int deleteDecision(int dcNo) {
+		return postDAO.deleteDecision(sqlSession,dcNo);
 	}
 	
 	public int updateSchedule(Schedule vo) {	//0801 아름 추가

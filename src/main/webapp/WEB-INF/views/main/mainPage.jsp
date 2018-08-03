@@ -44,7 +44,7 @@ div {
 }
 </style>
 <body>
-
+	
 	<!-- header -->
 	<jsp:include page="/header.do"></jsp:include>
 	<!-- header 끝 -->

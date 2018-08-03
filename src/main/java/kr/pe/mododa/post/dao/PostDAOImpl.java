@@ -49,9 +49,12 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.selectList("post.selectTodo",postNo);
 	}
 	
-	public Decision selectDecision(SqlSessionTemplate sqlSession, int postNo){
-		Decision d =  sqlSession.selectOne("post.selectDecision",postNo);
-		return d;
+	public List<Decision> selectDecision(SqlSessionTemplate sqlSession, int postNo){
+		return sqlSession.selectList("post.selectDecision",postNo);
+	}
+	
+	public Decision selectOneDecision(SqlSessionTemplate sqlSession, int dcNo) {
+		return sqlSession.selectOne("post.selectOneDecision", dcNo);
 	}
 	
 	public List<Member> selectMembers(SqlSessionTemplate sqlSession, int postNo){
@@ -74,11 +77,15 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.insert("post.insertDecision",vo);
 	}
 	
-	public int deleteDecision(SqlSessionTemplate sqlSession, int postNo) {
-		return sqlSession.delete("post.deleteDecision",postNo);
+	public int deleteSchedule(SqlSessionTemplate sqlSession, int scNo) {
+		return sqlSession.delete("post.deleteSchedule",scNo);
 	}
 	
-	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule vo) {	//0801 아름 추가
+	public int deleteDecision(SqlSessionTemplate sqlSession, int dcNo) {
+		return sqlSession.delete("post.deleteDecision",dcNo);
+	}
+	
+	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule vo) {
 		return sqlSession.update("post.updateSchedule",vo);
 	}
 	
