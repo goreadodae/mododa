@@ -71,7 +71,7 @@
 	background-color: #CFF09E !important;
 }
 #partnerList{
-	height: auto; width: 20rem;
+	height: auto; width: 21rem;
 }
 .partnerListPic{
 	height: 4rem; width: 4rem;
@@ -162,7 +162,7 @@ a:hover{
 				}
 				for(var i=0; i<data.invitingPartnerList.length; i++){
 					str+=
-	 					"<div class='col-md-4' style='margin-top: 10px;'>"
+	 					"<div class='col-md-3' style='margin-top: 10px;'>"
 	 					+"<img src='../resources/upload/member/"+data.invitingPartnerList[i].parPicture+"'"
 						+"class='img-circle rounded-circle border partnerListPic'>"
 						+"</div>"
@@ -187,11 +187,13 @@ a:hover{
 					+"</div>"
 					+"<div class='col-md-8' style='margin-top: 10px;'>"
 					+"<div class='row'>"
-					+"<div class='col-md-12'>"+data.partnerList[i].parName+"</div>";
-					if(data.partnerList[i].parYN=='Y'){						
-						str+="<div class='col-md-12'>"+data.partnerList[i].parId+"</div>";
+					+"<div class='col-md-12'>"+data.partnerList[i].parName;
+					if(data.partnerList[i].parYN=='Y'){			
+						str+="<img src='../resources/images/icon/delete-can.png' onclick='deletePartner("
+						+data.partnerList[i].memberNo+","+data.partnerList[i].parNo+");' style='float: right; cursor: pointer;'/></div>"
+						+"<div class='col-md-12'>"+data.partnerList[i].parId+"</div>";
 					} else {
-						str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
+						str+="</div><div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
 						+"<a onclick='inviteCancel("
 						+data.partnerList[i].memberNo+","+data.partnerList[i].parNo
 						+");' style='color: gray; float: right;'>취소하기</a></div>";
@@ -218,12 +220,18 @@ a:hover{
 			},
 			success: function(data){
 				switch(data.result){
-				case "success": alert("초대에 성공하였습니다.");
-				$('#invietMemberId').val('');
+				case "success": 
+					$('#successAlertMessage').text('초대에 성공하였습니다');
+					$('#successAlert').show('slow');
+					setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
+					$('#invietMemberId').val('');
 					$(".invietMemberId").css('border-bottom','1px solid gray');
 					$('#nothingLabel').text('');
 					break;
-				case "failed": alert("초대에 실패하였습니다.");break;
+				case "failed": 				
+					$('#failedAlertMessage').text('초대를 실패했습니다');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);break;
 				case "nothing": 
 					$('#nothingLabel').text('없는 아이디입니다');
 					$(".invietMemberId").css('border-bottom','1px solid red');
@@ -247,8 +255,28 @@ a:hover{
 			data: {
 				memberNo: memberNo,
 				parNo: parNo
+			}, success: function(){
+				$('#failedAlertMessage').text('초대를 취소하였습니다');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
 			}
 		});
+	}
+	function deletePartner(memberNo, parNo){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			$.ajax({
+				url: "/deletePartner.do",
+				type: "post",
+				data: {
+					memberNo: memberNo,
+					parNo: parNo
+				}, success: function(){
+					$('#failedAlertMessage').text('삭제되었습니다');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
+				}
+			});
+		}
 	}
 	function acceptPartner(memberNo, parNo){
 		$.ajax({
@@ -257,6 +285,10 @@ a:hover{
 			data: {
 				memberNo: memberNo,
 				parNo: parNo
+			}, success: function(){
+				$('#successAlertMessage').text('수락하였습니다');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
 			}
 		});
 	}
@@ -272,6 +304,9 @@ a:hover{
 	};
 	$(document).ready(function(){
 		$('#searchPartnerText').keyup(function(){
+			if($('#searchPartnerText').val()==''){
+				showPartnerList();
+			}
 			$.ajax({
 				url: "/searchPartner.do",
 				type: "get",
@@ -289,11 +324,13 @@ a:hover{
 						+"</div>"
 						+"<div class='col-md-8' style='margin-top: 10px;'>"
 						+"<div class='row'>"
-						+"<div class='col-md-12'>"+data.searchPartnerList[i].parName+"</div>";
-						if(data.searchPartnerList[i].parYN=='Y'){						
-							str+="<div class='col-md-12'>"+data.searchPartnerList[i].parId+"</div>";
+						+"<div class='col-md-12'>"+data.searchPartnerList[i].parName;
+						if(data.searchPartnerList[i].parYN=='Y'){		
+							str+="<img src='../resources/images/icon/delete-can.png' onclick='deletePartner("
+								+data.partnerList[i].memberNo+","+data.partnerList[i].parNo+");' style='float: right; cursor: pointer;'/></div>"
+								+"<div class='col-md-12'>"+data.searchPartnerList[i].parId+"</div>";
 						} else {
-							str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
+							str+="</div><div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
 							+"<a onclick='inviteCancel("
 							+data.searchPartnerList[i].memberNo+","+data.searchPartnerList[i].parNo
 							+");' style='color: gray; float: right;'>취소하기</a></div>";
@@ -348,8 +385,8 @@ a:hover{
 								<div class="col-md-12">${sessionScope.member.memberId }</div>
 								</div>
 							</div>
-    						<a class="dropdown-item" href="/myInfo.do">내정보</a>
-    						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
+    						<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a>
+    						<a class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및 탈퇴</a>
     						<a class="dropdown-item" href="/logout.do">로그아웃</a>
  						</div>
  						</div>

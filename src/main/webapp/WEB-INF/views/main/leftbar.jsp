@@ -92,6 +92,10 @@ li[id^="sub_"] a {
    padding-bottom: 1.5% !important;
 }
 
+.list-group-item:hover {
+	cursor: pointer;
+}
+
 li[id^="plus_"] {
    display: none;
    padding: 0;

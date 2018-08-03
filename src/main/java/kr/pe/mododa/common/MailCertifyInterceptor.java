@@ -22,7 +22,6 @@ public class MailCertifyInterceptor  extends HandlerInterceptorAdapter {
         int i=0;
         if(member!=null) {
         	if ( member.getMemberEmailCertify().equals("N") ){ 
-        		System.out.println("호출" + i++);
                 response.sendRedirect("/views/main/mailCertify.jsp");
                 result = false;
             }
