@@ -99,6 +99,10 @@ public class PostServiceImpl implements PostService{
 		return postDAO.deleteDecision(sqlSession,dcNo);
 	}
 	
+	public int updatePost(Post vo) {
+		return postDAO.updatePost(sqlSession, vo);
+	}
+	
 	public int updateSchedule(Schedule vo) {	//0801 아름 추가
 		return postDAO.updateSchedule(sqlSession, vo);
 	}
@@ -143,6 +147,10 @@ public class PostServiceImpl implements PostService{
 
 	public int deleteComment(int commentNo) { //댓글 삭제(준석추가)
 		return postDAO.deleteComment(sqlSession,commentNo);
+	}
+	
+	public int deletePost(int postNo) {
+		return postDAO.deletePost(sqlSession, postNo);
 	}
 
 }

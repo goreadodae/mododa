@@ -85,6 +85,10 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.delete("post.deleteDecision",dcNo);
 	}
 	
+	public int updatePost(SqlSessionTemplate sqlSession, Post vo) {
+		return sqlSession.update("post.updatePost", vo);
+	}
+	
 	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule vo) {
 		return sqlSession.update("post.updateSchedule",vo);
 	}
@@ -128,5 +132,10 @@ public class PostDAOImpl implements PostDAO{
 
 	public int deleteComment(SqlSessionTemplate sqlSession, int commentNo) { //0802준석추가
 		return sqlSession.delete("post.deleteComment", commentNo);
+	}
+	
+	public int deletePost(SqlSessionTemplate sqlSession, int postNo) {
+		return sqlSession.delete("post.deletePost", postNo);
+		
 	}
 }
