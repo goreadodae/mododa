@@ -141,6 +141,21 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
+	
+	//post 제목, 글 내용 변경
+	@RequestMapping(value="/postUpdatePost.do")
+	public ModelAndView updatePost(int postNo, String postTitle, String postContent) {
+		Post vo = new Post();
+		vo.setPostNo(postNo);
+		vo.setPostTitle(postTitle);
+		vo.setPostContent(postContent);
+		
+		int result = postService.updatePost(vo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
 
 	//할일 추가
 	@RequestMapping(value="/postInsertTodo.do")
@@ -464,6 +479,14 @@ public class PostControllerImpl {
 		view.setViewName("/post/postComment");
 		return view;
 		
+	}
+	
+	//게시물 삭제
+	@RequestMapping(value="/postDeletePost.do")
+	public String deletePost(int postNo)
+	{
+		int result = postService.deletePost(postNo);
+		return "redirect:/newsfeed.do";
 	}
 
 

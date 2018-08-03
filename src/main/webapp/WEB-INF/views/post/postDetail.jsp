@@ -15,7 +15,7 @@
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- 글씨체 -->
-<link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo"
+<link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo|Sunflower:300"
 	rel="stylesheet">
 
 <style>
@@ -58,6 +58,17 @@ div {
 	width: 60px;
 }
 
+#modal-postUpdate{
+	background-color: #fefefe;
+	margin: 13% auto; /* 15% from the top and centered */
+	padding: 25px;
+	border: 1px solid #888;
+	width: 60px;
+	border-radius: 5px;
+	width: 550px;
+	height: 400px;
+}
+
 #modal-schedule {
 	background-color: #fefefe;
 	margin: 17% auto; /* 15% from the top and centered */
@@ -95,11 +106,12 @@ div {
 	width: 20px;
 	float: right;
 	margin: 0px;
+	cursor : pointer;
 }
 
 
 /* 마우스 포인터 설정 */
-#viewProjectTitle,#postBookmarkImg,#like-count,.content-box,.scheduleDate{
+#viewProjectTitle,#postBookmarkImg,#postUpdatePencilImg,#postMoreImg,#like-count,.content-box,.scheduleDate,.postCloseIcon{
 	cursor : pointer;
 }
 
@@ -113,11 +125,20 @@ div {
 	float: right;
 }
 
-#postMoreImg {
+#postUpdatePencilImg{
 	width: 20px;
-	margin-right: 20px;
 	margin-left: 20px;
 	float: right;
+}
+
+#postMore{
+	float: right;
+}
+
+#postMoreImg {
+	margin-right: 20px;
+	margin-left: 20px;
+	height : 20px;
 }
 
 /* 댓글 */
@@ -149,12 +170,18 @@ div {
 	width: 52px;
 }
 
+/* 해시태그 */
+#post-postTag{
+	color : #8c8c8c;
+	font-size:15px;
+}
+
 /* 게시물 작성자 프로필 */
 #postWriterProfileImg {
 	margin-bottom: 3px;
 	height: 30px;
 	height: 30px;
-	border: 1px solid #969696;
+	border: 1px solid #dee2e6;
 	border-radius: 100px;
 }
 
@@ -170,8 +197,8 @@ div {
 /* 할일 프로필 이미지 */
 #profileImg {
 	margin-bottom: 3px;
-	height: 15px;
-	border: 1px solid grey;
+	height: 20px;
+	border: 1px solid white;
 	border-radius: 100px;
 }
 /* 할일 */
@@ -182,7 +209,11 @@ img[class="btn btn-link dropdown-toggle"] {
 /* 내용 제목 */
 .contents-title {
 	color: #282828;
+	/* 
+	font-family: 'Nanum Myeongjo', serif;
+	font-family: 'Sunflower', sans-serif; */
 	font-family: 'Jua', sans-serif;
+	
 	font-size: 20px;
 }
 
@@ -199,10 +230,18 @@ img[class="btn btn-link dropdown-toggle"] {
 	display: inline-table;
 }
 
+
 #add-icon {
 	height: 30px;
 	position: relative;
 	top: 25px;
+}
+
+/* 게시글 수정 */
+#updatedPostTitle{
+	width : 60%;
+	height: 40px;
+	padding-left : 15px;
 }
 
 /* 할일 등록 */
@@ -414,8 +453,10 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#viewProjectTitle').html(data.project.proTitle);
 							$('#post-title').html(data.post.postTitle);
 							$('#post-content').html(data.post.postContent);
+							$('#post-postTag').html(data.post.postTag);
 							$('#post-date').html("&nbsp;" + data.post.stPostData);
-							$('#postWriterProfileImg').attr("src",data.post.postWriterPicture);
+							var postWriterProfileSrc = "../resources/upload/member/"+data.post.postWriterPicture;
+							$('#postWriterProfileImg').attr("src",postWriterProfileSrc);
 							$('#post-writer').html(data.post.postWriterName);
 							postProNo = data.project.proNo;
 							
@@ -489,7 +530,7 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoMember + "," + data.todo[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
 										+ "</div></div>";
 								strTodo += "<div class='appendInfo'>"
-										+ data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src=" + data.todo[i].todoMemberPicture + " onerror=\"this.src='../resources/images/post/user.png'\" /> " + data.todo[i].todoMemberName
+										+ data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='../resources/upload/member/" + data.todo[i].todoMemberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> " + data.todo[i].todoMemberName
 										+ "</div><br>";
 							}
 							$('#appendforTodo').html(strTodo);
@@ -587,24 +628,36 @@ img[class="btn btn-link dropdown-toggle"] {
 		});
 	};
 
-	//팝업 open 기능
+	//게시글 open
 	function open_postDetail(flag) {
 		$('#myModal').show();
 	};
 
-	//팝업 Close 기능
+	//게시글 Close
 	function close_postDetail(flag) {
 		$('#myModal').hide();
 	};
+	
+	//게시글 수정 모달 open
+	function open_postUpdate(){
+		$('#updatedPostTitle').val($('#post-title').html());
+		$('#updatedPostContent').val($('#post-content').html());
+		$('#postUpdateModal').show();
+	}
+	
+	//게시글 수정 모달 close
+	function close_postUpdate(){
+		$('#postUpdateModal').hide();
+	}
 
-	//일정 모달 open
+	//일정추가 모달 open
 	function open_scheduleModal(flag) {
 		$('#scStartDate').valueAsDate = new Date();
 		$('#scEndDate').valueAsDate = new Date();
 		$('#scheduleModal').show();
 	}
 
-	//일정 모달 close
+	//일정추가 모달 close
 	function close_schedule(flag) {
 		$('#scheduleModal').hide();
 	};
@@ -624,12 +677,12 @@ img[class="btn btn-link dropdown-toggle"] {
 		$('#updateScheduleModal').hide();
 	};
 
-	//의사결정 모달 open
+	//의사결정추가 모달 open
 	function open_decision(flag) {
 		$('#decisionModal').show();
 	}
 
-	//의사결정 모달 close
+	//의사결정추가 모달 close
 	function close_decision(flag) {
 		$('#decisionModal').hide();
 	};
@@ -645,6 +698,34 @@ img[class="btn btn-link dropdown-toggle"] {
 		$('#decideModal').hide();
 	}
 
+	//게시글 제목,내용 수정
+	function updatePost(){
+		var newPostTitle = $('#updatedPostTitle').val();
+		var newPostContent = $('#updatedPostContent').val();
+		$.ajax({
+			url : "/postUpdatePost.do",
+			type: "post",
+			data : {
+				postNo : postNo, 
+				postTitle : newPostTitle, 
+				postContent : newPostContent
+			},
+			success : function(){
+				$('#post-title').html(newPostTitle);
+				$('#post-content').html(newPostContent);
+				$('#successAlertMessage').text('게시글이 수정되었습니다.');
+				$('#successAlert').show('slow');
+				setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
+			},
+			error : function(){
+				console.log("게시글 수정 오류");
+			},
+			complete : function(data) {
+				close_postUpdate();
+			}
+		});
+	}
+	
 	//게시글 진행과정 변경
 	function changeProgress(status) {
 		$.ajax({
@@ -661,24 +742,36 @@ img[class="btn btn-link dropdown-toggle"] {
 					if (status == 'suggest') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/light-bulbOn.png");
-					} else if (status == 'working') {
+						$('#successAlertMessage').text('글의 상태 \'발의된 이슈\'로 변경');
+				        $('#successAlert').show('slow');
+				        setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
+					} 
+					else if (status == 'working') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/play-buttonOn.png");
-					} else if (status == 'stop') {
+						$('#successAlertMessage').text('글의 상태 \'진행중\'로 변경');
+						$('#successAlert').show('slow');
+						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
+					} 
+					else if (status == 'stop') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/pauseOn.png");
-					} else if (status == 'finish') {
+						$('#successAlertMessage').text('글의 상태 \'일시중지\'로 변경');
+						$('#successAlert').show('slow');
+						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
+					} 
+					else if (status == 'finish') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/checked.png");
+						$('#successAlertMessage').text('글의 상태 \'완료\'로 변경');
+						$('#successAlert').show('slow');
+						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 					}
 
 				}
 			},
 			error : function(data) {
 				console.log("진행과정 변경 실패");
-			},
-			complete : function(data) {
-
 			}
 		});
 	}
@@ -715,14 +808,16 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "</div></div>"
 										+ "<div class='appendInfo'>"
 										+ todoContent
-										+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/images/post/user.png'\" /> "
+										+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> "
 										+ data.todoMember.memberName
 										+ "</div><br>";
 
 								$('#appendforTodo').append(str);
-
-								$('#countTodo').html(
-										Number($('#countTodo').html()) + 1);
+								$('#countTodo').html(Number($('#countTodo').html()) + 1);
+								
+								$('#successAlertMessage').text('할 일이 추가되었습니다.');
+								$('#successAlert').show('slow');
+								setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 							}
 						},
 						error : function(data) {
@@ -816,6 +911,9 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#appendforSchedule').append(str);
 
 							$('#countSchedule').html(Number($('#countSchedule').html()) + 1);
+							$('#successAlertMessage').text('일정이 추가되었습니다.');
+					        $('#successAlert').show('slow');
+					        setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 						}
 					},
 					error : function(data) {
@@ -848,6 +946,9 @@ img[class="btn btn-link dropdown-toggle"] {
 				+ scTitle;
 				$('#scheduleContent' + postScheduleNo).html(updatedSchedule);
 				$('#scheduleContent' + postScheduleNo).attr("onclick","open_updateScheduleModal(" + postScheduleNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");");
+				$('#successAlertMessage').text('일정이 수정되었습니다.');
+		        $('#successAlert').show('slow');
+		        setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 			},
 			error : function(data){
 				console.log("일정수정 실패");
@@ -869,6 +970,9 @@ img[class="btn btn-link dropdown-toggle"] {
 			success : function(data){
 				$('#scheduleContent' + postScheduleNo).parent().remove();
 				$('#countSchedule').html(Number($('#countSchedule').html()) - 1);
+				$('#failedAlertMessage').text('일정이 삭제되었습니다.');
+                $('#failedAlert').show('slow');
+                setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 			},
 			error : function(data){
 				console.log("일정삭제 실패");
@@ -932,6 +1036,10 @@ img[class="btn btn-link dropdown-toggle"] {
 							}
 
 							$('#countDecision').html(Number($('#countDecision').html())+1);
+							
+							$('#successAlertMessage').text('의사결정이 추가되었습니다.');
+							$('#successAlert').show('slow');
+							setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 						}
 					},
 					error : function(data) {
@@ -968,6 +1076,9 @@ img[class="btn btn-link dropdown-toggle"] {
 							}
 							$('#countDecision').html(countDecision2);
 
+							$('#failedAlertMessage').text('의사결정이 삭제되었습니다.');
+			                $('#failedAlert').show('slow');
+			                setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 						}
 					},
 					error : function(data) {
@@ -1026,15 +1137,23 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "</span>님의 결정 : "
 										+ data.decision.dcComment
 										+ "&nbsp;&nbsp;&nbsp;<br>";
+								$('#successAlertMessage').text('의사결정을 승인하셨습니다.');
+						        $('#successAlert').show('slow'); setTimeout(function () {
+						        $('#successAlert').hide('slow');}, 1500);
 							} else {
 								strDecision += "<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"
 										+ data.decision.dcMakerName
 										+ "</span>님의 결정 : "
 										+ data.decision.dcComment
 										+ "&nbsp;&nbsp;&nbsp;<br>";
+								$('#successAlertMessage').text('의사결정을 반려하셨습니다.');
+						        $('#successAlert').show('slow'); setTimeout(function () {
+						        $('#successAlert').hide('slow');}, 1500);
 							}
 
 							$('#postDecision'+postDecisionNo).html(strDecision);
+							
+							
 						}
 					},
 					error : function(data) {
@@ -1062,6 +1181,9 @@ img[class="btn btn-link dropdown-toggle"] {
 					$('#postBookmarkImg').attr("src",
 							"../resources/images/post/bookmarkOn.png");
 					postBookmarkOnOff = 1;
+					$('#successAlertMessage').text('북마크가 설정되었습니다.');
+			        $('#successAlert').show('slow');
+			        setTimeout(function () {$('#successAlert').hide('slow');}, 1500);
 				},
 				error : function(data) {
 					console.log("북마크 실패");
@@ -1079,6 +1201,9 @@ img[class="btn btn-link dropdown-toggle"] {
 					$('#postBookmarkImg').attr("src",
 							"../resources/images/post/bookmark.png");
 					postBookmarkOnOff = 0;
+					$('#failedAlertMessage').text('북마크가 해제되었습니다.');
+	                $('#failedAlert').show('slow');
+	                setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 				},
 				error : function(data) {
 					console.log("북마크 실패");
@@ -1104,6 +1229,9 @@ img[class="btn btn-link dropdown-toggle"] {
 					var likeCount = Number($('#postLikeCount').html()) + 1;
 					console.log("count : " + likeCount);
 					$('#postLikeCount').html(likeCount);
+					$('#successAlertMessage').text('좋아요가 설정되었습니다.');
+			        $('#successAlert').show('slow');
+			        setTimeout(function () {$('#successAlert').hide('slow');}, 1500);
 				},
 				error : function(data) {
 					console.log("좋아요 설정 실패");
@@ -1123,6 +1251,9 @@ img[class="btn btn-link dropdown-toggle"] {
 					var likeCount = Number($('#postLikeCount').html()) - 1;
 					console.log("count : " + likeCount);
 					$('#postLikeCount').html(likeCount);
+					$('#failedAlertMessage').text('좋아요가 해제되었습니다.');
+	                $('#failedAlert').show('slow');
+	                setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 				},
 				error : function(data) {
 					console.log("좋아요 설정 실패");
@@ -1135,6 +1266,23 @@ img[class="btn btn-link dropdown-toggle"] {
 	function postChangePage(){
 		close_postDetail();
 		location.href="/projectPost.do?proNo="+postProNo;
+	}
+	
+	//게시글 삭제
+	function deletePost(){
+		var deleteYesNo = confirm("게시물을 삭제하시겠습니까?");
+		if(deleteYesNo){	//삭제 yes일때
+			close_postDetail();
+			location.href="/postDeletePost.do?postNo="+postNo;
+			
+			$('#successAlertMessage').text('게시물이 삭제되었습니다.');
+	        $('#successAlert').show('slow');
+	        setTimeout(function () {$('#successAlert').hide('slow');}, 1500);
+		}else{	//삭제 No일때
+			$('#failedAlertMessage').text('게시물 삭제가 취소되었습니다.');
+            $('#failedAlert').show('slow');
+            setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
+		}
 	}
 	
 	
@@ -1189,6 +1337,26 @@ img[class="btn btn-link dropdown-toggle"] {
 			url:"/
 		}) */
 	}
+	
+	//마우스 올렸을때 바뀌는 부분
+	$(document).ready(function () {
+        $('#postUpdatePencilImg').mouseover(function(){
+            $('#postUpdatePencilImg').attr("src","../resources/images/post/pencil.png");
+        }).mouseout(function(){
+        	$('#postUpdatePencilImg').attr("src","../resources/images/post/pencilOff.png");
+        });
+        
+        $('#postBookmarkImg').mouseover(function(){
+            $('#postBookmarkImg').attr("src","../resources/images/post/bookmarkGreen.png");
+        }).mouseout(function(){
+        	if(postBookmarkOnOff==0)
+        		$('#postBookmarkImg').attr("src","../resources/images/post/bookmark.png");
+        	else
+        		$('#postBookmarkImg').attr("src","../resources/images/post/bookmarkOn.png");
+        });
+        
+  
+     });
 </script>
 </head>
 
@@ -1198,14 +1366,28 @@ img[class="btn btn-link dropdown-toggle"] {
 		<div id="myModal" class="modal">
 
 			<!-- Modal 내용 -->
-			<div class="modal-content" style="width: 65%; height: 80%;">
+			<div class="modal-content" style="width: 60%; height: 80%;">
 				<div class="row" style="margin-left: 10px; margin-bottom: 20px;">
 					<div class="col-5" id="viewProjectTitle" onclick="postChangePage();">게시글의 프로젝트 명</div>
 					<div class="col-2">
-						<img src="../resources/images/post/more.png" id="postMoreImg" />
-						<img src="../resources/images/post/bookmark.png"
-							id="postBookmarkImg" onclick="postBookmark();" />
+					
+						<div class="btn-group" id="postMore" >
+							<img src="../resources/images/post/more.png" id="postMoreImg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" onclick="open_scheduleModal();">
+								<img src="../resources/images/post/add-event.png" style="height : 18px;" />&nbsp;&nbsp;일정 추가</a> 
+								<a class="dropdown-item" onclick="open_decision();">
+								<img src="../resources/images/post/select.png" style="height : 18px;"/>&nbsp;&nbsp;의사결정 추가</a> 
+								<hr>
+								<a class="dropdown-item" onclick="deletePost();">
+								<img src="../resources/images/post/delete.png" style="height : 18px;"/>&nbsp;&nbsp;게시물 삭제</a> 
+							</div>
+						</div>
+						<img src="../resources/images/post/pencilOff.png" id="postUpdatePencilImg" onclick="open_postUpdate();" data-toggle="tooltip" data-placement="top" title="게시글 수정하기" />
+						<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" data-toggle="tooltip" data-placement="top" title="북마크 설정하기" />
+						
 
+						
 					</div>
 					<div class="col-5">
 						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
@@ -1238,8 +1420,13 @@ img[class="btn btn-link dropdown-toggle"] {
 						<br><hr style="margin-top : 0px;">
 						<div style="margin-left: 15px; margin-right: 10px;">
 							<span id="post-content">글내용</span> <br><br><br>
+							
+							<span id="post-postTag"></span>
+							
+							<br>
 							<div style="text-align : right;">
-							<img src="" id="postWriterProfileImg" onerror="this.src='../resources/upload/member/whale.png'" /> <span id="post-writer">작성자</span>&nbsp;&nbsp;<span id="post-date">작성날짜</span></div>
+							<img src="" id="postWriterProfileImg" onerror="this.src='../resources/upload/member/whale.png'" /> <span id="post-writer">작성자</span>&nbsp;&nbsp;<span id="post-date">작성날짜</span>
+							</div>
 						</div>
 
 						<hr style="margin-top : 5px; margin-bottom:25px;">
@@ -1295,16 +1482,40 @@ img[class="btn btn-link dropdown-toggle"] {
 
 					<!-- right side (댓글 부분) -->
 
-					<div class="col-5" id="comment">
+					<div class="col-5" id="comment" style="padding : 0;">
 				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>
 				</div>
+				
+				  <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; bottom:0px;">
+      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+   </div>
+   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
+      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+   </div>
 
 			</div>
 			<!-- Modal 내용 끝 -->
 		</div>
 		<!-- 게시글 모달 끝 -->
-
+		
+		
+		<!-- 게시글 내용 수정 팝업모달 시작 -->
+		<div id="postUpdateModal" class="modal">
+			<!-- Modal 내용 -->
+			<div id="modal-postUpdate">
+				<img src="../resources/images/post/pencil.png" /><span style="color: #339966;">&nbsp;&nbsp;게시글 수정하기</span> 
+				<img src="../resources/images/post/close.png" onclick="close_postUpdate();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
+				<br> 
+				게시글 제목&nbsp;&nbsp; : &nbsp;&nbsp;<input type="text" id="updatedPostTitle" placeholder="게시글 제목을 입력해주세요." />
+				<br><br>
+				게시글 내용 <br>
+				<textarea rows="6" cols="65" id="updatedPostContent" style="resize:none" ></textarea><br><br>
+				<button class="insertButton2" onclick="updatePost();" style="float: right;">수정</button>
+			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 게시글 내용 수정 팝업모달 끝 -->
 
 
 		<!-- 일정 팝업모달 -->
@@ -1314,7 +1525,7 @@ img[class="btn btn-link dropdown-toggle"] {
 				<img src="../resources/images/post/add-event.png"
 					style="margin-bottom: 5px;" /><span style="color: #339966;">&nbsp;&nbsp;일정
 					추가하기</span> <img src="../resources/images/post/close.png"
-					onclick="close_schedule();" style="float: right; height: 20px;" /><br>
+					onclick="close_schedule();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
 				<br>
 				<center>
 					<input type="text" id="scTitle" placeholder="일정 제목을 입력해주세요." /><br>
@@ -1335,8 +1546,8 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 -->
 			<div id="modal-schedule">
 				<img src="../resources/images/post/add-event.png"
-					style="margin-bottom: 5px;" /><span style="color: #339966;">&nbsp;&nbsp;일정 수정하기</span> <img src="../resources/images/post/close.png"
-					onclick="close_updateScheduleModal();" style="float: right; height: 20px;" /><br>
+					style="margin-bottom: 5px;" /><span style="color: #339966;">&nbsp;&nbsp;일정 수정하기</span> 
+					<img src="../resources/images/post/close.png" onclick="close_updateScheduleModal();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
 				<br>
 				<center>
 					<input type="text" id="updateScTitle" placeholder="일정 제목을 입력해주세요." /><br>
@@ -1368,9 +1579,8 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 -->
 			<div id="modal-decision">
 				<img src="../resources/images/post/select.png" /><span
-					style="color: #339966;">&nbsp;&nbsp;의사결정 요청</span> <img
-					src="../resources/images/post/close.png"
-					onclick="close_decision();" style="float: right; height: 20px;" /><br>
+					style="color: #339966;">&nbsp;&nbsp;의사결정 요청</span> 
+				<img src="../resources/images/post/close.png" onclick="close_decision();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
 				<br> <input type="text" id="decisionContent"
 					placeholder="결정을 요청할 내용을 입력해 주세요." /><br>
 				<br> 결정자 선택&nbsp;&nbsp;<select id="selectMemberForDecision"></select><br>
@@ -1387,9 +1597,9 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 -->
 			<div id="modal-decide">
 				<img src="../resources/images/post/select.png" /><span
-					style="color: #339966;">&nbsp;&nbsp;의사 결정하기</span> <img
-					src="../resources/images/post/close.png" onclick="close_decide();"
-					style="float: right; height: 20px;" /><br>
+					style="color: #339966;">&nbsp;&nbsp;의사 결정하기</span> 
+				<img src="../resources/images/post/close.png" onclick="close_decide();"
+					style="float: right; height: 20px;" class="postCloseIcon" /><br>
 				<br> <input type="text" id="decisionComment"
 					placeholder="의사결정 의견을 입력해 주세요." /><br>
 				<br>
