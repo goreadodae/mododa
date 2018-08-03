@@ -108,6 +108,10 @@
 				
 				
 				}
+
+	function postChangePage(proNo){ //준석추가
+		location.href="/projectPost.do?proNo="+proNo;
+	}
 	
 	$(document).ready(function(){
 	 	var memberNo= ${sessionScope.member.memberNo};
@@ -146,7 +150,6 @@
 			
 		});
 	});
-
 	
 </script>
 
@@ -196,27 +199,27 @@
 								<span onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</span>
 								</div>
 								<div class="col-md-9">
-									<img id="memberImg" src="${news.pWriterImg }" />
+									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
 									<span id="postcontent" style="font-size:12px;">${news.pWriterImg }</span><br>
 									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
 								<div class="col-md-12">
 								<c:choose>
-									<c:when test="${news.postProgress eq'완료' }">
+									<c:when test="${news.postProgress eq 'suggest' }">
 										<c:set var="statusImg" value="../resources/images/post/lightbulb.png" />
 									</c:when>
-									<c:when test="${news.postProgress eq'진행 중' }">
+									<c:when test="${news.postProgress eq 'working' }">
 										<c:set var="statusImg" value="../resources/images/icon/play-button.png"/>
 									</c:when>
-									<c:when test="${news.postProgress eq'일시중지' }">
+									<c:when test="${news.postProgress eq 'stop' }">
 									<c:set var="statusImg" value="../resources/images/icon/pause.png"/>
 									</c:when>
 									<c:otherwise>
 										<c:set var ="statusImg" value="../resources/images/icon/checked-allot.png"/>
 									</c:otherwise>
 									</c:choose>
-									<img id="memberImg2" src=${statusImg }/>&nbsp;
-									<a onclick="# " class="btn btn-link" style="float:none;" >${news.proName }</a>
+									<img id="memberImg2" src="${statusImg }"/>&nbsp;
+									<a onclick="postChangePage(${news.proNo });" class="btn btn-link" style="float:none;" >${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">

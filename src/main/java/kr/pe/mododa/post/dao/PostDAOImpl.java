@@ -125,4 +125,8 @@ public class PostDAOImpl implements PostDAO{
 	public int insertComment(SqlSessionTemplate sqlSession, Post vo) { //준석 추가(댓글 입력)
 		return sqlSession.insert("post.insertComment",vo);
 	}
+
+	public int deleteComment(SqlSessionTemplate sqlSession, int commentNo) { //0802준석추가
+		return sqlSession.delete("post.deleteComment", commentNo);
+	}
 }

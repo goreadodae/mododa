@@ -1162,6 +1162,33 @@ img[class="btn btn-link dropdown-toggle"] {
 			});
 		}
 	}
+	
+	//댓글 삭제(준석)
+	function deleteComment(commentNo,postNo)
+	{
+		$.ajax({
+			url:"/deleteComment.do",
+			type:"post",
+			data:{commentNo:commentNo,
+				postNo:postNo},
+			success:function(data)
+			{
+				$('#comment').empty();
+				$("#comment").html(data);
+			},
+			error:function(data)
+			{
+				console.log("삭제 실패");
+			}
+		});
+	}
+	function cmLike(commentNo,postNo)//댓글 좋아요
+	{
+		/* if(cmlike==)
+		$.ajax({
+			url:"/
+		}) */
+	}
 </script>
 </head>
 

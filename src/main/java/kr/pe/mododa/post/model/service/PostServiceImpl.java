@@ -138,8 +138,11 @@ public class PostServiceImpl implements PostService{
 	
 
 	public int insertComment(Post vo) { //댓글 입력(준석추가)
-		// TODO Auto-generated method stub
 		return postDAO.insertComment(sqlSession,vo);
+	}
+
+	public int deleteComment(int commentNo) { //댓글 삭제(준석추가)
+		return postDAO.deleteComment(sqlSession,commentNo);
 	}
 
 }

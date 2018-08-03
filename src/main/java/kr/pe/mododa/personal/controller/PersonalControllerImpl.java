@@ -60,18 +60,25 @@ public class PersonalControllerImpl implements PersonalController{
 		view.setViewName("personal/newsfeed");
 		return view;
 	}
-	
+	@RequestMapping(value="callpost.do")
+	public ModelAndView personalCall(HttpSession session) //로그인한 회원을 호출한 글 목록을 읽어옴.(DB khkhkhkhkhkhkhkh)
+	{
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo(); //세션에서 회원번호 추출
+		ModelAndView view = new ModelAndView();
+		view.setViewName("personal/personalCall");
+		return view;
+	}
 
 	@RequestMapping(value="bookmark.do") //북마크
 	@Override
 	public ModelAndView bookmark(HttpSession session)
 	{
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		System.out.println(memberNo);
 		ArrayList<Bookmark> bookmark = personalService.selectBookmark(memberNo);
 		ModelAndView view = new ModelAndView();
 		if(bookmark!=null)
 		{
-			System.out.println(bookmark);
 			view.addObject("bookmark", bookmark);
 			view.setViewName("personal/bookmark");
 			return view;

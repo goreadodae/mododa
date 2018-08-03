@@ -181,6 +181,7 @@
 		join member m on (ct.cm_writer = m.member_no)
 		where
 		cm_post = #{postNo}
+		order by writeTime          <!-- 0802정렬 추가(준석) -->
 	</select>
 
 	<select id="selectPostLike" resultType="postLike">
@@ -224,5 +225,9 @@
 		values(comment_tbl_SEQ.nextval,#{postWriter},
 		#{postNo},#{postContent},sysdate)
 	</insert>
+	
+	<delete id="deleteComment">
+		delete from comment_tbl where cmember_no=#{commentNo} <!-- 준석 -->
+	</delete>
 
 </mapper>
