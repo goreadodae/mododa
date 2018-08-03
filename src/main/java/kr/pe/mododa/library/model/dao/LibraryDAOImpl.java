@@ -109,4 +109,14 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return (ArrayList<Member>)todoContentMemberPost;
 	}
 
+	public ArrayList<Todo> todoListPro(SqlSessionTemplate sqlSession, int proNo) {
+		List todoListPro = sqlSession.selectList("library.todoListPro", proNo);
+		return (ArrayList<Todo>)todoListPro;
+	}
+
+	public ArrayList<Decision> decisionListPro(SqlSessionTemplate sqlSession, int proNo) {
+		List decisionListPro = sqlSession.selectList("library.decisionListPro", proNo);
+		return (ArrayList<Decision>)decisionListPro;
+	}
+
 }

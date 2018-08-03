@@ -580,7 +580,7 @@ div {
 					close_decide(id);
 					$('#changeDc_'+id).find().remove();
 					if(decideResult == 'N') {
-						if(dcComment == null) {
+						if(dcComment == "") {
 							$('#changeDc_'+id).html("<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : 반려합니다. <br>");
 						}
 						else {
@@ -589,7 +589,7 @@ div {
 						
 					}
 					else {
-						if(dcComment == null) {
+						if(dcComment == "") {
 							$('#changeDc_'+id).html("<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : 승인합니다. <br>");
 						}
 						else {

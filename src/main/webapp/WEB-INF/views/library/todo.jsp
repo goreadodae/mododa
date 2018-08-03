@@ -217,8 +217,9 @@ div {
 				<img src="../resources/images/post/close.png" onclick="closeModal();" /><br>
 			</div>
 			
+			<h3>할 일 작성</h3>
+			
 			<!-- 작성 -->
-			<form action="/insertTodo.do" method="post">
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
 					<td>
@@ -241,7 +242,7 @@ div {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea class="form-control" aria-label="With textarea" rows="10"
+						<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent"
 							style="width:100%; resize:none;" name="todoContent" placeholder="할 일 설명(선택)"></textarea>
 						
 					</td>
@@ -257,7 +258,6 @@ div {
 					</td>
 				</tr>
 			</table>
-			</form>
 				
 		</div>
 		<!-- Modal 내용 끝 -->
@@ -281,60 +281,67 @@ div {
 				<img src="../resources/images/post/close.png" onclick="closeContentModal(${t.todoNo});" /><br>
 			</div>
 			<!-- 할 일 내용  -->
-			<table border="1">
-				<tr>
-					<td>
-						<div class='btn-group'>
-							<c:choose>
-								<c:when test="${t.todoProgress.equals('suggest')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/icon/play-button.png' />
-								</c:when>
-								<c:when test="${t.todoProgress.equals('working')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/play-buttonOn.png' />
-								</c:when>
-								<c:when test="${t.todoProgress.equals('stop')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/pauseOn.png' />
-								</c:when>
-								<c:otherwise>
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/checked.png' />
-								</c:otherwise>
-							</c:choose>
-							<div class='dropdown-menu'>
-							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-							<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
-							</div>
-						</div>
-					</td>
-					<td colspan="3"><input class="form-control" type="text" id="todoTitle_${t.todoNo }" name="todoTitle" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요"></td>
-				</tr>
-				<tr>
-					<td>
-						<select class="form-control" name="todoMember" style="width:150px;">
+			
+			<div>
+			<div class='btn-group' style="float:left;">
+				<c:choose>
+					<c:when test="${t.todoProgress.equals('suggest')}">
+						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/icon/play-button.png' />
+					</c:when>
+					<c:when test="${t.todoProgress.equals('working')}">
+						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/play-buttonOn.png' />
+					</c:when>
+					<c:when test="${t.todoProgress.equals('stop')}">
+						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/pauseOn.png' />
+					</c:when>
+					<c:otherwise>
+						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/checked.png' />
+					</c:otherwise>
+				</c:choose>
+				<div class='dropdown-menu'>
+				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+				</div>
+			</div>
+			<div style="float:left; font-size:120%; font-bold:120%;">
+				할 일 수정
+			</div>
+			</div>
+			
+			<div>
+				<div style="float:left; width:100%">
+					<input class="form-control" type="text" style="margin:2px;" id="todoTitle_${t.todoNo }" name="todoTitle" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요">
+				</div>
+				
+				
+
+				<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent_${t.todoNo }"
+					style="width:100%; resize:none; margin:2px;" name="todoContent" placeholder="할 일 설명(선택)">${t.todoContent }</textarea>
+				
+				<div>
+					<div style="float:left;">
+						<select class="form-control" name="todoMember" style="width:150px; margin:2px;">
 							<option value="0">${t.todoWriterName }</option>
-						</select>  
-					</td>
-					<td>
-					->
-					</td>
-					<td>
-						<select class="form-control" id="todoMember_${t.todoNo }" name="todoMember" style="width:150px;">
+						</select>
+					</div>
+					
+					<div style="float:left;">
+					▶
+					</div>	
+					
+					<div style="float:left;">
+						<select class="form-control" id="todoMember_${t.todoNo }" name="todoMember" style="width:150px; margin:2px;">
 							<option value="0">${t.todoMemberName }</option>
 						</select>
-					</td>
-					<td width="40%" align="right">${t.todoStartDate }</td>
-				</tr>
-				<tr>
-					<td colspan="4" height="200px;">
-					<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent_${t.todoNo }"
-							style="width:100%; resize:none;" name="todoContent" placeholder="할 일 설명(선택)">${t.todoContent }</textarea>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="4" align="center"><button type="submit" class="btn btn-light" onclick="updateTodo(${t.todoNo});">수정</button></td>
-				</tr>
-			</table>
+					</div>
+					
+				</div>
+				
+				<div align="right"><button type="submit" class="btn btn-light" onclick="updateTodo(${t.todoNo});">수정</button></div>
+				
+			</div>
 				
 		</div>
 		<!-- Modal 내용 끝 -->
@@ -353,6 +360,7 @@ div {
 </body>
 
 <script>
+	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
 	todoAll();
 	
 	/* 프로젝트 선택에 따라 팀원 변경 */
@@ -416,26 +424,30 @@ div {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
 					}
 					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
 					}
 					else {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
 					}
 						
 					str += 
-						"<div class='dropdown-menu'>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'suggest');'><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'working');'><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'stop');'><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'finish');'><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"+
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+"</div>"+
 						"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div>"+
-						"<div align='right' style='padding:10px;'>"+
-						"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-						"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"+
-						"</div>"+
-						"<div style='padding:15px;'>"+
+						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
+					
+					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
+						str +=
+							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+					}
+					
+					str +=
+						"</div><div style='padding:15px;'>"+
 						data[i].todoContent+
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
@@ -470,26 +482,30 @@ div {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
 					}
 					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
 					}
 					else {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
 					}
 						
 					str += 
-						"<div class='dropdown-menu'>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'suggest');'><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'working');'><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'stop');'><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'finish');'><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"+
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+"</div>"+
 						"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div>"+
-						"<div align='right' style='padding:10px;'>"+
-						"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-						"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"+
-						"</div>"+
-						"<div style='padding:15px;'>"+
+						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
+					
+					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
+						str +=
+							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+					}
+					
+					str +=
+						"</div><div style='padding:15px;'>"+
 						data[i].todoContent+
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
@@ -524,26 +540,30 @@ div {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
 					}
 					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-togge='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
 					}
 					else {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
 					}
 						
 					str += 
-						"<div class='dropdown-menu'>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'suggest');'><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'working');'><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'stop');'><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"+
-						"<a class='dropdown-item' onclick='changeProgressTodo("+data[i].todoMember+","+data[i].todoNo+",'finish');'><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"+
+						"<div class='dropdown-menu'>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+						+"</div>"+
 						"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div>"+
-						"<div align='right' style='padding:10px;'>"+
-						"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-						"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"+
-						"</div>"+
-						"<div style='padding:15px;'>"+
+						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
+					
+					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
+						str +=
+							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+					}
+					
+					str +=
+						"</div><div style='padding:15px;'>"+
 						data[i].todoContent+
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
@@ -564,10 +584,12 @@ div {
 		var selectProject = $('#selectProject option:selected').val();
 		var memberList = $('#memberList option:selected').val();
 		var todoTitle = $('#todoTitle').val();
+		var todoContent = $('#todoContent').val();
 		
 		console.log(selectProject);
 		console.log(memberList);
 		console.log(todoTitle);
+		console.log(todoContent);
 		
 		if(selectProject == 0) {
 			alert("프로젝트를 선택해주세요.");
@@ -584,9 +606,27 @@ div {
 			return false;
 		}
 		
-		console.log("test");
+		$.ajax({
+			url:"/insertTodo.do",
+			type:"POST",
+			data : {
+				todoProNo : selectProject,
+				todoTitle : todoTitle,
+				todoMember : memberList,
+				todoContent : todoContent
+			},
+			success : function(data) {
+				alert("할일 작성 완료");
+				closeModal();
+				todoAll();
+			},
+			error : function(data) {
+				console.log("오류");
+			}
+		});
 		
 		return true;
+		
 	}
 	
 	
@@ -660,7 +700,6 @@ div {
 	
 	// 할일 진행과정 변경
 	function changeProgressTodo(todoMember, todoNo, status) {
-		var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
 		var writerNo = $("#writerNo_"+todoNo).val();
 		var memberNo = $("#memberNo_"+todoNo).val();
 		
@@ -668,7 +707,7 @@ div {
 		console.log("writerNo : " + writerNo);
 		console.log("memberNo : " + memberNo);
 		
-		if(user == writerNo || user == memberNo) {
+		if((user == writerNo || user == memberNo) || (user==writerNo && user == memberNo)) {
 			$.ajax({
 				url : "/postUpdateTodoProgress.do",
 				type : "post",
@@ -709,13 +748,12 @@ div {
 			});
 		}
 		else {
-			alert("할 일 변경 권한이 없습니다.");
+			alert("할일 진행과정 변경권한이 없습니다.");
 		}
-		
+			
 	}
 	
 	function updateTodo(id) {
-		var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
 		var todoWriter = $("#todoWriter_"+id).val();
 		var todoTitle = $("#todoTitle_"+id).val();
 		var todoContent = $("#todoContent_"+id).val();
