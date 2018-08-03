@@ -17,7 +17,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
-
 <!-- 파일 업로드  -->
 <!-- <script src="path/to/your/jquery.MultiFile.js" type="text/javascript" language="javascript"></script>
  -->
@@ -355,13 +354,24 @@
 					},
 
 					success : function(data) {
-
+						$("#relationList").empty();
 						
-
-						if (preventStack) {
-
+						console.log(currentProNo);
+						var flag = 0;
 							for (var i = 0; i < data.length; i++) {
-								str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+								
+								for(var j=0;j<checkedInfoList.length;j++){
+									
+									if(data[i].postNo==checkedInfoList[j]){
+										flag=1;
+										break;
+									}
+								}
+								if(flag==1){
+									flag=0;
+									continue;
+								}
+								str +=	'<li id="checkedResult_'+data[i].postNo+'" class="list-group-item" style="padding-top: 10px;">';
 								str += '<div class="row" style="height: 50%">';
 								str += '<div class="col-md-12" style="height: 100%">';
 								str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
@@ -372,16 +382,8 @@
 								str += '</div>';
 								str += '</div>';
 								str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
-								str += '<h6 style="display: inline">';
-									if(data[i].memberPicture == null)
-										{
-											str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
-										}
-									else
-										{
-											str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-											
-										}
+								str += '<h6 style="display: inline">';		
+								str += '<span style="padding-right:5px;"><img src="/resources/upload/member/'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';		
 								str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
 								str += '</span>&nbsp;&nbsp;';
 								str += '<span>'+data[i].postDate+'</span>';
@@ -395,9 +397,9 @@
 									str ="";
 							/* console.log($('"#checked_'+data[i].postNo+'"').val()); */
 							}
-							preventStack = false;
 							
-						}
+							
+						
 
 					},
 					error : function(data) {
@@ -410,12 +412,11 @@
 	
 	$(document).ready(function(){
 		$('#relationSearch').keypress(function(){
-			var cycle = 1;
+			
 			var searchKeyword = $("#relationSearch").val();
 			var currentProNo = $("#currentProNo").val();
 			var str="";
 			var failed ="";
-			var cnt=1;
 			console.log(checkedInfoList.length+"검색");
 			
 			
@@ -429,17 +430,7 @@
 					currentProNo : currentProNo
 			},
 			success : function(data) {
-				 $("#relationList").empty(); 
-				if(checkedInfoList.length!=0)
-					{
-						console.log("체크 정보리스트가 0이 아니래");
-						cycle = checkedInfoList.length;
-						console.log(cycle+"지금 사이클의 랭스길이");
-					}
-				
-					console.log("검색 성공");
-					console.log(cycle+"사이클의 인덱스번호");
-				
+				$("#relationList").empty();
 				if(data.length == 0)
 				{	
 					console.log("이프");
@@ -460,83 +451,35 @@
 				}
 				else{
 					console.log("엘스");
-					if(checkedInfoList.length==0)
-						{
-							for (var i = 0; i < data.length; i++) 
-							{			
-								str +=	'<li class="list-group-item" style="padding-top: 10px;">';
-								str += '<div class="row" style="height: 50%">';
-								str += '<div class="col-md-12" style="height: 100%">';
-								str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"';
-								str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';					
-								str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
-								str += data[i].postTitle;
-								str += '</span>';
-								str += '</div>';
-								str += '</div>';
-								str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
-								str += '<h6 style="display: inline">';					
-									if(data[i].memberPicture == null)
-										{
-											str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
-										}
-									else
-										{
-											str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-											
-										}
-								str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
-								str += '</span>&nbsp;&nbsp;';
-								str += '<span>'+data[i].postDate+'</span>';
-								str += '</h6>&nbsp;&nbsp;';
-								str += '</div>';
-								str += '</div>';
-								str += '</li>';
-								
-								$('#relationList').append(str);
-								
-									str ="";
-									console.log("검색 완료");
-		
-							}
-					}
-					else
-						{
-							for(var j=0; j<checkedInfoList.length; j++)
-								{
-								
+					var flag = 0;
+	
 								for(var i=0; i<data.length; i++)
 									{
-									
-										str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+										for(var z=0;z<checkedInfoList.length;z++){
+										if(data[i].postNo==checkedInfoList[z])
+										{
+											flag=1;
+											break;
+										}
+									}
+										if(flag==1)
+										{
+											flag=0;
+											continue;
+										}
+										str +=	'<li id="checkedResult_'+data[i].postNo+'" class="list-group-item" style="padding-top: 10px;">';
 										str += '<div class="row" style="height: 50%">';
 										str += '<div class="col-md-12" style="height: 100%">';
-										console.log(checkedInfoList[j]+"체크된post번호");
-										console.log(data[i].postNo+"체크된post번호");
-									if(checkedInfoList[j] != data[i].postNo)
-									{
-									
 										str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"';
 										str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';										
-										console.log("두개가 다름");
-									}	
 										str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 										str += data[i].postTitle;
 										str += '</span>';
 										str += '</div>';
 										str += '</div>';
 										str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
-										str += '<h6 style="display: inline">';
-										
-										
-											if(data[i].memberPicture == null)
-												{
-													str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
-												}
-											else
-												{
-													str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-												}
+										str += '<h6 style="display: inline">';	
+										str += '<span style="padding-right:5px;"><img src="/resources/upload/member/'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
 										str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
 										str += '</span>&nbsp;&nbsp;';
 										str += '<span>'+data[i].postDate+'</span>';
@@ -545,20 +488,10 @@
 										str += '</div>';
 										str += '</li>';
 									}
-								}
+								
 								$('#relationList').append(str);
-								str="";
-								}
+								str="";		
 						}
-					
-					
-					
-						
-			
-			
-
-			
-				
 			},
 			error : function(data) {
 				console.log("검색 실패");
@@ -574,7 +507,7 @@
 	})
 	
 	function loadByProName(no){
-		var proNo = $('#proNo'+no).val();
+		var proNo = $('#proNo_'+no).val();
 		var str ="";
 		
 		$.ajax({
@@ -585,15 +518,30 @@
 			},
 			success : function(data){
 				console.log("성공");
-				console.log(proNo);
-				 $("#relationList").empty();
+				console.log(proNo+"를 불러왔어요");
+				$("#relationList").empty();
+				 
+				 var flag = 0;
 				for (var i = 0; i < data.length; i++) {
 					
-					str +=	'<li class="list-group-item" style="padding-top: 10px;">';
+					for(var z=0; z<data.length; z++)
+					{
+						if(data[i].postNo==checkedInfoList[z]){
+							flag=1;
+							break;
+						}
+						
+					}
+						if(flag==1){
+						flag=0;
+						continue;
+					}
+					console.log(data[i].postNo+"불러온 포스트 번호는");
+					str +=	'<li id="checkedResult_'+data[i].postNo+'" class="list-group-item" style="padding-top: 10px;">';
 					str += '<div class="row" style="height: 50%">';
 					str += '<div class="col-md-12" style="height: 100%">';
 					str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
-					str += 'value="'+data[i].postTitle+','+data[i].memberName+'">';
+					str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';
 					str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 					str += data[i].postTitle;
 					str += '</span>';
@@ -601,15 +549,7 @@
 					str += '</div>';
 					str += '<div class="row" style="height: 50%; padding-left:25px;"><div class="col-md-12">';
 					str += '<h6 style="display: inline">';
-						if(data[i].memberPicture == null)
-							{
-								str += '<span style="padding-right:5px;"><img src="/resources/upload/member/whale.png" class="rounded-circle border memPic" /></span>';
-							}
-						else
-							{
-								str += '<span style="padding-right:5px;"><img src="'+ data[i].memberPicture +'" class="rounded-circle border memPic" /></span>';
-								
-							}
+					str += '<span style="padding-right:5px;"><img src="/resources/upload/member/'+data[i].memberPicture+'" class="rounded-circle border memPic" /></span>';
 					str += '<span id="pMName_'+data[i].postNo+'">'+data[i].memberName+'</span>&nbsp;&nbsp;';
 					str += '</span>&nbsp;&nbsp;';
 					str += '<span>'+data[i].postDate+'</span>';
@@ -661,10 +601,13 @@
 						+ postInfo[1] + '</div><div class="col-md-12" style="color:#A1A1A1; font-size:11px; text-overflow:ellipsis">'
 						+ postInfo[0] + '</div></div></div>').appendTo($('#addRelationWriting'));
 				console.log(postInfo[2]);
-		
-				$('#writingCnt').text(index+1);
+				
+				 
+				$('#writingCnt').text(checkedInfoList.length);
 				console.log(checkedInfoList);
-				$('input:checkbox[name=checkedWriting]:checked').remove();
+				console.log($('#checkedResult_'+postInfo[2]).val()+"지울때");
+				$('#checkedResult_'+postInfo[2]).remove();
+				
 				str="";
 			
 	
@@ -673,49 +616,99 @@
 		});	
 	})
 	
-			
-/* $(document).ready(function(){
-	var ajaxData=[],
-	data,
-	target = $('.thumb-list');
-	
-	target.each(function(){
-		var $this = $(this),
-		link =$this.find('.thumb-link').attr('href');
-		
-		ajaxData.push(
-			$.ajax({
-				url:link,
-				dataType : "html"
-			})	
-			.done(function(data){
-			
-				var defin = new $.Deffered();
-				checkSort($this,data);
-				
-				
-			})
-			
-		
-		
-		);
-		
-	});
-	
-	function checkSort(target, data){
-		var loadData = data,
-		regImg = '/<meta.*property="og:image".*content=".+cfile.+".*>/'
-		imgData = loadData.match(regImg) ? loadData.match(regImg)[0] : "none";
+	//해시태그
+	$(document).ready(function(){
+ 
+    $("#hashTag").on('keyup',function(e){
 
-		console.log(regImg);
-		console.log(imgData);
-		
+        var special =  /[`~!@#$%^&<>()*|\\\'\"\;:\/?]/gi;
+        var children = $("#after_tag").children('span').length;
+        var check = $(this).val();
+        
+        if(special.test(check) == true){
+        
+            alert('특수문자는 사용할 수 없습니다.');
+            $("#hashTag").val("");
+            return false;
+        }
+        
+        if(e.which == 32 || e.which == 188){
+        
+            var tag = $("#hashTag").val();
+            tag = tag.trim();
+            
+            if(tag != "" && tag != ',' ){
+        
+                if(tag.match(',')){
+                    tag = tag.substring(0 , tag.length-1);
+                }
+                
+            var resister_tag = "<span class='before_tag' style='color:#C3C3C3; font-size:13px;' id='tag_"+children+"'>"+" #"+tag+"<a class='removeLink' href='javascript:delTag("+children+")' style='margin-left:7px;' >&times;</a></span>";
+            $("#after_tag").prepend(resister_tag);
+            
+            //초기화
+            $("#hashTag").val("");
+        
+            }else{
+            
+                if(tag == ""){
+                    alert("첫단어 공백은 불가합니다.");
+                    $("#hashTag").val("");
+                    return false;
+                }else{
+                    alert("첫단어 쉼표는 불가합니다.");
+                    $("#hashTag").val("");
+                    return false;}
+            }
+        }
+    });
+});
+
+	
+
+	
+	function delTag(n){
+		var id="#tag_" + n;
+		$(id).remove();
 	}
 	
 	
-});
-		 */	
-
+	// 저장할때 어떻게 저장할지.
+ 	function tag_post(){
+		var ts ="";
+		var t = $("after_tag").children('span');
+		console.log(t);
+		t.each(function(){
+			var v = $(this).html();
+			var rt = v.split('<a');
+			ts += "#"+rt[0];
+		});
+		$("#hashResults").val(ts);
+		
+	
+	} 
+	
+	
+	$(document).ready(function(){
+		$('#inputContents').keypress(function(){
+ 	var inputText = $('#inputContents').text();
+ 	 var expUrl = ﻿﻿ /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
+ 	 var changedData = ﻿ inputText.replace(expUrl, '<a onclick="javascript:location.href='+'"$&"">$&</a>');
+ 	 
+ 	 if(event.which == 13)
+ 	 {
+ 	 
+	 	 if(expUrl.test(inputText) == true)
+			{
+	 		 $('#inputContents').append(changedData);
+				console.log(changedData);
+					 
+			}
+		}
+		})
+	})
+	
+/* 	<a onclick="javascript:location.href='www.naver.com'">naver</a> */
 					
 	
 					
@@ -888,6 +881,14 @@ margin:auto;
 	top:40%;
 	left:40%;
 }
+.removeLink:link{
+	color:black;
+	font-weight:bold;
+	text-docoration:none;
+}
+.removeLink:hover{
+	text-decoration:none;
+}
 
 </style>
 
@@ -1019,7 +1020,7 @@ margin:auto;
 				</div>
 				<div class="row" style="height: 85%">
 					<div class="col-md-8" style="height: 100%">
-						<div class="row" style="height: 85%">
+						<div class="row" style="height: 80%">
 							<div class="col-md-12" style="height: 100%;">
 								<div class="row" style="height: 10%">
 									<div class="col-md-12" style="height: 100%;">
@@ -1029,13 +1030,8 @@ margin:auto;
 								<div class="row" style="height: 90%">
 									<div class="col-md-12" style="height: 100%">
 										<div class="tarea col-md-12" id="inputContents" contenteditable="true" style="height: 100%; padding-left: 0px;">
-										
-								
-
-
-										
-										
 											
+										
 										
 										</div>
 									</div>
@@ -1043,14 +1039,18 @@ margin:auto;
 							</div>
 						</div>
 
-						<div class="row" style="height: 15%">
+						<div class="row" style="height: 20%">
 							<div class="col-md-12" style="height: 100%;">
 								<div class="row">
-									<div class="col-md-12">
-										<span id="hashName"></span> <input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
+									<div class="col-md-12" id="after_tag">
+										 <input type="text" id="hashTag" placeholder="#해시태그로 글을 분류해 보세요" size="35px" />
 
 
 									</div>
+									<div class="col-md-12" id="after_tag">
+									<input type="hidden" name="hashResults" id="hashResults"/>
+									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -1168,7 +1168,7 @@ margin:auto;
 												</h6>
 												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
 													<c:forEach items="${proList}" var="proList">
-														<button class="dropdown-item" id="proNo${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
+														<button class="dropdown-item" id="proNo_${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
 															<c:out value="${proList.proTitle}" />
 														</button>
 
