@@ -415,8 +415,45 @@ public class LibraryControllerImpl implements LibraryController{
 		
 	}
 	
+	// 할 일 수정
+	@RequestMapping(value="/updateTodo.do")
+	public void updateTodo(HttpSession session, HttpServletResponse response, @RequestParam int todoNo, @RequestParam String todoTitle, @RequestParam String todoContent, @RequestParam int todoMember) throws Exception {
+		System.out.println(todoNo);
+		System.out.println(todoTitle);
+		System.out.println(todoContent);
+		System.out.println(todoMember);
+		
+		Todo t = new Todo();
+		t.setTodoNo(todoNo);
+		t.setTodoTitle(todoTitle);
+		t.setTodoContent(todoContent);
+		t.setTodoMember(todoMember);
+		
+		int result = libraryService.updateTodo(t);
+		
+	}
 	
+	// 게시글에 따라 회원정보 불러오기
+	@RequestMapping(value="/todoContentMemberPost.do")
+	public void todoContentMemberPost(HttpSession session, HttpServletResponse response, @RequestParam int todoPostNo) throws Exception {
+		ArrayList<Member> list = libraryService.todoContentMemberPost(todoPostNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(list,response.getWriter());
+	}
 	
+	@RequestMapping(value="/todoContentMemberPro.do")
+	public void todoContentMemberPro(HttpSession session, HttpServletResponse response, @RequestParam int todoProNo) throws Exception {
+		System.out.println(todoProNo);
+		ArrayList<Member> list = libraryService.selectMemberList(todoProNo);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+
+		new Gson().toJson(list,response.getWriter());
+	}
 	
 	
 	

@@ -109,4 +109,14 @@ public class LibraryServiceImpl implements LibraryService{
 	public int updateDecision(Decision dc) {
 		return libraryDAO.updateDecision(sqlSession, dc);
 	}
+
+	// 할 일 수정
+	public int updateTodo(Todo t) {
+		return libraryDAO.updateTodo(sqlSession, t);
+	}
+	
+	// 게시글이 속한 프로젝트의 멤버 불러오기
+	public ArrayList<Member> todoContentMemberPost(int todoPostNo) {
+		return libraryDAO.todoContentMemberPost(sqlSession, todoPostNo);
+	}
 }
