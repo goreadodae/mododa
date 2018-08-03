@@ -217,18 +217,25 @@ a:hover{
 			},
 			success: function(data){
 				switch(data.result){
-				case "success": alert("초대에 성공하였습니다.");
-				$('#inviteMemberId').val('');
+				case "success": 
+					$('#successAlertMessage').text('초대에 성공하였습니다');
+					$('#successAlert').show('slow');
+					setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
+					$('#inviteMemberId').val('');
 					$(".inviteMemberId").css('border-bottom','1px solid gray');
 					$('#nothingLabel').text('');
 					break;
-				case "failed": alert("초대에 실패하였습니다.");break;
+				case "failed":
+					$('#failedAlertMessage').text('초대를 실패했습니다');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);break;
+					break;
 				case "nothing": 
 					$('#nothingLabel').text('없는 아이디입니다');
 					$(".inviteMemberId").css('border-bottom','1px solid red');
 					break;
 				case "having":
-					$('#nothingLabel').text('초대중이거나 이미 파트너인 아이디입니다');
+					$('#nothingLabel').text('초대중이거나 이미 멤버인 아이디입니다');
 					$(".inviteMemberId").css('border-bottom','1px solid red');
 					break;
 				}
@@ -246,6 +253,10 @@ a:hover{
 			data: {
 				memberNo: memberNo,
 				proNo: proNo
+			}, success: function(){
+				$('#failedAlertMessage').text('초대를 취소하였습니다');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
 			}
 		});
 	}
@@ -375,8 +386,8 @@ a:hover{
 								<div class="col-md-12">${sessionScope.member.memberId }</div>
 								</div>
 							</div>
-    						<a class="dropdown-item" href="/myInfo.do">내정보</a>
-    						<a class="dropdown-item" href="#">멤버 초대 및 탈퇴</a>
+    						<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a>
+    						<a class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및 탈퇴</a>
     						<a class="dropdown-item" href="/logout.do">로그아웃</a>
  						</div>
  						</div>

@@ -24,6 +24,8 @@ import kr.pe.mododa.member.model.service.MemberServiceImpl;
 import kr.pe.mododa.member.model.vo.AutoLogin;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.member.model.vo.Partner;
+import kr.pe.mododa.project.model.service.ProjectServiceImpl;
+import kr.pe.mododa.project.model.vo.Project;
 
 @Controller
 public class MemberControllerImpl implements MemberController {
@@ -31,6 +33,9 @@ public class MemberControllerImpl implements MemberController {
 	@Qualifier(value="memberService")
 	private MemberServiceImpl memberService;
 	
+	@Autowired
+	@Qualifier(value="projectService")
+	private ProjectServiceImpl projectService;
 	
 	@Override
 	@RequestMapping(value="/mainPage.do")
@@ -193,9 +198,22 @@ public class MemberControllerImpl implements MemberController {
 		}
 	}
 	
-	@RequestMapping(value="/myInfo.do")
-	public String myInfo() {
-		return "member/myInfo";
+	@RequestMapping(value="/myInfo.do", method = RequestMethod.GET)
+	public ModelAndView myInfo(String menu, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(session.getAttribute("member")!=null) {
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			switch(menu) {
+			case "myInfo": break;
+			case "memberInfo":
+				ArrayList<Project> projectList = projectService.searchProjectList(memberNo);
+				mav.addObject("projectList", projectList);
+				break;
+			}
+		}
+		mav.setViewName("member/myInfo");
+		return mav;
 	}
 	
 	@RequestMapping(value="/changeMyInfo.do")
@@ -283,11 +301,36 @@ public class MemberControllerImpl implements MemberController {
 	}
 	@RequestMapping(value="/searchPartner.do")
 	public ModelAndView searchPartner(@RequestParam int memberNo, @RequestParam String searchPartnerText) {
-		System.out.println("ㅁㄴㅇㄻㄴㅇㅎ");
 		ArrayList<Partner> list = memberService.searchPartner(memberNo, searchPartnerText);
-		System.out.println(list);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("searchPartnerList", list);
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/leaveMododa.do")
+	public String leaveMododa(@RequestParam String memberId, HttpSession session) {
+		int result = memberService.leaveMododa(memberId);
+		if(result>0) {
+			session.invalidate();
+			return "redirect:/index.jsp";
+		} else {
+			return "member/changeFailed";
+		}
+	}
+	
+	@RequestMapping(value="/leaveMododaPage.do")
+	public String leaveMododaPage() {
+		return "member/leaveMododaPage";
+	}
+	
+	@RequestMapping(value="/deletePartner.do")
+	public ModelAndView deletePartner(@RequestParam int memberNo, @RequestParam int parNo) {
+		int result = memberService.deletePartner(memberNo, parNo);
+		if(result>0) {
+			result = memberService.deletePartner(parNo, memberNo);
+		}
+		ModelAndView mav = new ModelAndView();
 		mav.setViewName("jsonView");
 		return mav;
 	}

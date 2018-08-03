@@ -92,6 +92,11 @@ li[id^="sub_"] a {
    padding-bottom: 1.5% !important;
 }
 
+.list-group-item:hover {
+	cursor: pointer;
+}
+
+
 
 </style>
 

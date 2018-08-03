@@ -154,4 +154,10 @@
 	from partner p join member m on(m.member_no=p.par_no)
 	where p.member_no=#{memberNo} and (m.member_id like '%'||#{searchPartnerText}||'%' or m.member_name like '%'||#{searchPartnerText}||'%')
   </select>
+  <delete id="deleteMember">
+  	delete member where member_id=#{memberId}
+  </delete>
+  <insert id="insertDelMember">
+  	insert into del_member values(del_member_SEQ.nextval, #{memberId}, sysdate)
+  </insert>
 </mapper>
