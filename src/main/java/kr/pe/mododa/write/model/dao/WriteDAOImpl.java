@@ -9,6 +9,7 @@ import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
+import kr.pe.mododa.write.model.vo.Upload;
 
 @Repository("writeDAO")
 public class WriteDAOImpl implements WriteDAO {
@@ -40,6 +41,13 @@ public class WriteDAOImpl implements WriteDAO {
 	public ArrayList<RelationWriting> loadByProName(SqlSessionTemplate sqlSession, RelationWriting rw) {
 		
 		return (ArrayList)sqlSession.selectList("write.loadByProName",rw);
+	}
+
+	public void insertFileUploaded(SqlSessionTemplate sqlSession, Upload vo) {
+		sqlSession.insert("write.uploadFiles",vo);
+		
+		
+				
 	}
 	
 	

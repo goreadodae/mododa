@@ -92,6 +92,23 @@
 	
 	</select>
 	
+	<insert id="uploadFiles">
+	
+	insert into upload values(
+		
+	
+	
+	
+	
+	)
+	
+	
+	
+	
+	
+	
+	</insert>
+	
 
 	
 	

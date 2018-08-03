@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>프로젝트 진행 현황</title>
+<title>프로젝트 이슈 진행 현황</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -361,7 +361,7 @@ input[type=checkbox] {
 		
 			$.ajax({
 				
-				url : "/updateProgress.do",
+				url : "/updatePostProgress.do",
 				type : "post",
 				data : {
 					postNoStr : postNoStr,
@@ -464,7 +464,7 @@ input[type=checkbox] {
 <body>
 
 <!-- header -->
-<jsp:include page="/header.do"></jsp:include>
+<jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
 
 <div class="row" style="background-color: #F5F5F5;">
@@ -518,10 +518,10 @@ input[type=checkbox] {
 			</div>
 			
 			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next.png" onClick="updateProgress('sugToWork');" />
+				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('sugToWork');" />
 				<input type="hidden" id="sugToWork" value="sugToWork" />
-				<br><br>
-				<img src="../resources/images/project/pre.png" onClick="updateProgress('workToSug');" />
+				<br><br><br><br>
+				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('workToSug');" />
 				<input type="hidden" id="workToSug" value="workToSug" />
 			</div>
 			
@@ -546,10 +546,10 @@ input[type=checkbox] {
 			</div>
 			
 			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next.png" onClick="updateProgress('workToStop');" />
+				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('workToStop');" />
 				<input type="hidden" id="workToStop" value="workToStop" />
-				<br><br>
-				<img src="../resources/images/project/pre.png" onClick="updateProgress('stopToWork');" />
+				<br><br><br><br>
+				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('stopToWork');" />
 				<input type="hidden" id="stopToWork" value="stopToWork" />
 			</div>
 			
@@ -574,10 +574,10 @@ input[type=checkbox] {
 			</div>
 
 			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next.png" onClick="updateProgress('stopToFin');" />
+				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('stopToFin');" />
 				<input type="hidden" id="stopToFin" value="stopToFin" />
-				<br><br>
-				<img src="../resources/images/project/pre.png" onClick="updateProgress('finToStop');" />
+				<br><br><br><br>
+				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('finToStop');" />
 				<input type="hidden" id="finToStop" value="finToStop" />
 			</div>			
 

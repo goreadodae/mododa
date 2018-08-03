@@ -292,4 +292,19 @@ public class MemberServiceImpl implements MemberService {
 		sp.setSearchPartnerText(searchPartnerText);
 		return memberDAO.searchPartner(sqlSession, sp);
 	}
+
+	public int leaveMododa(String memberId) {
+		int result = memberDAO.deleteMember(sqlSession, memberId);
+		if(result > 0) {
+			result = memberDAO.insertDelMember(sqlSession, memberId);			
+		}
+		return result;
+	}
+
+	public int deletePartner(int memberNo, int parNo) {
+		Partner p = new Partner();
+		p.setMemberNo(memberNo);
+		p.setParNo(parNo);
+		return memberDAO.inviteCancel(sqlSession, p);
+	}
 }

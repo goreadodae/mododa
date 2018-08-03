@@ -127,4 +127,12 @@ public class MemberDAOImpl implements MemberDAO{
 		return (ArrayList)sqlSession.selectList("member.searchPartner", sp);
 	}
 
+	public int deleteMember(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.delete("member.deleteMember", memberId);	
+	}
+
+	public int insertDelMember(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.insert("member.insertDelMember", memberId);
+	}
+
 }

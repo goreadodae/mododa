@@ -2,6 +2,7 @@ package kr.pe.mododa.project.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,9 +42,10 @@ public interface ProjectController {
 	
 	// 프로젝트 진행 현황
 	public Object projectProgress(int proNo);
-	public Object updateProgress(String postNoStr, String postProgress, int proNo);
+	public Object updatePostProgress(String postNoStr, String postProgress, int proNo);
 	
 	// 프로젝트 더보기
 	public Object gotoMoreProject(HttpSession session);
+	public void updateProjectProgress(HttpSession session, HttpServletResponse response, String proNoStr, String proProgress);
 	
 }

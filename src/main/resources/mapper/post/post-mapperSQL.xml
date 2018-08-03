@@ -139,6 +139,10 @@
 	<delete id="deleteDecision">
 		delete from decision where dc_no=#{dcNo}
 	</delete>
+	
+	<update id="updatePost" parameterType="post">
+	update post set post_title =#{postTitle}, post_content =#{postContent} where post_no=#{postNo}
+	</update>
 
 	<update id="updateDecision" parameterType="decision">
 		update decision set
@@ -228,6 +232,10 @@
 	
 	<delete id="deleteComment">
 		delete from comment_tbl where cmember_no=#{commentNo} <!-- 준석 -->
+	</delete>
+	
+	<delete id="deletePost">
+	delete from post where post_no=#{postNo}
 	</delete>
 
 </mapper>

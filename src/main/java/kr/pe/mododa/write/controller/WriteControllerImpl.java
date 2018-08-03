@@ -1,16 +1,20 @@
 package kr.pe.mododa.write.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -21,12 +25,15 @@ import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.service.WriteServiceImpl;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
+import kr.pe.mododa.write.model.vo.Upload;
 
 @Controller
 public class WriteControllerImpl implements WriteController {
 
 	@Autowired
 	private WriteServiceImpl writeService;
+	
+
 
 	@Autowired
 	@RequestMapping(value = "/write.do")
@@ -121,6 +128,36 @@ public class WriteControllerImpl implements WriteController {
 		
 	}
 	
+	@RequestMapping(value="/insertPost.do")
+	public void insertPost(HttpServletRequest request, @RequestParam(value="files", required=false)MultipartFile[] files, HttpSession session )  {
+		System.out.println("컨트롤러 도착");
+		Upload vo = new Upload();
+		vo.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+		if(files.length!=0)
+		{
+			writeService.uploadFile(files,vo);			
+		
+		}
+		else {
+			
+		}
+		
+		
+
+		
+		
+	}
+		
+	
+		
+		
+		
+		
+		
+		
+	}
+	
+	
 	
 
 	
@@ -151,5 +188,3 @@ public class WriteControllerImpl implements WriteController {
 	
 	
 	
-
-}
