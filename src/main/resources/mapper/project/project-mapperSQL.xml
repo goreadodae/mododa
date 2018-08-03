@@ -42,7 +42,7 @@
 		select
 			pro_no as proNo,
 			pro_title as proTitle,
-			pro_progress as proGress,
+			pro_progress as proProgress,
 			pro_start_date as proStartDate,
 			pro_end_date as proEndDate,
 			pro_member_no as proMemberNo
@@ -56,7 +56,7 @@
 		select
 			pro_no as proNo,
 			pro_title as proTitle,
-			pro_progress as proGress,
+			pro_progress as proProgress,
 			pro_start_date as proStartDate,
 			pro_end_date as proEndDate,
 			pro_member_no as proMemberNo
@@ -181,7 +181,7 @@
 	</select>
 	
 	
-	<update id="updateProgress" parameterType="progressHelper">
+	<update id="updatePostProgress" parameterType="progressHelper">
 		update post
 		set post_progress = #{postProgress}
 		where post_no in
@@ -189,6 +189,17 @@
 			#{progressHelper.postNo}
 		</foreach>
 	</update>
+	
+	
+	<update id="updateProjectProgress" parameterType="progressHelper">
+		update project
+		set pro_progress = #{proProgress}
+		where pro_no in
+		<foreach item="progressHelper.proNo" collection="proNo" open="(" separator="," close=")">
+			#{progressHelper.proNo}
+		</foreach>
+	</update>
+	
 	
 	
 	

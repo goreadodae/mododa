@@ -1,8 +1,10 @@
 package kr.pe.mododa.project.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+
 import kr.pe.mododa.member.model.vo.Member;
-import kr.pe.mododa.member.model.vo.Partner;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
@@ -317,8 +321,8 @@ public class ProjectControllerImpl implements ProjectController {
 	}
 	
 	@Override
-	@RequestMapping(value="updateProgress.do")
-	public Object updateProgress(@RequestParam String postNoStr, @RequestParam String postProgress, @RequestParam int proNo) {
+	@RequestMapping(value="updatePostProgress.do")
+	public Object updatePostProgress(@RequestParam String postNoStr, @RequestParam String postProgress, @RequestParam int proNo) {
 		
 		// 1. 업데이트 실행하기
 		
@@ -333,9 +337,9 @@ public class ProjectControllerImpl implements ProjectController {
 		ph.setPostNo(postNoArr);
 		ph.setPostProgress(postProgress);
 		
-		int result = projectService.updateProgress(ph);
+		int result = projectService.updatePostProgress(ph);
 		
-		if(result>0) { // 2. 성공 시 다시 프로젝트 목록 읽어오기
+		if(result>0) { // 2. 성공 시 다시 프로젝트 글 목록 읽어오기
 			
 			ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
 			ModelAndView view = new ModelAndView();
@@ -365,6 +369,53 @@ public class ProjectControllerImpl implements ProjectController {
 		view.setViewName("project/moreProject");
 		return view;
 	}
+	
+	
+	
+	@Override
+	@RequestMapping(value="updateProjectProgress.do")
+	public void updateProjectProgress(HttpSession session, HttpServletResponse response, @RequestParam String proNoStr, @RequestParam String proProgress) {
+		
+		// 1. 업데이트 실행하기
+		
+		// 문자열 쪼개서 저장하기
+		ProgressHelper ph = new ProgressHelper();
+		StringTokenizer st = new StringTokenizer(proNoStr, ",");
+		int cnt = st.countTokens();
+		String[] proNoArr = new String[cnt];
+		for(int i=0; i<cnt; i++) {
+			proNoArr[i] = st.nextToken();	
+		}
+		ph.setProNo(proNoArr);
+		ph.setProProgress(proProgress);
+		
+		int result = projectService.updateProjectProgress(ph);
+		
+		if(result>0) { // 2. 성공 시 다시 프로젝트 목록 읽어오기
+			
+			ArrayList<Project> projectList = this.projectList(session);
+			System.out.println(projectList);
+			ModelAndView view = new ModelAndView();
+			view.addObject("projectList", projectList);
+			
+			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
+			 
+			try {
+				new Gson().toJson(projectList,response.getWriter());
+			} catch (JsonIOException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		} else {
+			System.out.println("progress 변경 실패");
+			
+		}
+
+	}
+	
+	
 	
 	
 	
