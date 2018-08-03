@@ -258,5 +258,18 @@
 	<update id="updateDecision" parameterType="decision">
 		update decision set dc_yn='Y', dc_decision=#{dcDecision}, dc_comment=#{dcComment} where dc_no=#{dcNo}
 	</update>
+	
+	<update id="updateTodo" parameterType="todo">
+		update todo set todo_title=#{todoTitle}, todo_content=#{todoContent}, todo_member=#{todoMember} where todo_no=#{todoNo}
+	</update>
+	
+	<select id="todoContentMemberPost" resultType="member">
+		select distinct
+		w.member_no as memberNo,
+        member_name as memberName
+		from work_on w, member m, post p
+        where w.member_no = m.member_no
+		and pro_no = (select post_pro_no from post where post_no = 2) order by 1
+	</select>
 
 </mapper>

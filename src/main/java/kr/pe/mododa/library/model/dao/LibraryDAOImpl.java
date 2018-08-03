@@ -100,4 +100,13 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return sqlSession.update("library.updateDecision", dc);
 	}
 
+	public int updateTodo(SqlSessionTemplate sqlSession, Todo t) {
+		return sqlSession.update("library.updateTodo", t);
+	}
+
+	public ArrayList<Member> todoContentMemberPost(SqlSessionTemplate sqlSession, int todoPostNo) {
+		List todoContentMemberPost = sqlSession.selectList("library.todoContentMemberPost", todoPostNo);
+		return (ArrayList<Member>)todoContentMemberPost;
+	}
+
 }
