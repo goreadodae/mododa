@@ -87,10 +87,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 	
 	@Override
-	public int updateProgress(SqlSessionTemplate sqlSession, ProgressHelper ph) {
-		return sqlSession.update("project.updateProgress", ph);
+	public int updatePostProgress(SqlSessionTemplate sqlSession, ProgressHelper ph) {
+		return sqlSession.update("project.updatePostProgress", ph);
 	}
 	
+	@Override
+	public int updateProjectProgress(SqlSessionTemplate sqlSession, ProgressHelper ph) {
+		return sqlSession.update("project.updateProjectProgress", ph);
+	}
 	
 	
 	
@@ -135,6 +139,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public ArrayList<WorkOnMember> searchProMember(SqlSessionTemplate sqlSession, SearchMember sm) {
 		return (ArrayList)sqlSession.selectList("project.searchProMember", sm);
 	}
+
+
 
 
 

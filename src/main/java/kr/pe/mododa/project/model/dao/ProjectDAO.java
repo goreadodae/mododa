@@ -22,7 +22,7 @@ public interface ProjectDAO {
 	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo);
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh);
 	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh);
-	public int updateProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
-
+	public int updatePostProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
+	public int updateProjectProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
 
 }
