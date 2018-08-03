@@ -80,7 +80,7 @@
 #commentInfo{
 	padding:0;
 }
-#comment3{
+#commentPrint{
 	padding-left:20px;
 }
 
@@ -124,6 +124,7 @@
 											</div>
 										</div>
 									</li>
+									<hr>
 								</c:forEach>
 								
 								</ul>

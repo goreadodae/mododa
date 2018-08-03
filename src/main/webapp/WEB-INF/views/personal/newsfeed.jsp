@@ -92,10 +92,20 @@
 							{
 							result+=
 								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-								'<div class="col-md-12">&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
-								'<div class="col-md-9"><a href="#" class="btn btn-link" style="float:left;">'+data[i].proName+'</a></div>'+
+								'<div class="col-md-12"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><br>&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
+								'<div class="col-md-12">';
+							if(data[i].postProgress=='suggest'){
+								result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png"/>';
+							}else if(data[i].postProgress=='working'){
+								result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png"/>';
+							}else if(data[i].postProgress=='stop'){
+								result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png"/>';
+							}else{
+								result+='<img id="statusImg1" src="../resources/images/post/checked.png"/>';
+							}
+							result+='<a onclick="postChangePage('+data[i].proNo+');" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
 								'<div class="col-md-3"></div>'+
-								'</div><hr style="color:grey;"></li>'; 
+								'</div><hr style="color:grey;"></li>';
 							}
 						$(".feed-list").append(result);
 						$(".feed-list").append("<span>마지막입니다.</sapn>");
@@ -164,6 +174,7 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+
 </style>
 
 <body>
@@ -194,7 +205,7 @@ div {
 								<i class="fas fa-search" style="color: grey;"></i>
 							</button>
 
-							<button type="button" class="btn btn-outline-success">
+							<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
 								<i class="fas fa-edit"></i>글쓰기
 							</button>
 						</div>
@@ -223,27 +234,27 @@ div {
 								<div class="col-md-12">
 								<span onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</span>
 								</div>
-								<div class="col-md-9">
+								<div class="col-md-12">
 									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
-									<span id="postcontent" style="font-size:12px;">${news.pWriterImg }</span><br>
+									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br>
 									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
 								<div class="col-md-12">
 								<c:choose>
 									<c:when test="${news.postProgress eq 'suggest' }">
-										<c:set var="statusImg" value="../resources/images/post/lightbulb.png" />
+										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
 									</c:when>
 									<c:when test="${news.postProgress eq 'working' }">
-										<c:set var="statusImg" value="../resources/images/icon/play-button.png"/>
+										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
 									</c:when>
 									<c:when test="${news.postProgress eq 'stop' }">
-									<c:set var="statusImg" value="../resources/images/icon/pause.png"/>
+										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>	
 									</c:when>
 									<c:otherwise>
-										<c:set var ="statusImg" value="../resources/images/icon/checked-allot.png"/>
+										<c:set var ="statusImg" value="../resources/images/post/checked.png"/>
 									</c:otherwise>
 									</c:choose>
-									<img id="memberImg2" src="${statusImg }"/>&nbsp;
+									<img id="statusImg1" src="${statusImg }"/>&nbsp;
 									<a onclick="postChangePage(${news.proNo })" class="btn btn-link" style="float:none;" >${news.proName }</a>
 								</div>
 							</div>

@@ -95,7 +95,7 @@ div {
 							{
 							result+=
 								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-								'<div class="col-md-9"><img id="memberImg2" src="'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a href="#" class="btn btn-link" style="float:none;">'
+								'<div class="col-md-9"><img id="memberImg2" src="../resources/upload/member/'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a href="#" class="btn btn-link" style="float:none;">'
 								+data[i].proName+'</a></div>'+
 								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
 								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
