@@ -13,6 +13,7 @@ import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
+import kr.pe.mododa.project.model.vo.SearchMember;
 import kr.pe.mododa.project.model.vo.WorkOn;
 import kr.pe.mododa.project.model.vo.WorkOnMember;
 import kr.pe.mododa.project.model.vo.WorkOnProject;
@@ -102,7 +103,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public String inviteMemberAtHeader(int proNo, String inviteMemberId) {
 		String result="";
 		int inviteMemberNo = projectDAO.searchMemberNo(sqlSession, inviteMemberId);
-		if(inviteMemberNo!=0) {
+		if(inviteMemberNo>0) {
 			WorkOn wo = new WorkOn();
 			wo.setProNo(proNo);
 			wo.setMemberNo(inviteMemberNo);
@@ -138,6 +139,24 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.selectInvitingMemberList(sqlSession, memberNo);
 	}
 
+	public int acceptMember(int memberNo, int proNo) {
+		WorkOnMember wom = new WorkOnMember();
+		wom.setMemberNo(memberNo);
+		wom.setProNo(proNo);
+		wom.setInviteYN('Y');
+		return projectDAO.acceptMember(sqlSession, wom);
+	}
 
+	public int checkLeader(int proNo) {
+		return projectDAO.checkLeader(sqlSession, proNo);
+	}
+
+	public ArrayList<WorkOnMember> searchProMember(int proNo, String searchMemberText) {
+		SearchMember sm = new SearchMember();
+		sm.setProNo(proNo);
+		sm.setSearchMemberText(searchMemberText);
+		System.out.println(sm);
+		return projectDAO.searchProMember(sqlSession, sm);
+	}
 
 }

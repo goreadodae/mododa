@@ -10,6 +10,17 @@
 		</layout>
 	</appender>
 	
+	<!-- 사용자설정 시작 -->
+	<appender name="filelog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${webapp.root}/WEB-INF/log/output.log"/>
+		<param name="Append" value="true"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] %-17c{2} (%13F:%L) %3x - %m%n"/>
+		</layout>
+	</appender>
+	<!-- 사용자설정 끝 -->
+	
 	<!-- Application Loggers -->
 	<logger name="kr.pe.mododa">
 		<level value="info" />
@@ -31,11 +42,18 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	
+	
+	<!-- 설정로그 -->
+	<logger name="java.sql">
+		<level value="debug"/>
+	</logger>
 
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
+		<appender-ref ref="filelog"/>
 	</root>
 	
 </log4j:configuration>

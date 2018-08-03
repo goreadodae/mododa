@@ -232,4 +232,24 @@ join project p on (wo.pro_no=p.pro_no)
 join member m2 on (p.pro_member_no=m2.member_no)
 where wo.member_no=#{memberNo} and wo.invite_yn='N'
 	</select>
+	<update id="acceptMember" parameterType="wom">
+		update work_on set invite_yn=#{inviteYN} where member_no=#{memberNo} and pro_no=#{proNo}
+	</update>
+	<select id="checkLeader" resultType="int">
+		select member_no from work_on where pro_no=#{pro_no} and leader='Y'
+	</select>
+	<select id="searchProMember" parameterType="sm" resultType="wom">
+	select
+	m.member_no as memberNo,
+	wo.pro_no as proNo,
+	wo.leader as leader,
+	wo.invite_yn as inviteYN,
+	m.member_id as memberId,
+	m.member_name as memberName,
+	m.member_picture as memberPicture,
+	m.member_depart_name as memberDepartName,
+	m.member_main_task as memberMainTask,
+	m.MEMBER_EMAIL_CERTIFY as memberEmailCertify
+	from work_on wo join member m on (wo.member_no=m.member_no) where pro_no=#{proNo} and (m.member_id like '%'||#{searchMemberText}||'%' or m.member_name like '%'||#{searchMemberText}||'%')
+	</select>
 </mapper>

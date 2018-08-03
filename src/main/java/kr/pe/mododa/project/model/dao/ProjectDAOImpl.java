@@ -10,6 +10,7 @@ import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
+import kr.pe.mododa.project.model.vo.SearchMember;
 import kr.pe.mododa.project.model.vo.WorkOn;
 import kr.pe.mododa.project.model.vo.WorkOnMember;
 import kr.pe.mododa.project.model.vo.WorkOnProject;
@@ -31,7 +32,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	@Override
 	public int searchMemberNo(SqlSessionTemplate sqlSession, String memberId) {
-		return sqlSession.selectOne("project.searchMemberNo", memberId);
+		Integer result = sqlSession.selectOne("project.searchMemberNo", memberId);
+		if(result==null) {
+			return -1;
+		} else {
+			return result;
+		}
 	}
 
 	@Override
@@ -116,6 +122,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	public ArrayList<WorkOnProject> selectInvitingMemberList(SqlSessionTemplate sqlSession, int memberNo) {
 		return (ArrayList)sqlSession.selectList("project.selectInvitingMemberList", memberNo);
+	}
+
+	public int acceptMember(SqlSessionTemplate sqlSession, WorkOnMember wom) {
+		return sqlSession.update("project.acceptMember", wom);
+	}
+
+	public int checkLeader(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("project.checkLeader", proNo);
+	}
+
+	public ArrayList<WorkOnMember> searchProMember(SqlSessionTemplate sqlSession, SearchMember sm) {
+		return (ArrayList)sqlSession.selectList("project.searchProMember", sm);
 	}
 
 
