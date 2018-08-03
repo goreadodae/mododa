@@ -1482,7 +1482,8 @@ img[class="btn btn-link dropdown-toggle"] {
 
 					<!-- right side (댓글 부분) -->
 
-					<div class="col-5" id="comment" style="padding : 0;">
+					<div class="col-5" id="comment" style="padding:0;">
+
 				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>
 				</div>

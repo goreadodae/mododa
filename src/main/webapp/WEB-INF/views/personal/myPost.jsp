@@ -59,7 +59,7 @@
 							{
 							result+='<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+')" class="btn btn-link" style="float:left;">"'+data[i].postTitle+'"</span></div>'+
 							'<br><div class="col-md-9">'+
-							  '<img id="memberImg2" src="'+data[i].myImg+'"/>&nbsp;&nbsp;<span>'+data[i].myName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;'+
+							  '<img id="memberImg2" src="../resources/upload/member/'+data[i].myImg+'"/>&nbsp;&nbsp;<span>'+data[i].myName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;'+
 							  '<span>'+data[i].postDate+'</span>'+
 							  '<a class="btn btn-link btn-sm" href="#" style="float:none;">'+data[i].proName+'</a><hr style="color:grey;"></div>'+
 							  '</div></li>';

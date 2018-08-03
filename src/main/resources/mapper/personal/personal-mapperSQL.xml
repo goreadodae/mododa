@@ -3,7 +3,7 @@
 <mapper namespace="personal">
   
   <select id="selectAllNewsfeed" parameterType="int" resultType="newsfeed" > <!-- 회원번호를 받아  그회원이 속한 프로젝트의 모든 글을 읽는 쿼리.-->
-	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress,  to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
+	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress,concat(rpad(p.post_content,20,'.'),'..')as postContent, to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
 	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName, pr.pro_no as proNo from post p
 	join member m on(p.post_writer=m.member_no)
 	join project pr on(p.post_pro_no=pr.pro_no)
