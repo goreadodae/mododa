@@ -2,6 +2,7 @@ package kr.pe.mododa.project.model.service;
 
 import java.util.ArrayList;
 
+import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
@@ -19,6 +20,7 @@ public interface ProjectService {
 	public ArrayList<ProjectPostList> searchHashTagPostList(int proNo);
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SearchHelper sh);
 	public ArrayList<ProjectPostList> searchHashTag(SearchHelper sh);
+	public int updateProgress(ProgressHelper ph);
 	
 	
 	

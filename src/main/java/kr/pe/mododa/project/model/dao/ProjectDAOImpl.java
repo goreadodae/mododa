@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
@@ -84,6 +85,19 @@ public class ProjectDAOImpl implements ProjectDAO {
 		List postList = sqlSession.selectList("project.searchHashTag", sh);
 		return (ArrayList<ProjectPostList>)postList;
 	}
+	
+	@Override
+	public int updateProgress(SqlSessionTemplate sqlSession, ProgressHelper ph) {
+		return sqlSession.update("project.updateProgress", ph);
+	}
+	
+	
+	
+	
+	
+	
+	// --------------------- 승재오빠 부분
+	
 
 	public boolean checkMemberNoInWorkOn(SqlSessionTemplate sqlSession, WorkOn wo) {
 		Integer result = sqlSession.selectOne("project.checkMemberNoInWorkOn", wo);
@@ -121,6 +135,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public ArrayList<WorkOnMember> searchProMember(SqlSessionTemplate sqlSession, SearchMember sm) {
 		return (ArrayList)sqlSession.selectList("project.searchProMember", sm);
 	}
+
+
 
 
 

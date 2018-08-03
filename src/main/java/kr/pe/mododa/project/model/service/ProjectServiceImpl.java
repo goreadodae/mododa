@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.pe.mododa.project.model.dao.ProjectDAOImpl;
+import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
@@ -85,6 +86,20 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.searchHashTag(sqlSession, sh);
 	}
 
+	@Override
+	public int updateProgress(ProgressHelper ph) {
+		return projectDAO.updateProgress(sqlSession, ph);
+	}
+	
+	
+	
+	
+	
+	
+	
+	// --------------------- 승재오빠 부분
+	
+	
 	public String inviteMemberAtHeader(int proNo, String inviteMemberId) {
 		String result="";
 		int inviteMemberNo = projectDAO.searchMemberNo(sqlSession, inviteMemberId);

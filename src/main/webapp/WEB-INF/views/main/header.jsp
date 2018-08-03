@@ -315,9 +315,7 @@ a:hover{
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
-					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. <img id="cancel-img"
-						onclick="bannerClose();"
-						src="../resources/images/layout-img/cancel.png" />
+					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요. 
 				</div>
 			</div>
 

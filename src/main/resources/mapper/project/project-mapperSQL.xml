@@ -179,7 +179,21 @@
   		</foreach> 
   		order by p.post_no desc
 	</select>
-
+	
+	
+	<update id="updateProgress" parameterType="progressHelper">
+		update post
+		set post_progress = #{postProgress}
+		where post_no in
+		<foreach item="progressHelper.postNo" collection="postNo" open="(" separator="," close=")">
+			#{progressHelper.postNo}
+		</foreach>
+	</update>
+	
+	
+	
+	
+	<!-- 승재오빠 부분 -->
   	<!-- 멤버추가관련 쿼리 -->
   	<select id="checkMemberNoInWorkOn" resultType="Integer" parameterType="workon">
   		select pro_no as proNo from work_on where pro_no=#{proNo} and member_no=#{memberNo}
