@@ -7,6 +7,7 @@ public class Post {
 	private String postTitle;
 	private String postProgress;
 	private Date postDate;
+	private String stPostData;
 	private String postContent;
 	private int postWriter;
 	private String postWriterName;
@@ -17,13 +18,15 @@ public class Post {
 	
 	public Post() {}
 
-	public Post(int postNo, String postTitle, String postProgress, Date postDate, String postContent, int postWriter,
-			String postWriterName, String postWriterPicture, String postTemp, int postProNo, String postTag) {
+	public Post(int postNo, String postTitle, String postProgress, Date postDate, String stPostData, String postContent,
+			int postWriter, String postWriterName, String postWriterPicture, String postTemp, int postProNo,
+			String postTag) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
 		this.postProgress = postProgress;
 		this.postDate = postDate;
+		this.stPostData = stPostData;
 		this.postContent = postContent;
 		this.postWriter = postWriter;
 		this.postWriterName = postWriterName;
@@ -32,8 +35,6 @@ public class Post {
 		this.postProNo = postProNo;
 		this.postTag = postTag;
 	}
-
-
 
 	public int getPostNo() {
 		return postNo;
@@ -106,8 +107,12 @@ public class Post {
 	public void setPostTag(String postTag) {
 		this.postTag = postTag;
 	}
-	
-	
-	
 
+	public String getStPostData() {
+		return stPostData;
+	}
+
+	public void setStPostData(String stPostData) {
+		this.stPostData = stPostData;
+	}
 }
