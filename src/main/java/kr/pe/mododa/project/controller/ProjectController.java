@@ -41,4 +41,9 @@ public interface ProjectController {
 	
 	// 프로젝트 진행 현황
 	public Object projectProgress(int proNo);
+	public Object updateProgress(String postNoStr, String postProgress, int proNo);
+	
+	// 프로젝트 더보기
+	public Object gotoMoreProject(HttpSession session);
+	
 }

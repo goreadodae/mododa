@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
@@ -21,6 +22,7 @@ public interface ProjectDAO {
 	public ArrayList<ProjectPostList> searchHashTagPostList(SqlSessionTemplate sqlSession, int proNo);
 	public ArrayList<ProjectPostList> searchProTitleOrMemberName(SqlSessionTemplate sqlSession, SearchHelper sh);
 	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh);
+	public int updateProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
 
 
 }

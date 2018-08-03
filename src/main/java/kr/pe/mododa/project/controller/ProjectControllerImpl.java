@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
+import kr.pe.mododa.project.model.vo.ProgressHelper;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
 import kr.pe.mododa.project.model.vo.SearchHelper;
@@ -314,12 +315,46 @@ public class ProjectControllerImpl implements ProjectController {
 		return view;
 	}
 	
-	
-	
-	
-	
+	@Override
+	@RequestMapping(value="updateProgress.do")
+	public Object updateProgress(@RequestParam String postNoStr, @RequestParam String postProgress, @RequestParam int proNo) {
+		
+		// 1. 업데이트 실행하기
+		
+		// 문자열 쪼개서 저장하기
+		ProgressHelper ph = new ProgressHelper();
+		StringTokenizer st = new StringTokenizer(postNoStr, ",");
+		int cnt = st.countTokens();
+		String[] postNoArr = new String[cnt];
+		for(int i=0; i<cnt; i++) {
+			postNoArr[i] = st.nextToken();	
+		}
+		ph.setPostNo(postNoArr);
+		ph.setPostProgress(postProgress);
+		
+		int result = projectService.updateProgress(ph);
+		
+		if(result>0) { // 2. 성공 시 다시 프로젝트 목록 읽어오기
+			
+			ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
+			ModelAndView view = new ModelAndView();
+			view.addObject("postList", postList);
+			view.setViewName("jsonView");
+			return view;
+			
+		} else {
+			System.out.println("progress 변경 실패");
+			return null;
+		}
 
+	}
+	// ---------------------
 	
+	
+	
+	// --------------------- 프로젝트 더보기
+	
+	@Override
 	@RequestMapping(value="gotoMoreProject.do")
 	public Object gotoMoreProject(HttpSession session) { // 이동
 		// 프로젝트 목록 읽어오기
@@ -329,6 +364,22 @@ public class ProjectControllerImpl implements ProjectController {
 		view.setViewName("project/moreProject");
 		return view;
 	}
+	
+	
+	
+	// ---------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// --------------------- 승재오빠 부분
 	
 
 	/*멤버 초대 관련 함수(기존 멤버초대와 다른 쿼리여야하기 때문에)*/
