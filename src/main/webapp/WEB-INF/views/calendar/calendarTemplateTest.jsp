@@ -210,20 +210,26 @@ var scheduleNo = 0;
 	//팝업 Open 기능
     function open_sc_pop(start,end) {
 
-    	$('#startDate').attr('value',start);
-		$('#endDate').attr('value',end);
-
+    	/* $('#startDate').attr('value',start);
+		$('#endDate').attr('value',end); */
+		
+		$('#startDate').val(start);
+		$('#endDate').val(end);
+		$('#scheduleTitle').val('');
+		
          $('#myModalSc').show();         
     };
 	
 	
 	//팝업 Close 기능
     function close_sc_pop(flag) {
+		
          $('#myModalSc').hide();
     };
     
   //팝업 update Close 기능
     function close_up_pop(flag) {
+	  
          $('#myModalUpdate').hide();
     };
     
@@ -231,7 +237,8 @@ var scheduleNo = 0;
     function saveSchedule(){
     	
     	var proSelect = document.getElementById("projectList").value;
-    	var relationSelect = document.getElementById("linkPostList").value;
+    	var relationSelect = document.getElementById("linkPostList").value; 
+		
     	var title = document.getElementById("scheduleTitle").value;
     	var startDate = document.getElementById("startDate").value;
     	var endDate = document.getElementById("endDate").value;
@@ -248,7 +255,7 @@ var scheduleNo = 0;
             },
             success : function(data) {
                console.log("성공");
-
+             
                close_sc_pop();
                
                $('#successAlertMessage').text('일정을 저장하였습니다.');
@@ -263,9 +270,14 @@ var scheduleNo = 0;
             },
             error : function(data) {
                console.log("실패");
+               
+               $('#failedAlertMessage').text('일정 저장에 실패하였습니다.');
+	            $('#failedAlert').show('slow');
+	            setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);		
+               
             },
             complete : function(data) {
-            	close_pop();
+            	close_sc_pop();
             }
 		}); 
     }
@@ -307,9 +319,14 @@ var scheduleNo = 0;
             
            		$('#linkPostList').find("option").remove();
              	
-				for(var i=0;i<data.length;i++){
-					$('#linkPostList').append("<option value='"+data[i].postNo+"'>"+data[i].postTitle+"</option>");
-				}			
+           		if(data.length==0){
+           			$('#linkPostList').append("<option value='0'>해당 글이 없습니다.</option>");
+           		}else{
+           			for(var i=0;i<data.length;i++){
+    					$('#linkPostList').append("<option value='"+data[i].postNo+"'>"+data[i].postTitle+"</option>");
+    				}
+           		}
+		
             },
            	error : function(data) {
             console.log("실패");
@@ -335,10 +352,14 @@ var scheduleNo = 0;
             		
  					$('#scUpdatePro').append("<label onclick='postChangePage("+data.pj.proNo+")'>"+data.pj.proTitle+"</label>");
  					$('#scUpdatePost').append("<label onclick='getPost("+data.p.postNo+")'>"+data.p.postTitle+"</label>");
+ 					
+ 					$('#scheduleTitleUpdate').val(data.sc.scTitle);
+ 					$('#startDateUpdate').val(data.sc.stStartDate);
+ 					$('#endDateUpdate').val(data.sc.stEndDate);
+ 					/* 
  					$('#scheduleTitleUpdate').attr('value',data.sc.scTitle);
  					$('#startDateUpdate').attr('value',data.sc.stStartDate);
- 					$('#endDateUpdate').attr('value',data.sc.stEndDate);
-            		
+ 					$('#endDateUpdate').attr('value',data.sc.stEndDate); */          		
              },
             error : function(data) {
              console.log("실패");
@@ -438,10 +459,11 @@ var scheduleNo = 0;
    /* 달력 시작,종료일 확인시 시작일보다 종료일의 날짜가 클때 */
    
    function dateCheck (){
-	   
+
+	  	   
 	   var startDate = $('#startDate').val();
        var endDate = $('#endDate').val();
-      
+       
        //-을 구분자로 연,월,일로 잘라내어 배열로 반환
        var startArray = startDate.split('-');
        var endArray = endDate.split('-');   
@@ -451,12 +473,35 @@ var scheduleNo = 0;
             //날짜를 숫자형태의 날짜 정보로 변환하여 비교한다.      
 		
        if(start_date.getTime() > end_date.getTime()) {
+              
+    	   alert("종료날짜보다 시작날짜가 작아야합니다.");
+        	
+    	   $('#endDate').val(startDate);
+    	   
+  		}
            
-          $('#endDate').attr('value',startDate);    
-           
-           alert("종료날짜보다 시작날짜가 작아야합니다.");
-          /*  return false; */
-  		 }
+   }
+   
+   
+   function dateCheckUpdate (){
+ 	   
+	   var startDate = $('#startDateUpdate').val();
+       var endDate = $('#endDateUpdate').val();
+       
+       //-을 구분자로 연,월,일로 잘라내어 배열로 반환
+       var startArray = startDate.split('-');
+       var endArray = endDate.split('-');   
+       //배열에 담겨있는 연,월,일을 사용해서 Date 객체 생성
+       var start_date = new Date(startArray[0], startArray[1], startArray[2]);
+       var end_date = new Date(endArray[0], endArray[1], endArray[2]);
+            //날짜를 숫자형태의 날짜 정보로 변환하여 비교한다.      
+		
+       if(start_date.getTime() > end_date.getTime()) {
+              
+    	   alert("종료날짜보다 시작날짜가 작아야합니다.");
+        	
+    	   $('#endDateUpdate').val(startDate);   	   
+  		}
            
    }
    
@@ -607,6 +652,12 @@ div {
 	background-color: #F5F5F5;
 	}
 	
+	
+	#scUpdatePro:hover{
+	cursor:pointer;
+	
+	}
+	
 
 </style>
 
@@ -664,7 +715,7 @@ div {
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" id="startDate" onchange="dateCheck();"> ~ <input type="date" id="endDate" onchange="dateCheck();">
+            <input type="date" id="startDate" name="startDate" onchange="dateCheck(this);"> ~ <input type="date" id="endDate" name="endDate" onchange="dateCheck(this);">
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-secondary" onClick="saveSchedule();">저장</button>
@@ -690,7 +741,7 @@ div {
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" id="startDateUpdate" > ~ <input type="date" id="endDateUpdate">
+            <input type="date" id="startDateUpdate" onchange="dateCheckUpdate(this);"> ~ <input type="date" id="endDateUpdate" onchange="dateCheckUpdate(this);">
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-secondary" onClick="saveUpdateSchedule();">수정</button>
