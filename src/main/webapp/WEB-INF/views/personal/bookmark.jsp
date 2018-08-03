@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="kr.pe.mododa.member.model.vo.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,7 +16,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 <!-- icon -->
 
-<title>템플릿</title>
+<title>★MODODA-Bookmark★</title>
 
 <link rel="stylesheet" type="text/css"
 	href="/css/personal/personalPage.css">
@@ -113,6 +115,9 @@ div {
 				
 				
 				}
+	function postChangePage(proNo){ //프로젝트 글로  이동 추가
+		location.href="/projectPost.do?proNo="+proNo;
+	}
 	
 	
 </script>
@@ -178,8 +183,9 @@ div {
 							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
 							</div>
 							<div class="col-md-9">
-							<img id="memberImg2" src="${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp;${book.postDate }
-							<a href="#" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
+							<img id="memberImg2" src="../resources/upload/member/${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp; ${book.postDate }
+						
+							<a onclick="postChangePage(${book.proNo });" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
 								<span class="ico"> <i class="far fa-bookmark"

@@ -411,6 +411,20 @@ public class PostControllerImpl {
 		view.setViewName("/post/postComment");
 		return view;
 	}
+	
+	@RequestMapping(value="/deleteComment.do")
+	public ModelAndView deleteComment(@RequestParam int commentNo,@RequestParam int postNo)
+	{
+		int result = postService.deleteComment(commentNo);
+		ArrayList<Comment> commentList = postService.selectComment(postNo);
+
+		ModelAndView view = new ModelAndView();
+		view.addObject("comment",commentList);
+		view.addObject("cmPostNo",postNo); //댓글이 없을경우를 대비해 글번호를 넘겨줌.(댓글 작성시 필요함.)
+		view.setViewName("/post/postComment");
+		return view;
+		
+	}
 
 
 }

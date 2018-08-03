@@ -9,7 +9,7 @@ public class Mypost { //내가 작성한 글.
 	private String myName; //내이름
 	private String myImg; //내 이미지 경로.
 	private String postProgress;//내 글 진행상태
-	private Date postDate;//내 글 작성 일
+	private String postDate;//내 글 작성 일
 	private String proName;//글 작성된 프로젝트 이름
 	private int proNo; //프로젝트 번호
 	public Mypost() {
@@ -17,7 +17,7 @@ public class Mypost { //내가 작성한 글.
 		// TODO Auto-generated constructor stub
 	}
 
-	public Mypost(int postNo, String postTitle, String myName, String myImg, String postProgress, Date postDate, String proName, int proNo) {
+	public Mypost(int postNo, String postTitle, String myName, String myImg, String postProgress, String postDate, String proName, int proNo) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
@@ -70,11 +70,11 @@ public class Mypost { //내가 작성한 글.
 		this.postProgress = postProgress;
 	}
 
-	public Date getPostDate() {
+	public String getPostDate() {
 		return postDate;
 	}
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(String postDate) {
 		this.postDate = postDate;
 	}
 

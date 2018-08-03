@@ -9,7 +9,7 @@ public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소�
 	private String postWriter;//글 작성자
 	private String pWriterImg;//글 작성자 이미지.
 	private String postContent;//날짜에 따라서 (오늘날짜를 기준으로 1~2일 이내면 "새글이 작성되었어요", 지나면 내용 사라짐.할수 있겟죠??컼컼컼 
-	private Date postDate;//글 작성일
+	private String postDate;//글 작성일
 	private String proName;//글이 작성된 프로젝트의 이름.
 	private int proNo; //프로젝트 번호
 	
@@ -19,7 +19,7 @@ public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소�
 	}
 
 	public Newsfeed(int postNo, String postTitle,String postProgress, String postWriter, String pWriterImg, String postContent,
-			Date postDate, String proName,int proNo) {
+			String postDate, String proName,int proNo) {
 		super();
 		this.postNo = postNo;
 		this.postTitle = postTitle;
@@ -95,11 +95,11 @@ public class Newsfeed {   //로그인 한 회원이 속한 프로젝트의 소�
 		this.postContent = postContent;
 	}
 
-	public Date getPostDate() {
+	public String getPostDate() {
 		return postDate;
 	}
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(String postDate) {
 		this.postDate = postDate;
 	}
 	

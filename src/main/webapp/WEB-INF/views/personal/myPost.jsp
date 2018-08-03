@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>템플릿</title>
+<title>★MODODA-Mypost★</title>
 
 
 <link rel="stylesheet" type="text/css"
@@ -150,15 +150,7 @@ div {
 						<span onclick="getPost(${my.postNo})" class="btn btn-link" style="float:left;">"${my.postTitle }"</span>
 						</div>
 						<div class="col-md-9">
-						<c:choose>
-							 <c:when test="${my.myImg !=null}">
-							  <c:set var="writerImg" value="${my.myImg }"/>
-							 </c:when>
-							 <c:otherwise>
-							 	<c:set var="writerImg" value="../resources/upload/member/whale.png"/>
-							 </c:otherwise>
-							</c:choose>
-							<img id="memberImg2" src="${writerImg }" />&nbsp;&nbsp;${my.myName }&nbsp;&nbsp;&nbsp;&nbsp;${my.postDate }
+							<img id="memberImg2" src="../resources/upload/member/${my.myImg }" />&nbsp;&nbsp;${my.myName }&nbsp;&nbsp;&nbsp;&nbsp;${my.postDate }
 						<a class="btn btn-link btn-sm" href="#" style="float:none;">${my.proName }</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
 					 	</div>
 					</div>

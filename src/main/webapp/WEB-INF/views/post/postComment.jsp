@@ -58,6 +58,7 @@
 	margin: 0;
 	list-style: none;
 	float: left;
+	width:100%;
 }
 
 .comment-footer {
@@ -74,7 +75,15 @@
 
 .comment-item {
 	font-size: 12px;
+	margin:0;
 }
+#commentInfo{
+	padding:0;
+}
+#comment3{
+	padding-left:20px;
+}
+
 
 </style>
 <script>
@@ -93,22 +102,27 @@
 								<ul class="comment-list">
 								<c:forEach var="cm" items="${comment }">
 								<li class="comment-item">
-										<div id="commentK" class="col-md-12">
-											<div id="comment1" class="col-md-3">
+										<div id="commentInfo" class="col-md-12">
+											<div id="comment1" class="col-md-12">
 												<img id="wPicture"
-													src="${cm.writePicture }"
-													style="height: 20px; width: 20px; border-radius: 50%;" />&nbsp;&nbsp;&nbsp;
-											</div>
-											<div id="writeInfo" class="col-md-9">
+													src="../resources/upload/member/${cm.writePicture }"
+													style="height: 20px; width: 20px; border-radius: 50%;" />
 												<span id="writer">${cm.writeNick }</span>&nbsp;&nbsp;&nbsp; <span
 													id="wDate">${cm.writeTime }</span>
 											</div>
 											<div id="comment2" class="col-md-12">
-												<span id="comment3">${cm.content }</span>&nbsp;&nbsp;&nbsp;
+												<div id="commentPrint" >
+												<span id="comment3">${cm.content }</span>
+												</div>
+												<div id="commentFun" >
+												<span id="cmlike-count" onclick="cmLike(${cm.commentNo}
+												);"><img src="../resources/images/post/like.png" id="cmLike-icon" style="height:10px;" /> 좋아요 <span id="cmLikeCount">12</span></span>
 												<c:if test='${sessionScope.member.memberNo eq cm.writerNo }'>
-													<span onclick="delComment(${cm.commentNo });">삭제</span>
+													<span class="btn btn-link btn-sm" onclick="deleteComment(${cm.commentNo },${cmPostNo });" style="float:right; font-size:10px;">삭제</span>
 												</c:if>
-											</div></div>
+												</div>
+											</div>
+										</div>
 									</li>
 								</c:forEach>
 								
@@ -119,10 +133,7 @@
 									<textarea class="comment-input" placeholder="댓글 입력!!!"></textarea>
 									<div class="comment-fun"
 										style="background-color: white; width: 100%; height: 30px;">
-										<!-- 글감첨부, 댓글버튼 -->
-										<button class="btn btn-outline-primary btn-sm">글감첨부</button>
-										<span class="badge badge-pill badge-warning">10</span>
-									
+										<!--댓글버튼 -->
 										<button id="comment-wr" class="btn btn-outline-success btn-sm" onclick="insertComment(${cmPostNo});">댓글
 											작성!</button>
 

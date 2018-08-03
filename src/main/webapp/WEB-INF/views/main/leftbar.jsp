@@ -105,7 +105,7 @@ li[id^="sub_"] a {
 		});
 
 		$("#callpost").click(function() {
-			location.href="";
+			location.href="/callpost.do";
 		});
 
 		$("#bookmark").click(function() {

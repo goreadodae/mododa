@@ -9,7 +9,7 @@ public class Bookmark {
 	private String postProgress; //북마크한 글의 진행 상태
 	private String writerImg;    //북마크한 글의 작성자 이미지 경로
 	private String postWriter;   //북마크한 글의 작성자
-	private Date postDate;       //묵마크한 글 작성 일
+	private String postDate;       //묵마크한 글 작성 일
 	private String proName;      //북마크한 글 작성된 프로젝트 이름
 	private int proNo;           //프로젝트 번호
 	public Bookmark() {
@@ -18,7 +18,7 @@ public class Bookmark {
 	}
 
 	public Bookmark(int postNo, int memberNo, String postTitle, String postProgress, String writerImg,
-			String postWriter, Date postDate, String proName, int proNo) {
+			String postWriter, String postDate, String proName, int proNo) {
 		super();
 		this.postNo = postNo;
 		this.memberNo = memberNo;
@@ -79,11 +79,11 @@ public class Bookmark {
 		this.postWriter = postWriter;
 	}
 
-	public Date getPostDate() {
+	public String getPostDate() {
 		return postDate;
 	}
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(String postDate) {
 		this.postDate = postDate;
 	}
 
