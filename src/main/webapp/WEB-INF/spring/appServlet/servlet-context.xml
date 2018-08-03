@@ -39,13 +39,26 @@
     <!-- Interceptor 설정 -->
     <interceptors>
         <interceptor>
-             <mapping path="/board/register"/>
-            <mapping path="/board/modify"/>
             <mapping path="/mainPage.do"/>
             <beans:ref bean="authenticationInterceptor"/>
         </interceptor>
     </interceptors>
-	
+    
+    
+		    <!-- 인터셉터 객체 생성 -->
+    <beans:bean id="mailCertifyInterceptor" class="kr.pe.mododa.common.MailCertifyInterceptor">
+    </beans:bean>
+    <!-- Interceptor 설정 -->
+    <interceptors>
+        <interceptor>
+            <mapping path="/newsfeed.do"/>
+            <mapping path="/bookmark.do"/>
+            <mapping path="/mypost.do"/>
+            <mapping path="/calendar.do"/>
+            <mapping path="/gotoCreateProject.do"/>
+            <beans:ref bean="mailCertifyInterceptor"/>
+        </interceptor>
+    </interceptors>
 	<beans:import resource="./aop-context.xml"/>
 
 </beans:beans>

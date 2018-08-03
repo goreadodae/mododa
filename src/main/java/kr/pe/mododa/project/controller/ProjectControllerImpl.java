@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.member.model.vo.Partner;
 import kr.pe.mododa.project.model.service.ProjectServiceImpl;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.project.model.vo.ProjectPostList;
@@ -367,5 +368,31 @@ public class ProjectControllerImpl implements ProjectController {
 		view.addObject("memberInvitingProList", invitingMemberList);
 		view.setViewName("jsonView");
 		return view;
+	}
+	
+	@RequestMapping(value="/acceptMember.do")
+	public ModelAndView acceptMember(@RequestParam int memberNo, @RequestParam int proNo) {
+		int result = projectService.acceptMember(memberNo, proNo);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/checkLeader.do")
+	public ModelAndView checkLeader(@RequestParam int proNo) {
+		int memberNo = projectService.checkLeader(proNo);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("memberNo",memberNo);
+		mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/searchProMember.do")
+	public ModelAndView searchProMember(@RequestParam int proNo, @RequestParam String searchMemberText) {
+		ArrayList<WorkOnMember> list = projectService.searchProMember(proNo, searchMemberText);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("searchProMemberList", list);
+		mav.setViewName("jsonView");
+		return mav;
 	}
 }

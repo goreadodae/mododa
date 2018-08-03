@@ -11,6 +11,7 @@
       <typeAlias type="kr.pe.mododa.project.model.vo.WorkOn" alias="workon"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.WorkOnMember" alias="wom"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.WorkOnProject" alias="wop"/>
+      <typeAlias type="kr.pe.mododa.project.model.vo.SearchMember" alias="sm"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.Notice" alias="notice"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.NoticeList" alias="listNotice"/>
       <typeAlias type="kr.pe.mododa.notice.model.vo.SearchList" alias="searchList"/>

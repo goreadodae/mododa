@@ -283,7 +283,9 @@ public class MemberControllerImpl implements MemberController {
 	}
 	@RequestMapping(value="/searchPartner.do")
 	public ModelAndView searchPartner(@RequestParam int memberNo, @RequestParam String searchPartnerText) {
+		System.out.println("ㅁㄴㅇㄻㄴㅇㅎ");
 		ArrayList<Partner> list = memberService.searchPartner(memberNo, searchPartnerText);
+		System.out.println(list);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("searchPartnerList", list);
 		mav.setViewName("jsonView");

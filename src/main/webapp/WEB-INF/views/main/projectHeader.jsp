@@ -151,6 +151,7 @@ a:hover{
 		var proNoStr = $("#proNo").val();
 	 	var proNo = proNoStr.substring(6);
 	 	var memberNo= ${sessionScope.member.memberNo};
+		var leaderNo;
 		$.ajax({
 			url: "/selectWorkOnMemberList.do",
 			type: "post",
@@ -160,8 +161,10 @@ a:hover{
 			},
 			success: function(data){
 				var str="";
-				if(data.memberList.length==0){
-					str += "<div class='col-md-12' style='color: gray; text-align: center;'>멤버가 없습니다.</div>";
+				for(var i=0; i<data.memberList.length; i++){
+					if(data.memberList[i].leader=='Y'){
+						leaderNo = data.memberList[i].memberNo;
+					}
 				}
 				for(var i=0; i<data.memberList.length; i++){
  					str+=
@@ -173,6 +176,7 @@ a:hover{
 					+"<div class='row'>"
 					+"<div class='col-md-12'>"+data.memberList[i].memberName;
 					if(data.memberList[i].leader=='Y'){
+						leaderNo = data.memberList[i].memberNo;
 						str+="<img src='../resources/images/project/crown.png'>";
 					}
 					if(data.memberList[i].memberNo==memberNo){
@@ -182,12 +186,14 @@ a:hover{
 					if(data.memberList[i].inviteYN=='Y'){						
 						str+="<div class='col-md-12'>"+data.memberList[i].memberId+"</div>";
 					} else {
-						str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
-						+"<a onclick='inviteCancel("
-						+data.memberList[i].proNo+","+data.memberList[i].memberNo
-						+");' style='color: gray; float: right;'>취소하기</a></div>";
+						str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>";
+						if(leaderNo==memberNo){
+							str+="<a onclick='inviteCancel("
+							+data.memberList[i].proNo+","+data.memberList[i].memberNo
+							+");' style='color: gray; float: right;'>취소하기</a>";
+						}
 					}
-					str+="</div>"
+					str+="</div></div>"
 					+"</div>";
 				}
 				$('#proMemberListDiv').html(str);
@@ -245,7 +251,25 @@ a:hover{
 	}
 
 	function imm_open_pop(flag) {
-		$('#inviteMemberModal').show();
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+	 	var memberNo= ${sessionScope.member.memberNo};
+		$.ajax({
+			url: "/checkLeader.do",
+			data: {
+				proNo : proNo
+			},
+			type: "post",
+			success: function(data){
+				if(data.memberNo==memberNo){
+					$('#inviteMemberModal').show();
+				} else {
+					$('#failedAlertMessage').text('팀장만 멤버를 초대할 수 있습니다');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
+				}
+			}
+		});
 	};
 	//팝업 Close 기능
 	function imm_close_pop(flag) {
@@ -255,34 +279,52 @@ a:hover{
 		$("#inviteMemberId").val('');
 	};
 	$(document).ready(function(){
+		var proNoStr = $("#proNo").val();
+	 	var proNo = proNoStr.substring(6);
+	 	var memberNo= ${sessionScope.member.memberNo};
 		$('#searchMemberText').keyup(function(){
 			$.ajax({
-				url: "/searchPartner.do",
+				url: "/searchProMember.do",
 				type: "post",
 				data: {
-					memberNo: ${sessionScope.member.memberNo},
+					proNo: proNo,
 					searchMemberText: $('#searchMemberText').val()
 				}, success: function(data){
 					var str="";
-					for(var i=0; i<data.searchPartnerList.length; i++){
-	 					str+=
-	 					"<div class='col-md-4' style='margin-top: 10px;'>"
-	 					+"<img src='../resources/upload/member/"+data.searchPartnerList[i].parPicture+"'"
-	 					+"class='img-circle rounded-circle border partnerListPic'>"
-						+"</div>"
-						+"<div class='col-md-8' style='margin-top: 10px;'>"
-						+"<div class='row'>"
-						+"<div class='col-md-12'>"+data.searchPartnerList[i].parName+"</div>";
-						if(data.searchPartnerList[i].parYN=='Y'){						
-							str+="<div class='col-md-12'>"+data.searchPartnerList[i].parId+"</div>";
-						} else {
-							str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>"
-							+"<a onclick='inviteCancel("
-							+data.searchPartnerList[i].memberNo+","+data.searchPartnerList[i].parNo
-							+");' style='color: gray; float: right;'>취소하기</a></div>";
+					for(var i=0; i<data.searchProMemberList.length; i++){
+						if(data.searchProMemberList[i].leader=='Y'){
+							leaderNo = data.searchProMemberList[i].memberNo;
 						}
-						str+="</div>"
-						+"</div>";
+					}
+					for(var i=0; i<data.searchProMemberList.length; i++){
+	 					str+=
+	 	 					"<div class='col-md-4' style='margin-top: 10px;'>"
+	 	 					+"<img src='../resources/upload/member/"+data.searchProMemberList[i].memberPicture+"'"
+	 						+"class='img-circle rounded-circle border partnerListPic'>"
+	 						+"</div>"
+	 						+"<div class='col-md-8' style='margin-top: 10px;'>"
+	 						+"<div class='row'>"
+	 						+"<div class='col-md-12'>"+data.searchProMemberList[i].memberName;
+	 						if(data.searchProMemberList[i].leader=='Y'){
+	 							leaderNo = data.searchProMemberList[i].memberNo;
+	 							str+="<img src='../resources/images/project/crown.png'>";
+	 						}
+	 						if(data.searchProMemberList[i].memberNo==memberNo){
+	 							str+="<label style='color: gray'>(me)</label>";
+	 						}
+	 						str+="</div>";
+	 						if(data.searchProMemberList[i].inviteYN=='Y'){						
+	 							str+="<div class='col-md-12'>"+data.searchProMemberList[i].memberId+"</div>";
+	 						} else {
+	 							str+="<div class='col-md-12'><span style='color: #339966; float: left;'>수락대기중...</span>";
+	 							if(leaderNo==memberNo){
+	 								str+="<a onclick='inviteCancel("
+	 								+data.searchProMemberList[i].proNo+","+data.searchProMemberList[i].memberNo
+	 								+");' style='color: gray; float: right;'>취소하기</a>";
+	 							}
+	 						}
+	 						str+="</div></div>"
+	 						+"</div>";
 					}
 					$('#proMemberListDiv').html(str);
 				}
@@ -291,7 +333,7 @@ a:hover{
 	});
 </script>
 <body>
-
+<jsp:include page="/loading.do"></jsp:include>
 <!-- header -->
 		<div class="header">
 
