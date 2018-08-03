@@ -151,7 +151,8 @@
 	var filesLength = 0;
 	var img;
 	function readURL(files) {
-
+		var str
+		console.log($('#fileElem').val());
 		var height = $('.height').height('100px');
 
 		if (!files.length) {
@@ -163,22 +164,26 @@
 
 			for (i = 0; i < files.length; i++) {
 
-				img = document.createElement("img");
+			 	img = document.createElement("img");
 				img.src = window.URL.createObjectURL(files[i]);
 				img.style.height = 100 + '%';
 				img.style.width = 100 + '%';
 
 				img.onload = function() {
 					window.URL.revokeObjectURL(this.src);
-				}
+				} 
 				$(
 						'<div class="col-md-6 imgHeight" style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
 								+ img.outerHTML + '</div></div>').appendTo(
 						$('#divEnter'));
-
+	/* 			str ="<p><input type='file' id='file_"+imgCount+"' name='file_"+imgCount+"'</p>";
+					  $('#divEnter').append(str);
+					  str=""; */
 				imgCount++;
 
 			}
+			var str ="<p>" +
+					"input type='file' id=''"
 
 			if ($('#moreViewDiv').height() >= 200 && filesLength > 3) {
 				$('#moreViewDiv').addClass('moreViewDiv');
@@ -307,13 +312,7 @@
 		var endDate = $('#endDate').val();
 		console.log("title");
 
-		if (!title || !startDate || !endDate) {
 
-			alert("공백이 없어야 합니다.");
-
-		}
-
-		else {
 
 			$(
 					'<div id="schdules_'
@@ -328,7 +327,6 @@
 			scheduleCnt++;
 			$('#scheduleCnt').text(scheduleCnt);
 
-		}
 		//초기화
 		$('#scheduleTitle').val("");
 		$('#startDate').val("");
@@ -896,6 +894,10 @@ margin:auto;
 
 </head>
 <body>
+
+<form action="/insertPost.do" method="post" enctype="multipart/form-data">
+
+
 	<div class="frameSize offset-md-1 col-md-10 offset-md-1">
 		<%-- 		<div class="row" style="height: 15%;">
 			<div class="col-md-12" style="height: 100%;">
@@ -1050,6 +1052,14 @@ margin:auto;
 									<div class="col-md-12" id="after_tag">
 									<input type="hidden" name="hashResults" id="hashResults"/>
 									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" id="saveRelationWriting" type="submit">저장</button>
+										
+										</div>
+									
+									
+									</div>
 									
 								</div>
 							</div>
@@ -1071,7 +1081,7 @@ margin:auto;
 											<!-- div 버튼 클릭시 아래 버튼 동작! -->
 											<img class="plus" src="/resources/images/writeImages/plus.png" />
 											<!-- 파일업로드 버튼 숨겨져있음!  -->
-											<input id="fileElem" name="filesUpload" multiple type="file" style="display: none" onchange="readURL(this.files);" />
+											<input id="fileElem" name="files"  multiple type="file" style="display:none" onchange="readURL(this.files);" />
 										</div>
 
 
@@ -1168,7 +1178,7 @@ margin:auto;
 												</h6>
 												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
 													<c:forEach items="${proList}" var="proList">
-														<button class="dropdown-item" id="proNo_${proList.proNo}" onClick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
+														<button class="dropdown-item" id="proNo_${proList.proNo}" onclick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
 															<c:out value="${proList.proTitle}" />
 														</button>
 
@@ -1256,7 +1266,7 @@ margin:auto;
 										<div class="modal-body">
 											<div class="row">
 												<div class="col-md-12" style="padding: 0px">
-													<input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle" required="required" size="10" style="height: 100%; width: 100%; border: none;" />
+													<input type="text" class="form-control" placeholder="일정 제목을 입력해주세요." name="scheduleTitle" id="scheduleTitle"  size="10" style="height: 100%; width: 100%; border: none;" />
 
 												</div>
 
@@ -1271,7 +1281,7 @@ margin:auto;
 											</div>
 											<div class="row">
 												<div class="col-md-12">
-													<input class="scheduleInput" type="date" id="startDate" required><br> ~ <input class="scheduleInput" type="date" id="endDate" required>
+													<input class="scheduleInput" type="date" id="startDate" ><br> ~ <input class="scheduleInput" type="date" id="endDate" >
 												</div>
 											</div>
 										</div>
@@ -1327,7 +1337,7 @@ margin:auto;
 		<!-- </div> -->
 		<!-- 	</div> container-->
 	</div>
-
+</form>
 
 </body>
 </html>
