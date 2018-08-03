@@ -23,13 +23,6 @@ div {
 	padding: 0px;
 }
 
-#decideYes {
-	color: #00837a;
-	font-size: 30px;
-	font-weight: 550;
-	display: inline-block;
-}
-
 /* 의사결정 등록 */
 #modal-decide {
 	background-color: #fefefe;
@@ -208,7 +201,7 @@ div {
 						<td>${d.dcPostTitle }</td>
 						<td>${d.dcWriterName } -> ${d.dcMakerName }</td>
 						<c:choose>
-							<c:when test="${d.dcDecision eq 'N'.charAt(0) }">
+							<c:when test="${d.dcYn eq 'N'.charAt(0) }">
 								<td id='dc_${d.dcNo }'>결정대기중</td>
 							</c:when>
 							<c:otherwise>
@@ -239,6 +232,7 @@ div {
 <!-- 의사결정/변경하기 팝업모달 시작 -->
 <c:forEach items="${listDecision }" var="d">
 		<!-- Modal 내용 -->
+		<input type="hidden" id="dcMaker_${d.dcNo }" value="${d.dcMaker }" />
 		<div id="decideModal_${d.dcNo }" class="modal">
 			<div id="modal-decide">
 				<img src="../resources/images/post/select.png" /><span
@@ -247,12 +241,12 @@ div {
 					style="float: right; height: 20px;" /><br>
 				<br> <input type="text" id="decisionComment_${d.dcNo }" style="width:100%; height:50px;" placeholder="의사결정 의견을 입력해 주세요." /><br>
 				<br>
-				<div id="decideYes" onclick="decideYes(${d.dcNo});">
+				<div id="decideYes_${d.dcNo }" onclick="decideYes(${d.dcNo});" style="color: #00837a; font-size: 30px; font-weight: 550; display: inline-block;">
 					<img src="../resources/images/post/yes.png" class="decideIcon" />
 					승인
 				</div>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<div id="decideNo" onclick="decideNo(${d.dcNo});" style="color: #888888">
+				<div id="decideNo_${d.dcNo }" onclick="decideNo(${d.dcNo});" style="color: #888888;font-size: 30px; font-weight: 550; display: inline-block;">
 					<img src="../resources/images/post/nooff.png" class="decideIcon" />
 					반려
 				</div>
@@ -285,13 +279,13 @@ div {
 					$("#dcTable").append(
 							"<tr>" + 
 							"<td rowspan='2' width='7%'>아이콘</td>" +
-							"<td width='70%' colspan='3'><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
+							"<td width='70%' colspan='3'><a href='#' onclick='open_decide("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
 							"</tr>" +
 							"<tr>" +
 							"<td>"+data[i].dcPostTitle +"</td>" +
 							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
-					if(data[i].dcDecision == 'N') {
+					if(data[i].dcYn == 'N') {
 						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
 					}
 					else {
@@ -317,13 +311,13 @@ div {
 					$("#dcTable").append(
 							"<tr>" + 
 							"<td rowspan='2' width='7%'>아이콘</td>" +
-							"<td width='70%' colspan='3'><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
+							"<td width='70%' colspan='3'><a href='#' onclick='open_decide("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
 							"</tr>" +
 							"<tr>" +
 							"<td>"+data[i].dcPostTitle +"</td>" +
 							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
-					if(data[i].dcDecision == 'N') {
+					if(data[i].dcYn == 'N') {
 						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
 					}
 					else {
@@ -349,13 +343,13 @@ div {
 					$("#dcTable").append(
 							"<tr>" + 
 							"<td rowspan='2' width='7%'>아이콘</td>" +
-							"<td width='70%' colspan='3'><a href='#' onclick='openContentModal("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
+							"<td width='70%' colspan='3'><a href='#' onclick='open_decide("+data[i].dcNo+");'>"+ data[i].dcContent +"</a></td>" +
 							"</tr>" +
 							"<tr>" +
 							"<td>"+data[i].dcPostTitle +"</td>" +
 							"<td>"+data[i].dcWriterName +" -> "+ data[i].dcMakerName +"</td>"
 					);
-					if(data[i].dcDecision == 'N') {
+					if(data[i].dcYn == 'N') {
 						$("#dcTable").append("<td id='dc_"+data[i].dcNo+"'>결정대기중</td></tr>");
 					}
 					else {
@@ -407,27 +401,37 @@ div {
 	
 	//의사결정 선택시
 	function updateDecision(id) {
+		var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
+		var dcMaker = $("#dcMaker_"+id).val();
 		var dcComment = $('#decisionComment_'+id).val();
-		console.log(id);
+		console.log(user);
+		console.log(dcMaker);
 		console.log(dcComment);
-		console.log(decideResult);
-		$.ajax({
-			url : "/updateDecision.do",
-			type : "post",
-			data : {
-				dcNo : id,
-				dcDecision : decideResult,
-				dcComment : dcComment
-			},
-			success : function(data) {
-				close_decide(id);
-				$('#dc_'+id).text("결정완료");
-				alert("의사결정 완료");
-			},
-			error : function(data) {
-				console.log("updateDecision 실패");
-			}
-		});
+		
+		if(user == dcMaker) {
+			$.ajax({
+				url : "/updateDecision.do",
+				type : "post",
+				data : {
+					dcNo : id,
+					dcDecision : decideResult,
+					dcComment : dcComment
+				},
+				success : function(data) {
+					close_decide(id);
+					$('#dc_'+id).text("결정완료");
+					alert("의사결정 완료");
+				},
+				error : function(data) {
+					console.log("updateDecision 실패");
+				}
+			});
+		}
+		else {
+			alert("의사결정 권한이 없습니다.");
+		}
+		
+		
 	}
 	
 	
