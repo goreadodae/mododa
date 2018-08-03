@@ -45,6 +45,13 @@ div {
 
 <script>
 
+
+	window.onload = function () { // 하위메뉴 유지
+	    $(".privateSub").show();
+	}
+
+
+
 	function searchShow() {
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");

@@ -128,6 +128,14 @@ input[type=checkbox] {
 
 <script>
 
+
+	window.onload = function () { // 하위메뉴 유지
+		var proNoStr = $("#proNo").val();
+	    var proNo = proNoStr.substring(6);
+	    $('li[id^="sub_' + proNo + '_"]').show();
+	    liClose(proNo);
+	}
+
 	function changeCheckBox(category) { // 이미지랑 체크박스 변화
     
 	    // 체크한 것이 없을 경우 창 꺼짐

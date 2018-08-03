@@ -169,7 +169,7 @@ span {
  
     </div>
     <!--End Modal-->
-		
+	<img src = "/resources/images/layout-img/main_logo_square.png" style="margin-top:15%; margin-left:25%;"/>
 	
 	</div>
 	<!-- contents 끝 -->
