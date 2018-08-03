@@ -159,7 +159,7 @@ div {
 <body>
 
 <!-- header -->
-<jsp:include page="/header.do"></jsp:include>
+<jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
 
 <div class="row">

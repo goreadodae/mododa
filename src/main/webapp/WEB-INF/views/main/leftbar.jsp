@@ -92,6 +92,15 @@ li[id^="sub_"] a {
    padding-bottom: 1.5% !important;
 }
 
+li[id^="plus_"] {
+   display: none;
+   padding: 0;
+   background-color: #F5F5F5;
+}
+
+li[id^="plus_"] a {
+   padding: 0;
+}
 
 </style>
 
@@ -142,9 +151,13 @@ li[id^="sub_"] a {
          var displayValue = $(".privateSub").css('display');
          if (displayValue == 'none') {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $("li[id^='plus_']").hide();
+            $("#projectPlus").hide();
             $(".privateSub").show();
          } else {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $("li[id^='plus_']").hide();
+            $("#projectPlus").hide();
             $(".privateSub").hide();
          }
       });
@@ -167,6 +180,8 @@ li[id^="sub_"] a {
          if (displayValue == 'none') {
             $(".privateSub").hide();/* 열렸던 창 닫기 */
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $("li[id^='plus_']").hide();
+            $("#projectPlus").hide();
             $('li[id^="sub_' + proNo + '_"]').show();
             beforeShow = proNo;/* 열렸던 창 닫기 */
          } else {
@@ -195,12 +210,9 @@ li[id^="sub_"] a {
          location.href="/projectMyPost.do?proNo=" + proNo;
       });
 
-      $(".proCalendar").click(function() {
-         location.href="";
-      });
       /* 지은 사용 끝 */
       
-      /* 모달 */
+      /* 프로젝트 더보기 */
       $("#moreProject").click(function() {
     	  location.href="/gotoMoreProject.do";
       });
@@ -250,7 +262,7 @@ li[id^="sub_"] a {
 
             <!-- 내가 포함된 프로젝트 -->
             <c:forEach items="${projectList}" var="projectList" end="5">
-
+			<c:if test="${projectList.proProgress == 'working'}">
                <li class="list-group-item projectMain" value="${projectList.proNo}">
                <img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
 
@@ -272,15 +284,29 @@ li[id^="sub_"] a {
                <a class="dropdown-item proMyPost" href="#" value="${projectList.proNo}"> 
                <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
 
-               <li class="list-group-item" id="sub_${projectList.proNo}_calendar">
-               <a class="dropdown-item proCalendar" href="#" value="${projectList.proNo}">
-               <img src="../resources/images/project/calendar.png" class="subIcon" /> 캘린더</a></li>
-
+			</c:if>
             </c:forEach>
             
             <li class="list-group-item" id="moreProject">
             <img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
-            <!-- 모달로 전체 목록 띄우기 -->   
+           	
+           	<!-- 더 보기 -->
+           	<li class="list-group-item" id="projectPlus" style="display:none;" >
+            <img src="../resources/images/project/flag-marker.png" class="icon"> 더보기 될 프로젝트 이름</li>
+            <!-- 하위메뉴 -->
+               <li class="list-group-item" id="plus_post">
+               <a class="dropdown-item proPost" href="#" value="">
+               <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
+               <li class="list-group-item" id="plus_hashTag">
+               <a class="dropdown-item proHashTag" href="#" value="">
+               <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
+               <li class="list-group-item" id="plus_progress">
+               <a class="dropdown-item proProgress" href="#" value="">
+               <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
+               <li class="list-group-item" id="plus_myPost">
+               <a class="dropdown-item proMyPost" href="#" value=""> 
+               <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
+           
          </ul>
       </div>
       

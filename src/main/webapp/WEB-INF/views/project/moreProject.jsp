@@ -95,7 +95,7 @@ div {
 }
 
 
-.progressPost {
+.progressProject {
 	border: 1px solid black;
 	float: left;
 	padding: 1% 5%;
@@ -104,14 +104,14 @@ div {
 }
 
 
-.progressPost img {
+.progressProject img {
 	width: 10%;
 	height: 10%;
 	margin-right: 3%;
 	
 }
 
-.progressPost img:hover {
+.progressProject img:hover {
 	cursor: pointer;
 }
 
@@ -134,8 +134,6 @@ input[type=checkbox] {
     	var hideValue = $(".checkBox:checked").length;
 	    if(hideValue==0) {
         
-	       $(".sugImg").show();
-	       $(".sugCheckBox").hide();
 	       $(".workImg").show();
 	       $(".workCheckBox").hide();
 	       $(".finImg").show();
@@ -147,41 +145,16 @@ input[type=checkbox] {
     
 	    switch(category) {
     
- 	   case 'sug': 
-	       $(".sugImg").hide();
-	       $(".sugCheckBox").show();
-       
-	       $(".checkBox:checked").prop('checked',false); // 체크 해제
-	       // value 초기화
-	       $('#sugToWork').val('sugToWork');
-	       $('#workToStop').val('workToStop');
-	       $('#workToSug').val('workToSug');
-	       $('#stopToFin').val('stopToFin');
-	       $('#stopToWork').val('stopToWork');
-	       $('#finToStop').val('finToStop');
-       
-	       $(".workImg").show();
-	       $(".workCheckBox").hide();
-	       $(".finImg").show();
-	       $(".finCheckBox").hide();
-	       $(".stopImg").show();
-	       $(".stopCheckBox").hide();
-       
-	       break;
 	    case 'work': 
 	       $(".workImg").hide();
 	       $(".workCheckBox").show();
 	       $(".checkBox:checked").prop('checked',false); // 체크 해제
 	       // value 초기화
-	       $('#sugToWork').val('sugToWork');
 	       $('#workToStop').val('workToStop');
-	       $('#workToSug').val('workToSug');
-	       $('#stopToFin').val('stopToFin');
 	       $('#stopToWork').val('stopToWork');
-	       $('#finToStop').val('finToStop');
+	       $('#workToFin').val('workToFin');
+	       $('#finToWork').val('finToWork');
        
-	       $(".sugImg").show();
-	       $(".sugCheckBox").hide();
 	       $(".finImg").show();
 	       $(".finCheckBox").hide();
 	       $(".stopImg").show();
@@ -193,15 +166,11 @@ input[type=checkbox] {
 	       $(".stopCheckBox").show();
 	       $(".checkBox:checked").prop('checked',false); // 체크 해제
 	       // value 초기화
-	       $('#sugToWork').val('sugToWork');
 	       $('#workToStop').val('workToStop');
-	       $('#workToSug').val('workToSug');
-	       $('#stopToFin').val('stopToFin');
 	       $('#stopToWork').val('stopToWork');
-	       $('#finToStop').val('finToStop');
+	       $('#workToFin').val('workToFin');
+	       $('#finToWork').val('finToWork');
        
-	       $(".sugImg").show();
-	       $(".sugCheckBox").hide();
 	       $(".workImg").show();
 	       $(".workCheckBox").hide();
 	       $(".finImg").show();
@@ -210,18 +179,14 @@ input[type=checkbox] {
 	       break;
 	    case 'fin': 
  	      $(".finImg").hide();
-	       $(".finCheckBox").show();
-	       $(".checkBox:checked").prop('checked',false); // 체크 해제
-	       // value 초기화
-	       $('#sugToWork').val('sugToWork');
-	       $('#workToStop').val('workToStop');
-	       $('#workToSug').val('workToSug');
-	       $('#stopToFin').val('stopToFin');
-	       $('#stopToWork').val('stopToWork');
-	       $('#finToStop').val('finToStop');
+	      $(".finCheckBox").show();
+	      $(".checkBox:checked").prop('checked',false); // 체크 해제
+	      // value 초기화
+	      $('#workToStop').val('workToStop');
+	      $('#stopToWork').val('stopToWork');
+	      $('#workToFin').val('workToFin');
+	      $('#finToWork').val('finToWork');
        
- 	      $(".sugImg").show();
- 	      $(".sugCheckBox").hide();
  	      $(".workImg").show();
 	      $(".workCheckBox").hide();
 	      $(".stopImg").show();
@@ -243,8 +208,6 @@ input[type=checkbox] {
 		var hideValue = $(".checkBox:checked").length;
 		if(hideValue==0) {
 			 
-			$(".sugImg").show();
-			$(".sugCheckBox").hide();
 			$(".workImg").show();
 			$(".workCheckBox").hide();
 			$(".finImg").show();
@@ -255,39 +218,32 @@ input[type=checkbox] {
 		}
 		
 		
-		var postNo = [];
+		var proNo = [];
 
 		switch(category) {
 			
-			case 'sug': 
-				$("input[name='sug_checkBox']:checked").each(function(i){
-					 postNo.push($(this).val());
-				 });
-				$('#sugToWork').val(postNo);
-				break;
 			case 'work': 
 				$("input[name='work_checkBox']:checked").each(function(i){
-					 postNo.push($(this).val());
+					proNo.push($(this).val());
 				 });
-				$('#workToStop').val(postNo);
-				$('#workToSug').val(postNo);
+				$('#workToStop').val(proNo);
+				$('#workToFin').val(proNo);
 				break;
 			case 'stop': 
 				$("input[name='stop_checkBox']:checked").each(function(i){
-					 postNo.push($(this).val());
+					proNo.push($(this).val());
 				 });
-				$('#stopToFin').val(postNo);
-				$('#stopToWork').val(postNo);
+				$('#stopToWork').val(proNo);
 				break;
 			case 'fin': 
 				$("input[name='fin_checkBox']:checked").each(function(i){
-					 postNo.push($(this).val());
+					proNo.push($(this).val());
 				 });
-				$('#finToStop').val(postNo);
+				$('#finToWork').val(proNo);
 				break;
 		}
 		
-		// console.log("check:" + postNo);
+		 console.log("check:" + proNo);
 
 	}
 	
@@ -295,138 +251,129 @@ input[type=checkbox] {
 	
 	function updateProgress(category) { // ajax로 비즈니스 로직(hidden의 value사용)
 		
-		var postNoStr = "";
-		var postProgress = "";
-		
-		var proNoStr = $("#proNo").val();
-	    var proNo = proNoStr.substring(6);
+		var proNoStr = "";
+		var proProgress = "";
 	
 		switch(category) {
-		case 'sugToWork': 
-			postNoStr = $('#sugToWork').val();
-			if(postNoStr=='sugToWork') {
-				alert("이동할 이슈를 선택해주세요.");
-			} else {
-				postProgress = 'working';
-			}
-			break;
-		case 'workToSug': 
-			postNoStr = $('#workToSug').val();
-			if(postNoStr=='workToSug') {
-				alert("이동할 이슈를 선택해주세요.");
-			} else {
-				postProgress = 'suggest';
-			}
-			break;
+
 		case 'workToStop': 
-			postNoStr = $('#workToStop').val();
-			if(postNoStr=='workToStop') {
-				alert("이동할 이슈를 선택해주세요.");
+			proNoStr = $('#workToStop').val();
+			if(proNoStr=='workToStop') {
+				alert("이동할 프로젝트를 선택해주세요.");
 			} else {
-				postProgress = 'stop';
+				proProgress = 'stop';
 			}
 			break;
 		case 'stopToWork': 
-			postNoStr = $('#stopToWork').val();
-			if(postNoStr=='stopToWork') {
-				alert("이동할 이슈를 선택해주세요.");
+			proNoStr = $('#stopToWork').val();
+			if(proNoStr=='stopToWork') {
+				alert("이동할 프로젝트를 선택해주세요.");
 			} else {
-				postProgress = 'working';
+				proProgress = 'working';
 			}
 			break;
-		case 'stopToFin': 
-			postNoStr = $('#stopToFin').val();
-			if(postNoStr=='stopToFin') {
-				alert("이동할 이슈를 선택해주세요.");
+		case 'workToFin': 
+			proNoStr = $('#workToFin').val();
+			if(proNoStr=='workToFin') {
+				alert("이동할 프로젝트를 선택해주세요.");
 			} else {
-				postProgress = 'finish';
+				proProgress = 'finish';
 			}
 			break;
-		case 'finToStop': 
-			postNoStr = $('#finToStop').val();
-			if(postNoStr=='finToStop') {
-				alert("이동할 이슈를 선택해주세요.");
+		case 'finToWork': 
+			proNoStr = $('#finToWork').val();
+			if(proNoStr=='finToWork') {
+				alert("이동할 프로젝트를 선택해주세요.");
 			} else {
-				postProgress = 'stop';
+				proProgress = 'working';
 			}
 			break;
 		}
 		
+		console.log("total: "+proNoStr+"/progress: "+proProgress);
 		
-		
-		if(postNoStr!="" && postProgress!="") { // 비즈니스 로직
+ 		if(proNoStr!="" && proProgress!="") { // 비즈니스 로직
 			
 			// console.log("total: "+postNoStr+"/progress: "+postProgress);
 		
 		
 			$.ajax({
 				
-				url : "/updateProgress.do",
+				url : "/updateProjectProgress.do",
 				type : "post",
 				data : {
-					postNoStr : postNoStr,
-					postProgress : postProgress,
-					proNo : proNo
+					proNoStr : proNoStr,
+					proProgress : proProgress
 				},
-				success : function(data) {
+				success : function(projectList) {
 					
-					var postList = data.postList;
-					
+					//location.href="/gotoMoreProject.do";
 					
 					$(".progressBody").empty();
 					
-					var suggestResult = "";
 					var workingResult = "";
 					var stopResult = "";
 					var finishResult = "";
 					
-					var sug = "'sug'";
 					var work = "'work'";
 					var stop = "'stop'";
 					var fin = "'fin'";
 					
 					
-					for(var i=0 ; i<postList.length ; i++) {
+					for(var i=0 ; i<projectList.length ; i++) {
 						
-						var date = new Date(postList[i].postDate.time);
-						var dateStr = date.toString();
-						var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
-						
-						
-						if(postList[i].postProgress=='suggest') {
-							suggestResult += '<div class="progressPost" draggable="true">'
-											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
-											 + '<span class="sugCheckBox" style="display: none;">'
-											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
-											 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
 
-						} else if(postList[i].postProgress=='working') {
-							workingResult += '<div class="progressPost" draggable="true">'
+						if(projectList[i].proProgress=='working') {
+							workingResult += '<div class="progressProject" draggable="true">'
 								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
 								 			 + '<span class="workCheckBox" style="display: none;">'
-								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
-								 			 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+projectList[i].proNo+'" onClick="check('+work+');">'
+								 			 + '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
+							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {
+								var startDate = projectList[i].proStartDate.split(" ");
+								var endDate = projectList[i].proEndDate.split(" ");
+								workingResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
+												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';
+							} else {
+								workingResult += '</div>';
+							}
+
 							
-						} else if(postList[i].postProgress=='stop') {
-							stopResult += '<div class="progressPost" draggable="true">'
+						} else if(projectList[i].proProgress=='stop') {
+							stopResult += '<div class="progressProject" draggable="true">'
 								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
 								 		  + '<span class="stopCheckBox" style="display: none;">'
-								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
-								 		  + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+projectList[i].proNo+'" onClick="check('+stop+');">'
+								 		  + '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
+							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {		
+								var startDate = projectList[i].proStartDate.split(" ");
+								var endDate = projectList[i].proEndDate.split(" ");
+								stopResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
+												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';
+							} else {
+								stopResult += '</div>';
+							}
 							
-						} else if(postList[i].postProgress=='finish') {
-							finishResult += '<div class="progressPost" draggable="true">'
+						} else if(projectList[i].proProgress=='finish') {
+							finishResult += '<div class="progressProject" draggable="true">'
 								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
 											+ '<span class="finCheckBox" style="display: none;">'
-								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
-								 			+ '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+projectList[i].proNo+'" onClick="check('+fin+');">'
+								 			+ '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
+							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {		
+								var startDate = projectList[i].proStartDate.split(" ");
+								var endDate = projectList[i].proEndDate.split(" ");
+								finishResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
+												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';								
+							} else {
+								finishResult += '</div>';
+							}
 							
 						}
 						
 					
 					}
 					
-					$("#suggestBody").append(suggestResult);
 					$("#workingBody").append(workingResult);
 					$("#stopBody").append(stopResult);
 					$("#finishBody").append(finishResult);
@@ -440,22 +387,19 @@ input[type=checkbox] {
 				
 			});
 			
-		
-		
-		
-		
-		
-		
-			
 		}
 		
+	}
+	
+	function plusProject() { // 더보기에 프로젝트 추가하기
 		
-		
-		
-		
-		
+		$("#projectPlus").show();
+		$("li[id^='plus_']").show();
+		alert("leftbat와 연결하기");
 		
 	}
+	
+	
 	
 
 </script>
@@ -464,7 +408,7 @@ input[type=checkbox] {
 <body>
 
 <!-- header -->
-<jsp:include page="/header.do"></jsp:include>
+<jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
 
 <div class="row" style="background-color: #F5F5F5;">
@@ -483,94 +427,111 @@ input[type=checkbox] {
 				<h5><b>프로젝트 더보기</b>
 				<img src="../resources/images/project/help-round-button.png"/>
 				<span style="font-size:small;">프로젝트를 한 눈에 볼 수 있습니다. 해당 프로젝트의 진행 상태를 변경할 수 있습니다.</span></h5>
-				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+				<%-- <input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" /> --%>
 			</div>
 			<div class="titleEmpty"></div>
 			
 			<div class="progressTitle">
-			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
-			<div class="headEmpty"></div>
 			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+			<div class="headEmpty"></div>
+			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
 			<div class="headEmpty"></div>
 			<div class="progressHeader"><h5><b>완료</b></h5></div>
 			</div>
 			
 			
-			<div class="progressBody" id="workingBody">
-
-				<c:forEach items="${postList}" var="postList">
-				<c:if test="${postList.postProgress=='working'}">
-					<div class="progressPost" draggable="true">
-						
-						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
-						<span class="workCheckBox" style="display: none;">
-						<input type="checkbox" class="checkBox" name="work_checkBox" value="${postList.postNo}" onClick="check('work');">
-						</span>
-						${postList.postTitle}<br>
-						${postList.memberName}<br>
-						${postList.postDate}
-
-					</div>
-				</c:if>
-				</c:forEach>
 			
-			</div>
 			
-			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next.png" onClick="updateProgress('workToStop');" />
-				<input type="hidden" id="workToStop" value="workToStop" />
-				<br><br>
-				<img src="../resources/images/project/pre.png" onClick="updateProgress('stopToWork');" />
-				<input type="hidden" id="stopToWork" value="stopToWork" />
-			</div>
 			
 			<div class="progressBody" id="stopBody">
 			
-				<c:forEach items="${postList}" var="postList">
-				<c:if test="${postList.postProgress=='stop'}">
-					<div class="progressPost" draggable="true">
-						
+				<c:forEach items="${projectList}" var="projectList">
+				<c:if test="${projectList.proProgress=='stop'}">
+					<div class="progressProject" draggable="true">
 						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
+						
 						<span class="stopCheckBox" style="display: none;">
-						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${postList.postNo}" onClick="check('stop');">
+						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${projectList.proNo}" onClick="check('stop');">
 						</span>
-						${postList.postTitle}<br>
-						${postList.memberName}<br>
-						${postList.postDate}
-
+						
+						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
+						</c:if>
+						
 					</div>
 				</c:if>
 				</c:forEach>
 			
 			</div>
-
-			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next.png" onClick="updateProgress('stopToFin');" />
-				<input type="hidden" id="stopToFin" value="stopToFin" />
-				<br><br>
-				<img src="../resources/images/project/pre.png" onClick="updateProgress('finToStop');" />
-				<input type="hidden" id="finToStop" value="finToStop" />
-			</div>			
-
-	
-			<div class="progressBody" id="finishBody">
 			
-				<c:forEach items="${postList}" var="postList">
-				<c:if test="${postList.postProgress=='finish'}">
-					<div class="progressPost" draggable="true">
-						
-						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
-						<span class="finCheckBox" style="display: none;">
-						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${postList.postNo}" onClick="check('fin');">
-						</span>
-						${postList.postTitle}<br>
-						${postList.memberName}<br>
-						${postList.postDate}
+			
+			
+			
+			<div class="bodyEmpty" align="center">
+				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('stopToWork');" />
+				<input type="hidden" id="stopToWork" value="stopToWork" />
+				<br><br><br><br>
+				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('workToStop');" />
+				<input type="hidden" id="workToStop" value="workToStop" />
+			</div>
+			
+			
+			
+			
+			
+			<div class="progressBody" id="workingBody">
 
+				<c:forEach items="${projectList}" var="projectList">
+				<c:if test="${projectList.proProgress=='working'}">
+					<div class="progressProject" draggable="true">
+						
+						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
+						<span class="workCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="work_checkBox" value="${projectList.proNo}" onClick="check('work');">
+						</span>
+						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
+						</c:if>
 					</div>
 				</c:if>
 				</c:forEach>
 				
+			
+			</div>
+			
+			
+			
+			<div class="bodyEmpty" align="center">
+				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('workToFin');" />
+				<input type="hidden" id="workToFin" value="workToFin" />
+				<br><br><br><br>
+				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('finToWork');" />
+				<input type="hidden" id="finToWork" value="finToWork" />
+			</div>			
+
+	
+	
+	
+	
+			<div class="progressBody" id="finishBody">
+			
+				<c:forEach items="${projectList}" var="projectList">
+				<c:if test="${projectList.proProgress=='finish'}">
+					<div class="progressProject" draggable="true">
+						
+						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
+						<span class="finCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${projectList.proNo}" onClick="check('fin');">
+						</span>
+						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
+						</c:if>
+					</div>
+				</c:if>
+				</c:forEach>
 			
 			</div>
 

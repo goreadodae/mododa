@@ -87,8 +87,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int updateProgress(ProgressHelper ph) {
-		return projectDAO.updateProgress(sqlSession, ph);
+	public int updatePostProgress(ProgressHelper ph) {
+		return projectDAO.updatePostProgress(sqlSession, ph);
+	}
+	
+	@Override
+	public int updateProjectProgress(ProgressHelper ph) {
+		return projectDAO.updateProjectProgress(sqlSession, ph);
 	}
 	
 	
@@ -158,5 +163,7 @@ public class ProjectServiceImpl implements ProjectService {
 		System.out.println(sm);
 		return projectDAO.searchProMember(sqlSession, sm);
 	}
+
+
 
 }
