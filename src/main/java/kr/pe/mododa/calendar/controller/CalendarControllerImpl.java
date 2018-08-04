@@ -174,6 +174,7 @@ public class CalendarControllerImpl implements CalendarController {
 		sc.setStEndDate(endDateUp); //끝 날짜를 format	
 		sc.setEndDate(null);
 		
+		
 		 
 		 ModelAndView view = new ModelAndView();
 			view.addObject("sc",sc);
