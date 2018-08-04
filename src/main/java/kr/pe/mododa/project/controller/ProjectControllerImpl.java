@@ -151,6 +151,32 @@ public class ProjectControllerImpl implements ProjectController {
 		}
 	}
 	
+	
+	
+	@Override
+	public ArrayList<Project> projectWorkingList(HttpSession session) { // 로그인 한 사용자의 소속 프로젝트 리스트 읽어오기
+		
+		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+			
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			ArrayList<Project> allProjectList = projectService.searchProjectList(memberNo);
+			ArrayList<Project> projectList = new ArrayList<Project> ();
+			
+			for(int i=0; i<allProjectList.size(); i++) {
+				if(allProjectList.get(i).getProProgress().equals("working")) {
+					projectList.add(allProjectList.get(i));
+				}
+			}
+			return projectList;
+			
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+
+	}
+	
+	
 	// ---------------------
 	
 	

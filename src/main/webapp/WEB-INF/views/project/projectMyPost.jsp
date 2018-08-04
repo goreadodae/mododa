@@ -45,6 +45,14 @@ div {
 
 <script>
 
+	window.onload = function () { // 하위메뉴 유지
+		var proNoStr = $("#proNo").val();
+	    var proNo = proNoStr.substring(6);
+	    $('li[id^="sub_' + proNo + '_"]').show();
+	    liClose(proNo);
+	}
+
+
 	function searchShow() {
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");

@@ -23,6 +23,7 @@ public interface ProjectController {
 	// 프로젝트 목록 읽어오기
 	public ArrayList<Project> projectList(HttpSession session);
 	public Project privateList(HttpSession session);
+	public ArrayList<Project> projectWorkingList(HttpSession session);
 	
 	
 	// 프로젝트 글 읽어오기

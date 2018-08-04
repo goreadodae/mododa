@@ -110,6 +110,16 @@ li[id^="plus_"] a {
 
 <script>
 
+	var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
+
+	function liClose(proNo) {
+		if(proNo == 0) {
+			alert("더보기로 들어옴");
+		} else {
+			beforeShow = proNo;
+		}
+	}
+
 /* 해당하는 컨트롤러주소(.do)를 적어주시면 됩니다~ */
    jQuery(function($) {
       
@@ -148,19 +158,18 @@ li[id^="plus_"] a {
          location.href="/gotoCreateProject.do";
       });
 
-      var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
-      
+
       // 프라이빗 공간
       $("#privateMain").click(function() {
          var displayValue = $(".privateSub").css('display');
          if (displayValue == 'none') {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
-            $("li[id^='plus_']").hide();
+            
             $("#projectPlus").hide();
             $(".privateSub").show();
          } else {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
-            $("li[id^='plus_']").hide();
+            
             $("#projectPlus").hide();
             $(".privateSub").hide();
          }
@@ -263,10 +272,12 @@ li[id^="plus_"] a {
             <li class="privateSub">
             <a class="dropdown-item priHashTag" href="#" value="${privateProject.proNo}">
             <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
+            
 
             <!-- 내가 포함된 프로젝트 -->
             <c:forEach items="${projectList}" var="projectList" end="5">
-			<c:if test="${projectList.proProgress == 'working'}">
+            
+
                <li class="list-group-item projectMain" value="${projectList.proNo}">
                <img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
 
@@ -288,7 +299,7 @@ li[id^="plus_"] a {
                <a class="dropdown-item proMyPost" href="#" value="${projectList.proNo}"> 
                <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
 
-			</c:if>
+            
             </c:forEach>
             
             <li class="list-group-item" id="moreProject">
@@ -296,7 +307,7 @@ li[id^="plus_"] a {
            	
            	<!-- 더 보기 -->
            	<li class="list-group-item" id="projectPlus" style="display:none;" >
-            <img src="../resources/images/project/flag-marker.png" class="icon"> 더보기 될 프로젝트 이름</li>
+            <img src="../resources/images/project/flag-marker.png" class="icon"><span></span></li>
             <!-- 하위메뉴 -->
                <li class="list-group-item" id="plus_post">
                <a class="dropdown-item proPost" href="#" value="">

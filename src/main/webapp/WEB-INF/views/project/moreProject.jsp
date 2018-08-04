@@ -307,8 +307,10 @@ input[type=checkbox] {
 				},
 				success : function(projectList) {
 					
-					//location.href="/gotoMoreProject.do";
 					
+					location.href="/gotoMoreProject.do";
+					
+/* 					
 					$(".progressBody").empty();
 					
 					var workingResult = "";
@@ -377,6 +379,7 @@ input[type=checkbox] {
 					$("#workingBody").append(workingResult);
 					$("#stopBody").append(stopResult);
 					$("#finishBody").append(finishResult);
+*/
 					
 				},
 				error : function() {
@@ -391,11 +394,16 @@ input[type=checkbox] {
 		
 	}
 	
-	function plusProject() { // 더보기에 프로젝트 추가하기
+	function plusProject(proTitle,proNo) { // 더보기에 프로젝트 추가하기
 		
+		console.log(proTitle+'/'+proNo);
 		$("#projectPlus").show();
+		$("#projectPlus span").text(proTitle);
 		$("li[id^='plus_']").show();
-		alert("leftbat와 연결하기");
+		$("#plus_post a").attr('value',proNo);
+		$("#plus_hashTag a").attr('value',proNo);
+		$("#plus_progress a").attr('value',proNo);
+		$("#plus_myPost a").attr('value',proNo);
 		
 	}
 	
@@ -454,7 +462,7 @@ input[type=checkbox] {
 						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${projectList.proNo}" onClick="check('stop');">
 						</span>
 						
-						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
 						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
 						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
 						</c:if>
@@ -490,7 +498,7 @@ input[type=checkbox] {
 						<span class="workCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="work_checkBox" value="${projectList.proNo}" onClick="check('work');">
 						</span>
-						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
 						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
 						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
 						</c:if>
@@ -525,7 +533,7 @@ input[type=checkbox] {
 						<span class="finCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${projectList.proNo}" onClick="check('fin');">
 						</span>
-						<a onClick="plusProject();">${projectList.proTitle}</a><br>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
 						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
 						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
 						</c:if>

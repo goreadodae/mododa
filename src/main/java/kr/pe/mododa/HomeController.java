@@ -35,7 +35,7 @@ public class HomeController {
 	@RequestMapping(value="/leftbar.do")
 	public Object leftbar(HttpSession session) {
 		// 프로젝트 목록 읽어오기
-		ArrayList<Project> projectList = projectController.projectList(session);
+		ArrayList<Project> projectList = projectController.projectWorkingList(session);
 		Project privateProject = projectController.privateList(session);
 		ModelAndView view = new ModelAndView();
 		view.addObject("projectList", projectList);
