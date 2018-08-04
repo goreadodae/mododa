@@ -687,7 +687,7 @@
 	} 
 	
 	
-	$(document).ready(function(){
+/* 	$(document).ready(function(){
 		$('#inputContents').keypress(function(){
  	var inputText = $('#inputContents').text();
  	 var expUrl = ﻿﻿ /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
@@ -704,11 +704,38 @@
 			}
 		}
 		})
-	})
+	}) */
 	
 /* 	<a onclick="javascript:location.href='www.naver.com'">naver</a> */
 					
-	
+
+var imgTran = true;
+$(document).ready(function(){
+	$('#addPartnerPic').click(function(){
+		
+		
+		if(imgTran)
+			{
+			
+				$('#addPartnerPic').attr('src','/resources/upload/member/defaultUserImg.png');
+				$('#addPartnerPic').addClass('border');
+				
+				imgTran = false;			
+			}
+		else{
+			
+				$('#addPartnerPic').attr('src','/resources/upload/writeImages/add-button.png');
+				$('#addPartnerPic').removeClass('border');
+				imgTran = true;
+			}
+		
+		
+	});
+});
+
+
+
+
 					
 </script>
 
@@ -795,34 +822,28 @@ div.tarea {
 	cursor: pointer;
 }
 
-#toAddImg img {
-	width: 100%;
-	height: 100%;
-}
+  #partnerImg img {
+	width: 35px;
+	height: 35px;
+} 
 
-#partnerImg div {
-	border: 1px solid white;
-	width: 24px;
-	height: 24px;
-	-webkit-border-radius: 100px;
-	-moz-border-radius: 100px;
-}
 
-#defaultPartnerPic {
+
+/* #defaultPartnerPic {
 	background-image: url("/resources/images/writeImages/user.png");
 	background-size: cover;
-}
+} */
 
-#addPartnerPic {
+/* #addPartnerPic {
 	background-image: url("/resources/images/writeImages/add-button.png");
 	background-size: cover;
-}
+} */
 
-#partnerImg div img {
+/* #partnerImg div img {
 	width: 100%;
 	height: 100%;
 }
-
+ */
 #addPartnerPic {
 	cursor: pointer;
 }
@@ -897,8 +918,16 @@ margin:auto;
 
 <form action="/insertPost.do" method="post" enctype="multipart/form-data">
 
-
+	
 	<div class="frameSize offset-md-1 col-md-10 offset-md-1">
+	<!-- 제출 엔터 방지  -->
+	<div style="display:none">
+		<input type="submit" onclick="return false;"/>
+		
+	
+	</div>
+		
+	
 		<%-- 		<div class="row" style="height: 15%;">
 			<div class="col-md-12" style="height: 100%;">
 				<jsp:include page="/layout/header.jsp"></jsp:include>
@@ -957,7 +986,7 @@ margin:auto;
 				<div class="row" style="padding-top: 40px; height: 15%;">
 					<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 						<div class="row" style="padding-left: 15px; height: 100%;">
-							<div class="col-md-2" style="height: 100%; padding: 0px">
+							<div class="col-md-2" style="height: 100%; padding: 0px;">
 								<span class="changeType" style="color: #339966;" id="changeType" onclick="changeClick();"><c:out value="${currentProName}"></c:out></span>
 
 								<div class="dropdown" style="padding: 0px">
@@ -975,50 +1004,65 @@ margin:auto;
 								<input type="hidden" id="memberNo" value="${sessionScope.member.memberNo}" />
 							</div>
 							<div class="col-md-10">
-								<div class="row" style="height: 100%">
-									<div class="offset-md-5 col-md-2">
+									<div class="col-md-12">
 										<!-- 파트너 아이콘 불러오기 -->
-										<div class="row" id="partnerImg" style="height: 100%; float: right">
-
-											<div style="position: relative;" id="defaultPartnerPic"></div>
-
-
-
-											<!-- 파트너 불러오기 !! ajax로 하기!  -->
-											<div class="dropup" style="height: 100%">
-
-												<div data-toggle="dropdown" id="addPartnerPic" role="button"></div>
-												<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-													<button class="dropdown-item" type="button">Action</button>
-													<button class="dropdown-item" type="button">Action</button>
-													<button class="dropdown-item" type="button">Action</button>
-												</ul>
-
+										<div class="row" id="partnerImg" style="height: 100%;">
+											
+											<div class="col-md-11" style="float:left;">
+											
+											
+											<div class="col-md-12">
+											<div class="row">
+												 <img style="height:100%;" src="/resources/upload/member/defaultUserImg.png" class="rounded-circle border"/>											
+											
+											
+										  		<div class="dropup" style="padding-left:10px;">
+													<img src="/resources/images/writeImages/add-button.png" data-toggle="dropdown" class="rounded-circle" id="addPartnerPic" role="button"/>
+													<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+														<button class="dropdown-item" type="button">Action</button>
+														<button class="dropdown-item" type="button">Action</button>
+														<button class="dropdown-item" type="button">Action</button>
+													</ul>
+	 
+												</div>
 											</div>
+											
+											
+											</div>
+											
+											
+												
+											</div>
+											
+											
+											
+											
 
 
 
 
-										</div>
 
-									</div>
 
-									<div class="offset-md-1 col-md-4">
+
+									<div class="col-md-1">
 
 										<!-- 페이지 닫기  -->
-										<div class="col-md-1" style="height: 32px; float: right;">
 											<button onclick="closeBtn()" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
 												<span aria-hidden="true" style="height: 100%;">&times;</span>
 											</button>
-										</div>
+										
+
+
+									</div>
+										</div> 
 
 
 									</div>
 
-								</div>
+								
 							</div>
 						</div>
-					</div>
+					</div><!-- 쇼비탑  -->
 				</div>
 				<div class="row" style="height: 85%">
 					<div class="col-md-8" style="height: 100%">
@@ -1054,7 +1098,7 @@ margin:auto;
 									</div>
 									<div class="row">
 										<div class="col-md-12">
-											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" id="saveRelationWriting" type="submit">저장</button>
+											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
 										
 										</div>
 									
