@@ -173,7 +173,7 @@ div {
 /* 해시태그 */
 #post-postTag{
 	color : #8c8c8c;
-	font-size:15px;
+	font-size:13px;
 }
 
 /* 게시물 작성자 프로필 */
@@ -808,7 +808,7 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "</div></div>"
 										+ "<div class='appendInfo'>"
 										+ todoContent
-										+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> "
+										+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='../resources/upload/member/" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> "
 										+ data.todoMember.memberName
 										+ "</div><br>";
 
@@ -832,6 +832,8 @@ img[class="btn btn-link dropdown-toggle"] {
 
 	//할일 진행과정 변경
 	function changeProgressTodo(todoMember, todoNo, status) {
+		console.log("할일 대상자 : " + todoMember);
+		console.log("로그인한 계정 : " + postMemberNo);
 		if (todoMember == postMemberNo) { //로그인한 계정과 할일을 해야하는 사람과 같으면 진행과정 변경가능
 			$
 					.ajax({
