@@ -95,7 +95,7 @@ div {
 			<!-- 링크 내용 -->
 			<div id="linkTableContainer">
 				<table id="linkTable" width="100%" height="100px" border="1" style="margin:0; padding:0;">
-				<c:forEach items="${listLink }" var="l">
+				<%-- <c:forEach items="${listLink }" var="l">
 					<tr>
 						<td rowspan="2" width="7%">아이콘</td>
 						<td width="60%">${l.linkTitle }</td>
@@ -104,7 +104,7 @@ div {
 					<tr>
 						<td colspan="2"><a href="${l.linkAddress }">${l.linkAddress }</a></td>
 					</tr>
-				</c:forEach>
+				</c:forEach> --%>
 				
 				</table>
 			</div>
@@ -125,26 +125,34 @@ div {
 </body>
 
 <script>
+listLinkAll();
 /* 전체 링크 */
 function listLinkAll() {
 	$.ajax({
 		url:"/listLinkAll.do",
 		type:"POST",
 		success : function(data) {
-			$("#linkTable").remove();
-			$("#linkTableContainer").append("<table id='linkTable' width='100%' height='100px' border='1' style='margin:0; padding:0;'></table>");
-			for(var i=0; i<data.length; i++) {
-				$("#linkTable").append(
-					"<tr>" +
-						"<td rowspan='2' width='7%'>아이콘</td>" +
-						"<td width='60%'>"+data[i].linkTitle+"</td>" +
-						"<td width='23%'>"+data[i].memberName+"</td>" +
-					"</tr>" +
-					"<tr>" +
-						"<td colspan='2'><a href='"+data[i].linkAddress+"'>"+data[i].linkAddress+"</a></td>" +
-					"</tr>"
-				);
+			if(data.length == 0) {
+				$("#linkTableContainer").html("<div style='text-align:center;'>링크가 없습니다.</div>");
 			}
+			else {
+				$("#linkTable").remove();
+				$("#linkTableContainer").append("<table id='linkTable' width='100%' height='100px' border='1' style='margin:0; padding:0;'></table>");
+				for(var i=0; i<data.length; i++) {
+					$("#linkTable").append(
+						"<tr>" +
+							"<td rowspan='2' width='7%'>아이콘</td>" +
+							"<td width='60%'>"+data[i].linkTitle+"</td>" +
+							"<td width='23%'>"+data[i].memberName+"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='2'><a href='"+data[i].linkAddress+"'>"+data[i].linkAddress+"</a></td>" +
+						"</tr>"
+					);
+				}
+			}
+			
+			
 		},
 		error : function(data) {
 			console.log("오류");
@@ -158,20 +166,26 @@ function listLinkMe() {
 		url:"/listLinkMe.do",
 		type:"POST",
 		success : function(data) {
-			$("#linkTable").remove();
-			$("#linkTableContainer").append("<table id='linkTable' width='100%' height='100px' border='1' style='margin:0; padding:0;'></table>");
-			for(var i=0; i<data.length; i++) {
-				$("#linkTable").append(
-					"<tr>" +
-						"<td rowspan='2' width='7%'>아이콘</td>" +
-						"<td width='60%'>"+data[i].linkTitle+"</td>" +
-						"<td width='23%'>"+data[i].memberName+"</td>" +
-					"</tr>" +
-					"<tr>" +
-						"<td colspan='2'><a href='"+data[i].linkAddress+"'>"+data[i].linkAddress+"</a></td>" +
-					"</tr>"
-				);
+			if(data.length == 0) {
+				$("#linkTableContainer").html("<div style='text-align:center;'>링크가 없습니다.</div>");
 			}
+			else {
+				$("#linkTable").remove();
+				$("#linkTableContainer").append("<table id='linkTable' width='100%' height='100px' border='1' style='margin:0; padding:0;'></table>");
+				for(var i=0; i<data.length; i++) {
+					$("#linkTable").append(
+						"<tr>" +
+							"<td rowspan='2' width='7%'>아이콘</td>" +
+							"<td width='60%'>"+data[i].linkTitle+"</td>" +
+							"<td width='23%'>"+data[i].memberName+"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='2'><a href='"+data[i].linkAddress+"'>"+data[i].linkAddress+"</a></td>" +
+						"</tr>"
+					);
+				}
+			}
+			
 		},
 		error : function(data) {
 			console.log("오류");

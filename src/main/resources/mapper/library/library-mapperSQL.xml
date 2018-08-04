@@ -313,5 +313,12 @@
         and d.dc_maker = m2.member_no
 		and dc_post_no in (select post_no from post where post_pro_no = #{proNo})
 	</select>
-
+	
+	<delete id="deleteTodo" parameterType="todo">
+		delete from todo where todo_no = #{todoNo}
+	</delete> 
+	
+	<delete id="deleteDecision" parameterType="decision">
+		delete from decision where dc_no = #{dcNo}
+	</delete> 
 </mapper>

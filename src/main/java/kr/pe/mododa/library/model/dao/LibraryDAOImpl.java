@@ -119,4 +119,12 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return (ArrayList<Decision>)decisionListPro;
 	}
 
+	public int deleteTodo(SqlSessionTemplate sqlSession, int todoNo) {
+		return sqlSession.delete("library.deleteTodo", todoNo);
+	}
+
+	public int deleteDecision(SqlSessionTemplate sqlSession, int dcNo) {
+		return sqlSession.delete("library.deleteDecision", dcNo);
+	}
+
 }

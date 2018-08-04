@@ -413,9 +413,14 @@ div {
 				var str ="";
 				$("#todoDiv").remove();
 				$("#todoContainer").append("<div id='todoDiv'></div>");
+				
+				if(data.length == 0) {
+					str += "<div style='text-align:center;'>할 일이 없습니다.</div>";
+				}
+				
 				for(i=0; i<data.length; i++) {
 					str += 
-						"<div style='float:left; padding:10px;'><div class='btn-group'>";
+						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
 					
 					if(data[i].todoProgress == 'suggest') {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
@@ -443,7 +448,7 @@ div {
 					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
 						str +=
 							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
 					}
 					
 					str +=
@@ -452,7 +457,7 @@ div {
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
 						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div>";
+						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
 				}
 				$("#todoDiv").append(str);
 			},
@@ -471,9 +476,14 @@ div {
 				var str ="";
 				$("#todoDiv").remove();
 				$("#todoContainer").append("<div id='todoDiv'></div>");
+				
+				if(data.length == 0) {
+					str += "<div style='text-align:center;'>할 일이 없습니다.</div>";
+				}
+				
 				for(i=0; i<data.length; i++) {
 					str += 
-						"<div style='float:left; padding:10px;'><div class='btn-group'>";
+						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
 					
 					if(data[i].todoProgress == 'suggest') {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
@@ -501,7 +511,7 @@ div {
 					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
 						str +=
 							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
 					}
 					
 					str +=
@@ -510,7 +520,7 @@ div {
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
 						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div>";
+						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
 				}
 				$("#todoDiv").append(str);
 			},
@@ -531,7 +541,7 @@ div {
 				$("#todoContainer").append("<div id='todoDiv'></div>");
 				for(i=0; i<data.length; i++) {
 					str += 
-						"<div style='float:left; padding:10px;'><div class='btn-group'>";
+						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
 					
 					if(data[i].todoProgress == 'suggest') {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
@@ -559,7 +569,7 @@ div {
 					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
 						str +=
 							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;'>삭제</button>"
+							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
 					}
 					
 					str +=
@@ -568,7 +578,7 @@ div {
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
 						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div>";
+						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
 				}
 				$("#todoDiv").append(str);
 			},
@@ -619,6 +629,10 @@ div {
 				alert("할일 작성 완료");
 				closeModal();
 				todoAll();
+				$('#selectProject').text("프로젝트 선택");
+				$('#memberList').text("멤버 선택");
+				$('#todoTitle').val("");
+				$('#todoContent').val("");
 			},
 			error : function(data) {
 				console.log("오류");
@@ -753,6 +767,7 @@ div {
 			
 	}
 	
+	// 할 일 수정
 	function updateTodo(id) {
 		var todoWriter = $("#todoWriter_"+id).val();
 		var todoTitle = $("#todoTitle_"+id).val();
@@ -771,6 +786,28 @@ div {
 			success : function(data) {
 				closeContentModal(id);
 				alert("할 일 수정 성공");
+				todoAll();
+			},
+			error : function(data) {
+				console.log("할일 수정 실패");
+			},
+			complete : function(data) {
+					
+			}
+		});
+	}
+	
+	// 할 일 삭제
+	function deleteTodo(id) {
+		$.ajax({
+			url : "/deleteTodo.do",
+			type : "post",
+			data : {
+				todoNo : id
+			},
+			success : function(data) {
+				alert("할 일 삭제 성공");
+				$("#todoEach_"+id).remove();
 			},
 			error : function(data) {
 				console.log("할일 수정 실패");

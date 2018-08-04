@@ -326,54 +326,75 @@ div {
 				
 				var str = "";
 				
+				if(data.length == 0) {
+					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
+				}
+				
 				for(i=0; i<data.length; i++) {
 					if(data[i].dcYn == 'N') {
 						str += 
-							"<div class='eachDecision'>"+
+							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
 							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
 							"</div>";
 						
-						if(user == data[i].dcMaker) {
-							str += 
-								"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-								"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-						}
-						
-						str +=
-							"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-							"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-							"</div>";
-						
+							if(user == data[i].dcMaker) {
+								str += 
+									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
+									
+							}
+							
+							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
+								str +=
+									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
+									"</div>";
+							}
+							
+						str += "</div>";	
+								
 					}
 					else {
 						if(data[i].dcDecision == 'N') {
 							str += 
-								"<div class='eachDecision'>"+
+								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+										
+								}
+							
+								
+								str += "</div></div></div>";
 							
 						}
 						else if(data[i].dcDecision == 'Y') {
-							str += "<div class='eachDecision'>"+
+							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+								}
+								
+								str += "</div></div></div>";
 							
 						}
 					}
+					
+					
 				}
 				$("#dcDiv").append(str);
 			},
@@ -395,54 +416,75 @@ div {
 				
 				var str = "";
 				
+				if(data.length == 0) {
+					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
+				}
+				
 				for(i=0; i<data.length; i++) {
 					if(data[i].dcYn == 'N') {
 						str += 
-							"<div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'>"+
+							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
+							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
 							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
 							"</div>";
 						
-						if(user == data[i].dcMaker) {
-							str += 
-								"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-								"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-						}
-						
-						str +=
-							"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-							"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-							"</div>";
-						
+							if(user == data[i].dcMaker) {
+								str += 
+									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
+									
+							}
+							
+							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
+								str +=
+									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
+									"</div>";
+							}
+							
+						str += "</div>";	
+								
 					}
 					else {
 						if(data[i].dcDecision == 'N') {
 							str += 
-								"<div class='eachDecision'>"+
+								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+										
+								}
+							
+								
+								str += "</div></div></div>";
 							
 						}
 						else if(data[i].dcDecision == 'Y') {
-							str += "<div class='eachDecision'>"+
+							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+								}
+								
+								str += "</div></div></div>";
 							
 						}
 					}
+					
+					
 				}
 				$("#dcDiv").append(str);
 			},
@@ -463,54 +505,75 @@ div {
 				
 				var str = "";
 				
+				if(data.length == 0) {
+					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
+				}
+				
 				for(i=0; i<data.length; i++) {
 					if(data[i].dcYn == 'N') {
 						str += 
-							"<div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'>"+
+							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
+							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
 							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
 							"</div>";
 						
-						if(user == data[i].dcMaker) {
-							str += 
-								"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-								"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-						}
-						
-						str +=
-							"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-							"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-							"</div>";
-						
+							if(user == data[i].dcMaker) {
+								str += 
+									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
+									
+							}
+							
+							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
+								str +=
+									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
+									"</div>";
+							}
+							
+						str += "</div>";	
+								
 					}
 					else {
 						if(data[i].dcDecision == 'N') {
 							str += 
-								"<div class='eachDecision'>"+
+								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+										
+								}
+							
+								
+								str += "</div></div></div>";
 							
 						}
 						else if(data[i].dcDecision == 'Y') {
-							str += "<div class='eachDecision'>"+
+							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
 								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>"+
-								"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick=''>"+
-								"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-								"</div>"+
 								"</div>";
+								
+								if(user == data[i].dcMaker) {
+									str += 
+										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
+										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
+								}
+								
+								str += "</div></div></div>";
 							
 						}
 					}
+					
+					
 				}
 				$("#dcDiv").append(str);
 			},
@@ -611,6 +674,23 @@ div {
 		}
 		
 		
+	}
+	
+	function deleteDecision(id) {
+		$.ajax({
+			url : "/deleteDecision.do",
+			type : "post",
+			data : {
+				dcNo : id
+			},
+			success : function(data) {
+				$('#dcEach_'+id).remove();
+				alert("의사결정 삭제 완료");
+			},
+			error : function(data) {
+				console.log("deleteDecision 실패");
+			}
+		});
 	}
 	
 	

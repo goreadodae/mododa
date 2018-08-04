@@ -100,12 +100,23 @@ public class LibraryControllerImpl implements LibraryController{
 			// 이미지 객체 리스트
 			ArrayList<Upload> listImage = libraryService.listImage(memberNo);
 			
+			for(int i=0; i<listImage.size(); i++) {
+				String[] array = listImage.get(i).getUploadPath().split("/");
+				for(int j=0; j<array.length; j++) {
+					if(j == array.length-1) {
+						listImage.get(i).setFileName(array[j]);
+					}
+				}
+			}
+			
 			// 사용자가 속해 있는 프로젝트 리스트
 			ArrayList<Project> listProject = libraryService.listProject(memberNo);
 						
 			// 프라이빗 공간 프로젝트 번호 가져오기
 			int privateNo = libraryService.privateNo(memberNo);
 
+			
+			
 			ModelAndView view = new ModelAndView();
 			view.addObject("listImage", listImage);
 			view.addObject("listProject", listProject);
@@ -444,6 +455,7 @@ public class LibraryControllerImpl implements LibraryController{
 		new Gson().toJson(list,response.getWriter());
 	}
 	
+	// 프로젝트 번호에 따라 회원정보 불러오기
 	@RequestMapping(value="/todoContentMemberPro.do")
 	public void todoContentMemberPro(HttpSession session, HttpServletResponse response, @RequestParam int todoProNo) throws Exception {
 		System.out.println(todoProNo);
@@ -455,7 +467,17 @@ public class LibraryControllerImpl implements LibraryController{
 		new Gson().toJson(list,response.getWriter());
 	}
 	
+	// 할 일 삭제
+	@RequestMapping(value="/deleteTodo.do")
+	public void deleteTodo(HttpSession session, HttpServletResponse response, @RequestParam int todoNo) throws Exception {
+		int result = libraryService.deleteTodo(todoNo);
+	}
 	
+	// 의사결정 삭제
+	@RequestMapping(value="/deleteDecision.do")
+	public void deleteDecision(HttpSession session, HttpServletResponse response, @RequestParam int dcNo) throws Exception{
+		int result = libraryService.deleteDecision(dcNo);
+	}
 	
 	
 	
