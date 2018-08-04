@@ -62,7 +62,16 @@
 		from schedule
 	</select>
 	<insert id ="calendarInsertSchedule" parameterType="schedule">
-	insert into schedule values (schedule_SEQ.nextval,#{postNo},1,#{proNo},#{startDate},#{endDate},#{scTitle})
+	insert into schedule values (schedule_SEQ.nextval,	
+	<choose>
+    <when test="postNo != 0">
+       #{postNo},
+    </when>
+    <otherwise>
+        null,
+    </otherwise>
+	</choose>
+	1,#{proNo},#{startDate},#{endDate},#{scTitle})	
 	</insert>
 	<select id="calendarOneSchedule" parameterType="schedule" resultType="schedule">
 	select sc_no as scheduleNo,

@@ -63,9 +63,8 @@ var scheduleNo = 0;
 	    	},*/ 
 			header: {
 				left: 'title',
-				/* center: 'title', */
+				/* center: 'prev,next today', */
 				right: 'prev,next today,month,listWeek'
-				/* right: 'month,agendaWeek,agendaDay' */
 			},
 			selectable: true,
 			selectHelper: true,
@@ -238,7 +237,7 @@ var scheduleNo = 0;
     	
     	var proSelect = document.getElementById("projectList").value;
     	var relationSelect = document.getElementById("linkPostList").value; 
-		
+		console.log("프로젝트번호 :"+proSelect); console.log("글번호 :"+relationSelect);
     	var title = document.getElementById("scheduleTitle").value;
     	var startDate = document.getElementById("startDate").value;
     	var endDate = document.getElementById("endDate").value;
@@ -560,12 +559,22 @@ var scheduleNo = 0;
 				        success : function(data) {
          
 				           var events = [];
+				           
+				           
 				        	 
 				         for(var i=0;i<data.length;i++){	
+				        	 				        	 
+								var end = data[i].stEndDate;		
+									
+									var endDate = new Date(end);
+									endDate.setDate(endDate.getDate() + 1);
+									
+									endDate = dateToYYYYMMDD(endDate);
+				        	 				        	 
 				        	 var event={
 				        			 title:data[i].scTitle,  
 				        			 start : data[i].stStartDate,
-					        		 end : data[i].stEndDate,
+					        		 end : endDate,
 					        		 color : '#CFF09E',
 					        		 url: data[i].scheduleNo};
 
