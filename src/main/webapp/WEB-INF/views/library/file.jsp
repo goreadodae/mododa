@@ -93,18 +93,19 @@ div {
 			
 			<!-- 파일 내용 -->
 			<div id="fileTableContainer">
-				<table id="fileTable" width="100%" height="100px" border="1" style="margin:0; padding:0;">
 				<c:forEach items="${listFile }" var="f">
-					<tr>
-						<td rowspan="2" width="7%">아이콘</td>
-						<td width="70%" colspan="2">${f.fileName}</td>
-						<td width="23%">${f.uploadDate }</td>
-					</tr>
-					<tr>
-						<td colspan="3">${f.postTitle }</td>
-					</tr>
+				<div id="fileDiv_${f.uploadNo }">
+					<input type='hidden' id='uploadPath_${f.uploadNo }' value='${f.uploadPath }' />
+					<div class="card" style="width: 100%;">
+	  				<div class="card-body">
+	    			<h5 class="card-title">${f.fileName }</h5>
+	    			<h6 class="card-subtitle mb-2 text-muted">${f.postTitle }</h6>
+	    			<p class="card-text">${f.uploadDate }</p>
+	    			<a href="#" class="card-link">다운로드</a>
+	  				</div>
+					</div>				
+				</div>
 				</c:forEach>
-				</table>
 			</div>	
 			
 			<!-- 파일 내용 끝 -->
@@ -126,26 +127,36 @@ div {
 </body>
 
 <script>
+/* listFileAll(); */
 /* 전체 파일 */
 function listFileAll() {
 	$.ajax({
 		url:"/listFileAll.do",
 		type:"POST",
 		success : function(data) {
-			$("#fileTable").remove();
-			$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
-			for(var i=0; i<data.length; i++) {
-				$("#fileTable").append(
-						"<tr>" +
-							"<td rowspan='2' width='7%''>아이콘</td>" + 
-							"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
-							"<td width='23%'>"+data[i].uploadDate+"</td>" +
-						"</tr>" +
-						"<tr>" +
-							"<td colspan='3'>"+data[i].postTitle+"</td>" +
-						"</tr>"
-				);
+			if(data.length == 0) {
+				$("#fileTableContainer").html("<div style='text-align:center;'>파일이 없습니다.</div>");
 			}
+			else {
+				$("#fileTable").remove();
+				$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
+				
+				
+				
+				for(var i=0; i<data.length; i++) {
+					$("#fileTable").append(
+							"<tr>" +
+								"<td rowspan='2' width='7%''>아이콘</td>" + 
+								"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
+								"<td width='23%'>"+data[i].uploadDate+"</td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td colspan='3'>"+data[i].postTitle+"</td>" +
+							"</tr>"
+					);
+				}
+			}
+			
 		},
 		error : function(data) {
 			console.log("오류");
@@ -159,20 +170,26 @@ function listFileMe() {
 		url:"/listFileMe.do",
 		type:"POST",
 		success : function(data) {
-			$("#fileTable").remove();
-			$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
-			for(var i=0; i<data.length; i++) {
-				$("#fileTable").append(
-						"<tr>" +
-							"<td rowspan='2' width='7%''>아이콘</td>" + 
-							"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
-							"<td width='23%'>"+data[i].uploadDate+"</td>" +
-						"</tr>" +
-						"<tr>" +
-							"<td colspan='3'>"+data[i].postTitle+"</td>" +
-						"</tr>"
-				);
+			if(data.length == 0) {
+				$("#fileTableContainer").html("<div style='text-align:center;'>파일이 없습니다.</div>");
 			}
+			else {
+				$("#fileTable").remove();
+				$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
+				for(var i=0; i<data.length; i++) {
+					$("#fileTable").append(
+							"<tr>" +
+								"<td rowspan='2' width='7%''>아이콘</td>" + 
+								"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
+								"<td width='23%'>"+data[i].uploadDate+"</td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td colspan='3'>"+data[i].postTitle+"</td>" +
+							"</tr>"
+					);
+				}
+			}
+			
 		},
 		error : function(data) {
 			console.log("오류");

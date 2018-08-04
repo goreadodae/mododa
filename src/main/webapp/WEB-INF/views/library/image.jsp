@@ -94,26 +94,18 @@ div {
 				
 			<!-- 이미지 내용 -->
 			<div id="imageTableContainer">
-			<table id="imageTable" style="margin:0; padding:0;">
 				<c:forEach items="${listImage }" var="i">
-				<tr>
-					<td colspan="3">
-						<div style="margin:5px; width:250px; height:250px;float:left;display:table;">
-							<div style="display:table-cell; vertical-align:middle;">
-								<div class="card" style="width: 18rem;">
-									<img class="card-img-top" src="${i.uploadPath }" style="width:100%;" alt="Card image cap">
-									<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-									<a href="#" class="btn btn-primary">다운로드</a>
-									</div>
-								</div>
-							</div>
+					<div id="imgEach_${i.uploadNo }" style="float:left;">
+					<div class="card" style="width: 15rem;">
+						<img class="card-img-top" src="${i.uploadPath }" style="width:100%; height:15rem;alt="Card image cap">
+						<div class="card-body">
+						<h5 class="card-title">${i.fileName }</h5>
+						<p class="card-text">${i.uploadDate }</p>
+						<a href="#" class="btn btn-primary">다운로드</a>
 						</div>
-					</td>
-				</tr>
+					</div>
+					</div>
 				</c:forEach>
-			</table>
 			</div>
 			<!-- 이미지 내용 끝 -->
 		</div>
@@ -131,34 +123,42 @@ div {
 </body>
 
 <script>
+/* listImageAll(); */
+
 /* 전체 이미지 */
 function listImageAll() {
 	$.ajax({
 		url:"/listImageAll.do",
 		type:"POST",
 		success : function(data) {
-			$("#imageTable").remove();
-			$("#imageTableContainer").append("<table id='imageTable' style='margin:0; padding:0;'></table>");
-			for(i=0; i<data.length; i++) {
-				$("#imageTable").append(
-					"<tr>"+
-						"<td colspan='3'>" +
-							"<div style='margin:5px; width:250px; height:250px;float:left;display:table;'>"+
-								"<div style='display:table-cell; vertical-align:middle;'>"+
-									"<div class='card' style='width: 18rem;'>"+
-										"<img class='card-img-top' src='"+data[i].uploadPath+"' style='width:100%;' alt='Card image cap' />"+
-										"<div class='card-body'>"+
-										"<h5 class='card-title'>Card title</h5>"+
-										"<p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>"+
-										"<a href='#' class='btn btn-primary'>다운로드</a>"+
+			if(data.length == 0) {
+				$("#imageTableContainer").html("<div style='text-align:center;'>이미지가 없습니다.</div>");
+			}
+			else {
+				$("#imageTable").remove();
+				$("#imageTableContainer").append("<table id='imageTable' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#imageTable").append(
+						"<tr>"+
+							"<td colspan='3'>" +
+								"<div style='margin:5px; width:250px; height:250px;float:left;display:table;'>"+
+									"<div style='display:table-cell; vertical-align:middle;'>"+
+										"<div class='card' style='width: 18rem;'>"+
+											"<img class='card-img-top' src='"+data[i].uploadPath+"' style='width:100%;' alt='Card image cap' />"+
+											"<div class='card-body'>"+
+											"<h5 class='card-title'>Card title</h5>"+
+											"<p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>"+
+											"<a href='#' class='btn btn-primary'>다운로드</a>"+
+											"</div>"+
 										"</div>"+
 									"</div>"+
 								"</div>"+
-							"</div>"+
-						"</td>"+
-					"</tr>"
-				);
+							"</td>"+
+						"</tr>"
+					);
+				}
 			}
+			
 		},
 		error : function(data) {
 			console.log("오류");
@@ -172,28 +172,35 @@ function listImageMe() {
 		url:"/listImageMe.do",
 		type:"POST",
 		success : function(data) {
-			$("#imageTable").remove();
-			$("#imageTableContainer").append("<table id='imageTable' style='margin:0; padding:0;'></table>");
-			for(i=0; i<data.length; i++) {
-				$("#imageTable").append(
-					"<tr>"+
-						"<td colspan='3'>" +
-							"<div style='margin:5px; width:250px; height:250px;float:left;display:table;'>"+
-								"<div style='display:table-cell; vertical-align:middle;'>"+
-									"<div class='card' style='width: 18rem;'>"+
-										"<img class='card-img-top' src='"+data[i].uploadPath+"' style='width:100%;' alt='Card image cap' />"+
-										"<div class='card-body'>"+
-										"<h5 class='card-title'>Card title</h5>"+
-										"<p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>"+
-										"<a href='#' class='btn btn-primary'>다운로드</a>"+
+			if(data.length == 0) {
+				$("#imageTableContainer").html("<div style='text-align:center;'>이미지가 없습니다.</div>");
+			}
+			else {
+				$("#imageTable").remove();
+				$("#imageTableContainer").append("<table id='imageTable' style='margin:0; padding:0;'></table>");
+				for(i=0; i<data.length; i++) {
+					$("#imageTable").append(
+						"<tr>"+
+							"<td colspan='3'>" +
+								"<div style='margin:5px; width:250px; height:250px;float:left;display:table;'>"+
+									"<div style='display:table-cell; vertical-align:middle;'>"+
+										"<div class='card' style='width: 18rem;'>"+
+											"<img class='card-img-top' src='"+data[i].uploadPath+"' style='width:100%;' alt='Card image cap' />"+
+											"<div class='card-body'>"+
+											"<h5 class='card-title'>Card title</h5>"+
+											"<p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>"+
+											"<a href='#' class='btn btn-primary'>다운로드</a>"+
+											"</div>"+
 										"</div>"+
 									"</div>"+
 								"</div>"+
-							"</div>"+
-						"</td>"+
-					"</tr>"
-				);
+							"</td>"+
+						"</tr>"
+					);
+				}
 			}
+			
+			
 		},
 		error : function(data) {
 			console.log("오류");

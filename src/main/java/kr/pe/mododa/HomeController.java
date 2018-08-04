@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.pe.mododa.library.model.service.LibraryServiceImpl;
+import kr.pe.mododa.library.model.vo.Decision;
+import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.project.controller.ProjectControllerImpl;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -20,6 +24,10 @@ public class HomeController {
 	@Autowired
 	@Qualifier(value="projectController")
 	private ProjectControllerImpl projectController;
+	
+	@Autowired
+	@Qualifier(value="libraryService")
+	private LibraryServiceImpl libraryService;
 	
 	// 페이지 공통 부분 로드하는 컨트롤러
 	@RequestMapping(value="/header.do")
@@ -44,9 +52,31 @@ public class HomeController {
 		return view;
 	}
 	
+	// rightbar에서 전체 내 할 일, 전체 의사결정
 	@RequestMapping(value="/rightbar.do")
-	public String rightbar() {
-		return "main/rightbar";
+	public Object rightbar() {
+		int proNo=6;
+		ArrayList<Todo> todoList = libraryService.todoListPro(proNo);
+		ArrayList<Decision> decisionList = libraryService.decisionListPro(proNo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("todoList", todoList);
+		view.addObject("decisionList", decisionList);
+		view.setViewName("main/rightbar");
+		return view;
+	}
+	
+	// rightbar에서 프로젝트별로 내 할 일, 의사결정
+	@RequestMapping(value="/rightbarPro.do")
+	public Object rightbar(@RequestParam int proNo) {
+		ArrayList<Todo> todoList = libraryService.todoListPro(proNo);
+		ArrayList<Decision> decisionList = libraryService.decisionListPro(proNo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("todoList", todoList);
+		view.addObject("decisionList", decisionList);
+		view.setViewName("main/rightbar");
+		return view;
 	}
 	
 	@RequestMapping(value="/loading.do")

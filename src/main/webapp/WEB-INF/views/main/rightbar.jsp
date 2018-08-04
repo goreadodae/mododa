@@ -1,5 +1,7 @@
+<%@page import="kr.pe.mododa.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -68,48 +70,46 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>할 일</h5>
 				<br>
-
-				<div class="btn-group">
-					<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img src="../resources/images/icon/checked-allot.png"></img>
-					</button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-allot.png"></img> 할당된 할 일</a> 
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/play-button.png"></img> 진행중</a>
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/pause.png"></img> 일시중지</a> 
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
+				
+				<c:forEach items="${todoList }" var="t">
+					<div class='btn-group'>
+						<c:choose>
+							<c:when test="${t.todoProgress.equals('suggest')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/icon/play-button.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('working')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/play-buttonOn.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('stop')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/pauseOn.png' />
+							</c:when>
+							<c:otherwise>
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/checked.png' />
+							</c:otherwise>
+						</c:choose>
+						<div class='dropdown-menu'>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+						</div>
 					</div>
-				</div> <a href="#">할 일 제목1</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
+				<a href="#">${t.todoTitle }</a> <a href="#" style="font-size: 80%">${t.todoWriterName }</a><br>
+				</c:forEach>
+				<c:choose>
+					<c:when test="${todoList == null }">
+						<p>할 일이 없습니다.</p>
+					</c:when>
+				</c:choose>
+				
+				
 
-				<div class="btn-group">
-					<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img src="../resources/images/icon/checked-allot.png"></img>
-					</button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-allot.png"></img> 할당된 할 일</a> 
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/play-button.png"></img> 진행중</a>
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/pause.png"></img> 일시중지</a> 
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-complete.png"></img> 완료</a>
-						<a class="dropdown-item" href="#">
-						<img src="../resources/images/icon/checked-request.png"></img> 확인요청</a>
-					</div>
-				</div> <a href="#">할 일 제목1</a> <a href="#" style="font-size: 80%">할 일 작성자</a><br>
 			</td>
 		</tr>
 
 		<!-- 할 일의 더보기 -->
 		<tr style="float: right;">
-			<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
+			<td><br> <a href="/todo.do" style="font-size: 80%">더보기 ></a></td>
 		</tr>
 
 		<!-- 의사결정 -->
@@ -118,20 +118,24 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>의사결정</h5>
 				<br>
-				<p>
+				<c:forEach items="${decisionList }" var="d">
+					<p>
 					<a href="#"><img src="../resources/images/icon/decision.png"></img>
-						의사결정 제목1</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
-				</p>
-				<p>
-					<a href="#"><img src="../resources/images/icon/decision.png"></img>
-						의사결정 제목2</a> <a href="#" style="font-size: 80%">의사결정 지목된 사람</a><br>
-				</p>
+						${d.dcContent }</a> <a href="#" style="font-size: 80%">${d.dcWriterName }</a><br>
+					</p>
+				</c:forEach>
+				<c:choose>
+					<c:when test="${decisionList == null }">
+						<p>의사결정이 없습니다.</p>
+					</c:when>
+				</c:choose>
+				
 			</td>
 		</tr>
 
 		<!-- 의사결정의 더보기 -->
 		<tr style="float: right;">
-			<td><br> <a href="#" style="font-size: 80%">더보기 ></a></td>
+			<td><br> <a href="/decision.do" style="font-size: 80%">더보기 ></a></td>
 		</tr>
 
 
@@ -148,9 +152,72 @@ table {
 </body>
 
 <script>
+	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
+
 	function library() {
 		location.href="/todo.do";
 	}
+	
+	// 할일 진행과정 변경
+	function changeProgressTodo(todoMember, todoNo, status) {
+		var writerNo = $("#writerNo_"+todoNo).val();
+		var memberNo = $("#memberNo_"+todoNo).val();
+		
+		console.log("user : " + user);
+		console.log("writerNo : " + writerNo);
+		console.log("memberNo : " + memberNo);
+		
+		if((user == writerNo || user == memberNo) || (user==writerNo && user == memberNo)) {
+			$.ajax({
+				url : "/postUpdateTodoProgress.do",
+				type : "post",
+				data : {
+					todoNo : todoNo,
+					todoProgress : status
+				},
+				success : function(data) {
+					if (data.result < 0) {
+						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+					} else {
+						if (status == 'suggest') {
+							$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+							$('#'+todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+							$('#'+todoNo+"_r").attr("src","../resources/images/icon/play-button.png");
+						} else {
+							if (status == 'suggest') {
+								$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+								$('#' + todoNo+"_r").attr("src","../resources/images/icon/play-button.png");
+							} else if (status == 'working') {
+								$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/play-buttonOn.png");
+								$('#' + todoNo+"_r").attr("src","../resources/images/post/play-buttonOn.png");
+							} else if (status == 'stop') {
+								$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/pauseOn.png");
+								$('#' + todoNo+"_r").attr("src","../resources/images/post/pauseOn.png");
+							} else if (status == 'finish') {
+								$('#' + todoNo).attr("src","../resources/images/post/checked.png");
+								$('#' + todoNo+"_m").attr("src","../resources/images/post/checked.png");
+								$('#' + todoNo+"_r").attr("src","../resources/images/post/checked.png");
+							}
+						}
+					}
+				},
+				error : function(data) {
+					console.log("할일 진행과정 변경 실패");
+				},
+				complete : function(data) {
+						
+				}
+			});
+		}
+		else {
+			alert("할일 진행과정 변경권한이 없습니다.");
+		}
+			
+	}
+	
 </script>
 
 </html>

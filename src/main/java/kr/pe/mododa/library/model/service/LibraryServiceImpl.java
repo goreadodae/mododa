@@ -119,4 +119,24 @@ public class LibraryServiceImpl implements LibraryService{
 	public ArrayList<Member> todoContentMemberPost(int todoPostNo) {
 		return libraryDAO.todoContentMemberPost(sqlSession, todoPostNo);
 	}
+	
+	// 프로젝트별 할 일 출력
+	public ArrayList<Todo> todoListPro(int proNo) {
+		return libraryDAO.todoListPro(sqlSession, proNo);
+	}
+	
+	// 프로젝트별 의사결정 출력
+	public ArrayList<Decision> decisionListPro(int proNo) {
+		return libraryDAO.decisionListPro(sqlSession, proNo);
+	}
+	
+	// 할 일 삭제
+	public int deleteTodo(int todoNo) {
+		return libraryDAO.deleteTodo(sqlSession, todoNo);
+	}
+
+	// 의사결정 삭제
+	public int deleteDecision(int dcNo) {
+		return libraryDAO.deleteDecision(sqlSession, dcNo);
+	}
 }

@@ -271,5 +271,54 @@
         where w.member_no = m.member_no
 		and pro_no = (select post_pro_no from post where post_no = 2) order by 1
 	</select>
-
+	
+	<select id="todoListPro" resultType="todo">
+		  select
+	      todo_no as todoNo,
+	      todo_post_no as todoPostNo,
+	      todo_pro_no as todoProNo,
+	      todo_title as todoTitle,
+	      todo_content as todoContent,
+	      todo_writer as todoWriter,
+	      todo_member as todoMember,
+	      todo_start_date as todoStartDate,
+	      todo_end_date as todoEndDate,
+	      todo_progress as todoProgress,
+	      (select member_name from member where member_no=todo_writer) as todoWriterName,
+	      (select member_name from member where member_no=todo_member) as todoMemberName,
+	      (select member_picture from member where member_no=todo_member) as todoMemberPicture
+	      from todo
+	      where (todo_post_no in (select post_no from post where post_pro_no = #{proNo}) or todo_pro_no=#{proNo})
+	      order by todo_no desc
+	</select>
+	
+	<select id="decisionListPro" resultType="decision">
+		select
+		dc_no as dcNo,
+		dc_post_no as dcPostNo,
+		dc_writer as dcWriter,
+		dc_maker as dcMaker,
+		dc_content as dcContent,
+		dc_date as dcDate,
+		dc_yn as dcYn,
+		dc_decision as dcDecision,
+		dc_comment as dcComment,
+		dc_confirm_date as dcConfirmDate,
+        post_title as dcPostTitle,
+        m1.member_name as dcWriterName,
+        m2.member_name as dcMakerName
+		from decision d, post p, member m1, member m2
+        where d.dc_post_no = p.post_no
+        and d.dc_writer = m1.member_no
+        and d.dc_maker = m2.member_no
+		and dc_post_no in (select post_no from post where post_pro_no = #{proNo})
+	</select>
+	
+	<delete id="deleteTodo" parameterType="todo">
+		delete from todo where todo_no = #{todoNo}
+	</delete> 
+	
+	<delete id="deleteDecision" parameterType="decision">
+		delete from decision where dc_no = #{dcNo}
+	</delete> 
 </mapper>
