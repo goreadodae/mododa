@@ -13,27 +13,41 @@
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 <body>
-	<table  border="1px solid black">
-		<tr>
-			<td>번호</td>
-			<td>제목</td>
-			<td>작성자</td>
-			<td>작성일</td>
-		</tr>
-		
-		
-	
-		
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-		
-		</tr>
-		
-
-	</table>
+<div>
+	<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">번호</th>
+      <th scope="col">제목</th>
+      <th scope="col">작성자</th>
+      <th scope="col">작성일</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+ 	
+ 	<c:forEach items="${qnaList}" var="q">
+    <tr>
+      <th scope="row">${q.queNo}</th>
+      <td>${q.queTitle}</td>
+      <tr>
+      <td colspan="4">테스트내용</td> 
+      </tr>
+      <td>${q.memberName}</td>
+      <td>${q.queTime}</td>
+     </tr>
+     </c:forEach>
+    
+    <tr>
+      <th scope="row">2</th>
+      <td colspan="3">답변드립니다.</td>
+    </tr>
+    <tr>
+    <td colspan="4">답변내용입니다.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 	
 	<form action="/qnaWriteReady.do">
 		<input type="submit" value="글쓰기"> 
