@@ -256,7 +256,7 @@ img[class="btn btn-link dropdown-toggle"] {
 }
 
 /* 일정 등록 */
-#scTitle, #updateScTitle {
+#scTitle, #updateScTitle,#postTodoContent {
 	width: 95%;
 	height: 50px;
 	padding-left : 15px;
@@ -418,6 +418,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	var postBookmarkOnOff = 0;//북마크 상태
 	var postLikeOnOff = 0; //좋아요 상태
 	var postProNo = 0;	//프로젝트 번호
+	var postTodoNo = 0;//수정할 할일 번호
 	var postScheduleNo = 0;	//수정할 일정 번호
 	var postDecisionNo = 0; //의사결정 번호
 
@@ -492,8 +493,17 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");' id='scheduleContent" + data.schedule[i].scNo + "'>"
 										+ data.schedule[i].startDate + " ~ "
 										+ data.schedule[i].endDate
-										+ "&nbsp;&nbsp; : &nbsp;&nbsp;"
+										+ "&nbsp;&nbsp;&nbsp;&nbsp;"
 										+ data.schedule[i].scTitle + "</span>"
+										+"<div class='btn-group'>"
+										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
+										+	"<div class='dropdown-menu'>"
+										+		"<a class='dropdown-item' onclick='postChangeCalendarPage();'>"
+										+		"<img src='../resources/images/post/add-event.png' style='height : 18px;' />&nbsp;&nbsp;&nbsp;캘린더 보기</a>"
+										+		"<a class='dropdown-item' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");'>"
+										+		"<img src='../resources/images/post/pencil.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;일정 수정/삭제하기</a>"
+										+	"</div>"
+										+"</div>"
 										+ "</div>";
 
 								$('#appendforSchedule').html(strSchedule);
@@ -506,7 +516,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#newTodoContent').val("");
 							for (var i = 0; i < data.todo.length; i++) {
 								countTodo++;
-								strTodo += "<div class='btn-group'>";
+								strTodo += "<div id='postEachTodo" + data.todo[i].todoNo + "'><div class='btn-group'>";
 
 								switch (data.todo[i].todoProgress) {
 								case "suggest":
@@ -529,9 +539,19 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoMember + "," + data.todo[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data.todo[i].todoMember + "," + data.todo[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
 										+ "</div></div>";
-								strTodo += "<div class='appendInfo'>"
+								strTodo += "<div class='appendInfo' id='postEachTodoUpdate" + data.todo[i].todoNo + "'>"
 										+ data.todo[i].todoContent + "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='../resources/upload/member/" + data.todo[i].todoMemberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> " + data.todo[i].todoMemberName
-										+ "</div><br>";
+										+ "</div>"
+										+"<div class='btn-group'>"
+										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
+										+	"<div class='dropdown-menu'>"
+										+		"<a class='dropdown-item' onclick='open_updateTodoModal(" + data.todo[i].todoNo + ",\"" + data.todo[i].todoContent +"\");'>"
+										+		"<img src='../resources/images/post/pencil.png' style='height : 18px;' />&nbsp;&nbsp;&nbsp;할 일 수정하기</a>"
+										+		"<a class='dropdown-item' onclick='postDeleteTodo(" + data.todo[i].todoNo + ");'>"
+										+		"<img src='../resources/images/post/delete.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;할 일 삭제하기</a>"
+										+	"</div>"
+										+"</div>"
+										+ "</div>";
 							}
 							$('#appendforTodo').html(strTodo);
 							$('#countTodo').html(countTodo);
@@ -590,12 +610,14 @@ img[class="btn btn-link dropdown-toggle"] {
 							//게시글 프로젝트의 멤버들
 							$('#selectMember').html("");
 							$('#selectMemberForDecision').html("");
+							$('#selectMemberForTodo').html("");
 							for (var i = 0; i < data.member.length; i++) {
 								var strMember = "<option value='" + data.member[i].memberNo + "'>"
 										+ data.member[i].memberName
 										+ "</option>";
 								$('#selectMember').append(strMember);
 								$('#selectMemberForDecision').append(strMember);
+								$('#selectMemberForTodo').append(strMember);
 							}
 
 							
@@ -649,9 +671,23 @@ img[class="btn btn-link dropdown-toggle"] {
 	function close_postUpdate(){
 		$('#postUpdateModal').hide();
 	}
+	
+	
+	//할일수정 모달 open
+	function open_updateTodoModal(preTodoNo,preTodoContent){
+		$('#postTodoContent').val(preTodoContent);
+		postTodoNo = preTodoNo;
+		$('#postUpdateTodoModal').show();
+	}
+	
+	//할일수정 모달 close
+	function close_updateTodoModal(){
+		$('#postUpdateTodoModal').hide();
+	}
 
 	//일정추가 모달 open
 	function open_scheduleModal(flag) {
+		$('#scTitle').val("");
 		$('#scStartDate').valueAsDate = new Date();
 		$('#scEndDate').valueAsDate = new Date();
 		$('#scheduleModal').show();
@@ -753,7 +789,7 @@ img[class="btn btn-link dropdown-toggle"] {
 						$('#successAlert').show('slow');
 						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 					} 
-					else if (status == 'stop') {
+					else if (status == 'stop') {uuu
 						$('#statusImg').attr("src",
 								"../resources/images/post/pauseOn.png");
 						$('#successAlertMessage').text('글의 상태 \'일시중지\'로 변경');
@@ -798,7 +834,7 @@ img[class="btn btn-link dropdown-toggle"] {
 								console.log("insert실패");
 								alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 							} else {
-								var str = "<div class='btn-group'>"
+								var str = "<div id='postEachTodo" + data.todoNo + "'><div class='btn-group'>"
 										+ "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todoNo + "' src='../resources/images/icon/play-button.png' />"
 										+ "<div class='dropdown-menu'>"
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + todoMember + "," + data.todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
@@ -806,11 +842,21 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + todoMember + "," + data.todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + todoMember + "," + data.todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
 										+ "</div></div>"
-										+ "<div class='appendInfo'>"
+										+ "<div class='appendInfo' id='postEachTodoUpdate" + data.todoNo + "'>"
 										+ todoContent
 										+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='../resources/upload/member/" + data.todoMember.memberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> "
 										+ data.todoMember.memberName
-										+ "</div><br>";
+										+ "</div>"
+										+"<div class='btn-group'>"
+										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
+										+	"<div class='dropdown-menu'>"
+										+		"<a class='dropdown-item' onclick='open_updateTodoModal(" + data.todoNo + ",\"" + todoContent + "\");'>"
+										+		"<img src='../resources/images/post/pencil.png' style='height : 18px;' />&nbsp;&nbsp;&nbsp;할 일 수정하기</a>"
+										+		"<a class='dropdown-item' onclick='postDeleteTodo(" + data.todoNo + ");'>"
+										+		"<img src='../resources/images/post/delete.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;할 일 삭제하기</a>"
+										+	"</div>"
+										+"</div>"
+										+ "</div>";
 
 								$('#appendforTodo').append(str);
 								$('#countTodo').html(Number($('#countTodo').html()) + 1);
@@ -883,6 +929,58 @@ img[class="btn btn-link dropdown-toggle"] {
 			alert("진행상태의 수정 권한이 없습니다.");
 		}
 	}
+	
+	//할일 수정
+	function postUpdateTodo(){
+		var postTodoContent = $('#postTodoContent').val();
+		var selectMemberForTodo = $('#selectMemberForTodo').val();
+		$.ajax({
+			url : "/postUpdateTodo.do",
+			type : "post",
+			data : {
+				todoNo : postTodoNo,
+				todoContent : postTodoContent,
+				todoMember : selectMemberForTodo
+			},
+			success : function(data){
+				var postUpdateTodoStr = postTodoContent
+					+ "&nbsp;&nbsp;▶&nbsp;&nbsp;<img id='profileImg' src='../resources/upload/member/" + data.todoMemberInfo.memberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" /> "
+					+ data.todoMemberInfo.memberName;
+				$('#postEachTodoUpdate' + postTodoNo).html(postUpdateTodoStr);
+				
+				$('#successAlertMessage').text('할 일이 수정되었습니다.');
+		        $('#successAlert').show('slow');
+		        setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
+			},
+			error : function(data){
+				console.log("할일 수정 오류");
+			},
+			complete : function(data) {
+				close_updateTodoModal();
+			}
+		});
+	}
+	
+	//할일 삭제
+	function postDeleteTodo(todoNo){
+		$.ajax({
+			url : "/postDeleteTodo.do",
+			type : "post",
+			data : {
+				todoNo : todoNo
+			},
+			success : function(data){
+				$('#postEachTodo' + todoNo).remove();	// 내용 지우기
+				$('#countTodo').html(Number($('#countTodo').html())-1);	//카운트 1씩 감소
+				$('#failedAlertMessage').text('할 일이 삭제되었습니다.');
+                $('#failedAlert').show('slow');
+                setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
+			},
+			error : function(data){
+				console.log("할일 삭제 오류");
+			}
+		});
+	}
 
 	//일정 추가
 	function inputSchedule() {
@@ -907,8 +1005,18 @@ img[class="btn btn-link dropdown-toggle"] {
 									+ "<img src='../resources/images/post/calendar.png'/>&nbsp;&nbsp;"
 									+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.newScNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");' id='scheduleContent" + data.newScNo + "'>"
 									+ scStartDate + " ~ " + scEndDate
-									+ "&nbsp;&nbsp; : &nbsp;&nbsp;" + scTitle
-									+ "</span>" + "</div>";
+									+ "&nbsp;&nbsp;&nbsp;&nbsp;" + scTitle
+									+ "</span>"
+									+ "<div class='btn-group'>"
+									+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
+									+	"<div class='dropdown-menu'>"
+									+		"<a class='dropdown-item' onclick='postChangeCalendarPage();'>"
+									+		"<img src='../resources/images/post/add-event.png' style='height : 18px;' />&nbsp;&nbsp;&nbsp;캘린더 보기</a>"
+									+		"<a class='dropdown-item' onclick='open_updateScheduleModal(" + data.newScNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");'>"
+									+		"<img src='../resources/images/post/pencil.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;일정 수정/삭제하기</a>"
+									+	"</div>"
+									+ "</div>"
+									+ "</div>";
 									
 							$('#appendforSchedule').append(str);
 
@@ -944,7 +1052,7 @@ img[class="btn btn-link dropdown-toggle"] {
 			},
 			success : function(data){
 				var updatedSchedule = scStartDate + " ~ " + scEndDate
-				+ "&nbsp;&nbsp; : &nbsp;&nbsp;"
+				+ "&nbsp;&nbsp;&nbsp;&nbsp;"
 				+ scTitle;
 				$('#scheduleContent' + postScheduleNo).html(updatedSchedule);
 				$('#scheduleContent' + postScheduleNo).attr("onclick","open_updateScheduleModal(" + postScheduleNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");");
@@ -1270,6 +1378,12 @@ img[class="btn btn-link dropdown-toggle"] {
 		location.href="/projectPost.do?proNo="+postProNo;
 	}
 	
+	//캘린더로 이동
+	function postChangeCalendarPage(){
+		close_postDetail();
+		location.href="/calendar.do";
+	}
+	
 	//게시글 삭제
 	function deletePost(){
 		var deleteYesNo = confirm("게시물을 삭제하시겠습니까?");
@@ -1520,6 +1634,21 @@ img[class="btn btn-link dropdown-toggle"] {
 		</div>
 		<!-- 게시글 내용 수정 팝업모달 끝 -->
 
+
+		<!-- 할 일 수정 팝업모달 -->
+		<div id="postUpdateTodoModal" class="modal">
+			<!-- Modal 내용 -->
+			<div id="modal-decision">
+				<img src="../resources/images/post/todo.png" /><span style="color: #339966;">&nbsp;&nbsp;할 일 수정하기</span> 
+				<img src="../resources/images/post/close.png" onclick="close_updateTodoModal();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
+				<br> <input type="text" id="postTodoContent" placeholder="할 일 내용을 입력해 주세요." /><br>
+				<br> 담당자 선택&nbsp;&nbsp;<select id="selectMemberForTodo"></select><br>
+				<button class="insertButton2" onclick="postUpdateTodo();" style="float: right;">수정</button>
+
+			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 할 일 수정 팝업모달 끝 -->
 
 		<!-- 일정 팝업모달 -->
 		<div id="scheduleModal" class="modal">

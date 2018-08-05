@@ -356,6 +356,35 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
+	
+	//할일 삭제
+	@RequestMapping(value="/postDeleteTodo.do")
+	public ModelAndView deleteTodo(int todoNo) {
+		int result = postService.deleteTodo(todoNo);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.setViewName("jsonView");
+		return view;
+	}
+	
+	//할일 수정
+	@RequestMapping(value="/postUpdateTodo.do")
+	public ModelAndView updateTodo(int todoNo,String todoContent, int todoMember) {
+		Todo vo = new Todo();
+		vo.setTodoNo(todoNo);
+		vo.setTodoContent(todoContent);
+		vo.setTodoMember(todoMember);
+		int result = postService.updateTodo(vo);
+		
+		Member todoMemberInfo = postService.selectMemberInfo(todoMember);
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("result", result);
+		view.addObject("todoMemberInfo", todoMemberInfo);
+		view.setViewName("jsonView");
+		return view;
+	}
 
 	//북마크 설정
 	@RequestMapping(value="/postBookmarkOn.do")

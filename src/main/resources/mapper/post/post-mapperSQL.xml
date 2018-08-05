@@ -53,6 +53,7 @@
 		member_name as memberName
 		from work_on join member using (member_no)
 		where pro_no=(select post_pro_no from post where post_no=#{postNo})
+		and invite_yn='Y'
 	</select>
 
 
@@ -120,10 +121,11 @@
 	</insert>
 
 	<select id="selectMemberInfo" resultType="member">
-		select member_name as
-		memberName, member_picture as memberPicture from
-		member where
-		member_no=#{memberNo}
+		select 
+		member_name as memberName, 
+		member_picture as memberPicture 
+		from member 
+		where member_no=#{memberNo}
 	</select>
 
 	<insert id="insertDecision" parameterType="decision">
@@ -131,6 +133,10 @@
 		values(decision_SEQ.NEXTVAL, #{dcPostNo}, #{dcWriter}, #{dcMaker},
 		#{dcContent},SYSDATE,'N',null,null,null)
 	</insert>
+	
+	<delete id="deleteTodo">
+	delete from todo where todo_no=#{todoNo}
+	</delete>
 
 	<delete id="deleteSchedule">
 		delete from schedule where sc_no=#{scNo}
@@ -160,6 +166,12 @@
 	<update id="updateTodoProgress" parameterType="todo">
 		update todo set
 		todo_progress=#{todoProgress} where todo_no=#{todoNo}
+	</update>
+	
+	<update id="updateTodo" parameterType="todo">
+	update todo 
+	set todo_title=#{todoContent}, todo_content=#{todoContent}, todo_member=#{todoMember} 
+	where todo_no=#{todoNo}
 	</update>
 
 	<insert id="insertBookmark" parameterType="bookmark">
