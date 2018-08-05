@@ -20,6 +20,7 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 div {
@@ -395,39 +396,39 @@ input[type=checkbox] {
 					
 					
 					for(var i=0 ; i<postList.length ; i++) {
-						
+						/* 
 						var date = new Date(postList[i].postDate.time);
 						var dateStr = date.toString();
 						var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
-						
+						 */
 						
 						if(postList[i].postProgress=='suggest') {
 							suggestResult += '<div class="progressPost" draggable="true">'
 											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
 											 + '<span class="sugCheckBox" style="display: none;">'
 											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
-											 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+											 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 
 						} else if(postList[i].postProgress=='working') {
 							workingResult += '<div class="progressPost" draggable="true">'
 								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
 								 			 + '<span class="workCheckBox" style="display: none;">'
 								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
-								 			 + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 			 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 							
 						} else if(postList[i].postProgress=='stop') {
 							stopResult += '<div class="progressPost" draggable="true">'
 								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
 								 		  + '<span class="stopCheckBox" style="display: none;">'
 								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
-								 		  + '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 		  + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 							
 						} else if(postList[i].postProgress=='finish') {
 							finishResult += '<div class="progressPost" draggable="true">'
 								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
 											+ '<span class="finCheckBox" style="display: none;">'
 								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
-								 			+ '</span>'+postList[i].postTitle+'<br>'+postList[i].memberName+'<br>'+printDate+'</div>';
+								 			+ '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 							
 						}
 						
@@ -505,7 +506,7 @@ input[type=checkbox] {
 			<div class="progressHeader"><h5><b>완료</b></h5></div>
 			</div>
 			
-			<div class="progressBody" id="suggestBody">
+			<div class="progressBody" id="suggestBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='suggest'}">
@@ -515,7 +516,7 @@ input[type=checkbox] {
 						<span class="sugCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="sug_checkBox" value="${postList.postNo}" onClick="check('sug');">
 						</span>
-						${postList.postTitle}<br>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
 						${postList.memberName}<br>
 						${postList.postDate}
 
@@ -533,7 +534,7 @@ input[type=checkbox] {
 				<input type="hidden" id="workToSug" value="workToSug" />
 			</div>
 			
-			<div class="progressBody" id="workingBody">
+			<div class="progressBody" id="workingBody" style="overflow:auto; height:84%;">
 
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='working'}">
@@ -543,7 +544,7 @@ input[type=checkbox] {
 						<span class="workCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="work_checkBox" value="${postList.postNo}" onClick="check('work');">
 						</span>
-						${postList.postTitle}<br>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
 						${postList.memberName}<br>
 						${postList.postDate}
 
@@ -561,7 +562,7 @@ input[type=checkbox] {
 				<input type="hidden" id="stopToWork" value="stopToWork" />
 			</div>
 			
-			<div class="progressBody" id="stopBody">
+			<div class="progressBody" id="stopBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='stop'}">
@@ -571,7 +572,7 @@ input[type=checkbox] {
 						<span class="stopCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${postList.postNo}" onClick="check('stop');">
 						</span>
-						${postList.postTitle}<br>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
 						${postList.memberName}<br>
 						${postList.postDate}
 
@@ -590,7 +591,7 @@ input[type=checkbox] {
 			</div>			
 
 	
-			<div class="progressBody" id="finishBody">
+			<div class="progressBody" id="finishBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='finish'}">
@@ -600,7 +601,7 @@ input[type=checkbox] {
 						<span class="finCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${postList.postNo}" onClick="check('fin');">
 						</span>
-						${postList.postTitle}<br>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
 						${postList.memberName}<br>
 						${postList.postDate}
 
@@ -617,7 +618,7 @@ input[type=checkbox] {
 	</div>
 	<!-- contents 끝 -->
 
-
+	<jsp:include page="/post.do"></jsp:include> <!-- 게시글 보기 -->
 
 </div>
 

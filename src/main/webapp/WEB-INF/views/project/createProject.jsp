@@ -22,6 +22,7 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 
@@ -123,7 +124,21 @@ span {
 			alert("프로젝트명을 입력해주세요.");
 			return false;
 		} else {
-			return true;
+			
+			var startDateStr = document.getElementById('proStartDate').value;
+			var endDateStr = document.getElementById('proEndDate').value;
+			var startDate = new Date(startDateStr);
+			var endDate = new Date(endDateStr);
+			
+			if(startDateStr==endDateStr) {
+				alert("시작하는 날짜와 끝나는 날짜가 같을 수 없습니다.");
+				return false;
+			} else if(endDate<startDate) {
+				alert("끝나는 날짜가 시작하는 날짜보다 작을 수 없습니다.");
+				return false;
+			} else {
+				return true;
+			}
 		}
 	}
 	
@@ -156,7 +171,7 @@ span {
                 <form action="/createProject.do" method="get">
                 <p style="text-align: center; line-height: 1.5;"><br />
   					프로젝트 이름 : <input type="text" name="proTitle" id="proTitle"> <br>
-					기간 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
+					기한 : 없음 <input type="radio" name="period" onClick="periodOff();" checked> / 있음 <input type="radio" name="period" onClick="periodOn();">
 					<br><label id="periodLabel"></label><br>
 				</p>
                 <!-- submit 버튼 -->

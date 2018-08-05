@@ -1,13 +1,11 @@
 package kr.pe.mododa.project.model.vo;
 
-import java.util.Date;
-
 public class ProjectPostList {
 	
 	private int postNo;
 	private String postTitle;
 	private String postProgress;
-	private Date postDate;
+	private String postDate;
 	private String postContent;
 	private int postWriter;
 	private String postTemp;
@@ -24,7 +22,7 @@ public class ProjectPostList {
 	}
 
 
-	public ProjectPostList(int postNo, String postTitle, String postProgress, Date postDate, String postContent,
+	public ProjectPostList(int postNo, String postTitle, String postProgress, String postDate, String postContent,
 			int postWriter, String postTemp, int postProNo, String postTag, String memberName, String memberPicture) {
 		super();
 		this.postNo = postNo;
@@ -71,12 +69,12 @@ public class ProjectPostList {
 	}
 
 
-	public Date getPostDate() {
+	public String getPostDate() {
 		return postDate;
 	}
 
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(String postDate) {
 		this.postDate = postDate;
 	}
 
