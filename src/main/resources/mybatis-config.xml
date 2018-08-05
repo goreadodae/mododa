@@ -34,6 +34,12 @@
       <typeAlias type="kr.pe.mododa.write.model.vo.RelationWriting" alias="relationWriting"/>
       <typeAlias type="kr.pe.mododa.write.model.vo.RelationSearchKey" alias="relationSearchKey"/>
       <typeAlias type="kr.pe.mododa.project.model.vo.ProgressHelper" alias="progressHelper"/>  
+      <typeAlias type="kr.pe.mododa.write.model.vo.ProjectMember" alias="projectMember"/>  
+      <typeAlias type="kr.pe.mododa.write.model.vo.PrivateSpace" alias="privateSpace"/>
+      <typeAlias type="kr.pe.mododa.write.model.vo.Partners" alias="partners"/>
+      
+        
+      
         
    </typeAliases>
 </configuration>
