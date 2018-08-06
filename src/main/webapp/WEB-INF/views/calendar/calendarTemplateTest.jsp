@@ -100,30 +100,45 @@ var scheduleNo = 0;
                
 			} ,
 			editable: true,
+			eventLimit: true, // for all non-agenda views
+			  views: {
+			    agenda: {
+			      eventLimit: 2 // adjust to 6 only for agendaWeek/agendaDay
+			    }
+			  },
 			events :  	
 				function(start, end, timezone, callback) {
 				$.ajax({
 			         url : "/calendarSchedule.do",
 			         type : "post",
 			         success : function(data) {
+			        	 
 			        	 var events = [];							
-							
+						 var color = ['FF5F2E','#CFF09E','#339966','#F361DC','#6B66FF']; 	
 							
 							for(var i=0;i<data.length;i++){	
 											
 								var start = data[i].stStartDate;
 								var end = data[i].stEndDate;		
 									
-									var endDate = new Date(end);
-									endDate.setDate(endDate.getDate() + 1);
+								var endDate = new Date(end);
+								endDate.setDate(endDate.getDate() + 1);
 									
 									endDate = dateToYYYYMMDD(endDate);
-
+								
+								for(var j=0;j<data.length;j++){
+									
+									if(data[i].proNo == data[j].proNo){
+										var colorPro = color[i];
+									}
+									
+								}	
+									
 			 					events.push({
 					        		 title : data[i].scTitle,
 					        		 start : data[i].stStartDate,
 					        		 end : endDate,
-					        		 color : '#FF5F2E',
+					        		 color : colorPro,
 					        		 url: data[i].scheduleNo
 					        	 });				 					  
 			        	 } 
@@ -294,7 +309,9 @@ var scheduleNo = 0;
              	
     				for(var i=0;i<data.length;i++){
     					$('#projectList').append("<option value='"+data[i].proNo+"'>"+data[i].proTitle+"</option>");
-    				}			
+    				}
+    				
+    				changeproSelect();
              },
              error : function(data) {
                 console.log("실패");
@@ -350,15 +367,18 @@ var scheduleNo = 0;
             		$('#scUpdatePost').find("label").remove(); 					
             		
  					$('#scUpdatePro').append("<label onclick='postChangePage("+data.pj.proNo+")'>"+data.pj.proTitle+"</label>");
- 					$('#scUpdatePost').append("<label onclick='getPost("+data.p.postNo+")'>"+data.p.postTitle+"</label>");
- 					
  					$('#scheduleTitleUpdate').val(data.sc.scTitle);
  					$('#startDateUpdate').val(data.sc.stStartDate);
  					$('#endDateUpdate').val(data.sc.stEndDate);
- 					/* 
- 					$('#scheduleTitleUpdate').attr('value',data.sc.scTitle);
- 					$('#startDateUpdate').attr('value',data.sc.stStartDate);
- 					$('#endDateUpdate').attr('value',data.sc.stEndDate); */          		
+ 		
+					if(data.p.postNo!=null){
+						$('#scUpdatePost').append("<label onclick='getPost("+data.p.postNo+")'>"+data.p.postTitle+"</label>");
+					}else{
+						$('#scUpdatePost').append("<label>해당 글이 없습니다.</label>");
+					}
+
+ 
+       		
              },
             error : function(data) {
              console.log("실패");
@@ -558,9 +578,7 @@ var scheduleNo = 0;
 				        data :  {checkboxValues : checkboxValues},
 				        success : function(data) {
          
-				           var events = [];
-				           
-				           
+				           var events = [];				           
 				        	 
 				         for(var i=0;i<data.length;i++){	
 				        	 				        	 
@@ -695,8 +713,10 @@ div {
 		<div class="col-md-2">　</div>
 		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
+		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="col-md" id="calendar"></div>
-		
+		<div class="row"><div class="col-md-12">　</div></div>
+		<div class="row"><div class="col-md-12">　</div></div>
 		<%-- <jsp:include page="/post.do"></jsp:include> --%>
 	</div>
 	<!-- contents 끝 -->
@@ -707,9 +727,12 @@ div {
 
 <div id="myModalSc" class="modal">     
        <!--   Modal 내용 -->
-         <div class="modal-content" style="width:30%;">
+         <div class="modal-content" style="width:600px;">
             <!-- <div class="modal-content ng-scope"> -->
-            <div class="modal-header"><h3>일정 선택</h3></div>
+            <div class="modal-header"><img src="../resources/images/post/add-event.png"
+			style="margin-bottom: 5px;" /><span style="color: #339966;">일정
+					추가하기</span> <img src="../resources/images/post/close.png"
+					onclick="close_sc_pop();" class="postCloseIcon" style="float: right; height: 20px;" /></div>
             <div class="modal-body">
             <div class="row"><div class="col-md-6">
     		<select class="form-control" id="projectList" onchange="changeproSelect();">
@@ -724,7 +747,11 @@ div {
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" id="startDate" name="startDate" onchange="dateCheck(this);"> ~ <input type="date" id="endDate" name="endDate" onchange="dateCheck(this);">
+            <!-- <input type="date" id="startDate" name="startDate" onchange="dateCheck(this);"> ~ <input type="date" id="endDate" name="endDate" onchange="dateCheck(this);"> -->
+            <span style="font-size: 18px; color: #aaaaaa;">일정기간
+						&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="date" id="startDate" name="startDate" onchange="dateCheck(this);" />&nbsp;&nbsp;&nbsp;
+						<span style="font-size: 30px; color: #aaaaaa;">~</span>&nbsp;&nbsp;&nbsp;
+						<input type="date" id="endDate" name="endDate" onchange="dateCheck(this);" />
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-secondary" onClick="saveSchedule();">저장</button>
@@ -738,9 +765,12 @@ div {
 
 <div id="myModalUpdate" class="modal">     
        <!--   Modal 내용 -->
-         <div class="modal-content" style="width:30%;">
+         <div class="modal-content" style="width:600px;">
             <!-- <div class="modal-content ng-scope"> -->
-            <div class="modal-header"><h3>일정 수정</h3></div>
+            <div class="modal-header"><img src="../resources/images/post/add-event.png"
+			style="margin-bottom: 5px;" /><span style="color: #339966;">일정
+					수정하기</span> <img src="../resources/images/post/close.png"
+					onclick="close_up_pop();" class="postCloseIcon" style="float: right; height: 20px;" /></div>
             <div class="modal-body">
             <div class="row"><div class="col-md-6" id="scUpdatePro">	
     		</div><div class="col-md-6" id="scUpdatePost">
@@ -750,7 +780,11 @@ div {
             </div></div>
             <div class="row"><div class="col-md-12">　</div></div>
             <div class="row"><div class="col-md-12">
-            <input type="date" id="startDateUpdate" onchange="dateCheckUpdate(this);"> ~ <input type="date" id="endDateUpdate" onchange="dateCheckUpdate(this);">
+            <!-- <input type="date" id="startDateUpdate" onchange="dateCheckUpdate(this);"> ~ <input type="date" id="endDateUpdate" onchange="dateCheckUpdate(this);"> -->
+            <span style="font-size: 18px; color: #aaaaaa;">일정기간
+						&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="date" id="startDateUpdate" onchange="dateCheckUpdate(this);" />&nbsp;&nbsp;&nbsp;
+						<span style="font-size: 30px; color: #aaaaaa;">~</span>&nbsp;&nbsp;&nbsp;
+						<input type="date" id="endDateUpdate" onchange="dateCheckUpdate(this);" />
             </div></div></div>
             <div class="modal-footer">
              <button type="button" class="btn btn-secondary" onClick="saveUpdateSchedule();">수정</button>

@@ -3,25 +3,25 @@ package kr.pe.mododa.write.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import kr.pe.mododa.member.model.dao.MemberDAO;
+import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Upload;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.dao.WriteDAOImpl;
+import kr.pe.mododa.write.model.vo.Partners;
+import kr.pe.mododa.write.model.vo.PrivateSpace;
+import kr.pe.mododa.write.model.vo.ProjectMember;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
-import kr.pe.mododa.write.model.vo.Upload;
 
 @Service("writeService")
 public class WriteServiceImpl implements WriteService{
@@ -65,13 +65,13 @@ public class WriteServiceImpl implements WriteService{
 		
 	}
 
-	public void uploadFile(MultipartFile[] files, Upload vo)  {
-		
+	public int uploadFile(MultipartFile[] files, Upload upload)  {
 		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거 넘 어렵
 		root_path = root_path.replaceFirst("webapp", "");
 		String attach_path = "/resources/upload/write/";
 		String uploadPath = root_path+attach_path;
 		File dir = new File(uploadPath);
+		int result = 0;
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
@@ -87,9 +87,10 @@ public class WriteServiceImpl implements WriteService{
 			}
 			try {
 				file.transferTo(new File(uploadPath + saveFileName));
-				vo.setUploadPath(uploadPath + saveFileName);
-				writeDAO.insertFileUploaded(sqlSession,vo);
+				upload.setUploadSubject(originalFileName);
+				upload.setUploadPath(uploadPath + saveFileName);
 				System.out.println(uploadPath+saveFileName);
+				result = writeDAO.insertFileUploaded(sqlSession,upload);
 				
 			} catch (IllegalStateException | IOException e) {
 				// TODO Auto-generated catch block
@@ -97,6 +98,46 @@ public class WriteServiceImpl implements WriteService{
 			}
 			System.out.println("foreach 서비스"+files);
 		}
+		return result;
+		
+	}
+
+	public ArrayList<ProjectMember> projectMember(Project pj) {
+		
+		
+		
+		return writeDAO.projectMember(sqlSession,pj);
+		
+	
+	}
+
+	public String myPicture(int memberNo) {
+		
+		return writeDAO.myPicture(sqlSession,memberNo);
+	}
+
+	public PrivateSpace privateSpace(int memberNo) {
+		
+		return writeDAO.privateSpace(sqlSession,memberNo);
+	}
+
+	public ArrayList<Partners> myPartners(int memberNo) {
+		return writeDAO.myPartners(sqlSession,memberNo);
+		
+	}
+
+	public int insertPostToProject(Post post) {
+		return writeDAO.insertPostToProject(sqlSession,post);		
+	}
+
+	public int insertSchedules(Schedule sche) {
+		int result =0;
+
+			result =  writeDAO.insertSchedules(sqlSession,sche); 
+		
+		
+		
+		return result;
 	}
 
 

@@ -9,14 +9,14 @@
 		pro_start_Date as proStartDate,
 		pro_end_Date as proEndDate,
 		PRO_MEMBER_NO as proMNo
-		from Project
+		from Project where pro_progress='working'
 	</select>
 	<select id="projectOne" resultType="project">
 		select pro_no as proNo,
 		pro_title as proTitle,
 		pro_progress as proProgress,
 		PRO_MEMBER_NO as proMNo
-		from schedule join project using(pro_no) where sc_no = #{scheduleNo}
+		from schedule join project using(pro_no) where sc_no = #{scheduleNo} and pro_progress='working'
 	</select>
 	<select id="selectDozenProject" resultType="schedule">
 		select sc_no as scheduleNo,

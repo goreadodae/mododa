@@ -96,9 +96,30 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.updateProjectProgress(sqlSession, ph);
 	}
 	
+	@Override
+	public String searchMoreProTitle(int proNo) {
+		return projectDAO.searchMoreProTitle(sqlSession, proNo);
+	}
+	
+	@Override
+	public ArrayList<String> searchLeaderProNo(int memberNo) {
+		return projectDAO.searchLeaderProNo(sqlSession, memberNo);
+	}
+	
+	@Override
+	public int deleteProject(int proNo) {
+		return projectDAO.deleteProject(sqlSession, proNo);
+	}
 	
 	
+	public Project searchProjectInfo(int proNo) {
+		return projectDAO.searchProjectInfo(sqlSession, proNo);
+	}
 	
+	public int updateProjectDate(Project project) {
+		return projectDAO.updateProjectDate(sqlSession, project);
+	}
+
 	
 	
 	
@@ -163,6 +184,15 @@ public class ProjectServiceImpl implements ProjectService {
 		System.out.println(sm);
 		return projectDAO.searchProMember(sqlSession, sm);
 	}
+
+
+
+
+
+
+
+
+
 
 
 

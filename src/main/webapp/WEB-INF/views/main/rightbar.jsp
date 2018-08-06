@@ -12,28 +12,28 @@
 <style>
 /* rightbar */
 a:link {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 a:visited {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 a:hover {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 table {
-	padding: 20px;
-	margin: 20px;
+   padding: 20px;
+   margin: 20px;
 }
 #background {
-	background-color: #F5F5F5;
-	margin: 0px;
-	padding: 0px;
+   background-color: #F5F5F5;
+   margin: 0px;
+   padding: 0px;
 }
 </style>
 
@@ -213,7 +213,7 @@ table {
 		}
 			
 	}
-	
+
 </script>
 
 </html>

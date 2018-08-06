@@ -2,14 +2,19 @@ package kr.pe.mododa.write.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.vo.Partners;
+import kr.pe.mododa.write.model.vo.PrivateSpace;
+import kr.pe.mododa.write.model.vo.ProjectMember;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
-import kr.pe.mododa.write.model.vo.Upload;
 
 @Repository("writeDAO")
 public class WriteDAOImpl implements WriteDAO {
@@ -43,11 +48,41 @@ public class WriteDAOImpl implements WriteDAO {
 		return (ArrayList)sqlSession.selectList("write.loadByProName",rw);
 	}
 
-	public void insertFileUploaded(SqlSessionTemplate sqlSession, Upload vo) {
-		sqlSession.insert("write.uploadFiles",vo);
+	public int insertFileUploaded(SqlSessionTemplate sqlSession, Upload vo) {
+		return sqlSession.insert("write.uploadFiles",vo);
 		
 		
 				
+	}
+
+	public ArrayList<ProjectMember> projectMember(SqlSessionTemplate sqlSession, Project pj) {
+		return (ArrayList)sqlSession.selectList("write.projectMember",pj);
+		
+	}
+
+	public String myPicture(SqlSessionTemplate sqlSession, int memberNo) {
+		
+		return sqlSession.selectOne("write.myPicture", memberNo);
+	}
+
+	public PrivateSpace privateSpace(SqlSessionTemplate sqlSession, int memberNo) {
+		
+		return sqlSession.selectOne("write.privateSpace",memberNo);
+	}
+
+	public ArrayList<Partners> myPartners(SqlSessionTemplate sqlSession, int memberNo) {
+		
+		return (ArrayList)sqlSession.selectList("write.myPartner", memberNo);
+	}
+
+	public int insertPostToProject(SqlSessionTemplate sqlSession, Post post) {
+		
+		return sqlSession.insert("write.insertPostToProject",post);
+	}
+
+	public int insertSchedules(SqlSessionTemplate sqlSession, Schedule schedule) {
+		
+		return sqlSession.insert("write.insertSchedules",schedule);
 	}
 	
 	
