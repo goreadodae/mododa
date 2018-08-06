@@ -1305,6 +1305,11 @@ img[class="btn btn-link dropdown-toggle"] {
 				success:function(data){
 					$('#comment').empty();
 					$("#comment").html(data);
+					 $('#successAlertMessage').text('댓글이 등록되었습니다!');
+		               $('#successAlert').show('slow');
+		               setTimeout(function () {
+		            	   $('#successAlert').hide('slow');
+		            	}, 1500);
 				}
 				
 			});
@@ -1323,19 +1328,17 @@ img[class="btn btn-link dropdown-toggle"] {
 			{
 				$('#comment').empty();
 				$("#comment").html(data);
+				$('#successAlertMessage').text('댓글이 삭제되었습니다!');
+	               $('#successAlert').show('slow');
+	               setTimeout(function () {
+	            	   $('#successAlert').hide('slow');
+	            	}, 1500);
 			},
 			error:function(data)
 			{
 				console.log("삭제 실패");
 			}
 		});
-	}
-	function cmLike(commentNo,postNo)//댓글 좋아요
-	{
-		/* if(cmlike==)
-		$.ajax({
-			url:"/
-		}) */
 	}
 	
 	//마우스 올렸을때 바뀌는 부분

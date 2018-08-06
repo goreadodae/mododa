@@ -42,13 +42,13 @@
 
 #input-box {
 	margin: 5px;
-	border: 2px solid gray;
+	border: 1.5px solid gray;
 	border-radius: 5px;
 }
 
 .comment-input {
 	width: 100%;
-	height: 100%;
+	height: 150%;
 	resize: none;
 	border-bottom: 1px solid gray;
 }
@@ -62,7 +62,7 @@
 }
 
 .comment-footer {
-	border-bottom: 5;
+	border-bottom: 3px;
 }
 
 #comment-wr {
@@ -84,9 +84,20 @@
 	padding-left:20px;
 }
 
+#comment-wr:hover{
+	color:#339966;
+}
+
+#commentPrint
+{
+color:#888;
+}
+
 
 </style>
 <script>
+var objDiv = document.getElementById("mydiv"); 
+objDiv.scrollTop = objDiv.scrollHeight;
 </script>
 </head>
 <body>
@@ -97,13 +108,20 @@
 								<span class="comment-no">댓글 <span
 									class="badge badge-pill badge-success" id="commentNum">${comment.size() }</span></span>
 							</div>
-							<div class="comment-area">
+							<div class="comment-area" id="mydiv">
 								<!-- 댓글 내용 출력.-->
 								<ul class="comment-list">
 								<c:forEach var="cm" items="${comment }">
 								<li class="comment-item">
 										<div id="commentInfo" class="col-md-12">
 											<div id="comment1" class="col-md-12">
+												<%-- 
+													<center>
+														<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%;"/><br>
+														<span font-size="12px;">제일먼저 댓글을 남겨보면 어떨까요??</span>
+														</div></div></li>
+													</center> --%>
+												
 												<img id="wPicture"
 													src="../resources/upload/member/${cm.writePicture }"
 													style="height: 20px; width: 20px; border-radius: 50%;" />
@@ -112,32 +130,31 @@
 											</div>
 											<div id="comment2" class="col-md-12">
 												<div id="commentPrint" >
-												<span id="comment3">${cm.content }</span>
-												</div>
-												<div id="commentFun" >
-												<span id="cmlike-count" onclick="cmLike(${cm.commentNo}
-												);"><img src="../resources/images/post/like.png" id="cmLike-icon" style="height:10px;" /> 좋아요 <span id="cmLikeCount">12</span></span>
+												<span>${cm.content }</span>
 												<c:if test='${sessionScope.member.memberNo eq cm.writerNo }'>
-													<span class="btn btn-link btn-sm" onclick="deleteComment(${cm.commentNo },${cmPostNo });" style="float:right; font-size:10px;">삭제</span>
+													<a class="btn btn-link btn-sm" onclick="deleteComment(${cm.commentNo },${cmPostNo });" style="float:right; font-size:10px;">삭제</a>
 												</c:if>
 												</div>
+												
 											</div>
 										</div>
+									
+								 
 									</li>
 									<hr>
+									
 								</c:forEach>
 								
 								</ul>
 							</div>
 							<div class="comment-footer">
 								<div id="input-box">
-									<textarea class="comment-input" placeholder="댓글 입력!!!"></textarea>
+									<textarea class="comment-input" placeholder="댓글 입력하세요" style="font-size:12px;"></textarea>
 									<div class="comment-fun"
 										style="background-color: white; width: 100%; height: 30px;">
 										<!--댓글버튼 -->
-										<button id="comment-wr" class="btn btn-outline-success btn-sm" onclick="insertComment(${cmPostNo});">댓글
-											작성!</button>
-
+										<a id="comment-wr" class="btn-link btn-sm" onclick="insertComment(${cmPostNo});">댓글
+											작성!</a>
 									</div>
 								</div>
 							</div>

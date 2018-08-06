@@ -58,6 +58,16 @@ public class PersonalServiceImpl implements PersonalService {
 		ArrayList<Newsfeed> searchFeed = personalDAO.searchNews(sqlSession,sdp);
 		return searchFeed;
 	}
+
+	public ArrayList<Newsfeed> searchCall(SerDelPost sdp) {
+		ArrayList<Newsfeed> searchCallPost = personalDAO.searchCall(sqlSession,sdp);
+		return searchCallPost;
+	}
+
+	public ArrayList<Newsfeed> selectCallPost(int memberNo) {
+		ArrayList<Newsfeed> callPost = personalDAO.selectCallPost(sqlSession,memberNo);
+		return callPost;
+	}
 	
 	
 }

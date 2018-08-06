@@ -33,7 +33,7 @@
   </select>
   
   <select id="searchNews" parameterType="serdel" resultType="newsfeed"><!-- 뉴스피드에서 검색어를 입력받아 검색. -->
-  	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress, to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
+  	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress, concat(rpad(p.post_content,20,'.'),'..')as postContent, to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
 	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName, pr.pro_no as proNo from post p
 	join member m on(p.post_writer=m.member_no)
 	join project pr on(p.post_pro_no=pr.pro_no)
@@ -63,6 +63,42 @@
 	join member m on m.member_no = p.post_writer
 	join project pr on pr.pro_no = p.post_pro_no
 	where  b.member_no=#{memberNo} and (p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
+	order by p.post_date desc
+  </select>
+  
+  <select id="searchCallPost" parameterType="int" resultType="newsfeed"> <!-- 호출한 글 -->
+  select p.post_title as postTitle ,
+  		cp.call_post_no as postNo, 
+  		m.member_name as postWriter, 
+  		m.member_picture as  pWriterImg,
+		p.post_progress as postProgress , 
+		concat(rpad(p.post_content,20,'.'),'..')as postContent,  
+		to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
+		pr.pro_title as proName, 
+		pr.pro_no as  proNo
+		from call_Post cp
+	join post p on(cp.call_post_no=p.post_no)
+	join member m on(p.post_writer=m.member_no)
+	join project pr on (p.post_pro_no=pr.pro_no)
+	where cp.call_member= #{memberNo}
+	order by p.post_date desc
+  </select>
+  
+  <select id="callPostSearch" parameterType="serdel" resultType="newsfeed" > <!-- 호출한 글 검색. -->
+  	select p.post_title as postTitle,
+  	cp.call_post_no as postNo, 
+  	m.member_name as postWriter, 
+  	m.member_picture as  pWriterImg,
+	p.post_progress as postProgress, 
+	concat(rpad(p.post_content,20,'.'),'..')as postContent, 
+	to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
+	pr.pro_title as proName, 
+	pr.pro_no as proNo
+	from call_Post cp
+	join post p on(cp.call_post_no=p.post_no)
+	join member m on(p.post_writer=m.member_no)
+	join project pr on (p.post_pro_no=pr.pro_no)
+	where call_member= #{memberNo} and (p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
 	order by p.post_date desc
   </select>
   

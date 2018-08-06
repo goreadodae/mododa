@@ -49,6 +49,16 @@ public class PersonalDAOImpl {
 		List searchFeed = sqlSession.selectList("personal.searchNews",sdp);
 		return (ArrayList<Newsfeed>)searchFeed;
 	}
+
+	public ArrayList<Newsfeed> searchCall(SqlSessionTemplate sqlSession, SerDelPost sdp) {
+		List searchCall = sqlSession.selectList("personal.callPostSearch",sdp);
+		return(ArrayList<Newsfeed>)searchCall;
+	}
+
+	public ArrayList<Newsfeed> selectCallPost(SqlSessionTemplate sqlSession, int memberNo) {
+		List callPost = sqlSession.selectList("personal.searchCallPost",memberNo);
+		return (ArrayList<Newsfeed>)callPost;
+	}
 	
 	
 
