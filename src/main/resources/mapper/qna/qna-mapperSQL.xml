@@ -28,18 +28,5 @@
 insert into question values(que_seq.nextval,#{queTitle},SYSDATE,#{queContents},#{memberNo},'N')
 </insert>
 
-<select id="qnaDetail" parameterType="Integer" resultType="qna">
-   SELECT
-   Q.QUE_NO as queNo,
-   Q.QUE_TITLE as queTitle,
-   Q.QUE_TIME as queTime,
-   Q.QUE_CONTENTS as queContents,
-   Q.QUE_MEMBER_NO as memberNo,
-   A.ANS_NO as ansNo,
-   A.ANS_TIME as ansTime,
-   A.ANS_CONTENTS as ansContents,
-   Q.QUE_RESPONSE_YN as queResponseYn,
-   M.MEMBER_NAME as memberName from question where QUE_NO=#{queNo}
-	</select>
 
 </mapper>
