@@ -90,6 +90,10 @@ public class PostServiceImpl implements PostService{
 	public int insertDecision(Decision vo) {
 		return postDAO.insertDecision(sqlSession,vo);
 	}
+	
+	public int deleteTodo(int todoNo) {
+		return postDAO.deleteTodo(sqlSession, todoNo);
+	}
 
 	public int deleteSchedule(int scNo) {
 		return postDAO.deleteSchedule(sqlSession, scNo);
@@ -101,6 +105,10 @@ public class PostServiceImpl implements PostService{
 	
 	public int updatePost(Post vo) {
 		return postDAO.updatePost(sqlSession, vo);
+	}
+	
+	public int updateTodo(Todo vo) {
+		return postDAO.updateTodo(sqlSession, vo);
 	}
 	
 	public int updateSchedule(Schedule vo) {	//0801 아름 추가
