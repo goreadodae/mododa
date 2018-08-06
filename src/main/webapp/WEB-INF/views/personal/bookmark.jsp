@@ -32,6 +32,9 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+.col-md-12 a:hover{
+	background-color:#f8f9fa;
+}
 </style>
 <script>
 	
@@ -94,7 +97,17 @@ div {
 						for(var i=0;i<data.length;i++)
 							{
 							result+=
-								'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
+								'<li class="feed-contents"><div class="row"><div class="col-md-12">';
+							if(data[i].postProgress=='suggest'){
+								result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
+							}else if(data[i].postProgress=='working'){
+								result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
+							}else if(data[i].postProgress=='stop'){
+								result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
+							}else{
+								result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
+							}
+							result+='<a onclick="getPost('+data[i].postNo+');"class="btn btn-link">'+data[i].postTitle+'</a></div>'+
 								'<div class="col-md-9"><img id="memberImg2" src="../resources/upload/member/'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a href="#" class="btn btn-link" style="float:none;">'
 								+data[i].proName+'</a></div>'+
 								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
@@ -180,11 +193,29 @@ div {
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
-							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
+							<c:choose>
+									<c:when test="${news.postProgress eq 'suggest' }">
+										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
+										<c:set var="statusTxt" value="발의된 이슈"/>
+									</c:when>
+									<c:when test="${news.postProgress eq 'working' }">
+										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
+										<c:set var="statusTxt" value="진행 중"/>
+									</c:when>
+									<c:when test="${news.postProgress eq 'stop' }">
+										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
+										<c:set var="statusTxt" value="일시 중지"/>	
+									</c:when>
+									<c:otherwise>
+										<c:set var ="statusImg" value="../resources/images/post/checked.png"/>
+										<c:set var="statusTxt" value="완료"/>
+									</c:otherwise>
+									</c:choose>
+							<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>
+							<a onclick="getPost(${book.postNo});" class="btn btn-link">${book.postTitle }</a>
 							</div>
 							<div class="col-md-9">
 							<img id="memberImg2" src="../resources/upload/member/${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp; ${book.postDate }
-						
 							<a onclick="postChangePage(${book.proNo });" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">

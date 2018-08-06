@@ -61,10 +61,13 @@ public class PersonalControllerImpl implements PersonalController{
 		return view;
 	}
 	@RequestMapping(value="callpost.do")
+	@Override
 	public ModelAndView personalCall(HttpSession session) //로그인한 회원을 호출한 글 목록을 읽어옴.(DB khkhkhkhkhkhkhkh)
 	{
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo(); //세션에서 회원번호 추출
+		ArrayList<Newsfeed> callPost = personalService.selectCallPost(memberNo);
 		ModelAndView view = new ModelAndView();
+		view.addObject("callPost",callPost);
 		view.setViewName("personal/personalCall");
 		return view;
 	}
@@ -155,7 +158,6 @@ public class PersonalControllerImpl implements PersonalController{
 		SerDelPost sdp = new SerDelPost();
 		sdp.setKeyword(keyword);
 		sdp.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());//로그인되면 세션에서 회원번호 가져오기.
-		System.out.println(keyword);
 		ArrayList<Bookmark> searchBook = personalService.searchBookmark(sdp);
 
 		response.setContentType("application/json");
@@ -163,6 +165,19 @@ public class PersonalControllerImpl implements PersonalController{
 		new Gson().toJson(searchBook,response.getWriter());
 	}
 	
+	@RequestMapping(value="searchCall") //호출된 글에서 검색어 입력받아검색.
+	@ResponseBody
+	public void searchCall(HttpServletResponse response,HttpSession session, @RequestParam String keyword)throws Exception
+	{
+		SerDelPost sdp = new SerDelPost();
+		sdp.setKeyword(keyword);
+		sdp.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());//로그인되면 세션에서 회원번호 가져오기.
+		ArrayList<Newsfeed> searchCallPost = personalService.searchCall(sdp);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(searchCallPost,response.getWriter());
+	}
 	
 
 }

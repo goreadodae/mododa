@@ -12,6 +12,7 @@ import com.google.gson.JsonIOException;
 
 public interface PersonalController {
 	public ModelAndView firstNewsfeed(HttpSession session);
+	public ModelAndView personalCall(HttpSession session);
 	public ModelAndView newsfeed(HttpSession session);
 	public ModelAndView bookmark(HttpSession session);
 	public ModelAndView mypost(HttpSession session);

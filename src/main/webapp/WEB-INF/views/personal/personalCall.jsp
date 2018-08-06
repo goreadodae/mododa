@@ -29,6 +29,60 @@
 		$("#contentSearch").css("display", "none");
 		location.href="callpost.do";
 	}
+	function searchCall()
+	{
+		var keyword = $("#keyword").val();
+		if (keyword == "") {
+			alert("검색어를 입력하세요!!!")
+		} else {
+			$.ajax({
+				url : "/searchCall.do",
+				type : "POST",
+				data : {"keyword" : keyword},
+				dataType:"JSON",
+				success:function(data){
+					if(data.length==0)
+					{
+					$(".feed-list").empty();
+					$(".feed-list").append('<div class="row">'+
+						  	'<div class="col-md-12"><center>'+	
+							'<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>'+
+							'<span font-size="12px;">검색결과가 존재하지 않습니다..</span></div></div>');
+					}else{
+				$(".feed-list").empty();
+				var result="";
+				for(var i=0;i<data.length;i++)
+					{
+					result+=
+						'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</a></div>'+
+						'<div class="col-md-8"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><span id="postcontent" style="font-size:12px;">'+data[i].postContent+'</span><br>'+ data[i].postWriter +' &nbsp;&nbsp; '+ data[i].postDate+'</div>'+
+						'<div class="col-md-4">';
+					if(data[i].postProgress=='suggest'){
+						result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
+					}else if(data[i].postProgress=='working'){
+						result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
+					}else if(data[i].postProgress=='stop'){
+						result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
+					}else{
+						result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
+					}
+					result+='<a onclick="postChangePage('+data[i].proNo+');" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
+						'<div class="col-md-3"></div>'+
+						'</div><hr style="color:grey;"></li>';
+					}
+				$(".feed-list").append(result);
+				$(".feed-list").append("<span>마지막입니다.</sapn>");
+			   } 
+				
+				},
+				error:function()
+				{
+					alert("error");
+				}
+				})
+				
+	}
+	}
 	</script>
 </head>
 
@@ -46,6 +100,9 @@ div {
 	background-color: #F5F5F5;
 	margin: 0px;
 	padding: 0px;
+}
+.col-md-12 a:hover{
+	background-color:#f8f9fa;
 }
 /* 기본 구조 스타일 끝 */
 </style>
@@ -93,7 +150,7 @@ div {
 				<div class="headerFunction" id="searchFun">
 					<!-- 검색과 취소버튼 -->
 					<button type="button" class="btn btn-outline-success btn-sm"
-						onclick="searchBook()" style="float:left;">검색!</button>
+						onclick="searchCall()" style="float:left;">검색!</button>
 					<button type="button" class="btn btn-outline-secondary btn-sm"
 						onclick="searchCancle();">취소</button>
 				</div>
@@ -103,29 +160,45 @@ div {
 		<div class="viewContents  col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
-				<c:forEach var="book" items="${bookmark }">
-					<li class="feed-contents">
-						<div class="row">
-							<div class="col-md-12">
-							<span onclick="getPost(${book.postNo});" class="btn btn-link" style="float:left;">${book.postTitle }</span>
+						<c:forEach var="call" items="${callPost }">
+						<li class="feed-contents">
+							<div class="row">
+								<div class="col-md-12">
+								<a onclick="getPost(${call.postNo });" class="btn btn-link" style="float:left">${call.postTitle }</a>
+								</div>
+								<div class="col-md-8">
+									<img id="memberImg" src="../resources/upload/member/${call.pWriterImg }" />
+									<span id="postcontent" style="font-size:12px;">${call.postContent }</span><br>
+									<span>${call.postWriter }&nbsp;&nbsp;${call.postDate }</span>
+								</div>
+								<div class="col-md-4">
+								<c:choose>
+									<c:when test="${call.postProgress eq 'suggest' }">
+										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
+										<c:set var="statusTxt" value="발의된 이슈"/>
+									</c:when>
+									<c:when test="${call.postProgress eq 'working' }">
+										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
+										<c:set var="statusTxt" value="진행 중"/>
+									</c:when>
+									<c:when test="${call.postProgress eq 'stop' }">
+										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
+										<c:set var="statusTxt" value="일시 중지"/>	
+									</c:when>
+									<c:otherwise>
+										<c:set var ="statusImg" value="../resources/images/post/checked.png"/>
+										<c:set var="statusTxt" value="완료"/>
+									</c:otherwise>
+									</c:choose>
+									<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>&nbsp;
+									<a onclick="postChangePage(${call.proNo })" class="btn btn-link" style="float:none;" >${call.proName }</a>
+								</div>
 							</div>
-							<div class="col-md-9">
-							<img id="memberImg2" src="../resources/upload/member/${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp; ${book.postDate }
-						
-							<a onclick="postChangePage(${book.proNo });" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
-							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
-								style="float: right;" onclick="delBookmark(${book.postNo});">
-								<span class="ico"> <i class="far fa-bookmark"
-									style="color: yellow;"></i>
-								</span>
-							</button>
-							</div>
-						</div>
-						<hr style="color: grey;">
-					</li>
-				</c:forEach>
-				<span>마지막입니다.</span>
-			</ul>
+							<hr style="color: grey;">
+						</li>
+						</c:forEach>
+						<span>마지막입니다.</span>
+					</ul>
 		</div>
 	</div>
 		
