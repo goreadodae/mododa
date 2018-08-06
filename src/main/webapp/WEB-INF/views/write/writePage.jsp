@@ -70,7 +70,7 @@
 	}
 
 	function changeClick() {
-		console.log($("#memberNo").val());
+		console.log($("#memberNo").val()+"검색창으로 전환!");
 
 		$("#searchPj").attr('type', 'text');
 		$("#changeType").css('display', 'none');
@@ -220,10 +220,8 @@
 
 		var result = window.confirm("정말 종료하시겠습니까??");
 		if (result == true) {
-			/* 			$('#toWrite').hide();
-			 $('div').removeClass('modal-backdrop fade show'); */
-
-			history.back();
+			
+			/* location.href="/index.jsp" */
 		} else {
 			return false;
 		}
@@ -267,7 +265,7 @@
 	 }); 
 	 */
 
-	$(document).ready(
+	/* $(document).ready(
 			function() {
 				$('#searchPj').focus(
 						function() {
@@ -287,7 +285,7 @@
 										console.log(data[i].proTitle);
 										$('#addPjList').append(
 												'<button id="pjName'+data[i].proNo+'" class="dropdown-item" type="button">'
-														+ data[i].proTitle
+														+ data[i].proTitle   
 														+ '</button>');
 									}
 
@@ -299,7 +297,7 @@
 
 						});
 
-			});
+			}); */
 
 	//일정추가 
 	var scheCnt = 1;
@@ -321,8 +319,10 @@
 							+ '<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0;">'
 							+ '<div class="col-md-12" style="padding:5px;color:#A1A1A1;"><img src="/resources/images/writeImages/calendar.png" style="padding:0;"/>&nbsp;&nbsp;'
 							+ startDate + '</div><div class="col-md-12">'
-							+ title + '</div></div></div>').appendTo(
-					$('#addSchedules'));
+							+ title + '</div></div></div>'
+							+ '<input type="hidden" name="startDate" value="'+startDate+'"/>'
+							+ '<input type="hidden" name="endDate" value="'+endDate+'"/>'
+							+ '<input type="hidden" name="scheTitle" value="'+title+'"/>').appendTo($('#addSchedules'));
 			//일정개수
 			scheduleCnt++;
 			$('#scheduleCnt').text(scheduleCnt);
@@ -642,7 +642,12 @@
                 }
                 
             var resister_tag = "<span class='before_tag' style='color:#C3C3C3; font-size:13px;' id='tag_"+children+"'>"+" #"+tag+"<a class='removeLink' href='javascript:delTag("+children+")' style='margin-left:7px;' >&times;</a></span>";
+           		resister_tag += "<input type='hidden' name='hashResults' value='#"+tag+"'/>" 
+            
             $("#after_tag").prepend(resister_tag);
+            
+          
+           		
             
             //초기화
             $("#hashTag").val("");
@@ -672,7 +677,7 @@
 	
 	
 	// 저장할때 어떻게 저장할지.
- 	function tag_post(){
+ 	$('form').submit(function tag_post(){
 		var ts ="";
 		var t = $("after_tag").children('span');
 		console.log(t);
@@ -682,10 +687,8 @@
 			ts += "#"+rt[0];
 		});
 		$("#hashResults").val(ts);
-		
-	
 	} 
-	
+	);
 	
 /* 	$(document).ready(function(){
 		$('#inputContents').keypress(function(){
@@ -711,29 +714,177 @@
 
 var imgTran = true;
 $(document).ready(function(){
-	$('#addPartnerPic').click(function(){
-		
-		
-		if(imgTran)
-			{
-			
+	$('#addPartnerPic').mouseenter(function(){
+	
 				$('#addPartnerPic').attr('src','/resources/upload/member/defaultUserImg.png');
 				$('#addPartnerPic').addClass('border');
 				
-				imgTran = false;			
-			}
-		else{
-			
-				$('#addPartnerPic').attr('src','/resources/upload/writeImages/add-button.png');
-				$('#addPartnerPic').removeClass('border');
-				imgTran = true;
-			}
-		
-		
+
 	});
+	$('#addPartnerPic').mouseleave(function(){
+		$('#addPartnerPic').attr('src','/resources/images/writeImages/add-button.png');
+		$('#addPartnerPic').removeClass('border');
+	})
+	
 });
 
 
+
+/* function calledPartner(){
+	
+	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
+							+ '" src="/resources/upload/member/defaultUserImg.png"'
+							+ 'class="rounded-circle border"/>');
+
+} */
+
+function convertProject(no){
+	var proNo = $('#-'+no).val();
+	var str ="";
+		$.ajax({
+			url :"/convertProName.do",
+			type : "post",
+			data : {
+				proNo : proNo
+			},
+			success : function(data){
+				
+				
+				
+				console.log(data);
+				$('#partnersList button').remove();
+				console.log("불러오기 성공");
+				$('#changeType').text(data.currentProName);
+				$('#changeType').css('color','#339966');
+				
+				
+				for(var i = 0; i<data.proMember.length; i++){
+					str += '<button id="calledMember_'+data.proMember[i].memberNo+'" onclick="calledProMember('+data.proMember[i].memberNo+');" class="dropdown-item" type="button">'
+					str += '<img src="/resources/upload/member/'+data.proMember[i].memberPicture+'" class="rounded-circle border"> &nbsp;&nbsp;'
+					str += data.proMember[i].memberName
+					str += '<input type="hidden" value="'+data.proMember[i].memberPicture+'" id="calledMemPic_'+data.proMember[i].memberNo+'"/>'
+					str += '<input type="hidden" value="'+data.proMember[i].memberName+'" id="calledMemName_'+data.proMember[i].memberNo+'"/>'
+					str += '</button>'
+					$('#partnersList').append(str);
+					str="";
+				}
+				
+			},
+			error : function(data){	
+			}	
+		})
+}
+
+//프라이빗 클릭 시 파트너 불러오기!
+
+$(document).ready(function(){
+	var	privateNo = $('#privateSpace').val(); 
+	var str = "";
+	$('#privateSpace').click(function(){
+		$.ajax({
+		url : "/myPartners.do",
+		type : "post",
+		data : {
+			privateNo : privateNo
+			
+		},
+		success : function(data){
+			$('#partnersList button').remove();
+			console.log(data);
+			$('#changeType').text(data.privateSpace);
+			$('#changeType').css('color','#FF5F2E');
+			
+			
+			for(var i = 0; i<data.partners.length; i++)
+				{
+					str += '<button id="calledPartner_'+data.partners[i].memberNo+'" onclick="calledPartner('+data.partners[i].memberNo+');" class="dropdown-item" type="button">'
+					str += '<img src="/resources/upload/member/'+data.partners[i].memberPicture+'" class="rounded-circle border"> &nbsp;&nbsp;'
+					str += data.partners[i].parName
+					str += '<input type="hidden" value="'+data.partners[i].memberPicture+'" id="calledPartnerPic_'+data.partners[i].memberNo+'"/>'
+					str += '<input type="hidden" value="'+data.partners[i].parName+'" id="calledPartnerName_'+data.partners[i].memberNo+'"/>'
+					str += '</button>'
+					$('#partnersList').append(str);
+				
+				str="";
+
+				}
+			
+
+		
+			
+		},error : function(data){
+			
+		}
+			
+			
+			
+		})	
+	});
+	
+	
+});
+//파트너(프라이빗 공간 친구) 호출
+function calledPartner(no){
+	console.log("클릭했어요!!");
+	console.log(no);
+	var partnerPic = $('#calledPartnerPic_'+no).val();
+	
+	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
+			+ '" src="/resources/upload/member/'+partnerPic+'"'
+			+ 'class="rounded-circle border" id="cancelCallPar_'+no+'" onclick="cancelCallPartner('+no+');"/>');
+	
+	console.log($('#calledPartner_'+no).val());
+	$('#calledPartner_'+no).hide();
+	
+}
+
+// 프로젝트(프로젝트 공간 친구) 호출 
+function calledProMember(no){
+	console.log("calledPromember"+no);
+	console.log(no);
+	var memberPic =$('#calledMemPic_'+no).val();
+	console.log(memberPic + "사진 값")
+	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
+			+ '" src="/resources/upload/member/'+memberPic+'"'
+			+ 'class="rounded-circle border" id="cancelCallMem_'+no+'" onclick="cancelCallMember('+no+');"/>');	
+	
+	$('#calledMember_'+no).hide();
+
+}
+
+//파트너(프라이빗 공간 친구) 호출 취소
+function cancelCallPartner(no){
+	console.log("취소");
+	$('#calledPartner_'+no).show();
+	$('#cancelCallPar_'+no).remove();
+}
+
+//파트너(프라이빗 공간 친구) 호출 취소
+function cancelCallMember(no){
+	$('#calledMember_'+no).show();
+	$('#cancelCallMem_'+no).remove();
+}
+
+
+//현재 페이지에서 프로젝트 원 가져오기
+function defaultCall(no){
+	console.log("첫 페이지!");
+	var memberPic = $('#memberPic_'+no).val();
+	console.log($('#memberPic_'+no).val());
+	
+	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
+			+ '" src="/resources/upload/member/'+memberPic+'"'
+			+ 'class="rounded-circle border" id="defaultCancelCallMem_'+no+'" onclick="defaultCancelCallMember('+no+');"/>');
+	$('#defaultCall_'+no).hide();
+	
+}
+function defaultCancelCallMember(no){
+	console.log("지울 준비 됐음");
+	
+	$('#defaultCancelCallMem_'+no).remove();
+	$('#defaultCall_'+no).show();
+	
+}
 
 
 					
@@ -848,6 +999,12 @@ div.tarea {
 	cursor: pointer;
 }
 
+#addPartnerPic button{
+	padding:0px;
+
+}
+
+
 #closeFrame {
 	background-image: url("/resources/images/writeImages/close.png");
 	background-size: cover;
@@ -907,6 +1064,9 @@ margin:auto;
 }
 .removeLink:hover{
 	text-decoration:none;
+}
+#inputContents:focus{
+	outline: none;
 }
 
 </style>
@@ -987,16 +1147,30 @@ margin:auto;
 					<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 						<div class="row" style="padding-left: 15px; height: 100%;">
 							<div class="col-md-2" style="height: 100%; padding: 0px;">
-								<span class="changeType" style="color: #339966;" id="changeType" onclick="changeClick();"><c:out value="${currentProName}"></c:out></span>
+								<span class="changeType" style="color: #339966;" id="changeType"  onclick="changeClick();">
+								<c:out value="${currentProName}"></c:out>
+								</span>
 
 								<div class="dropdown" style="padding: 0px">
 
 									<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" data-toggle="dropdown" role="button" />
-
+										
 									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addPjList">
-										<button class="dropdown-item" type="button">프라이빗 공간</button>
+											<button id="privateSpace" class="dropdown-item" type="button" value="${myPrivateSpace.proNo}">
+											<c:out value="${myPrivateSpace.proTitle}"/>
+											</button>
+											
+											<c:forEach items="${proList}" var="proList">
+												<button id="convertPro_${proList.proNo}" name="currentProNo" onclick="convertProject(${proList.proNo})" class="dropdown-item" type="button" value="${proList.proNo}">
+													<c:out value="${proList.proTitle}"/>
+												</button>
 
-									</ul>
+
+
+											</c:forEach>
+
+
+										</ul>
 								</div>
 
 
@@ -1013,15 +1187,29 @@ margin:auto;
 											
 											<div class="col-md-12">
 											<div class="row">
-												 <img style="height:100%;" src="/resources/upload/member/defaultUserImg.png" class="rounded-circle border"/>											
+												<div class="col-md-11" id="addParImg" style="padding:0px;">
+												
+												 <img style="height:100%; float:right;" src="/resources/upload/member/${myPicture}" class="rounded-circle border"/>											
+												
+												
 											
-											
-										  		<div class="dropup" style="padding-left:10px;">
+												</div>
+												
+										  		<div class="dropup col-md-1" style="padding-left:10px;">
 													<img src="/resources/images/writeImages/add-button.png" data-toggle="dropdown" class="rounded-circle" id="addPartnerPic" role="button"/>
-													<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-														<button class="dropdown-item" type="button">Action</button>
-														<button class="dropdown-item" type="button">Action</button>
-														<button class="dropdown-item" type="button">Action</button>
+													<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="partnersList">
+														<c:forEach items="${proMember}" var="proMember">
+														
+														<button id="defaultCall_${proMember.memberNo}" onclick="defaultCall(${proMember.memberNo});" class="dropdown-item" type="button">
+														<img src="/resources/upload/member/${proMember.memberPicture}" class="rounded-circle border">
+														<input type="hidden" id="memberPic_${proMember.memberNo}" value="${proMember.memberPicture}"/> 
+														&nbsp;&nbsp;
+														${proMember.memberName}</button>
+													
+													
+														</c:forEach>
+														
+														
 													</ul>
 	 
 												</div>
@@ -1070,13 +1258,16 @@ margin:auto;
 							<div class="col-md-12" style="height: 100%;">
 								<div class="row" style="height: 10%">
 									<div class="col-md-12" style="height: 100%;">
-										<input type="text" id="writeTitle" placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
+										<input type="text" name="writeTitle" id="writeTitle" placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
 									</div>
 								</div>
 								<div class="row" style="height: 90%">
 									<div class="col-md-12" style="height: 100%">
-										<div class="tarea col-md-12" id="inputContents" contenteditable="true" style="height: 100%; padding-left: 0px;">
+										<div class="tarea col-md-12" style="height: 100%; padding-left: 0px;">
+											<textarea id="inputContents" name="inputContents" required=required style="width:100%; height:100%; border:none; resize:none;">
 											
+											
+											</textarea>
 										
 										
 										</div>
@@ -1093,9 +1284,7 @@ margin:auto;
 
 
 									</div>
-									<div class="col-md-12" id="after_tag">
-									<input type="hidden" name="hashResults" id="hashResults"/>
-									</div>
+								
 									<div class="row">
 										<div class="col-md-12">
 											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
@@ -1145,12 +1334,6 @@ margin:auto;
 							</div>
 						</div>
 						<br>
-						<div class="row">
-							<div class="col-md-12">
-								링크 <span>0</span>
-							</div>
-							
-						</div>
 						<br>
 						<!-- 일정 창  -->
 						<div class="row" id="addSchedules">
@@ -1237,7 +1420,7 @@ margin:auto;
 
 
 											<c:set var="currentProNo" value="${currentProNo}"></c:set>
-											<input type="hidden" id="currentProNo" value="${currentProNo}">
+											<input type="hidden" id="currentProNo" name="currentProNo" value="${currentProNo}">
 
 											<button type="button" class="close" id="closeRWrite" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
 												<span aria-hidden="true">&times;</span>
@@ -1330,7 +1513,7 @@ margin:auto;
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-primary" onClick="saveScheduleToView();" style="background-color: #CFF09E; border: none;">저장</button>
+											<button type="button" class="btn btn-primary" onclick="saveScheduleToView();" style="background-color: #CFF09E; border: none;">저장</button>
 
 										</div>
 										<!-- </div> -->
