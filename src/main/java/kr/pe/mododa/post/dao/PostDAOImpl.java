@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
+import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.model.vo.Comment;
@@ -47,6 +48,10 @@ public class PostDAOImpl implements PostDAO{
 	
 	public List<Todo> selectTodo(SqlSessionTemplate sqlSession, int postNo){
 		return sqlSession.selectList("post.selectTodo",postNo);
+	}
+	
+	public List<Upload> selectUpload(SqlSessionTemplate sqlSession, int postNo){
+		return sqlSession.selectList("post.selectUpload",postNo);
 	}
 	
 	public List<Decision> selectDecision(SqlSessionTemplate sqlSession, int postNo){
@@ -145,5 +150,9 @@ public class PostDAOImpl implements PostDAO{
 	public int deletePost(SqlSessionTemplate sqlSession, int postNo) {
 		return sqlSession.delete("post.deletePost", postNo);
 		
+	}
+	
+	public int insertFile(SqlSessionTemplate sqlSession, Upload vo) {
+		return sqlSession.insert("post.insertUpload",vo);	
 	}
 }
