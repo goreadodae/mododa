@@ -20,7 +20,6 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
-	overflow-y: hidden;
 	height: 100%;
 }
 div {
@@ -33,76 +32,49 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
-/* 기본 구조 스타일 끝 */
 
-
-.fullProgressBox {
-	width: 100%;
-	height: 100%;
-	background-color: #F5F5F5;
+html { /* 모바일 */
+	padding-left: 15px;
+	padding-right: 15px;
 }
- 
- .progressTitle {
+/* 기본 구조 스타일 끝 */
+.content {
+	height: 99%;
+	width: 99.5%;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.viewHeader {
+	position: fixed-top ;
+	border-bottom: 1px solid gray;
+	height: 50px;
 	width: 100%;
-	height: 5%;
-	float: left;
+	background-color: white;
+}
+.viewContents {
+	float:left;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	min-height:100%;
+	background-color:#F5F5F5;
+}
+.progressBody {
+	background-color:#F5F5F5;
  }
- 
- .progressTitle h5 {
-  	margin-top: 8px;
- }
- 
- 
  .progressHeader {
- 	
- 	color: #339966;
-	width: 22%;
-	height: 100%;
-	
-	float: left;
+ 	border-top: 1px solid black;
+ 	border-bottom: 1px solid black;
+	background-color: #CFF09E;
 	text-align: center;
  }
- 
- .progressBody {
-	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
-	width: 22%;
-	height: 88%;
-	background-color: #FFF;
-	float: left;
- }
-
-.bodyEmpty {
-	width: 4%;
-	height: 88%;
-	float: left;
-}
-
-.bodyEmpty{
-	padding-top:22%;
-}
-
-.headEmpty {
-	width: 4%;
-	height: 100%;
-	float: left;
-}
-
-.titleEmpty {
-	border-top: 1px solid black;
-	width: 100%;
-	height: 2%;
-	float: left;
-}
-
-
-.progressPost {
-	border-bottom: 1px solid gray;
+ .progressPost {
+	border: 1px solid black;
 	float: left;
 	padding: 1% 5%;
 	width: 98%;
 	margin: 1%;
+	background-color: #fff;
 }
-
 
 .progressPost img {
 	width: 10%;
@@ -110,11 +82,9 @@ div {
 	margin-right: 3%;
 	
 }
-
 .progressPost img:hover {
 	cursor: pointer;
 }
-
 
 input[type=checkbox] {
 	transform: scale(1.5);
@@ -378,81 +348,11 @@ input[type=checkbox] {
 				},
 				success : function(data) {
 					
-					var postList = data.postList;
-					
-					
-					$(".progressBody").empty();
-					
-					var suggestResult = "";
-					var workingResult = "";
-					var stopResult = "";
-					var finishResult = "";
-					
-					var sug = "'sug'";
-					var work = "'work'";
-					var stop = "'stop'";
-					var fin = "'fin'";
-					
-					
-					for(var i=0 ; i<postList.length ; i++) {
-						/* 
-						var date = new Date(postList[i].postDate.time);
-						var dateStr = date.toString();
-						var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
-						 */
-						
-						if(postList[i].postProgress=='suggest') {
-							suggestResult += '<div class="progressPost">'
-											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
-											 + '<span class="sugCheckBox" style="display: none;">'
-											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
-											 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
-
-						} else if(postList[i].postProgress=='working') {
-							workingResult += '<div class="progressPost">'
-								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
-								 			 + '<span class="workCheckBox" style="display: none;">'
-								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
-								 			 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
-							
-						} else if(postList[i].postProgress=='stop') {
-							stopResult += '<div class="progressPost">'
-								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
-								 		  + '<span class="stopCheckBox" style="display: none;">'
-								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
-								 		  + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
-							
-						} else if(postList[i].postProgress=='finish') {
-							finishResult += '<div class="progressPost">'
-								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
-											+ '<span class="finCheckBox" style="display: none;">'
-								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
-								 			+ '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
-							
-						}
-						
-					
-					}
-					
-					$("#suggestBody").append(suggestResult);
-					$("#workingBody").append(workingResult);
-					$("#stopBody").append(stopResult);
-					$("#finishBody").append(finishResult);
-					
-					$('#successAlertMessage').text('프로젝트 이슈가 변경되었습니다.');
-		            $('#successAlert').show('slow');
-		            setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
-					 
-					
+					location.href="/projectProgress.do?proNo="+proNo;
 					
 				},
 				error : function() {
 					console.log("업데이트 실패");
-					
-					$('#failedAlertMessage').text('프로젝트 이슈 변경이 실패하였습니다.');
-			        $('#failedAlert').show('slow');
-			        setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
-					
 				}
 				
 				
@@ -482,14 +382,6 @@ input[type=checkbox] {
 
 <body>
 
-	<!-- 알림창 -->
-   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 20%; position: absolute; right:40px; bottom:0px;">
-      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
-   </div>
-   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 20%; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
-      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
-   </div>
-
 <!-- header -->
 <jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
@@ -502,9 +394,149 @@ input[type=checkbox] {
 
 	<!-- contents -->
 	<div class="col-8" id="contents" style="padding:0;">
+	
+	
+	<div class="content">
+	
+		<div class="viewHeader">
+			<div id="showHeader">
+				<h5><b>프로젝트 이슈 진행 현황</b>
+				<img src="../resources/images/project/help-round-button.png"/>
+				<span style="font-size:small;">프로젝트 이슈를 한 눈에 볼 수 있습니다. 해당 이슈의 진행 상태를 변경할 수 있습니다.</span></h5>
+				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
+			</div>
+		</div>
+		
+		
+		<div class="viewContents col-md-12">
+		<div class="row">
+		
+			<div class="col-md-2 progressBody">
+			<div class="progressHeader"><h5><b>발의된 이슈</b></h5></div>
+			<div class="">
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='suggest'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('sug');"/>
+						<span class="sugCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="sug_checkBox" value="${postList.postNo}" onClick="check('sug');">
+						</span>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			</div>
+			</div>
+			
+			<div class="col-md-1 text-center">
+			
+				<img src="../resources/images/project/next-arrow_m.png" onClick="updateProgress('sugToWork');" />
+				<input type="hidden" id="sugToWork" value="sugToWork" />
+				<img src="../resources/images/project/pre-arrow_m.png" onClick="updateProgress('workToSug');" />
+				<input type="hidden" id="workToSug" value="workToSug" />
+			
+			
+			</div>
+			
+			<div class="col-md-2 progressBody">
+			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
+			<div class="">
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='working'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
+						<span class="workCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="work_checkBox" value="${postList.postNo}" onClick="check('work');">
+						</span>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			</div>
+			</div>
+			
+			<div class="col-md-1 text-center">
+			
+				<img src="../resources/images/project/next-arrow_m.png" onClick="updateProgress('workToStop');" />
+				<input type="hidden" id="workToStop" value="workToStop" />
+				<img src="../resources/images/project/pre-arrow_m.png" onClick="updateProgress('stopToWork');" />
+				<input type="hidden" id="stopToWork" value="stopToWork" />
+			
+			
+			</div>
+			
+			<div class="col-md-2 progressBody">
+			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+			<div class="">
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='stop'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
+						<span class="stopCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${postList.postNo}" onClick="check('stop');">
+						</span>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			</div>
+			</div>
+			
+			<div class="col-md-1 text-center">
+			
+			
+				<img src="../resources/images/project/next-arrow_m.png" onClick="updateProgress('stopToFin');" />
+				<input type="hidden" id="stopToFin" value="stopToFin" />
+				<img src="../resources/images/project/pre-arrow_m.png" onClick="updateProgress('finToStop');" />
+				<input type="hidden" id="finToStop" value="finToStop" />
+			
+			
+			</div>
+			
+			<div class="col-md-2 progressBody">
+			<div class="progressHeader"><h5><b>완료</b></h5></div>
+			<div class="">
+				<c:forEach items="${postList}" var="postList">
+				<c:if test="${postList.postProgress=='finish'}">
+					<div class="progressPost" draggable="true">
+						
+						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
+						<span class="finCheckBox" style="display: none;">
+						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${postList.postNo}" onClick="check('fin');">
+						</span>
+						<span onclick="getPost(${postList.postNo});">${postList.postTitle}</span><br>
+						${postList.memberName}<br>
+						${postList.postDate}
+
+					</div>
+				</c:if>
+				</c:forEach>
+			</div>
+			</div>
+		
+		
+		</div>	
+		</div>
+
+	</div>
+	
+	
+	
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		
-		<div class="fullProgressBox">
+<%-- 		<div class="fullProgressBox">
 		
 			<div class="progressTitle">
 				<h5><b>프로젝트 이슈 진행 현황</b>
@@ -515,20 +547,20 @@ input[type=checkbox] {
 			<div class="titleEmpty"></div>
 			
 			<div class="progressTitle">
-			<div class="progressHeader"><h5><b>"발의된 이슈"</b></h5></div>
+			<div class="progressHeader"><h5><b>발의된 이슈</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>"진행 중"</b></h5></div>
+			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>"일시중지"</b></h5></div>
+			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>"완료"</b></h5></div>
+			<div class="progressHeader"><h5><b>완료</b></h5></div>
 			</div>
 			
 			<div class="progressBody" id="suggestBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='suggest'}">
-					<div class="progressPost">
+					<div class="progressPost" draggable="true">
 						
 						<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('sug');"/>
 						<span class="sugCheckBox" style="display: none;">
@@ -556,7 +588,7 @@ input[type=checkbox] {
 
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='working'}">
-					<div class="progressPost">
+					<div class="progressPost" draggable="true">
 						
 						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
 						<span class="workCheckBox" style="display: none;">
@@ -584,7 +616,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='stop'}">
-					<div class="progressPost">
+					<div class="progressPost" draggable="true">
 						
 						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
 						<span class="stopCheckBox" style="display: none;">
@@ -613,7 +645,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='finish'}">
-					<div class="progressPost">
+					<div class="progressPost" draggable="true">
 						
 						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
 						<span class="finCheckBox" style="display: none;">
@@ -631,15 +663,14 @@ input[type=checkbox] {
 			</div>
 
 
-		</div>
+		</div> --%>
 	
 	</div>
 	<!-- contents 끝 -->
 
 	<jsp:include page="/post.do"></jsp:include> <!-- 게시글 보기 -->
-	
-</div>
 
+</div>
 
 </body>
 </html>

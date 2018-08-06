@@ -253,7 +253,14 @@ li[id^="plus_"] a {
 
       $(".proProgress").click(function() {
          var proNo = $(this).attr('value');
-         location.href="/projectProgress.do?proNo=" + proNo;
+         
+         var myWidth = $(window).width();
+         if(myWidth>500) {
+        	 location.href="/projectProgress.do?proNo=" + proNo;
+         } else {
+        	 location.href="/projectProgress_mobile.do?proNo=" + proNo;
+         }
+
       });
 
       $(".proMyPost").click(function() {
@@ -265,7 +272,14 @@ li[id^="plus_"] a {
       
       /* 프로젝트 더보기 */
       $("#moreProject").click(function() {
-    	  location.href="/gotoMoreProject.do";
+    	  
+    	  var myWidth = $(window).width();
+          if(myWidth>500) {
+        	  location.href="/gotoMoreProject.do";
+          } else {
+        	  location.href="/gotoMoreProject_mobile.do";
+          }
+    	  
       });
 
    });

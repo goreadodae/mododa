@@ -20,7 +20,6 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
-	overflow-y: hidden;
 	height: 100%;
 }
 div {
@@ -33,94 +32,14 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+
+html { /* 모바일 */
+	padding-left: 15px;
+	padding-right: 15px;
+}
 /* 기본 구조 스타일 끝 */
 
 
-.fullProgressBox {
-	width: 100%;
-	height: 100%;
-	background-color: #F5F5F5;
-}
- 
- .progressTitle {
-	width: 100%;
-	height: 5%;
-	float: left;
- }
- 
- .progressTitle h5 {
-  	margin-top: 8px;
- }
- 
- 
- .progressHeader {
- 	color: #339966;
-	width: 30%;
-	height: 100%;
-	
-	float: left;
-	text-align: center;
- }
- 
- .progressBody {
-	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
-	width: 30%;
-	height: 88%;
-	background-color: #FFF;
-	float: left;
- }
-
-.bodyEmpty {
-	width: 5%;
-	height: 88%;
-	float: left;
-}
-
-.bodyEmpty{
-	padding-top:22%;
-}
-
-.headEmpty {
-	width: 5%;
-	height: 100%;
-	float: left;
-}
-
-.titleEmpty {
-	border-top: 1px solid black;
-	width: 100%;
-	height: 2%;
-	float: left;
-}
-
-
-.progressProject {
-	border-bottom: 1px solid gray;
-	float: left;
-	padding: 1% 5%;
-	width: 98%;
-	margin: 1%;
-}
-
-
-.progressProject img {
-	width: 10%;
-	height: 10%;
-	margin-right: 3%;
-	
-}
-
-.progressProject img:hover {
-	cursor: pointer;
-}
-
-
-input[type=checkbox] {
-	transform: scale(1.5);
-	margin-right: 4%;
-	margin-left: 4%;
-	margin-top: 3%;
-}
 
 </style>
 
@@ -307,92 +226,12 @@ input[type=checkbox] {
 				success : function(projectList) {
 					
 					
-					$('#successAlertMessage').text('프로젝트 진행 사항이 변경되었습니다.');
-		            $('#successAlert').show('slow');
-		            setTimeout(function () { $('#successAlert').hide('slow'); window.location.reload(); }, 1500);
+					location.href="/gotoMoreProject.do";
 					
-					
-					//location.href="/gotoMoreProject.do";
-					
-/* 					
-					$(".progressBody").empty();
-					
-					var workingResult = "";
-					var stopResult = "";
-					var finishResult = "";
-					
-					var work = "'work'";
-					var stop = "'stop'";
-					var fin = "'fin'";
-					
-					
-					for(var i=0 ; i<projectList.length ; i++) {
-						
-
-						if(projectList[i].proProgress=='working') {
-							workingResult += '<div class="progressProject" draggable="true">'
-								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
-								 			 + '<span class="workCheckBox" style="display: none;">'
-								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+projectList[i].proNo+'" onClick="check('+work+');">'
-								 			 + '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
-							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {
-								var startDate = projectList[i].proStartDate.split(" ");
-								var endDate = projectList[i].proEndDate.split(" ");
-								workingResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
-												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';
-							} else {
-								workingResult += '</div>';
-							}
-
-							
-						} else if(projectList[i].proProgress=='stop') {
-							stopResult += '<div class="progressProject" draggable="true">'
-								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
-								 		  + '<span class="stopCheckBox" style="display: none;">'
-								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+projectList[i].proNo+'" onClick="check('+stop+');">'
-								 		  + '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
-							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {		
-								var startDate = projectList[i].proStartDate.split(" ");
-								var endDate = projectList[i].proEndDate.split(" ");
-								stopResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
-												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';
-							} else {
-								stopResult += '</div>';
-							}
-							
-						} else if(projectList[i].proProgress=='finish') {
-							finishResult += '<div class="progressProject" draggable="true">'
-								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
-											+ '<span class="finCheckBox" style="display: none;">'
-								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+projectList[i].proNo+'" onClick="check('+fin+');">'
-								 			+ '</span><a onClick="plusProject();">'+projectList[i].proTitle+'</a><br>';
-							if(projectList[i].proStartDate!=null && projectList[i].proEndDate!=null) {		
-								var startDate = projectList[i].proStartDate.split(" ");
-								var endDate = projectList[i].proEndDate.split(" ");
-								finishResult += '기간 : '+startDate[2]+"-"+startDate[0].slice(0,-1)+"-"+startDate[1].slice(0,-1)
-												 +' ~ '+endDate[2]+"-"+endDate[0].slice(0,-1)+"-"+endDate[1].slice(0,-1)+'</div>';								
-							} else {
-								finishResult += '</div>';
-							}
-							
-						}
-						
-					
-					}
-					
-					$("#workingBody").append(workingResult);
-					$("#stopBody").append(stopResult);
-					$("#finishBody").append(finishResult);
-*/
 					
 				},
 				error : function() {
 					console.log("업데이트 실패");
-					
-					$('#failedAlertMessage').text('프로젝트 변경이 실패하였습니다.');
-			        $('#failedAlert').show('slow');
-			        setTimeout(function () { $('#failedAlert').hide('slow'); window.location.reload(); }, 1500);
-					
 				}
 				
 				
@@ -461,21 +300,11 @@ input[type=checkbox] {
 						proNo : proNo
 					},
 					success : function(data) {
-						
-						
-						$('#successAlertMessage').text("["+proTitle+"] 프로젝트가 삭제되었습니다.");
-			            $('#successAlert').show('slow');
-			            setTimeout(function () { $('#successAlert').hide('slow'); window.location.reload(); }, 1500);
-						
-					
-						//location.href="/gotoMoreProject.do";
+						alert("["+proTitle+"] 프로젝트가 삭제되었습니다.");
+						location.href="/gotoMoreProject.do";
 					},
 					error : function() {
 						console.log("프로젝트 삭제 ajax실패");
-						
-						$('#failedAlertMessage').text('프로젝트 삭제가 실패하였습니다.');
-				        $('#failedAlert').show('slow');
-				        setTimeout(function () { $('#failedAlert').hide('slow'); window.location.reload(); }, 1500);
 					}
 					
 				});
@@ -490,7 +319,7 @@ input[type=checkbox] {
 	}
 	
 	function changeProDate(proNo) {
-		$("#dateChangeModal").load("/gotoProjectDateChange.do?proNo="+proNo);
+		$("#dateChangeModal").load("/gotoProjectDateChange_mobile.do?proNo="+proNo);
 	}
 	
 
@@ -500,18 +329,65 @@ input[type=checkbox] {
 
 </script>
 
+<style>
+.content {
+	height: 99%;
+	width: 99.5%;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.viewHeader {
+	position: fixed-top ;
+	border-bottom: 1px solid gray;
+	height: 50px;
+	width: 100%;
+	background-color: white;
+}
+.viewContents {
+	float:left;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	min-height:100%;
+	background-color:#F5F5F5;
+}
+.progressBody {
+	background-color:#F5F5F5;
+ }
+ .progressHeader {
+ 	border-top: 1px solid black;
+ 	border-bottom: 1px solid black;
+	background-color: #CFF09E;
+	text-align: center;
+ }
+ .progressProject {
+	border: 1px solid black;
+	float: left;
+	padding: 1% 5%;
+	width: 98%;
+	margin: 1%;
+	background-color: #fff;
+}
+
+.progressProject img {
+	width: 10%;
+	height: 10%;
+	margin-right: 3%;
+	
+}
+.progressProject img:hover {
+	cursor: pointer;
+}
+
+input[type=checkbox] {
+	transform: scale(1.5);
+	margin-right: 4%;
+	margin-left: 4%;
+	margin-top: 3%;
+}
+</style>
+
 
 <body>
-
-	<!-- 알림창 -->
-   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 20%; position: absolute; right:40px; bottom:0px;">
-      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
-   </div>
-   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 20%; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
-      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
-   </div>
-
-
 
 <!-- header -->
 <jsp:include page="/projectHeader.do"></jsp:include>
@@ -527,35 +403,30 @@ input[type=checkbox] {
 
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
-		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-		
-		<div class="fullProgressBox">
-		
-			<div class="progressTitle">
+	
+	
+	<div class="content">
+	
+		<div class="viewHeader">
+			<div id="showHeader">
 				<h5><b>프로젝트 더보기</b>
 				<img src="../resources/images/project/help-round-button.png"/>
 				<span style="font-size:small;">프로젝트를 한 눈에 볼 수 있습니다. 해당 프로젝트의 진행 상태를 변경할 수 있습니다.</span></h5>
-				<%-- <input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" /> --%>
+				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />	
 			</div>
-			<div class="titleEmpty"></div>
-			
-			<div class="progressTitle">
-			<div class="progressHeader"><h5><b>"일시중지"</b></h5></div>
-			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>"진행 중"</b></h5></div>
-			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>"완료"</b></h5></div>
-			</div>
-			
-			
-			
-			
-			
-			<div class="progressBody" id="stopBody" style="overflow:auto; height:84%;">
-			
+		</div>
+	
+		<div class="viewContents col-md-12">
+		<div class="row">
+		
+		<div class="col-md-3 progressBody">
+		
+		<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+		<div class="">
+		
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='stop'}">
-					<div class="progressProject">
+					<div class="progressProject" draggable="true">
 						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
 						
 						<span class="stopCheckBox" style="display: none;">
@@ -583,29 +454,30 @@ input[type=checkbox] {
 					</div>
 				</c:if>
 				</c:forEach>
-			
-			</div>
-			
-			
-			
-			
-			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('stopToWork');" />
+		
+		
+		</div>
+		</div>
+		<div class="col-md-1 text-center">
+		
+		
+		<img src="../resources/images/project/next-arrow_m.png" onClick="updateProgress('stopToWork');" />
 				<input type="hidden" id="stopToWork" value="stopToWork" />
-				<br><br><br><br>
-				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('workToStop');" />
+				<img src="../resources/images/project/pre-arrow_m.png" onClick="updateProgress('workToStop');" />
 				<input type="hidden" id="workToStop" value="workToStop" />
-			</div>
-			
-			
-			
-			
-			
-			<div class="progressBody" id="workingBody" style="overflow:auto; height:84%;">
+		
+		
+		</div>
+		
+		
+		
+		<div class="col-md-3 progressBody">
+		<div class="progressHeader"><h5><b>진행 중</b></h5></div>
+		<div class="">
 
-				<c:forEach items="${projectList}" var="projectList">
+			<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='working'}">
-					<div class="progressProject">
+					<div class="progressProject" draggable="true">
 						
 						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
 						<span class="workCheckBox" style="display: none;">
@@ -631,29 +503,31 @@ input[type=checkbox] {
 					</div>
 				</c:if>
 				</c:forEach>
-				
-			
-			</div>
-			
-			
-			
-			<div class="bodyEmpty" align="center">
-				<img src="../resources/images/project/next-arrow.png" onClick="updateProgress('workToFin');" />
-				<input type="hidden" id="workToFin" value="workToFin" />
-				<br><br><br><br>
-				<img src="../resources/images/project/pre-arrow.png" onClick="updateProgress('finToWork');" />
-				<input type="hidden" id="finToWork" value="finToWork" />
-			</div>			
 
-	
-	
-	
-	
-			<div class="progressBody" id="finishBody" style="overflow:auto; height:84%;">
-			
-				<c:forEach items="${projectList}" var="projectList">
+
+		</div>
+		</div>
+		<div class="col-md-1 text-center">
+		
+		
+		<img src="../resources/images/project/next-arrow_m.png" onClick="updateProgress('workToFin');" />
+				<input type="hidden" id="workToFin" value="workToFin" />
+				<img src="../resources/images/project/pre-arrow_m.png" onClick="updateProgress('finToWork');" />
+				<input type="hidden" id="finToWork" value="finToWork" />
+		
+		
+		
+		</div>
+		
+		
+		
+		<div class="col-md-3 progressBody">
+		<div class="progressHeader"><h5><b>완료</b></h5></div>
+		<div class="">
+		
+						<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='finish'}">
-					<div class="progressProject">
+					<div class="progressProject" draggable="true">
 					
 						
 						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
@@ -680,11 +554,18 @@ input[type=checkbox] {
 					</div>
 				</c:if>
 				</c:forEach>
-			
-			</div>
-
+		
+		</div>
+		</div>
+		
+		
+		<div class="col-md-1 text-center"></div>
+		</div>
+		
 
 		</div>
+
+	</div>
 	
 	</div>
 	<!-- contents 끝 -->
