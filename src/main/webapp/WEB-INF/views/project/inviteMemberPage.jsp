@@ -18,6 +18,7 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 

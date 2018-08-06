@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import kr.pe.mododa.project.model.vo.Project;
 
 public interface ProjectController {
@@ -48,5 +46,8 @@ public interface ProjectController {
 	// 프로젝트 더보기
 	public Object gotoMoreProject(HttpSession session);
 	public void updateProjectProgress(HttpSession session, HttpServletResponse response, String proNoStr, String proProgress);
+	public Object searchMoreProTitle(int proNo);
+	public Object deleteProject(int proNo);
+	
 	
 }

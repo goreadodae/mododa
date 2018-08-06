@@ -70,7 +70,7 @@
 			p.post_no as postNo,
   			p.post_title as postTitle,
   			p.post_progress as postProgress,
-  			p.post_date as postDate,
+  			to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
   			p.post_content as postContent,
   			p.post_writer as postWriter,
   			p.post_temp as postTemp,
@@ -90,7 +90,7 @@
 			p.post_no as postNo,
   			p.post_title as postTitle,
   			p.post_progress as postProgress,
-  			p.post_date as postDate,
+  			to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
   			p.post_content as postContent,
   			p.post_writer as postWriter,
   			p.post_temp as postTemp,
@@ -110,7 +110,7 @@
 			p.post_no as postNo,
   			p.post_title as postTitle,
   			p.post_progress as postProgress,
-  			p.post_date as postDate,
+  			to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
   			p.post_content as postContent,
   			p.post_writer as postWriter,
   			p.post_temp as postTemp,
@@ -131,7 +131,7 @@
 			p.post_no as postNo,
   			p.post_title as postTitle,
   			p.post_progress as postProgress,
-  			p.post_date as postDate,
+  			to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
   			p.post_content as postContent,
   			p.post_writer as postWriter,
   			p.post_temp as postTemp,
@@ -159,7 +159,7 @@
 			p.post_no as postNo,
   			p.post_title as postTitle,
   			p.post_progress as postProgress,
-  			p.post_date as postDate,
+  			to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
   			p.post_content as postContent,
   			p.post_writer as postWriter,
   			p.post_temp as postTemp,
@@ -195,6 +195,51 @@
 			#{progressHelper.proNo}
 		</foreach>
 	</update>
+	
+	
+	<select id="searchMoreProTitle" resultType="String">
+		select pro_title from project where pro_no = #{proNo}
+	</select>
+	
+	
+	<select id="searchLeaderProNo" resultType="String">
+		select pro_no from work_on where leader='Y' and member_no = #{memberNo}
+	</select>
+	
+	
+	<delete id="deleteProject">
+		delete from project where pro_no = #{proNo}
+	</delete>
+	
+	<select id="searchProjectInfo" resultType="project">
+		select
+			pro_no as proNo,
+			pro_title as proTitle,
+			pro_progress as proProgress,
+			pro_start_date as proStartDate,
+			pro_end_date as proEndDate,
+			pro_member_no as proMemberNo
+		from project
+		where pro_no = #{proNo}
+	</select>
+	
+	
+	<update id="updateProjectDate" parameterType="project">
+		update project set
+		<choose>
+			<when test="proStartDate!=null and proEndDate!=null">
+			pro_start_date = #{proStartDate}, pro_end_date = #{proEndDate}
+			</when>
+			<otherwise>
+			pro_start_date = null, pro_end_date = null
+			</otherwise>
+		</choose>
+		where pro_no = #{proNo}
+	</update>
+	
+	
+	
+	
 	
 	
 	

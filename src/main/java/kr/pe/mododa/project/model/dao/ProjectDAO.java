@@ -24,5 +24,8 @@ public interface ProjectDAO {
 	public ArrayList<ProjectPostList> searchHashTag(SqlSessionTemplate sqlSession, SearchHelper sh);
 	public int updatePostProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
 	public int updateProjectProgress(SqlSessionTemplate sqlSession, ProgressHelper ph);
+	public String searchMoreProTitle(SqlSessionTemplate sqlSession, int proNo);
+	public ArrayList<String> searchLeaderProNo(SqlSessionTemplate sqlSession, int memberNo);
+	public int deleteProject(SqlSessionTemplate sqlSession, int proNo);
 
 }

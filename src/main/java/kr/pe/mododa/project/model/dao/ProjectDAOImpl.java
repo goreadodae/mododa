@@ -96,8 +96,30 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return sqlSession.update("project.updateProjectProgress", ph);
 	}
 	
+	@Override
+	public String searchMoreProTitle(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("project.searchMoreProTitle", proNo);
+	}
+	
+	@Override
+	public ArrayList<String> searchLeaderProNo(SqlSessionTemplate sqlSession, int memberNo) {
+		List leaderProNo = sqlSession.selectList("project.searchLeaderProNo", memberNo);
+		return (ArrayList<String>)leaderProNo;
+	}
+	
+	@Override
+	public int deleteProject(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.delete("project.deleteProject", proNo);
+	}
 	
 	
+	public Project searchProjectInfo(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("project.searchProjectInfo", proNo);
+	}
+	
+	public int updateProjectDate(SqlSessionTemplate sqlSession, Project project) {
+		return sqlSession.update("project.updateProjectDate", project);
+	}
 	
 	
 	// --------------------- 승재오빠 부분
@@ -139,6 +161,16 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public ArrayList<WorkOnMember> searchProMember(SqlSessionTemplate sqlSession, SearchMember sm) {
 		return (ArrayList)sqlSession.selectList("project.searchProMember", sm);
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 

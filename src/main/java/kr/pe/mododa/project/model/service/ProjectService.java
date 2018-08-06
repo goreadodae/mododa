@@ -22,6 +22,9 @@ public interface ProjectService {
 	public ArrayList<ProjectPostList> searchHashTag(SearchHelper sh);
 	public int updatePostProgress(ProgressHelper ph);
 	public int updateProjectProgress(ProgressHelper ph);
+	public String searchMoreProTitle(int proNo);
+	public ArrayList<String> searchLeaderProNo(int memberNo);
+	public int deleteProject(int proNo);
 	
 	
 	

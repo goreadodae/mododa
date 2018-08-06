@@ -110,20 +110,20 @@ div {
 							for(var i=0 ; i<searchResult.length ; i++) {
 								
 								
-								var date = new Date(searchResult[i].postDate.time);
+								/* var date = new Date(searchResult[i].postDate.time);
 								var dateStr = date.toString();
 								var printDate = dateStr.substring(0,10)+" "+dateStr.substring(16,24)+" KST "+dateStr.substring(11,15);
 								
 								// Mon Jul 30 2018 18:56:04 GMT+0900 (한국 표준시)
 								// Mon Jul 30 18:56:04 KST 2018
 								
-								console.log(printDate);
+								console.log(printDate); */
 
 
   								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">'
 	 									  + '<span onclick="getPost('+searchResult[i].postNo+');" class="btn btn-link" style="float:left;">'+searchResult[i].postTitle+'</span></div>'
 	 									  + '<div class="col-md-9"><img id="memberImg2" src="'+searchResult[i].memberPicture+'">&nbsp;&nbsp;'+searchResult[i].memberName
-	 									  + '&nbsp;&nbsp;&nbsp;&nbsp;'+printDate+'</div>'
+	 									  + '&nbsp;&nbsp;&nbsp;&nbsp;'+searchResult[i].postDate+'</div>'
 	 									  + '</div><hr style="color: grey;"></li>';
 							}
 								
