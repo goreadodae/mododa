@@ -5,11 +5,50 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Insert title here</title>
 
 </head>
 
 <style>
+@media screen and (max-width: 768px) {
+	#leftBarBody, #rightBarBody {
+		display: none;
+	}
+	#contents {
+		width: 100vmin;
+	}
+	.topbar {
+		width: 20% !important;
+	}
+	#menu-img {
+		display: inline-block !important;
+		height: 25px;
+		top: 25%;
+		left: 20%;
+		position: absolute;
+	}
+	#mobileMenuContent{
+		margin: 0;
+		padding: 20px;
+	}
+	.row.leftbar>ul{
+		padding-left: 10px;
+		width: 99%;
+	}
+	.row.leftbar{
+		width:100%;
+		margin-left: 0px;
+	}
+}
+@media screen and (max-width: 426px) {
+	#menu-img{
+		left: 40%;
+	}
+	#myInfoDiv{
+		display: none;
+	}
+}
 /* header */
 .header {
 	margin: 0px;
@@ -42,10 +81,7 @@
 }
 
 #menu-img {
-	height: 25px;
-	top: 25%;
-	left: 20%;
-	position: absolute;
+	display: none;
 }
 
 #cancel-img {
@@ -58,30 +94,54 @@
 }
 
 /* header */
-.myInfo{
-	height: 2.4rem; width: 2.4rem; position:absolute; top:0; bottom:0; margin:auto;
+.myInfo {
+	height: 2.4rem;
+	width: 2.4rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
 }
-.myInfoPop{
-	height: 100px; width: 100px;
+
+.myInfoPop {
+	height: 100px;
+	width: 100px;
 }
-#myInfoDropDown{
-	height: auto; width: 400px;
+
+#myInfoDropDown {
+	height: auto;
+	width: 400px;
 }
-.dropdown-item:active{
+
+.dropdown-item:active {
 	background-color: #CFF09E !important;
 }
-#partnerList{
-	height: auto; width: 21rem;
+
+#partnerList {
+	height: auto;
+	width: 21rem;
 }
-.partnerListPic{
-	height: 4rem; width: 4rem;
+
+.partnerListPic {
+	height: 4rem;
+	width: 4rem;
 }
-.partnerListDropdown{
-	height: 70%; width: auto; position:absolute; top:0; bottom:0; margin:auto; margin-top: 10px;
+
+.partnerListDropdown {
+	height: 70%;
+	width: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	margin-top: 10px;
 }
-#invitePartnerBtn, #searchPartnerText{
-	width: 100%; margin-bottom: 15px;
+
+#invitePartnerBtn, #searchPartnerText {
+	width: 100%;
+	margin-bottom: 15px;
 }
+
 .invietMemberId {
 	width: 100%;
 	background-color: transparent;
@@ -89,6 +149,7 @@
 	margin-bottom: 10%;
 	border-bottom: 1px solid gray;
 }
+
 .invietMemberId:focus {
 	outline: none;
 }
@@ -105,18 +166,22 @@
 	background-color: rgb(0, 0, 0); /* Fallback color */
 	background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
 }
-.modal-content{
+
+.modal-content {
 	margin: 15% auto;
 }
+
 #modal-close {
 	width: 20px;
 	margin-top: 20px;
 	margin-right: 20px;
 	float: right;
 }
-a:hover{
+
+a:hover {
 	cursor: pointer;
 }
+
 .btn-secondary {
 	background-color: #339966 !important;
 	border-color: #339966 !important;
@@ -137,7 +202,32 @@ a:hover{
 	$(window).resize(function() {
 		resizeContent();
 	});
-	
+	/* 모바일 시작  */
+	$(document).ready(function(){
+		if(document.body.clientWidth<=768){
+			$('#contents').attr('class','col-12');
+			$('#mobileMenuModal, .row.leftbar').click(function(e) {
+				if(!$(e.target).hasClass("modal-content")) { mmm_close_pop();
+				}
+			});
+			$('#mobileMenuModal').css('display','block !important');
+		} else if(document.body.clientWidth<=426){
+			
+		} else {
+			$('#contents').attr('class','col-6');
+		}
+		$('.openModal').click(function(){
+			setTimeout(function(){ $('#menu-img').trigger('click'); }, 1);
+		});
+	});
+	function mmm_open_pop(flag) {
+		$('#mobileMenuModal').show();
+	};
+	//팝업 Close 기능
+	function mmm_close_pop(flag) {
+		$('#mobileMenuModal').hide();
+	};
+	/* 모바일 끝 */
 	function resizeContent() {
 		var windowHeight = $(window).height();
 		var topHeight = $('.header').height();
@@ -359,18 +449,17 @@ a:hover{
 			<!-- 상단바 -->
 			<div class="row">
 				<div class="col-md-3 topbar">
-					<img id="menu-img" src="../resources/images/layout-img/menu.png" />
+				<img id="menu-img" src="../resources/images/layout-img/menu.png" onclick="mmm_open_pop();"/>
 				</div>
 
-				<div class="col-md-5 topbar">
+				<div class="col-md-5 topbar" id="mainLogoDiv">
 					<a href="/mainPage.do"><img id="logo-img"          
 						src="../resources/images/layout-img/main_logo_rec.png"></a>
 				</div>
 
-				<div class="col-md-4 topbar">
+				<div class="col-md-4 topbar" id="myInfoDiv">
 					<div class="row" style="height: 100%;">
-					<div class="col-md-4 topbar"></div>
-					<div class="col-md-1 dropdown topbar" id="myInfoDiv">
+					<div class="dropdown topbar" id="myInfoDiv" style="width: 10%;">
 					<!-- 회원 썸네일 -->
 					<c:set var="memberPic" value="../resources/upload/member/${sessionScope.member.memberPicture }"/>
 					<img src="${memberPic }" class="img-circle rounded-circle border myInfo dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -391,11 +480,11 @@ a:hover{
  						</div>
  						</div>
 						</div>
-						<div class="col-md-1 topbar">
+						<div class="topbar" style="width: 10%;">
 						<!-- 파트너추가 -->
 					<img src="../resources/upload/member/add-friend.png" class="myInfo" onclick="ipm_open_pop();">
 						</div>
-						<div class="col-md-3 topbar">
+						<div class="topbar" style="width: 10%;">
 						<!-- 파트너 목록 -->
 						<a class="dropdown-toggle partnerListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showPartnerList();">파트너 목록</a>
 						<div class="dropdown-menu dropdown-menu-right" id="partnerList">
@@ -413,8 +502,7 @@ a:hover{
 							</div>
  						</div>
 						</div>
-						<div class="col-md-1 topbar">
-						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -447,6 +535,114 @@ a:hover{
 					<div class="col-md-4"></div>
 				</div>
 			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 팝업모달 끝 -->
+		
+		
+		<div id="mobileMenuModal" class="modal">
+			<!-- Modal 내용 -->
+			<div id="mobileMenuContent" class="modal-content" style="width: 80%; height: auto; min-height: 100%;">
+			<div class="row" style="margin: 20px;">
+				<div class="col-md-6"style="margin: 0;">
+					<img src="${memberPic }"
+						class="img-circle rounded-circle border myInfoPop">
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12"><strong>${sessionScope.member.memberName }</strong></div>
+						<div class="col-md-12">${sessionScope.member.memberId }</div>
+					</div>
+				</div>
+				<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a> <a
+					class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및
+					탈퇴</a> <a class="dropdown-item" href="/logout.do">로그아웃</a>
+			</div>
+		<div class="row leftbar">
+         <ul style="margin-bottom:0;">
+            <li class="list-title">전체 정보</li>
+            <li class="list-group-item" id="newsfeed">
+               <img src="../resources/images/layout-img/lightning.png" class="icon"> 뉴스피드</li>
+            <li class="list-group-item" id="callpost">
+               <img src="../resources/images/layout-img/arroba.png" class="icon"> 호출된 글</li>
+            <li class="list-group-item" id="bookmark">
+               <img src="../resources/images/layout-img/bookmark.png" class="icon"> 북마크</li>
+            <li class="list-group-item" id="mypost">
+               <img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
+            <li class="list-group-item" id="calendarAll">
+               <img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+         </ul>
+
+         <ul>
+            <li class="list-title">프로젝트</li>
+
+            <li class="list-group-item" id="createProject">
+               <img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
+
+            <!-- 프라이빗 공간 -->
+            <li class="list-group-item openModal" id="privateMain">
+               <img src="../resources/images/project/safe.png" class="icon"> 프라이빗 공간</li>
+            
+            <li class="privateSub">
+            <a class="dropdown-item priPost" href="#" value="${privateProject.proNo}"> 
+            <img src="../resources/images/project/post-it.png" class="subIcon" /> 프라이빗 글</a></li>
+            
+            <li class="privateSub">
+            <a class="dropdown-item priHashTag" href="#" value="${privateProject.proNo}">
+            <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
+            
+
+            <!-- 내가 포함된 프로젝트 -->
+            <c:forEach items="${projectList}" var="projectList" end="5">
+            
+
+               <li class="list-group-item projectMain openModal" value="${projectList.proNo}">
+               <img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
+
+               <!-- 하위메뉴 -->
+
+               <li class="list-group-item" id="sub_${projectList.proNo}_post">
+               <a class="dropdown-item proPost" href="#" value="${projectList.proNo}">
+               <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
+
+               <li class="list-group-item" id="sub_${projectList.proNo}_hashTag">
+               <a class="dropdown-item proHashTag" href="#" value="${projectList.proNo}">
+               <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
+
+               <li class="list-group-item" id="sub_${projectList.proNo}_progress">
+               <a class="dropdown-item proProgress" href="#" value="${projectList.proNo}">
+               <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
+
+               <li class="list-group-item" id="sub_${projectList.proNo}_myPost">
+               <a class="dropdown-item proMyPost" href="#" value="${projectList.proNo}"> 
+               <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
+
+            
+            </c:forEach>
+            
+            <li class="list-group-item" id="moreProject">
+            <img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
+           	
+           	<!-- 더 보기 -->
+           	<li class="list-group-item" id="projectPlus openModal" style="display:none;" >
+            <img src="../resources/images/project/flag-marker.png" class="icon"><span></span></li>
+            <!-- 하위메뉴 -->
+               <li class="list-group-item" id="plus_post">
+               <a class="dropdown-item proPost" href="#" value="">
+               <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
+               <li class="list-group-item" id="plus_hashTag">
+               <a class="dropdown-item proHashTag" href="#" value="">
+               <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
+               <li class="list-group-item" id="plus_progress">
+               <a class="dropdown-item proProgress" href="#" value="">
+               <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
+               <li class="list-group-item" id="plus_myPost">
+               <a class="dropdown-item proMyPost" href="#" value=""> 
+               <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
+           
+         </ul>
+      </div>
+		</div>
 			<!-- Modal 내용 끝 -->
 		</div>
 		<!-- 팝업모달 끝 -->

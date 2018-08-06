@@ -31,13 +31,25 @@ public class HomeController {
 	
 	// 페이지 공통 부분 로드하는 컨트롤러
 	@RequestMapping(value="/header.do")
-	public String header() {
-		return "main/header";
+	public Object header(HttpSession session) {
+		ArrayList<Project> projectList = projectController.projectWorkingList(session);
+		Project privateProject = projectController.privateList(session);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.addObject("privateProject", privateProject);
+		view.setViewName("main/header"); // 0728 수정
+		return view;
 	}
 	
 	@RequestMapping(value="/projectHeader.do")
-	public String projectHeader() {
-		return "main/projectHeader";
+	public Object projectHeader(HttpSession session) {
+		ArrayList<Project> projectList = projectController.projectWorkingList(session);
+		Project privateProject = projectController.privateList(session);
+		ModelAndView view = new ModelAndView();
+		view.addObject("projectList", projectList);
+		view.addObject("privateProject", privateProject);
+		view.setViewName("main/projectHeader"); // 0728 수정
+		return view;
 	}
 	
 	@RequestMapping(value="/leftbar.do")
