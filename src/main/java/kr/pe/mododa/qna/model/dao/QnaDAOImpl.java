@@ -101,11 +101,7 @@ public class QnaDAOImpl {
 		
 	}
 
-	public Qna selectQnaOne(SqlSessionTemplate sqlSession, int queNo) {
-		
-		return sqlSession.selectOne("qna.qnaDetail",queNo);
 
-	}
 
 	
 
