@@ -56,19 +56,7 @@ public class CalendarControllerImpl implements CalendarController {
 		 new Gson().toJson(list,response.getWriter());
 		 
 	}
-	
-	/*@Override
-	@RequestMapping(value="selectProjectOne.do")
-	public void selectProjectOne(HttpServletResponse response,@RequestParam int proNo) throws Exception {
-		
-		Project p = CalendarService.selectProjectOne(proNo);
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		 
-		 new Gson().toJson(p,response.getWriter());
-		
-	}*/
+
 	
 	@Override
 	@RequestMapping(value="selectLinkPost.do")
@@ -96,11 +84,10 @@ public class CalendarControllerImpl implements CalendarController {
 		for(int i=0;i<list.size();i++) {
 		startDate = sdf.format(list.get(i).getStartDate());
 		list.get(i).setStStartDate(startDate); //시작 날짜를 format
-		
-		/*Date plusEndDate = (Date)(list.get(i).getEndDate())+1;*/
+
 		endDate = sdf.format(list.get(i).getEndDate());
 		list.get(i).setStEndDate(endDate); //끝 날짜를 format		
-				/*System.out.println(list.get(i).getStEndDate());*/
+
 		}
 		
 		
@@ -161,7 +148,7 @@ public class CalendarControllerImpl implements CalendarController {
 		Schedule sc = CalendarService.infoSchedule(scheduleNo);
 		Project pj = CalendarService.selectProjectOne(scheduleNo);
 		Post p = CalendarService.selectPostOne(scheduleNo);
-		
+
 		
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
 		
@@ -179,7 +166,9 @@ public class CalendarControllerImpl implements CalendarController {
 		 ModelAndView view = new ModelAndView();
 			view.addObject("sc",sc);
 			view.addObject("pj",pj);
-			view.addObject("p",p);
+			if(p!=null) {
+				view.addObject("p",p);	
+			}
 			view.setViewName("jsonView");
 			return view;
 	}
