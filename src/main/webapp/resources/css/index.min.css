@@ -63,7 +63,7 @@ section h2 {
     line-height: 2rem
 }
 
-@media (min-width:992px) {
+@media screen and (max-width: 980px) {
     section h2 {
         font-size: 3rem;
         line-height: 2.5rem
@@ -134,7 +134,7 @@ section h2 {
     padding: .8rem
 }
 
-@media (min-width:992px) {
+@media screen and (max-width: 980px) {
     #mainNav {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
@@ -185,7 +185,7 @@ header.masthead h2 {
     font-family: Lato
 }
 
-@media (min-width:992px) {
+@media screen and (max-width: 980px) {
     header.masthead {
         padding-top: calc(6rem + 106px);
         padding-bottom: 6rem
@@ -226,7 +226,7 @@ header.masthead h2 {
     font-size: 1.5rem
 }
 
-@media (min-width:576px) {
+@media screen and (max-width: 980px) {
     .portfolio {
         margin-bottom: -30px
     }
@@ -260,7 +260,7 @@ header.masthead h2 {
     font-size: 2rem
 }
 
-@media (min-width:768px) {
+screen and (max-width: 768px) {
     .portfolio-modal .portfolio-modal-dialog {
         min-height: 100vh;
         padding: 5rem;

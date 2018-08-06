@@ -31,6 +31,45 @@
   	.floating-label-form-group div {
 		border-bottom: 1px solid #e9ecef;
 	}
+	@media screen and (max-width: 768px){
+		#mainNav{
+			min-width: 768px;
+		}
+	}
+	@media (max-width: 768px){
+		header.masthead, section.introduce
+		, footer.footer, .copyright,.mfp-bg.mfp-ready{
+    		min-width: 786px;
+    	}
+    	.portfolio-modal-dialog{
+    		min-width: 786px !important;
+    		margin: none !important;
+    	}
+    	.nav-item{
+			height: 100px;
+			border-bottom: 1px solid white;
+		}
+		.nav-item>a:active{
+			color: #339966;
+    		background: #CFF09E;
+		}
+		.nav-item>label{
+			width: 100%;
+		}
+		.nav-item:last-child{
+			border-bottom: none;
+		}
+		.nav-item>a, .nav-item>label{
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+		#menuBtn{
+			color: black !important;
+		}
+		#sendMessageButton{
+			margin-left: 39%;
+		}
+	}
   </style>
   </head>
 
@@ -255,7 +294,7 @@
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="#page-top">모두다 MODODA</a>
-        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="menuBtn" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
         </button>
@@ -289,7 +328,7 @@
     <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <img class="img-fluid mb-5 d-block mx-auto" src="../resources/index_img/main_logo_square_2.png" alt="">
+        <img class="img-fluid mb-5 d-block mx-auto" src="../resources/index_img/main_logo_square_2.png" alt="" id="mododaImg">
         <h1 class="text-uppercase mb-0">Collaboration Tool</h1>
         <hr class="star-light">
         <h2 class="font-weight-light mb-0">모두다 MODODA</h2>
@@ -321,7 +360,7 @@
               <img class="img-fluid" src="../resources/index_img/intro_img/intro_6.PNG" alt="" style="padding-bottom: 100px;">
           </div>
           <div class="col-lg-2 mx-auto">
-             <a class="portfolio-item d-block mx-auto" href="#join-modakl">
+             <a class="portfolio-item d-block mx-auto" href="#join-modal" id="joinAtag">
               <button class="btn btn-primary btn-xl" id="sendMessageButton" style="color:#339966; font-weight:1000;">JOIN US!!</button>
              </a>
           </div>

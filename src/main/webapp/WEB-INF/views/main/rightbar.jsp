@@ -30,6 +30,12 @@ table {
    padding: 20px;
    margin: 20px;
 }
+
+.background {
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
+  
 #background {
    background-color: #F5F5F5;
    margin: 0px;
@@ -40,7 +46,7 @@ table {
 <body>
 
 <!-- right bar -->
-<div class="col-3" id="background">
+<div class="col-3 background" id="rightBarBody">
 	<table width="300px">
 	<!-- 자료실 메뉴 -->
 		<tr style="float: right;">

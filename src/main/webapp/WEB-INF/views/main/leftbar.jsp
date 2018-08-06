@@ -276,9 +276,8 @@ li[id^="plus_"] a {
 
 
    <!-- left bar -->
-   <div class="col-3" id="background" style="overflow:auto; height:84%;">
-      <div class="leftbar" >
-         
+   <div class="col-3 background" id="leftBarBody">
+      <div class="leftbar">
          <ul style="margin-bottom:0;">
             <li class="list-title">전체 정보</li>
             <li class="list-group-item" id="newsfeed">
