@@ -39,6 +39,11 @@ public class QnaControllerImpl {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 		
 		qnaPage page = qnaService.selectAll(currentPage,memberNo);
+		for(int i=0; i<page.getList().size(); i++) {
+			Qna test = page.getList().get(i);
+			System.out.println("que : " + test.getQueContents() + "ans : " + test.getAnsContents());
+		}
+		
 
 		
 //			ArrayList<Qna> qnaList = qnaService.qnaList(memberNo);
@@ -82,24 +87,7 @@ public class QnaControllerImpl {
 		return view;
 	}
 	
-	@RequestMapping(value="/qnaDetail.do")
-	public ModelAndView qnaDetail(HttpServletRequest request, HttpSession session) {
-		
-				int queNo = Integer.parseInt(request.getParameter("queNo"));
-				
-				int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-				
-				Qna qnaContent = qnaService.selectQnaOne(queNo);
-		
-				ModelAndView view = new ModelAndView(); 
-				view.addObject("qnaDetail",qnaContent);
-				view.setViewName("qna/noticeDetail");// 게시글갯수,총게시물수를 noticeBoard.jsp로 보낸다
-				return view;
-				
-	}
 	
-		 
 	
 	
 }

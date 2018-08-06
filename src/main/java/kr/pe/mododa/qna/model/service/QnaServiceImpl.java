@@ -56,12 +56,6 @@ public class QnaServiceImpl {
 	}
 
 
-	public Qna selectQnaOne(int queNo) {
-		Qna qnaContent = qnaDAO.selectQnaOne(sqlSession,queNo);
-		
-		return qnaContent;
-		
-	}
 
 
 	

@@ -67,7 +67,7 @@
 	pro_end_date as proEndDate,
 	pro_member_no as proMemberNo
 	from project
-	where pro_member_no = #{memberNo}
+	where pro_member_no = #{memberNo} and pro_no not in(select min(pro_no) from project)
 	
 	
 	</select>
@@ -92,25 +92,99 @@
 	
 	</select>
 	
-	<insert id="uploadFiles">
-	
-	insert into upload values(
-		
-	
-	
-	
-	
-	)
-	
-	
-	
-	
-	
-	
-	</insert>
-	
 
 	
+	<select id="projectMember" parameterType="project" resultType="projectMember">
+	select
+	w.member_no  as memberNo,
+	w.pro_no  as proNo,
+	w.leader  as leader,
+	w.invite_yn  as inviteYN,
+	m.member_name  as memberName,
+	m.member_Picture  as memberPicture
+	from work_on w left join member m
+	on (w.member_no = m.member_No)
+	where w.pro_No = #{proNo} and w.member_no != #{proMemberNo}
+	</select>
+	
+	
+	
+	<select id="myPicture" resultType="String">
+	select
+	member_picture
+	from member
+	where member_no = #{memberNo}
+	</select>
+	
+	<select id="privateSpace" resultType="privateSpace">
+	select
+	p.pro_no as proNo,
+	p.pro_title as proTitle,
+	p.pro_member_no as memberNo,
+	pt.par_no as parNo,
+	m.member_name as parName,
+	pt.par_yn as parYN
+	from project p left join partner pt on(pt.par_no = p.pro_member_no) left join member m on(m.member_no = p.pro_member_no) 
+	where pro_no in (select min(pro_no) from project where pro_member_no = #{memberNo})
+	</select>
+	
+	<select id="myPartner" resultType="partners">
+	select
+	m.member_no as memberNo,
+	p.par_no as parNo,
+	m.member_name as parName,
+	p.par_explain as parExplain,
+	p.par_yn as parYN,
+	m.member_picture as memberPicture
+	from partner p left join member m on(m.member_no = p.member_no)
+	where par_no =#{memberNo} and par_yn = 'Y'
+	</select>
+	
+	<insert id="insertPostToProject" parameterType="post">
+	insert into post values(post_seq.nextval,
+	#{postTitle},
+	null,
+	sysdate,
+	#{postContent},
+	#{postWriter},
+	'N',
+	#{postProNo},
+	<choose>
+	<when test="postTag != null">
+	#{postTag}		
+	</when>
+	<otherwise>
+	 null
+	</otherwise>
+	</choose>
+	)
+	</insert>
+	
+	<insert id="uploadFiles" parameterType="upload">
+	
+	insert into upload values(
+	upload_seq.nextval,
+	post_seq.currval,
+	#{memberNo},
+	sysdate,
+	#{uploadSubject},
+	#{uploadPath}
+	)
+	</insert>
+	
+	<insert id="insertSchedules" parameterType="schedule">
+	insert into schedule
+	 values(
+
+		schedule_seq.nextval,
+		post_seq.currval,
+		#{memNO},
+		#{proNo},
+		#{startDate},
+		#{endDate},
+		#{scTitle}
+	)
+	</insert>
 	
 	
 

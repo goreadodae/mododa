@@ -20,6 +20,7 @@
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 div {
@@ -394,18 +395,87 @@ input[type=checkbox] {
 		
 	}
 	
+	
+	
+	
+	var clickBefore = 0;
 	function plusProject(proTitle,proNo) { // 더보기에 프로젝트 추가하기
 		
-		console.log(proTitle+'/'+proNo);
-		$("#projectPlus").show();
-		$("#projectPlus span").text(proTitle);
-		$("li[id^='plus_']").show();
-		$("#plus_post a").attr('value',proNo);
-		$("#plus_hashTag a").attr('value',proNo);
-		$("#plus_progress a").attr('value',proNo);
-		$("#plus_myPost a").attr('value',proNo);
+		$("li[id^='sub_"+clickBefore+"_']").hide();
+		$(".privateSub").hide();
+		
+		var proListArr = $.makeArray($('.projectMain').map(function() {
+			return $(this).attr("value");
+		})); // 출력되는 리스트의 proNo 값
+		
+		//console.log(proListArr);
+		//console.log(proNo);
+		clickBefore = proNo;
+		
+		var cnt = 0;
+		for(var i=0; i<proListArr.length; i++) {
+			if(proListArr[i] == proNo) {
+				$("li[id^='sub_"+proNo+"_']").show();
+				liClose(proNo);
+				cnt++;
+				$("#projectPlus").hide();
+				$("li[id^='plus_']").hide();
+			} 
+		}
+		
+		if(cnt==0) {
+			//console.log(proTitle+'/'+proNo);
+			$("#projectPlus").show();
+			$("#projectPlus span").text(proTitle);
+			$("li[id^='plus_']").show();
+			$("#plus_post a").attr('value',proNo);
+			$("#plus_hashTag a").attr('value',proNo);
+			$("#plus_progress a").attr('value',proNo);
+			$("#plus_myPost a").attr('value',proNo);
+			$("li[id^='plus_']").click(function() {
+				liClose(proNo);
+			});
+			
+		} 
+
+	}
+	
+	function projectDel(proNo, proTitle) {
+		
+		if(window.confirm("[ "+proTitle+" ] 프로젝트 관련 모든 정보가 삭제됩니다. 삭제하시겠습니까?")) {
+			if(window.confirm("삭제된 프로젝트는 복구할 수 없습니다. 그래도 삭제하시겠습니까?")) {
+
+ 				$.ajax({
+					
+					url : "/deleteProject.do",
+					type : "post",
+					data : {
+						proNo : proNo
+					},
+					success : function(data) {
+						alert("["+proTitle+"] 프로젝트가 삭제되었습니다.");
+						location.href="/gotoMoreProject.do";
+					},
+					error : function() {
+						console.log("프로젝트 삭제 ajax실패");
+					}
+					
+				});
+				
+			} else {
+				alert("프로젝트 삭제가 취소되었습니다.");
+			}
+		} else {
+			alert("프로젝트 삭제가 취소되었습니다.");
+		}		
 		
 	}
+	
+	function changeProDate(proNo) {
+		$("#dateChangeModal").load("/gotoProjectDateChange.do?proNo="+proNo);
+	}
+	
+
 	
 	
 	
@@ -424,6 +494,8 @@ input[type=checkbox] {
 	<jsp:include page="/leftbar.do"></jsp:include>
 	<!-- left bar 끝-->
 
+
+	<div id="dateChangeModal"></div> <!-- 프로젝트 날짜 변경 -->
 
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
@@ -451,7 +523,7 @@ input[type=checkbox] {
 			
 			
 			
-			<div class="progressBody" id="stopBody">
+			<div class="progressBody" id="stopBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='stop'}">
@@ -462,10 +534,23 @@ input[type=checkbox] {
 						<input type="checkbox" class="checkBox" name="stop_checkBox" value="${projectList.proNo}" onClick="check('stop');">
 						</span>
 						
-						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
-						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
-						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
-						</c:if>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a>
+						<c:forEach items="${leaderProNo}" var="leaderProNo">
+							<c:if test="${projectList.proNo == leaderProNo}">
+							<br>
+							<img src="../resources/images/project/pencil.png" style="margin-left:70%;" onClick="changeProDate('${projectList.proNo}');"/> <!-- 수정 버튼 -->
+							<img src="../resources/images/project/garbage.png" onClick="projectDel('${projectList.proNo}','${projectList.proTitle}');"/> <!-- 삭제 버튼 -->
+							</c:if>
+						</c:forEach>
+						<br>
+						<c:choose>
+							<c:when test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+							${projectList.proStartDate} ~ ${projectList.proEndDate}
+							</c:when>
+							<c:otherwise>
+							프로젝트 기한 없음
+							</c:otherwise>
+						</c:choose>
 						
 					</div>
 				</c:if>
@@ -488,7 +573,7 @@ input[type=checkbox] {
 			
 			
 			
-			<div class="progressBody" id="workingBody">
+			<div class="progressBody" id="workingBody" style="overflow:auto; height:84%;">
 
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='working'}">
@@ -498,10 +583,23 @@ input[type=checkbox] {
 						<span class="workCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="work_checkBox" value="${projectList.proNo}" onClick="check('work');">
 						</span>
-						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
-						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
-						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
-						</c:if>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a>
+						<c:forEach items="${leaderProNo}" var="leaderProNo">
+							<c:if test="${projectList.proNo == leaderProNo}">
+							<br>
+							<img src="../resources/images/project/pencil.png" style="margin-left:70%;" onClick="changeProDate('${projectList.proNo}');"/> <!-- 수정 버튼 -->
+							<img src="../resources/images/project/garbage.png" onClick="projectDel('${projectList.proNo}','${projectList.proTitle}');"/> <!-- 삭제 버튼 -->
+							</c:if>
+						</c:forEach>
+						<br>
+						<c:choose>
+							<c:when test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+							${projectList.proStartDate} ~ ${projectList.proEndDate}
+							</c:when>
+							<c:otherwise>
+							프로젝트 기한 없음
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</c:if>
 				</c:forEach>
@@ -523,20 +621,34 @@ input[type=checkbox] {
 	
 	
 	
-			<div class="progressBody" id="finishBody">
+			<div class="progressBody" id="finishBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='finish'}">
 					<div class="progressProject" draggable="true">
+					
 						
 						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
 						<span class="finCheckBox" style="display: none;">
 						<input type="checkbox" class="checkBox" name="fin_checkBox" value="${projectList.proNo}" onClick="check('fin');">
 						</span>
-						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a><br>
-						<c:if test="${projectList.proStartDate != null && projectList.proEndDate != null}">
-						기간 : ${projectList.proStartDate} ~ ${projectList.proEndDate}
-						</c:if>
+						<a onClick="plusProject('${projectList.proTitle}','${projectList.proNo}');">${projectList.proTitle}</a>
+						<c:forEach items="${leaderProNo}" var="leaderProNo">
+							<c:if test="${projectList.proNo == leaderProNo}">
+							<br>
+							<img src="../resources/images/project/pencil.png" style="margin-left:70%;" onClick="changeProDate('${projectList.proNo}');"/> <!-- 수정 버튼 -->
+							<img src="../resources/images/project/garbage.png" onClick="projectDel('${projectList.proNo}','${projectList.proTitle}');"/> <!-- 삭제 버튼 -->
+							</c:if>
+						</c:forEach>
+						<br>
+						<c:choose>
+							<c:when test="${projectList.proStartDate != null && projectList.proEndDate != null}">
+							${projectList.proStartDate} ~ ${projectList.proEndDate}
+							</c:when>
+							<c:otherwise>
+							프로젝트 기한 없음
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</c:if>
 				</c:forEach>

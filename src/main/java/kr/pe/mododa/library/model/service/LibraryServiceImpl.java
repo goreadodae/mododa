@@ -139,4 +139,8 @@ public class LibraryServiceImpl implements LibraryService{
 	public int deleteDecision(int dcNo) {
 		return libraryDAO.deleteDecision(sqlSession, dcNo);
 	}
+
+	public int deleteUpload(int uploadNo) {
+		return libraryDAO.deleteUpload(sqlSession, uploadNo);
+	}
 }

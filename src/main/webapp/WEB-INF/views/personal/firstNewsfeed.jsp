@@ -89,17 +89,17 @@
 						for(var i=0;i<data.length;i++)
 						{
 						result+=
-							'<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</span></div>'+
-							'<div class="col-md-12"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><br>&nbsp&nbsp&nbsp'+ data[i].postWriter +' &nbsp&nbsp&nbsp '+ data[i].postDate+'</div>'+
-							'<div class="col-md-12">';
+							'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</a></div>'+
+							'<div class="col-md-8"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><span id="postcontent" style="font-size:12px;">'+data[i].postContent+'</span><br>'+ data[i].postWriter +' &nbsp;&nbsp; '+ data[i].postDate+'</div>'+
+							'<div class="col-md-4">';
 							if(data[i].postProgress=='suggest'){
-								result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png"/>';
+								result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
 							}else if(data[i].postProgress=='working'){
-								result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png"/>';
+								result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
 							}else if(data[i].postProgress=='stop'){
-								result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png"/>';
+								result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
 							}else{
-								result+='<img id="statusImg1" src="../resources/images/post/checked.png"/>';
+								result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
 							}
 						result+='<a onclick="postChangePage('+data[i].proNo+');" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
 							'<div class="col-md-3"></div>'+
@@ -162,7 +162,12 @@
 	});
 	
 </script>
-
+<style>
+.col-md-12 a:hover{
+	background-color:#f8f9fa;
+	
+}
+</style>
 </head>
 <body>
 <div class="content">
@@ -206,30 +211,34 @@
 						<li class="feed-contents">
 							<div class="row">
 								<div class="col-md-12">
-								<span onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</span>
+								<a onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</a>
 								</div>
-								<div class="col-md-9">
+								<div class="col-md-8">
 									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
 									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br>
 									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
-								<div class="col-md-12">
+								<div class="col-md-4">
 								<c:choose>
 									<c:when test="${news.postProgress eq 'suggest' }">
-										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />	
+										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
+										<c:set var="statusTxt" value="발의된 이슈"/>
 									</c:when>
 									<c:when test="${news.postProgress eq 'working' }">
 										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
+										<c:set var="statusTxt" value="진행 중"/>
 									</c:when>
 									<c:when test="${news.postProgress eq 'stop' }">
-									<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
+										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
+										<c:set var="statusTxt" value="일시 중지"/>	
 									</c:when>
 									<c:otherwise>
 										<c:set var ="statusImg" value="../resources/images/post/checked.png"/>
+										<c:set var="statusTxt" value="완료"/>
 									</c:otherwise>
 									</c:choose>
-									<img id="statusImg1" src="${statusImg }"/>&nbsp;
-									<a onclick="postChangePage(${news.proNo });" class="btn btn-link" style="float:none;" >${news.proName }</a>
+									<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>&nbsp;
+									<a onclick="postChangePage(${news.proNo })" class="btn btn-link" style="float:none;" >${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">

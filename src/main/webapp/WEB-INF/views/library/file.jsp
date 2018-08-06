@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>템플릿</title>
+<title>[자료실] 파일</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -46,13 +46,6 @@ div {
 				<h4 id="subject">파일</h4>
 			</td>
 			<td width="35%">
-				<select class="form-control" style="width:150px;">
-  					<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  					<option value="${privateNo }">프라이빗 공간</option>
-  					<c:forEach items="${listProject }" var="p">
-  						<option value="${p.proNo }">${p.proTitle }</option>
-  					</c:forEach>
-				</select>
 			</td>
 			<td width="15%"></td>
 			<td width="5%">
@@ -68,7 +61,6 @@ div {
 				<a href="/file.do" id="file">파일</a>
 			</td>
 			<td width="5%">
-				<a href="/link.do" id="link">링크</a>
 			</td>
 			<td width="5%"></td>
 		</tr>
@@ -83,8 +75,8 @@ div {
 			<!-- 파일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" onclick="listFileAll();" class="btn btn-outline-success btn-sm">전체 파일</button></td>
-					<td width="15%"><button type="button" style="width:99%" onclick="listFileMe();" class="btn btn-outline-success btn-sm">내 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(1);" class="btn btn-outline-success btn-sm">전체 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(2);" class="btn btn-outline-success btn-sm">내 파일</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>
@@ -92,20 +84,22 @@ div {
 			<!-- 파일 메뉴 끝 -->
 			
 			<!-- 파일 내용 -->
-			<div id="fileTableContainer">
-				<c:forEach items="${listFile }" var="f">
-				<div id="fileDiv_${f.uploadNo }">
-					<input type='hidden' id='uploadPath_${f.uploadNo }' value='${f.uploadPath }' />
-					<div class="card" style="width: 100%;">
+			<div id="fileContainer">
+				<div id="fileDiv">
+					<%-- <c:forEach items="${listFile }" var="f">
+					<div id="fileEach_${f.uploadNo }">
+					<div class="card" style="width: 18rem;">
 	  				<div class="card-body">
 	    			<h5 class="card-title">${f.fileName }</h5>
 	    			<h6 class="card-subtitle mb-2 text-muted">${f.postTitle }</h6>
 	    			<p class="card-text">${f.uploadDate }</p>
-	    			<a href="#" class="card-link">다운로드</a>
+	    			<a href="/fileDownload.do?uploadPath=${f.uploadPath }&fileName=${f.fileName}" class="card-link">다운로드</a>
 	  				</div>
 					</div>				
+					</div>
+					</c:forEach> --%>
 				</div>
-				</c:forEach>
+				
 			</div>	
 			
 			<!-- 파일 내용 끝 -->
@@ -127,34 +121,40 @@ div {
 </body>
 
 <script>
-/* listFileAll(); */
-/* 전체 파일 */
-function listFileAll() {
+fileCategory(1);
+
+// 파일 분류
+function fileCategory(num) {
 	$.ajax({
-		url:"/listFileAll.do",
+		url:"/fileCategory.do",
 		type:"POST",
+		data : {data : num},
 		success : function(data) {
 			if(data.length == 0) {
-				$("#fileTableContainer").html("<div style='text-align:center;'>파일이 없습니다.</div>");
+				$("#fileContainer").html("<div style='text-align:center;height:100px;'>파일이 없습니다.</div>");
 			}
 			else {
-				$("#fileTable").remove();
-				$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
+				$("#fileDiv").remove();
+				$("#fileContainer").append("<div id='fileDiv'></div>");
 				
-				
+				var str = "";
 				
 				for(var i=0; i<data.length; i++) {
-					$("#fileTable").append(
-							"<tr>" +
-								"<td rowspan='2' width='7%''>아이콘</td>" + 
-								"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
-								"<td width='23%'>"+data[i].uploadDate+"</td>" +
-							"</tr>" +
-							"<tr>" +
-								"<td colspan='3'>"+data[i].postTitle+"</td>" +
-							"</tr>"
-					);
+					str +=
+						"<div id='fileEach_"+data[i].uploadNo+"'>"+
+						"<div class='card' style='width: 18rem;'>"+
+		  				"<div class='card-body'>"+
+		    			"<h5 class='card-title'>"+data[i].fileName+"</h5>"+
+		    			"<h6 class='card-subtitle mb-2 text-muted'>"+data[i].postTitle +"</h6>"+
+		    			"<p class='card-text'>"+data[i].uploadDate+"</p>"+
+		    			"<a href='/fileDownload.do?uploadPath="+data[i].uploadPath +"&fileName="+data[i].fileName+"' class='card-link'>다운로드</a>"+
+		    			"<button type='button' class='btn btn-danger' style='margin:1px;' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>"+
+		    			"</div>"+
+						"</div>"+		
+						"</div>";
+					
 				}
+				$("#fileDiv").append(str);
 			}
 			
 		},
@@ -164,38 +164,23 @@ function listFileAll() {
 	});
 }
 
-/* 내 파일 */
-function listFileMe() {
+// 파일 삭제
+function deleteUpload(id) {
 	$.ajax({
-		url:"/listFileMe.do",
+		url:"/deleteUpload.do",
 		type:"POST",
+		data : {uploadNo : id},
 		success : function(data) {
-			if(data.length == 0) {
-				$("#fileTableContainer").html("<div style='text-align:center;'>파일이 없습니다.</div>");
-			}
-			else {
-				$("#fileTable").remove();
-				$("#fileTableContainer").append("<table id='fileTable' width='100%' height='100px' border='1' style='margin:0; padding:0;' ></table>");
-				for(var i=0; i<data.length; i++) {
-					$("#fileTable").append(
-							"<tr>" +
-								"<td rowspan='2' width='7%''>아이콘</td>" + 
-								"<td width='70%' colspan='2'>"+data[i].fileName+"</td>" +
-								"<td width='23%'>"+data[i].uploadDate+"</td>" +
-							"</tr>" +
-							"<tr>" +
-								"<td colspan='3'>"+data[i].postTitle+"</td>" +
-							"</tr>"
-					);
-				}
-			}
-			
+			alert("파일 삭제 완료");
+			$('#fileEach_'+id).remove();
 		},
 		error : function(data) {
 			console.log("오류");
 		}
 	});
 }
+
+
 
 
 

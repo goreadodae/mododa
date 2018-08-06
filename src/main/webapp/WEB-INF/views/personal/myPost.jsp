@@ -88,6 +88,9 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+.col-md-12 a:hover{
+	background-color:#f8f9fa;
+}
 </style>
 
 <body>
@@ -147,11 +150,11 @@ div {
 				<li class="feed-contents">
 					<div class="row">
 						<div class="col-md-12">
-						<span onclick="getPost(${my.postNo})" class="btn btn-link" style="float:left;">"${my.postTitle }"</span>
+						<a onclick="getPost(${my.postNo})" class="btn btn-link" style="float:left;">"${my.postTitle }"</a>
 						</div>
-						<div class="col-md-9">
+						<div class="col-md-12">
 							<img id="memberImg2" src="../resources/upload/member/${my.myImg }" />&nbsp;&nbsp;${my.myName }&nbsp;&nbsp;&nbsp;&nbsp;${my.postDate }
-						<a class="btn btn-link btn-sm" href="#" style="float:none;">${my.proName }</a><!-- 프로젝트 이름 클릭하면 프로젝트처음 화면으로 이동해야 됨. -->
+						<a class="btn btn-link btn-sm" onclick="postChangePage(${my.proNo });" style="float:right;color:#339966">${my.proName }</a>
 					 	</div>
 					</div>
 					<hr style="color: grey;">

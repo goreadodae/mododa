@@ -45,7 +45,6 @@ public class ProjectControllerImpl implements ProjectController {
 		return "project/createProject";
 	}
 	
-	
 	@Override
 	@RequestMapping(value="createProject.do")
 	public String createProject(HttpSession session, Project project) { // 새 프로젝트 생성
@@ -388,12 +387,26 @@ public class ProjectControllerImpl implements ProjectController {
 	@Override
 	@RequestMapping(value="gotoMoreProject.do")
 	public Object gotoMoreProject(HttpSession session) { // 이동
-		// 프로젝트 목록 읽어오기
-		ArrayList<Project> projectList = this.projectList(session);
-		ModelAndView view = new ModelAndView();
-		view.addObject("projectList", projectList);
-		view.setViewName("project/moreProject");
-		return view;
+		
+		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+			
+			// 프로젝트 목록 읽어오기
+			ArrayList<Project> projectList = this.projectList(session);
+			// 리더 권한인 프로젝트 읽어오기
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			ArrayList<String> leaderProNo = projectService.searchLeaderProNo(memberNo);
+			
+			ModelAndView view = new ModelAndView();
+			view.addObject("projectList", projectList);
+			view.addObject("leaderProNo", leaderProNo);
+			view.setViewName("project/moreProject");
+			return view;
+			
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+		
 	}
 	
 	
@@ -441,12 +454,72 @@ public class ProjectControllerImpl implements ProjectController {
 
 	}
 	
+
+	@Override
+	@RequestMapping(value="searchMoreProTitle.do")
+	public Object searchMoreProTitle(@RequestParam int proNo) {
+		
+		String proTitle = projectService.searchMoreProTitle(proNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("proTitle", proTitle);
+		view.setViewName("jsonView");
+		return view;
+		
+	}
+	
+	// 프로젝트 삭제
+	@Override
+	@RequestMapping(value="deleteProject.do")
+	public Object deleteProject(@RequestParam int proNo) {
+		
+		int result = projectService.deleteProject(proNo);
+		if(result>0) {
+			System.out.println("프로젝트 삭제 성공");
+			ModelAndView view = new ModelAndView();
+			view.addObject("result", result);
+			view.setViewName("jsonView");
+			return view;
+		} else {
+			System.out.println("프로젝트 삭제 실패");
+			return null;
+		}
+		
+	}
 	
 	
+	// 프로젝트 날짜 수정
+	@RequestMapping(value="gotoProjectDateChange.do") // 이동
+	public Object gotoProjectDateChange(@RequestParam int proNo) {
+		
+		// 프로젝트 정보 1개 읽어오기
+		Project project = projectService.searchProjectInfo(proNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("project", project);
+		view.setViewName("project/projectDateChange");
+		return view;
+		
+	}
+	
+	@RequestMapping(value="updateProjectDate.do")
+	public String updateProjectDate(Project project) {
+		
+		int result = projectService.updateProjectDate(project);
+		if(result>0) {
+			
+			System.out.println("프로젝트 날짜 수정 성공");
+			return "redirect:/gotoMoreProject.do";
+			
+		} else {
+			System.out.println("프로젝트 날짜 수정 실패");
+			return null;
+			
+		}
+		
+	}
 	
 	
+
 	// ---------------------
-	
 	
 	
 	

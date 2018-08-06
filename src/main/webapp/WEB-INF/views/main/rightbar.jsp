@@ -12,28 +12,34 @@
 <style>
 /* rightbar */
 a:link {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 a:visited {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 a:hover {
-	color: black;
-	text-decoration: none;
+   color: black;
+   text-decoration: none;
 }
 
 table {
-	padding: 20px;
-	margin: 20px;
+   padding: 20px;
+   margin: 20px;
 }
+
 .background {
 	background-color: #F5F5F5;
 	margin: 0px;
 	padding: 0px;
+  
+#background {
+   background-color: #F5F5F5;
+   margin: 0px;
+   padding: 0px;
 }
 </style>
 
@@ -55,7 +61,6 @@ table {
     				<a class="dropdown-item" href="/decision.do">의사결정</a>
     				<a class="dropdown-item" href="/image.do">이미지</a>
     				<a class="dropdown-item" href="/file.do">파일</a>
-    				<a class="dropdown-item" href="/link.do">링크</a>
   					</div>
 				</div>
 							
@@ -70,7 +75,6 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>할 일</h5>
 				<br>
-				
 				<c:forEach items="${todoList }" var="t">
 					<div class='btn-group'>
 						<c:choose>
@@ -88,22 +92,20 @@ table {
 							</c:otherwise>
 						</c:choose>
 						<div class='dropdown-menu'>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
 						</div>
 					</div>
-				<a href="#">${t.todoTitle }</a> <a href="#" style="font-size: 80%">${t.todoWriterName }</a><br>
+					<a href="/todo.do">${t.todoTitle }</a> <a href="/todo.do" style="font-size: 80%">${t.todoMemberName }</a><br>
 				</c:forEach>
+				
 				<c:choose>
-					<c:when test="${todoList == null }">
+					<c:when test="${empty todoList}">
 						<p>할 일이 없습니다.</p>
 					</c:when>
 				</c:choose>
-				
-				
-
 			</td>
 		</tr>
 
@@ -120,12 +122,12 @@ table {
 				<br>
 				<c:forEach items="${decisionList }" var="d">
 					<p>
-					<a href="#"><img src="../resources/images/icon/decision.png"></img>
-						${d.dcContent }</a> <a href="#" style="font-size: 80%">${d.dcWriterName }</a><br>
+					<a href="/decision.do"><img src="../resources/images/icon/decision.png"></img>
+						${d.dcContent }</a> <a href="/decision.do" style="font-size: 80%">${d.dcMakerName }</a><br>
 					</p>
 				</c:forEach>
 				<c:choose>
-					<c:when test="${decisionList == null }">
+					<c:when test="${empty decisionList}">
 						<p>의사결정이 없습니다.</p>
 					</c:when>
 				</c:choose>
@@ -159,7 +161,7 @@ table {
 	}
 	
 	// 할일 진행과정 변경
-	function changeProgressTodo(todoMember, todoNo, status) {
+	function changeProgressTodo_right(todoMember, todoNo, status) {
 		var writerNo = $("#writerNo_"+todoNo).val();
 		var memberNo = $("#memberNo_"+todoNo).val();
 		
@@ -217,7 +219,7 @@ table {
 		}
 			
 	}
-	
+
 </script>
 
 </html>

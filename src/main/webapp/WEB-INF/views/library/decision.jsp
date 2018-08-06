@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>템플릿</title>
+<title>[자료실] 이미지</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -153,13 +153,6 @@ div {
 				<h4 id="subject">의사결정</h4>
 			</td>
 			<td width="35%">
-				<select class="form-control" style="width:150px;">
-  					<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  					<option value="${privateNo }">프라이빗 공간</option>
-  					<c:forEach items="${listProject }" var="p">
-  						<option value="${p.proNo }">${p.proTitle }</option>
-  					</c:forEach>
-				</select>
 			</td>
 			<td width="15%"></td>
 			<td width="5%">
@@ -175,7 +168,6 @@ div {
 				<a href="/file.do" id="file">파일</a>
 			</td>
 			<td width="5%">
-				<a href="/link.do" id="link">링크</a>
 			</td>
 			<td width="5%"></td>
 		</tr>
@@ -191,9 +183,9 @@ div {
 			<!-- 의사결정 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcAll();">전체 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcMe();">받은 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="listDcRequest();">요청한 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(1);">전체 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(2);">받은 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(3);">요청한 의사결정</button></td>
 					<td width="55%"></td>
 				</tr>
 			</table>
@@ -303,113 +295,19 @@ div {
 </c:forEach>
 
 
-
-	
-	
-	
 	
 </div>
 
 <script>
-	listDcAll();
-
 	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
-	/* 전체 의사결정 */
-	function listDcAll() {
-		
-		$.ajax({
-			url:"/listDcAll.do",
-			type:"POST",
-			success : function(data) {
-				$("#dcDiv").remove();
-				$("#dcContainer").append("<div id='dcDiv'></div>");
-				
-				var str = "";
-				
-				if(data.length == 0) {
-					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
-				}
-				
-				for(i=0; i<data.length; i++) {
-					if(data[i].dcYn == 'N') {
-						str += 
-							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
-							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
-							"</div>";
-						
-							if(user == data[i].dcMaker) {
-								str += 
-									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-									
-							}
-							
-							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
-								str +=
-									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-									"</div>";
-							}
-							
-						str += "</div>";	
-								
-					}
-					else {
-						if(data[i].dcDecision == 'N') {
-							str += 
-								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-										
-								}
-							
-								
-								str += "</div></div></div>";
-							
-						}
-						else if(data[i].dcDecision == 'Y') {
-							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-								}
-								
-								str += "</div></div></div>";
-							
-						}
-					}
-					
-					
-				}
-				$("#dcDiv").append(str);
-			},
-			error : function(data) {
-				console.log("오류");
-			}
-		});
-	}
+	dcCategory(1);
 	
-	/* 받은 의사결정 */
-	function listDcMe() {
-		
+	// 의사결정 분류
+	function dcCategory(num) {
 		$.ajax({
-			url:"/listDcMe.do",
+			url:"/dcCategory.do",
 			type:"POST",
+			data : {data : num},
 			success : function(data) {
 				$("#dcDiv").remove();
 				$("#dcContainer").append("<div id='dcDiv'></div>");
@@ -417,7 +315,7 @@ div {
 				var str = "";
 				
 				if(data.length == 0) {
-					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
+					str += "<div style='text-align:center;height:100px;'>의사결정이 없습니다.</div>";
 				}
 				
 				for(i=0; i<data.length; i++) {
@@ -461,96 +359,6 @@ div {
 										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
 										
 								}
-							
-								
-								str += "</div></div></div>";
-							
-						}
-						else if(data[i].dcDecision == 'Y') {
-							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-								}
-								
-								str += "</div></div></div>";
-							
-						}
-					}
-					
-					
-				}
-				$("#dcDiv").append(str);
-			},
-			error : function(data) {
-				console.log("오류");
-			}
-		});
-	}
-	
-	/* 요청한 의사결정 */
-	function listDcRequest() {
-		$.ajax({
-			url:"/listDcRequest.do",
-			type:"POST",
-			success : function(data) {
-				$("#dcDiv").remove();
-				$("#dcContainer").append("<div id='dcDiv'></div>");
-				
-				var str = "";
-				
-				if(data.length == 0) {
-					str += "<div style='text-align:center;'>의사결정이 없습니다.</div>";
-				}
-				
-				for(i=0; i<data.length; i++) {
-					if(data[i].dcYn == 'N') {
-						str += 
-							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
-							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
-							"</div>";
-						
-							if(user == data[i].dcMaker) {
-								str += 
-									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-									
-							}
-							
-							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
-								str +=
-									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-									"</div>";
-							}
-							
-						str += "</div>";	
-								
-					}
-					else {
-						if(data[i].dcDecision == 'N') {
-							str += 
-								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
-								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-										
-								}
-							
 								
 								str += "</div></div></div>";
 							

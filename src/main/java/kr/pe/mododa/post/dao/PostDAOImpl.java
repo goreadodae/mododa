@@ -77,6 +77,10 @@ public class PostDAOImpl implements PostDAO{
 		return sqlSession.insert("post.insertDecision",vo);
 	}
 	
+	public int deleteTodo(SqlSessionTemplate sqlSession,int todoNo) {
+		return sqlSession.delete("post.deleteTodo",todoNo);
+	}
+	
 	public int deleteSchedule(SqlSessionTemplate sqlSession, int scNo) {
 		return sqlSession.delete("post.deleteSchedule",scNo);
 	}
@@ -87,6 +91,10 @@ public class PostDAOImpl implements PostDAO{
 	
 	public int updatePost(SqlSessionTemplate sqlSession, Post vo) {
 		return sqlSession.update("post.updatePost", vo);
+	}
+	
+	public int updateTodo(SqlSessionTemplate sqlSession, Todo vo) {
+		return sqlSession.update("post.updateTodo", vo);
 	}
 	
 	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule vo) {

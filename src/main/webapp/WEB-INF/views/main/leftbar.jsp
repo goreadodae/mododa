@@ -113,11 +113,49 @@ li[id^="plus_"] a {
 	var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
 
 	function liClose(proNo) {
-		if(proNo == 0) {
-			alert("더보기로 들어옴");
-		} else {
-			beforeShow = proNo;
+		
+
+ 		var proListArr = $.makeArray($('.projectMain').map(function() {
+			return $(this).attr("value");
+		}));
+ 		
+ 		var cnt = 0;
+		for(var i=0; i<proListArr.length; i++) {
+			if(proListArr[i] == proNo) {
+				cnt++;
+			} 
 		}
+		
+		if(cnt==0) {
+			
+			
+			$.ajax({
+				url : "/searchMoreProTitle.do",
+				type : "post",
+				data : {
+					proNo : proNo
+				},
+				success : function(data) {
+					//console.log(data.proTitle);
+					$("#projectPlus span").text(data.proTitle);
+				},
+				error : function() {
+					console.log("이름찾기 실패");
+				}
+			});
+			
+			
+			//alert("더보기로 들어옴");
+			$("#projectPlus").show();
+			$("li[id^='plus_']").show();
+			$("#plus_post a").attr('value',proNo);
+			$("#plus_hashTag a").attr('value',proNo);
+			$("#plus_progress a").attr('value',proNo);
+			$("#plus_myPost a").attr('value',proNo);
+		}
+		
+		beforeShow = proNo;
+
 	}
 
 /* 해당하는 컨트롤러주소(.do)를 적어주시면 됩니다~ */
@@ -140,7 +178,7 @@ li[id^="plus_"] a {
 
       $("#project").click(function() {
          location.href="";
-      });
+      }); /* 삭제하기 */
 
       $("#library").click(function() {
          location.href="";
@@ -164,13 +202,13 @@ li[id^="plus_"] a {
          var displayValue = $(".privateSub").css('display');
          if (displayValue == 'none') {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
-            
-            $("#projectPlus").hide();
             $(".privateSub").show();
+            $("#projectPlus").hide();
+            $("li[id^='plus_']").hide();
          } else {
             $('li[id^="sub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
-            
             $("#projectPlus").hide();
+            $("li[id^='plus_']").hide();
             $(".privateSub").hide();
          }
       });
@@ -274,7 +312,7 @@ li[id^="plus_"] a {
             
 
             <!-- 내가 포함된 프로젝트 -->
-            <c:forEach items="${projectList}" var="projectList" end="5">
+            <c:forEach items="${projectList}" var="projectList" end="4">
             
 
                <li class="list-group-item projectMain" value="${projectList.proNo}">

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>템플릿</title>
+<title>[자료실] 할 일</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -69,13 +69,6 @@ div {
 				<h4 id="subject">할 일</h4>
 			</td>
 			<td width="35%">
-				<select class="form-control" style="width:150px;">
-  					<option value="전체 프로젝트" selected>전체 프로젝트</option>
-  					<option value="${privateNo }">프라이빗 공간</option>
-  					<c:forEach items="${listProject }" var="p">
-  						<option value="${p.proNo }">${p.proTitle }</option>
-  					</c:forEach>
-				</select>
 			</td>
 			<td width="15%"></td>
 			<td width="5%">
@@ -91,7 +84,6 @@ div {
 				<a href="/file.do" id="file">파일</a>
 			</td>
 			<td width="5%">
-				<a href="/link.do" id="link">링크</a>
 			</td>
 			<td width="5%"></td>
 		</tr>
@@ -107,9 +99,9 @@ div {
 			<!-- 할 일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoAll();">전체 할 일</button></td>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoMe();">내 할 일</button></td>
-					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoRequest();">요청한 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(1);">전체 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(2);">내 할 일</button></td>
+					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(3);">요청한 할 일</button></td>
 					<td width="58%"></td>
 					<td width="10%"><button type="button" style="width:99%;" class="btn btn-warning btn-sm" onclick="openModal();">할 일 작성</button></td>
 				</tr>
@@ -153,45 +145,6 @@ div {
 				</div>
 			</div>
 			<!-- 할 일 내용 끝 -->	
-				
-				
-<%-- 				<table border="1" id="todoTable" width="100%" height="100px;" style="margin:0; padding:0;">
-					<c:forEach items="${listTodo }" var="t">
-					<tr>
-						<td width="7%">
-							<div class='btn-group'>
-								<c:choose>
-									<c:when test="${t.todoProgress.equals('suggest')}">
-										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/icon/play-button.png' />
-									</c:when>
-									<c:when test="${t.todoProgress.equals('working')}">
-										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/play-buttonOn.png' />
-									</c:when>
-									<c:when test="${t.todoProgress.equals('stop')}">
-										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/pauseOn.png' />
-									</c:when>
-									<c:otherwise>
-										<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/checked.png' />
-									</c:otherwise>
-								</c:choose>
-								<div class='dropdown-menu'>
-								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-								<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
-								</div>
-							</div>
-						</td>
-						<td width="15%">${t.todoProjectName }</td>
-						<td width="53%"><a href="#" onclick="openContentModal(${t.todoNo});">${t.todoTitle }</a></td>
-						<td width="25%">${t.todoWriterName } -> ${t.todoMemberName }</td>
-					</tr>
-					</c:forEach>
-				</table>
-			<div class="dropdown-divider"></div> --%>
-			
-			
-			
 			
 		</div>
 		<!-- 할 일 목록 끝 -->
@@ -361,7 +314,7 @@ div {
 
 <script>
 	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
-	todoAll();
+	todoCategory(1);
 	
 	/* 프로젝트 선택에 따라 팀원 변경 */
 	$("#selectProject").change(function() {
@@ -404,18 +357,20 @@ div {
 		$('#todoModal').hide();
 	}
 
-	/* 전체 할 일 눌렀을 때 */
-	function todoAll() {
+	/* 할 일 분류 */
+	function todoCategory(num) {
 		$.ajax({
-			url:"/listTodoAll.do",
+			url:"/todoCategory.do",
 			type:"POST",
+			data:{data : num},
 			success : function(data) {
-				var str ="";
 				$("#todoDiv").remove();
 				$("#todoContainer").append("<div id='todoDiv'></div>");
 				
+				var str ="";
+				
 				if(data.length == 0) {
-					str += "<div style='text-align:center;'>할 일이 없습니다.</div>";
+					str += "<div style='text-align:center;height:100px;'>할 일이 없습니다.</div>";
 				}
 				
 				for(i=0; i<data.length; i++) {
@@ -467,127 +422,7 @@ div {
 		});
 	}
 	
-	/* 내 할 일 눌렀을 때 */
-	function todoMe() {
-		$.ajax({
-			url:"/listTodoMe.do",
-			type:"POST",
-			success : function(data) {
-				var str ="";
-				$("#todoDiv").remove();
-				$("#todoContainer").append("<div id='todoDiv'></div>");
-				
-				if(data.length == 0) {
-					str += "<div style='text-align:center;'>할 일이 없습니다.</div>";
-				}
-				
-				for(i=0; i<data.length; i++) {
-					str += 
-						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
-					
-					if(data[i].todoProgress == 'suggest') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
-					}
-					else if(data[i].todoProgress == 'working') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
-					}
-					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
-					}
-					else {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
-					}
-						
-					str += 
-						"<div class='dropdown-menu'>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
-						+"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
-					
-					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
-						str +=
-							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
-					}
-					
-					str +=
-						"</div><div style='padding:15px;'>"+
-						data[i].todoContent+
-						"</div>"+
-						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
-						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
-				}
-				$("#todoDiv").append(str);
-			},
-			error : function(data) {
-				console.log("오류");
-			}
-		});
-	}
 	
-	/* 요청한 할 일 눌렀을 때 */
-	function todoRequest() {
-		$.ajax({
-			url:"/listTodoRequest.do",
-			type:"POST",
-			success : function(data) {
-				var str ="";
-				$("#todoDiv").remove();
-				$("#todoContainer").append("<div id='todoDiv'></div>");
-				for(i=0; i<data.length; i++) {
-					str += 
-						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
-					
-					if(data[i].todoProgress == 'suggest') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
-					}
-					else if(data[i].todoProgress == 'working') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
-					}
-					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
-					}
-					else {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
-					}
-						
-					str += 
-						"<div class='dropdown-menu'>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
-						+"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
-					
-					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
-						str +=
-							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
-					}
-					
-					str +=
-						"</div><div style='padding:15px;'>"+
-						data[i].todoContent+
-						"</div>"+
-						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
-						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
-				}
-				$("#todoDiv").append(str);
-			},
-			error : function(data) {
-				console.log("오류");
-			}
-		});
-		
-	}
 	
 	/* 할 일 작성 시 주의사항(?) */
 	function submitTodo() {
@@ -629,8 +464,8 @@ div {
 				alert("할일 작성 완료");
 				closeModal();
 				todoAll();
-				$('#selectProject').text("프로젝트 선택");
-				$('#memberList').text("멤버 선택");
+				$('#selectProject').append("<option value='0'>프로젝트 선택</option>");
+				$('#memberList').append("<option value='0'>멤버 선택</option>");
 				$('#todoTitle').val("");
 				$('#todoContent').val("");
 			},
