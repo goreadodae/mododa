@@ -127,4 +127,8 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return sqlSession.delete("library.deleteDecision", dcNo);
 	}
 
+	public int deleteUpload(SqlSessionTemplate sqlSession, int uploadNo) {
+		return sqlSession.delete("library.deleteUpload", uploadNo);
+	}
+
 }

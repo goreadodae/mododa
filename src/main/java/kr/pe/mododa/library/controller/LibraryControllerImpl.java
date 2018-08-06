@@ -1,7 +1,13 @@
 package kr.pe.mododa.library.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -231,183 +237,113 @@ public class LibraryControllerImpl implements LibraryController{
 		}
 	}
 
-	// 전체 할 일 불러오기
-	@RequestMapping(value="/listTodoAll.do")
-	public void listTodoAll(HttpSession session, HttpServletResponse response) throws Exception {
+	// 할 일 분류
+	@RequestMapping(value="/todoCategory.do")
+	public void todoCategory(HttpSession session, HttpServletResponse response, @RequestParam int data) throws Exception {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Todo> listTodoAll = libraryService.listTodo(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listTodoAll,response.getWriter());
-	}
-
-	// 내 할 일 불러오기
-	@RequestMapping(value="/listTodoMe.do")
-	public void listTodoMe(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Todo> listTodoMe = libraryService.listTodoMe(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listTodoMe,response.getWriter());
-	}
-
-	// 요청한 할 일 불러오기
-	@RequestMapping(value="/listTodoRequest.do")
-	public void listTodoRequest(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Todo> listTodoRequest = libraryService.listTodoRequest(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listTodoRequest,response.getWriter());
-	}
-
-	// 전체 의사결정 불러오기
-	@RequestMapping(value="/listDcAll.do")
-	public void listDcAll(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Decision> listDcAll = libraryService.listDecision(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listDcAll,response.getWriter());
-	}
-
-	// 받은 의사결정 불러오기
-	@RequestMapping(value="/listDcMe.do")
-	public void listDcMe(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Decision> listDcMe = libraryService.listDcMe(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listDcMe,response.getWriter());
-	}
-
-	// 요청한 의사결정 불러오기
-	@RequestMapping(value="/listDcRequest.do")
-	public void listDcRequest(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Decision> listDcRequest = libraryService.listDcRequest(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listDcRequest,response.getWriter());
-	}
-
-	// 전체 이미지 불러오기
-	@RequestMapping(value="/listImageAll.do")
-	public void listImageAll(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Upload> listImageAll = libraryService.listImage(memberNo);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listImageAll,response.getWriter());
-	}
-
-	// 내 이미지 불러오기
-	@RequestMapping(value="/listImageMe.do")
-	public void listImageMe(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Upload> listImageMe = libraryService.listImageMe(memberNo);
 		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listImageMe,response.getWriter());
-	}
-	
-	// 전체 파일 불러오기
-	@RequestMapping(value="/listFileAll.do")
-	public void listFileAll(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Upload> listFileAll = libraryService.listFile(memberNo);
+		ArrayList<Todo> listTodo = null;
 		
-		// 파일 경로에서 파일명 추출
-		for(int i=0; i<listFileAll.size(); i++) {
-			String[] array = listFileAll.get(i).getUploadPath().split("/");
-			for(int j=0; j<array.length; j++) {
-				if(j == array.length-1) {
-					listFileAll.get(i).setFileName(array[j]);
-				}
-			}
+		if(data == 1) {
+			listTodo = libraryService.listTodo(memberNo);
+		}
+		else if(data == 2) {
+			listTodo = libraryService.listTodoMe(memberNo);
+		}
+		else {
+			listTodo = libraryService.listTodoRequest(memberNo);
 		}
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
-		new Gson().toJson(listFileAll,response.getWriter());
+		new Gson().toJson(listTodo,response.getWriter());
 	}
 	
-	// 내 파일 불러오기
-	@RequestMapping(value="/listFileMe.do")
-	public void listFileMe(HttpSession session, HttpServletResponse response) throws Exception {
+	// 의사결정 분류
+	@RequestMapping(value="/dcCategory.do")
+	public void dcCategory(HttpSession session, HttpServletResponse response, @RequestParam int data) throws Exception {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Upload> listFileMe = libraryService.listFileMe(memberNo);
 		
-		// 파일 경로에서 파일명 추출
-		for(int i=0; i<listFileMe.size(); i++) {
-			String[] array = listFileMe.get(i).getUploadPath().split("/");
-			for(int j=0; j<array.length; j++) {
-				if(j == array.length-1) {
-					listFileMe.get(i).setFileName(array[j]);
-				}
-			}
+		ArrayList<Decision> listDecision = null;
+		
+		if(data == 1) {
+			listDecision = libraryService.listDecision(memberNo);
+		}
+		else if(data == 2) {
+			listDecision = libraryService.listDcMe(memberNo);
+		}
+		else {
+			listDecision = libraryService.listDcRequest(memberNo);
 		}
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-
-		new Gson().toJson(listFileMe,response.getWriter());
+	
+		new Gson().toJson(listDecision,response.getWriter());
 	}
-
-	// 전체 링크 불러오기
-	@RequestMapping(value="/listLinkAll.do")
-	public void listLinkAll(HttpSession session, HttpServletResponse response) throws Exception {
+	
+	// 이미지 분류
+	@RequestMapping(value="/imageCategory.do")
+	public void imageCategory(HttpSession session, HttpServletResponse response, @RequestParam int data) throws Exception {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Link> listLinkAll = libraryService.listLink(memberNo);
-		
+				
+		ArrayList<Upload> listImage = null;
+				
+		if(data == 1) {
+			listImage = libraryService.listImage(memberNo);
+		}
+		else {
+			listImage = libraryService.listImageMe(memberNo);
+		}
+			
+		// 파일 경로에서 파일명 추출
+		for(int i=0; i<listImage.size(); i++) {
+			String[] array = listImage.get(i).getUploadPath().split("/");
+			for(int j=0; j<array.length; j++) {	
+				if(j == array.length-1) {
+					listImage.get(i).setFileName(array[j]);
+				}
+			}	
+		}
+			
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
-		new Gson().toJson(listLinkAll,response.getWriter());
+		new Gson().toJson(listImage,response.getWriter());
 	}
-	
-	// 내 링크 불러오기
-	@RequestMapping(value="/listLinkMe.do")
-	public void listLinkMe(HttpSession session, HttpServletResponse response) throws Exception {
-		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
-
-		ArrayList<Link> listLinkMe = libraryService.listLinkMe(memberNo);
 		
+	// 파일 분류
+	@RequestMapping(value="/fileCategory.do")
+	public void fileCategory(HttpSession session, HttpServletResponse response, @RequestParam int data) throws Exception {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			
+		ArrayList<Upload> listFile = null;
+			
+		if(data == 1) {
+			listFile = libraryService.listFile(memberNo);
+		}
+		else {
+			listFile = libraryService.listFileMe(memberNo);
+		}
+			
+		// 파일 경로에서 파일명 추출
+		for(int i=0; i<listFile.size(); i++) {
+			String[] array = listFile.get(i).getUploadPath().split("/");
+			for(int j=0; j<array.length; j++) {	
+				if(j == array.length-1) {
+					listFile.get(i).setFileName(array[j]);
+				}
+			}	
+		}
+			
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
-		new Gson().toJson(listLinkMe,response.getWriter());
+		new Gson().toJson(listFile,response.getWriter());
+			
 	}
 
-	
 	// 의사결정 선택
 	@RequestMapping(value="/updateDecision.do")
 	public void updateDecision(HttpSession session, HttpServletResponse response, @RequestParam int dcNo, @RequestParam char dcDecision, @RequestParam String dcComment) throws Exception {
@@ -479,7 +415,66 @@ public class LibraryControllerImpl implements LibraryController{
 		int result = libraryService.deleteDecision(dcNo);
 	}
 	
+	// 파일 다운로드
+	@RequestMapping(value="/fileDownload.do")
+	public void fileDownload(HttpServletResponse response, HttpServletRequest request, @RequestParam(value="uploadPath") String uploadPath, @RequestParam(value="fileName") String fileName) throws Exception {
+		File file = new File(uploadPath);
+	 
+	    FileInputStream fileInputStream = null;
+	    ServletOutputStream servletOutputStream = null;
+	 
+	    try{
+	        String downName = null;
+	        String browser = request.getHeader("User-Agent");
+	        //파일 인코딩
+	        if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")){//브라우저 확인 파일명 encode  
+	        	downName = URLEncoder.encode(fileName,"UTF-8").replaceAll("\\+", "%20");
+	        }
+	        else{
+	            downName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+	        }
+	         
+	        response.setHeader("Content-Disposition","attachment;filename=\"" + downName+"\"");             
+	        response.setContentType("application/octer-stream");
+	        response.setHeader("Content-Transfer-Encoding", "binary;");
+	 
+	        fileInputStream = new FileInputStream(file);
+	        servletOutputStream = response.getOutputStream();
+	 
+	        byte b [] = new byte[1024];
+	        int data = 0;
+	 
+	        while((data=(fileInputStream.read(b, 0, b.length))) != -1){
+	            servletOutputStream.write(b, 0, data);
+	        }
+	        servletOutputStream.flush();//출력
+	         
+	    }catch (Exception e) {
+	        e.printStackTrace();
+	    }finally{
+	        if(servletOutputStream!=null){
+	            try{
+	                servletOutputStream.close();
+	            }catch (IOException e){
+	                e.printStackTrace();
+	            }
+	        }
+	        if(fileInputStream!=null){
+	            try{
+	                fileInputStream.close();
+	            }catch (IOException e){
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		
+	}
 	
+	// 파일, 이미지 삭제
+	@RequestMapping(value="/deleteUpload.do")
+	public void deleteUpload(HttpServletResponse response, HttpServletRequest request,@RequestParam int uploadNo) throws Exception {
+		int result = libraryService.deleteUpload(uploadNo);
+	}
 	
 	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.pe.mododa.library.model.service.LibraryServiceImpl;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.project.controller.ProjectControllerImpl;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -54,10 +55,11 @@ public class HomeController {
 	
 	// rightbar에서 전체 내 할 일, 전체 의사결정
 	@RequestMapping(value="/rightbar.do")
-	public Object rightbar() {
-		int proNo=6;
-		ArrayList<Todo> todoList = libraryService.todoListPro(proNo);
-		ArrayList<Decision> decisionList = libraryService.decisionListPro(proNo);
+	public Object rightbar(HttpSession session) {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		
+		ArrayList<Todo> todoList = libraryService.listTodoMe(memberNo);
+		ArrayList<Decision> decisionList = libraryService.listDcMe(memberNo);
 		
 		ModelAndView view = new ModelAndView();
 		view.addObject("todoList", todoList);

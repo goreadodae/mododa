@@ -321,4 +321,8 @@
 	<delete id="deleteDecision" parameterType="decision">
 		delete from decision where dc_no = #{dcNo}
 	</delete> 
+	
+	<delete id="deleteUpload" parameterType="upload">
+		delete from upload where upload_no=#{uploadNo}
+	</delete>
 </mapper>
