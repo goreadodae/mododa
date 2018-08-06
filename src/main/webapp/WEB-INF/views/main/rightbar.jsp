@@ -69,43 +69,37 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>할 일</h5>
 				<br>
-				
+				<c:forEach items="${todoList }" var="t">
+					<div class='btn-group'>
+						<c:choose>
+							<c:when test="${t.todoProgress.equals('suggest')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/icon/play-button.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('working')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/play-buttonOn.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('stop')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/pauseOn.png' />
+							</c:when>
+							<c:otherwise>
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/checked.png' />
+							</c:otherwise>
+						</c:choose>
+						<div class='dropdown-menu'>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+						</div>
+					</div>
+					<a href="/todo.do">${t.todoTitle }</a> <a href="/todo.do" style="font-size: 80%">${t.todoMemberName }</a><br>
+				</c:forEach>
 				
 				<c:choose>
-					<c:when test="${todoList == null }">
+					<c:when test="${empty todoList}">
 						<p>할 일이 없습니다.</p>
 					</c:when>
-					<c:otherwise>
-						<c:forEach items="${todoList }" var="t">
-						<div class='btn-group'>
-							<c:choose>
-								<c:when test="${t.todoProgress.equals('suggest')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/icon/play-button.png' />
-								</c:when>
-								<c:when test="${t.todoProgress.equals('working')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/play-buttonOn.png' />
-								</c:when>
-								<c:when test="${t.todoProgress.equals('stop')}">
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/pauseOn.png' />
-								</c:when>
-								<c:otherwise>
-									<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_r' src='../resources/images/post/checked.png' />
-								</c:otherwise>
-							</c:choose>
-							<div class='dropdown-menu'>
-							<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-							<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-							<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-							<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
-							</div>
-						</div>
-					<a href="/todo.do">${t.todoTitle }</a> <a href="/todo.do" style="font-size: 80%">${t.todoMemberName }</a><br>
-					</c:forEach>
-					</c:otherwise>
 				</c:choose>
-				
-				
-
 			</td>
 		</tr>
 
@@ -127,7 +121,7 @@ table {
 					</p>
 				</c:forEach>
 				<c:choose>
-					<c:when test="${decisionList == null }">
+					<c:when test="${empty decisionList}">
 						<p>의사결정이 없습니다.</p>
 					</c:when>
 				</c:choose>
