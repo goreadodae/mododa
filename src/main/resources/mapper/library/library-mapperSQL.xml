@@ -121,22 +121,22 @@
 	
 	<select id="listTodoMe" resultType="todo">
 		select
-		todo_no as todoNo,
-		todo_post_no as todoPostNo,
-		todo_pro_no as todoProNo,
-		todo_title as todoTitle,
-		todo_content as todoContent,
-		todo_writer as todoWriter,
-		todo_member as todoMember,
-		todo_start_date as todoStartDate,
-		todo_end_date as todoEndDate,
-		todo_progress as todoProgress,
-		(select member_name from member where member_no=todo_writer) as todoWriterName,
+      todo_no as todoNo,
+      todo_post_no as todoPostNo,
+      todo_pro_no as todoProNo,
+      todo_title as todoTitle,
+      todo_content as todoContent,
+      todo_writer as todoWriter,
+      todo_member as todoMember,
+      todo_start_date as todoStartDate,
+      todo_end_date as todoEndDate,
+      todo_progress as todoProgress,
+      (select member_name from member where member_no=todo_writer) as todoWriterName,
         (select member_name from member where member_no=todo_member) as todoMemberName,
-        (select post_title from post where post_no = todo_post_no or post_pro_no = todo_pro_no) as todoProjectName,
+        (select pro_title from project where pro_no = todo_pro_no) as todoProjectName,
         (select member_picture from member where member_no=todo_member) as todoMemberPicture
-		from todo
-		where todo_member = #{memberNo}
+      from todo
+      where todo_member = #{memberNo}
         order by 1 desc
 	</select>
 	
