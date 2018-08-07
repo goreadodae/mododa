@@ -15,8 +15,8 @@
 
 <script src="http://malsup.github.com/jquery.form.js"></script><!-- 추가추가추가 -->
 
-<script src="https://code.jquery.com/jquery-latest.js"></script>
-<!-- 글씨체 -->
+<!-- <script src="https://code.jquery.com/jquery-latest.js"></script>
+ --><!-- 글씨체 -->
 <link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo|Sunflower:300"
 	rel="stylesheet">
 
