@@ -273,7 +273,7 @@ div {
 
 
 	<!-- right bar -->
-	<jsp:include page="/rightbarPro.do?${requestScope['javax.servlet.forward.query_string']}"></jsp:include>
+	<jsp:include page="/rightbar.do"></jsp:include>
 	<!-- right bar 끝 -->
 	
 </div>
