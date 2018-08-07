@@ -8,7 +8,7 @@
 	join member m on(p.post_writer=m.member_no)
 	join project pr on(p.post_pro_no=pr.pro_no)
 	where p.post_writer=#{memberNo} and  p.post_pro_no not in (select pro_no from work_on where member_no=#{memberNo}) or  p.POST_PRO_NO in (select pro_no from work_on where member_no=#{memberNo}) 
-	order by p.post_no desc;
+	order by p.post_no desc
   </select>
   
   <select id="selectBookmark" parameterType="int" resultType="bookmark"> <!-- 북마크한 글 읽어노는 쿼리 -->

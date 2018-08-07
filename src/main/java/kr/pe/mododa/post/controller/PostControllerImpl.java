@@ -31,6 +31,7 @@ import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.service.WriteServiceImpl;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -40,10 +41,28 @@ public class PostControllerImpl {
 	@Qualifier(value="postService")
 	private PostServiceImpl postService;
 
+
 	@Autowired
 	@RequestMapping(value="/post.do")
 	public String post () {
 		return "post/postDetail";
+	}
+
+	//파일 업로드하는 팝업창
+	int postNoforUpload=-1;
+	
+	@RequestMapping(value="/postUploadFilePage.do")
+	public String postUploadFilePage (@RequestParam int postNoUP) {
+		postNoforUpload = postNoUP;
+		return "post/postUploadFile";
+	}
+
+	
+	//파일 업로드 성공 팝업창
+	@Autowired
+	@RequestMapping(value="/postUploadSuccessPage.do")
+	public String postUploadSuccessPage () {
+		return "post/postUploadSuccess";
 	}
 
 	//post 정보 불러오기
@@ -66,9 +85,9 @@ public class PostControllerImpl {
 		List<Comment> listComment = postService.selectComment(postNo); //댓글 읽어오는거 (준석 추가)
 
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);//0802 아름 추가수정
-		
+
 		p.setStPostData(sdf.format(p.getPostDate()));	//게시글 올린 날짜
-		
+
 		JSONArray scheduleArray = new JSONArray();
 		for(Schedule sc : listSc) {
 			sc.setStStartDate(sdf.format(sc.getStartDate()));
@@ -92,10 +111,11 @@ public class PostControllerImpl {
 			todo.put("todoProgress", td.getTodoProgress());
 			todoArray.add(todo);
 		}
-		
+
 		JSONArray uploadArray = new JSONArray();
 		for(Upload up : listUpload) {
 			JSONObject upload = new JSONObject();
+			upload.put("uploadNo", up.getUploadNo());
 			upload.put("uploadSubject", up.getUploadSubject());
 			upload.put("uploadName", up.getFileName());
 			upload.put("uploadPath", up.getUploadPath());
@@ -121,7 +141,7 @@ public class PostControllerImpl {
 			comment.put("commentNo", com.getCommentNo());
 			commentArray.add(comment);
 		}
-		
+
 		JSONArray decisionArray = new JSONArray();	//0802 아름 수정
 		for(Decision d : listDecision) {
 			JSONObject decision = new JSONObject();
@@ -154,7 +174,7 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//post 제목, 글 내용 변경
 	@RequestMapping(value="/postUpdatePost.do")
 	public ModelAndView updatePost(int postNo, String postTitle, String postContent) {
@@ -162,7 +182,7 @@ public class PostControllerImpl {
 		vo.setPostNo(postNo);
 		vo.setPostTitle(postTitle);
 		vo.setPostContent(postContent);
-		
+
 		int result = postService.updatePost(vo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
@@ -219,10 +239,10 @@ public class PostControllerImpl {
 
 			int result = postService.insertSchedule(vo);
 			ModelAndView view = new ModelAndView();
-			
+
 			List<Schedule> schedule = postService.selectSchedule(postNo);
 			int newScNo = schedule.get(0).getScheduleNo();	//방금 추가한 일정 번호 가져옴
-			
+
 			if(result>0) {
 				view.addObject("result", result);
 				view.addObject("newScNo", newScNo);
@@ -286,7 +306,7 @@ public class PostControllerImpl {
 			vo.setDcContent(dcContent);
 
 			int result = postService.insertDecision(vo);	//의사결정 추가
-			
+
 			List<Decision> decision = postService.selectDecision(postNo);
 			int newDcNo = decision.get(0).getDcNo();	//방금 추가한 의사결정의 번호
 
@@ -369,18 +389,18 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//할일 삭제
 	@RequestMapping(value="/postDeleteTodo.do")
 	public ModelAndView deleteTodo(int todoNo) {
 		int result = postService.deleteTodo(todoNo);
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//할일 수정
 	@RequestMapping(value="/postUpdateTodo.do")
 	public ModelAndView updateTodo(int todoNo,String todoContent, int todoMember) {
@@ -389,9 +409,9 @@ public class PostControllerImpl {
 		vo.setTodoContent(todoContent);
 		vo.setTodoMember(todoMember);
 		int result = postService.updateTodo(vo);
-		
+
 		Member todoMemberInfo = postService.selectMemberInfo(todoMember);
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("result", result);
 		view.addObject("todoMemberInfo", todoMemberInfo);
@@ -465,7 +485,7 @@ public class PostControllerImpl {
 		view.setViewName("jsonView");
 		return view;
 	}
-	
+
 	//일정 삭제
 	@RequestMapping(value="/postDeleteSchedule.do")
 	public ModelAndView deleteSchedule(int scNo) {
@@ -508,7 +528,7 @@ public class PostControllerImpl {
 		view.setViewName("/post/postComment");
 		return view;
 	}
-	
+
 	@RequestMapping(value="/deleteComment.do")
 	public ModelAndView deleteComment(@RequestParam int commentNo,@RequestParam int postNo)
 	{
@@ -520,9 +540,9 @@ public class PostControllerImpl {
 		view.addObject("cmPostNo",postNo); //댓글이 없을경우를 대비해 글번호를 넘겨줌.(댓글 작성시 필요함.)
 		view.setViewName("/post/postComment");
 		return view;
-		
+
 	}
-	
+
 	//게시물 삭제
 	@RequestMapping(value="/postDeletePost.do")
 	public String deletePost(int postNo)
@@ -530,29 +550,32 @@ public class PostControllerImpl {
 		int result = postService.deletePost(postNo);
 		return "redirect:/newsfeed.do";
 	}
-	
+
 	//파일 업로드
+	
 	@RequestMapping(value="/postInsertFile.do")
-	public ModelAndView insertPost(HttpServletRequest request, @RequestParam(value="files", required=false)MultipartFile[] files , HttpSession session )  {
+	public String insertPost(HttpServletRequest request, @RequestParam(value="files", required=false)MultipartFile[] files , HttpSession session )  {
 		Upload vo = new Upload();
-		vo.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());
-		vo.setPostNo(6);
-		
-		System.out.println("controller2");
-		System.out.println("files : " + files);
-		if(files!=null)
-		{
-			System.out.println("controller들어옴!");
-			int result = postService.insertFile(files,vo);			
+		if(session.getAttribute("member")!=null) {
+			vo.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+			vo.setPostNo(postNoforUpload);
+
+			System.out.println("files : " + files);
+			if(files!=null)
+			{
+				System.out.println("controller들어옴!");
+				int result = postService.insertFile(files, vo);
+			}
+			else {
+				System.out.println("controller3 else");
+			}
+		}else {
+			System.out.println("로그인해주세요");
 		}
-		else {
-			System.out.println("controller3 else");
-		}
-		
-		ModelAndView view = new ModelAndView();
-		view.setViewName("jsonView");
-		return view;
+
+
+		return "redirect:/postUploadSuccessPage.do";
 	}
 
-	
+
 }
