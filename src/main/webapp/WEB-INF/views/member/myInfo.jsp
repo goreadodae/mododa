@@ -14,6 +14,30 @@
 </head>
 
 <style>
+/* 모바일  */
+@media screen and (max-width: 768px) {
+	.btn-usc>a{
+		float: right;
+		margin-right: 10px;
+	}
+	#inviteMemberModalContent{
+		width: 100vmin !important;
+	}
+	#mobileInviteMemberBtn{
+		float: right;
+		margin-right: 25px;
+	}
+	#mobileMemberPic{
+		float: left;
+	}
+	.paddingLeftDiv{
+		padding-left: 24px !important;
+	}
+	#card-text-center{
+		border-bottom: none !important;
+	}
+}
+/* 모바일끝 */
 body {
 	overflow-x: hidden;
 	height: 100%;
@@ -132,13 +156,13 @@ div {
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-		<div class="card text-center">
+		<div class="card text-center" id="card-text-center">
 		<div class="card-header">
 			<h4 style="display: inline-block;">설정</h4>
 			<ul class="nav nav-tabs card-header-tabs">
 				<li class="nav-item" id="nav-item1"><a class="nav-link" href="/myInfo.do?menu=myInfo">내 정보</a></li>
 				<li class="nav-item" id="nav-item2"><a class="nav-link" href="/myInfo.do?menu=memberInfo">멤버초대 및 탈퇴</a></li>
-				<li class="nav-item" id="nav-item3"><a class="nav-link" href="#">Disabled</a></li>
+<!-- 				<li class="nav-item" id="nav-item3"><a class="nav-link" href="#">Disabled</a></li> -->
 			</ul>
 		</div>
 		<div class="card-body">
@@ -247,7 +271,7 @@ div {
 									</div>
 								</div>
 								<div class="col-md-8"><!-- 멤버리스트 -->
-									<div class="row" id="proMemberListDiv">
+									<div class="row paddingLeftDiv" id="proMemberListDiv">
 										<label style="height: 40px; margin: auto; margin-top: 53px;">팀장으로 참여한 프로젝트만<br>초대 및 탈퇴를 할 수 있습니다</label>
 									</div>
 								</div>
@@ -263,7 +287,7 @@ div {
 	<!-- contents 끝 -->
 				<div id="inviteMemberModal" class="modal">
 			<!-- Modal 내용 -->
-			<div class="modal-content" style="width: 30%; height: auto;">
+			<div class="modal-content" id="inviteMemberModalContent" style="width: 30%; height: auto;">
 				<div class="row" style="margin-bottom: 20px;">
 					<div class="col-11"></div>
 					<div class="col-1">
@@ -283,7 +307,7 @@ div {
 					</div>
 					<div class="col-md-4"></div>
 					<div class="col-md-4" style="margin-top: 5%; margin-bottom: 10%;">
-						<button onclick="inviteMemberFunc();" class="btn btn-secondary">초대하기</button>
+						<button onclick="inviteMemberFunc();" class="btn btn-secondary" id="mobileInviteMemberBtn">초대하기</button>
 						<input type="hidden" value="" id="proNoHidden">
 					</div>
 					<div class="col-md-4"></div>
@@ -415,7 +439,7 @@ div {
 	 					str+="<div class='row' style='background-color: #F5F5F5; width: 100%;'>"
 	 					+"<div class='col-md-4' style='margin-top: 10px;'>"
 	 					+"<img src='../resources/upload/member/"+data.memberList[i].memberPicture+"'"
-						+"class='img-circle rounded-circle border partnerListPic'>"
+						+"class='img-circle rounded-circle border partnerListPic' id='mobileMemberPic'>"
 						+"</div>"
 						+"<div class='col-md-8' style='margin-top: 10px;>"
 						+"<div class='row'>"

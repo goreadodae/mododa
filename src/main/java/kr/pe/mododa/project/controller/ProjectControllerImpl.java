@@ -348,7 +348,6 @@ public class ProjectControllerImpl implements ProjectController {
 	
 	@RequestMapping(value="projectProgress_mobile.do") // 모바일 접속
 	public Object projectProgressMobile(@RequestParam int proNo) {
-		
 		// 프로젝트 글 목록 읽어오기
 		ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
 		// System.out.println(postList);

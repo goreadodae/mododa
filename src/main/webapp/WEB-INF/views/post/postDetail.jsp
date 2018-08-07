@@ -21,6 +21,21 @@
 	rel="stylesheet">
 
 <style>
+@media screen and (max-width: 768px){
+	#postModalContent{
+		width: 100% !important;
+		height: 90% !important;
+		max-height: calc(100% - 100px);
+    	overflow-y: scroll;
+	}
+	#modal-postUpdate, #modal-decision, #modal-decide{
+		width: 100% !important;
+	}
+	#modal-schedule{
+		width: 100% !important;
+		height: 328px !important;
+	}
+}
 body {
 	overflow-x: hidden;
 	height: 100%;
@@ -140,6 +155,8 @@ div {
 #postMoreImg {
 	margin-right: 20px;
 	margin-left: 20px;
+	margin-top: auto;
+	margin-bottom: auto;
 	height : 20px;
 }
 
@@ -524,9 +541,9 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");' id='scheduleContent" + data.schedule[i].scNo + "'>"
 										+ data.schedule[i].startDate + " ~ "
 										+ data.schedule[i].endDate
-										+ "&nbsp;&nbsp;&nbsp;&nbsp;"
+										+ "<br>일정 내용 : "
 										+ data.schedule[i].scTitle + "</span>"
-										+"<div class='btn-group'>"
+										+"<div class='btn-group' style='float: right;'>"
 										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
 										+	"<div class='dropdown-menu'>"
 										+		"<a class='dropdown-item' onclick='postChangeCalendarPage();'>"
@@ -535,7 +552,7 @@ img[class="btn btn-link dropdown-toggle"] {
 										+		"<img src='../resources/images/post/pencil.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;일정 수정/삭제하기</a>"
 										+	"</div>"
 										+"</div>"
-										+ "</div>";
+										+"</div>";
 
 								$('#appendforSchedule').html(strSchedule);
 							}
@@ -547,7 +564,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#newTodoContent').val("");
 							for (var i = 0; i < data.todo.length; i++) {
 								countTodo++;
-								strTodo += "<div id='postEachTodo" + data.todo[i].todoNo + "'><div class='btn-group'>";
+								strTodo += "<div class='row' id='postEachTodo" + data.todo[i].todoNo + "'><div class='btn-group'>";
 
 								switch (data.todo[i].todoProgress) {
 								case "suggest":
@@ -1578,11 +1595,15 @@ img[class="btn btn-link dropdown-toggle"] {
 		<div id="myModal" class="modal">
 
 			<!-- Modal 내용 -->
-			<div class="modal-content" style="width: 60%; height: 80%;">
+			<div class="modal-content" id="postModalContent" style="width: 60%; height: 80%;">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
+					</div>
+				</div>
 				<div class="row" style="margin-left: 10px; margin-bottom: 20px;">
-					<div class="col-5" id="viewProjectTitle" onclick="postChangePage();">게시글의 프로젝트 명</div>
-					<div class="col-2">
-					
+					<div class="col-md-4" id="viewProjectTitle" onclick="postChangePage();">게시글의 프로젝트 명</div>
+					<div class="col-md-3">
 						<div class="btn-group" id="postMore" >
 							<img src="../resources/images/post/more.png" id="postMoreImg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
 							<div class="dropdown-menu">
@@ -1597,18 +1618,14 @@ img[class="btn btn-link dropdown-toggle"] {
 						</div>
 						<img src="../resources/images/post/pencilOff.png" id="postUpdatePencilImg" onclick="open_postUpdate();" data-toggle="tooltip" data-placement="top" title="게시글 수정하기" />
 						<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" data-toggle="tooltip" data-placement="top" title="북마크 설정하기" />
-						
-
-						
 					</div>
-					<div class="col-5">
-						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
+					<div class="col-md-5">
 					</div>
 				</div>
 
 				<div class="row">
 					<!-- left side (post내용) -->
-					<div class="col-7" style="overflow-y: scroll; padding-left: 30px;">
+					<div class="col-md-7" style="overflow-y: scroll; padding-left: 30px;">
 						<br>
 						<div class="btn-group" style="margin-bottom: 15px;">
 							<img id="statusImg" class="btn btn-link dropdown-toggle"
@@ -1646,11 +1663,18 @@ img[class="btn btn-link dropdown-toggle"] {
 						<br>
 
 						<div style="margin: 5px; font-size: 13px;">
-							<div
+							<div class="row"
 								style="border-bottom: 1px solid #CFF09E; border-top: 1px solid #CFF09E; margin-bottom: 10px; padding: 10px; padding-right: 0px;">
-								<input type="text" id="newTodoContent" placeholder="새 할 일을 입력해 주세요." style="width: 220px; border: 0px;" /> ▶ 담당자 선택 <select id="selectMember" name="담당자 선택"></select>
+								<div class="col-md-4">
+								<input type="text" id="newTodoContent" placeholder="새 할 일을 입력해 주세요." style="width: 220px; border: 0px;" />
+								</div>
+								<div class="col-md-4">
+								▶ 담당자 선택 <select id="selectMember" name="담당자 선택"></select>
+								</div>
+								<div class="col-md-4">
 								<button class="insertButton" onclick="inputTodo();"
 									style="float: right;">+ 할일추가</button>
+								</div>
 							</div>
 
 							<div id="appendforTodo"></div>
@@ -1690,7 +1714,7 @@ img[class="btn btn-link dropdown-toggle"] {
 
 					<!-- right side (댓글 부분) -->
 
-					<div class="col-5" id="comment" style="padding:0;">
+					<div class="col-md-5" id="comment" style="padding:0;">
 
 				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>

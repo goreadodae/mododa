@@ -35,11 +35,6 @@ table {
 	background-color: #F5F5F5;
 	margin: 0px;
 	padding: 0px;
-  
-#background {
-	background-color: #F5F5F5;
-	margin: 0px;
-	padding: 0px;
 }
 </style>
 

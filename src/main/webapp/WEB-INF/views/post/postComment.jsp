@@ -16,7 +16,8 @@
 
 <style>
 .comment-box {
-	height: 99%;
+	height: auto;
+	min-height: 99%;
 	width: 100%;
 	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
 }
