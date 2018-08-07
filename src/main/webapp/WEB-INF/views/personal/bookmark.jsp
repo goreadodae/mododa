@@ -116,7 +116,6 @@ div {
 								'</div><hr style="color:grey;"></li>';
 							}
 						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
 					   } 
 				   },
 					error:function()
@@ -263,7 +262,6 @@ div {
 						<hr style="color: grey;">
 					</li>
 				</c:forEach>
-				<span>마지막입니다.</span>
 			</ul>
 		</div>
 	</div>
