@@ -27,5 +27,6 @@ public interface ProjectDAO {
 	public String searchMoreProTitle(SqlSessionTemplate sqlSession, int proNo);
 	public ArrayList<String> searchLeaderProNo(SqlSessionTemplate sqlSession, int memberNo);
 	public int deleteProject(SqlSessionTemplate sqlSession, int proNo);
-
+	public Project searchProjectInfo(SqlSessionTemplate sqlSession, int proNo);
+	public int updateProjectDate(SqlSessionTemplate sqlSession, Project project);
 }

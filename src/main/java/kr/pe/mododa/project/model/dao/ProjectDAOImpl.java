@@ -112,11 +112,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return sqlSession.delete("project.deleteProject", proNo);
 	}
 	
-	
+	@Override
 	public Project searchProjectInfo(SqlSessionTemplate sqlSession, int proNo) {
 		return sqlSession.selectOne("project.searchProjectInfo", proNo);
 	}
 	
+	@Override
 	public int updateProjectDate(SqlSessionTemplate sqlSession, Project project) {
 		return sqlSession.update("project.updateProjectDate", project);
 	}
