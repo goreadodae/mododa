@@ -16,11 +16,20 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
 	padding: 0px;
+}
+
+/* 프로필 이미지 */
+#profileImg {
+	margin-bottom: 3px;
+	height: 20px;
+	border: 1px solid white;
+	border-radius: 100px;
 }
 
 /* Modal 내용 */
@@ -94,51 +103,33 @@ div {
 			<!-- 할 일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(1);">전체 할 일</button></td>
-					<td width="10%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(2);">내 할 일</button></td>
-					<td width="12%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="todoCategory(3);">요청한 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="todoCategory(1);">전체 할 일</button></td>
+					<td width="10%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="todoCategory(2);">내 할 일</button></td>
+					<td width="12%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="todoCategory(3);">요청한 할 일</button></td>
 					<td width="58%"></td>
-					<td width="10%"><button type="button" style="width:99%;" class="btn btn-warning btn-sm" onclick="openModal();">할 일 작성</button></td>
+					<td width="10%"><button type="button" style="width:99%;" class="btn btn-outline-secondary btn-sm" onclick="openModal();">할 일 작성</button></td>
 				</tr>
 			</table>
-			<div class="dropdown-divider"></div>
+			<br>
 			<!-- 할 일 메뉴 끝 -->
 			
 			<!-- 할 일 내용 -->
-			<div id="todoContainer">
+			<div id="todoContainer" style="overflow-y:auto; height:77vh;">
 				<div id="todoDiv">
-					<%-- <div id='todoEach' onclick="">
-						<div class='btn-group'>
-						<c:choose>
-							<c:when test="${t.todoProgress.equals('suggest')}">
-								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/icon/play-button.png' />
-							</c:when>
-							<c:when test="${t.todoProgress.equals('working')}">
-								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/play-buttonOn.png' />
-							</c:when>
-							<c:when test="${t.todoProgress.equals('stop')}">
-								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/pauseOn.png' />
-							</c:when>
-							<c:otherwise>
-								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }' src='../resources/images/post/checked.png' />
-							</c:otherwise>
-						</c:choose>
-						<div class='dropdown-menu'>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
-						</div>
-					</div>
-					${t.todoTitle }
-					<br>
-					${t.todoProjectName }
-					<br>
-					${t.todoWriter } ▶  ${t.todoMember }
-					</div> --%>
-					
+					<table class="table table-hover" style="margin:0;padding:0;">
+						<tbody>
+						<tr onclick="수정();">
+							<td>진행과정</td>
+							<td>할일내용</td>
+							<td>작성자>할일할자</td>
+							<td>프로젝트명</td>
+							<td></td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
+			
 			<!-- 할 일 내용 끝 -->	
 			
 		</div>
@@ -198,8 +189,8 @@ div {
     			<label for="inputPassword" class="col-sm-2 col-form-label">멤버</label>
     		<div class="col-sm-10">
       			<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
-							<option value="0">멤버 선택</option>
-						</select>
+					<option value="0">멤버 선택</option>
+				</select>
     		</div>
  	 		</div>
  	 		
@@ -310,7 +301,8 @@ div {
 
 <script>
 	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
-	todoCategory(1);
+	//todoCategory(1);
+	
 	
 	/* 프로젝트 선택에 따라 팀원 변경 */
 	$("#selectProject").change(function() {
@@ -354,7 +346,7 @@ div {
 	}
 
 	/* 할 일 분류 */
-	function todoCategory(num) {
+	/* function todoCategory(num) {
 		$.ajax({
 			url:"/todoCategory.do",
 			type:"POST",
@@ -371,7 +363,7 @@ div {
 				
 				for(i=0; i<data.length; i++) {
 					str += 
-						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left; padding:10px;'><div class='btn-group'>";
+						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left;'><div class='btn-group'>";
 					
 					if(data[i].todoProgress == 'suggest') {
 						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
@@ -398,12 +390,12 @@ div {
 					
 					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
 						str +=
-							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>수정</button>"+
+							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>자세히 보기</button>"+
 							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
 					}
 					
 					str +=
-						"</div><div style='padding:15px;'>";
+						"</div>";
 						
 					if(data[i].todoContent == null) {
 						str += "할 일 설명이 없습니다.";	
@@ -413,10 +405,12 @@ div {
 					}
 						
 					str +=
-						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
 						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						data[i].todoWriterName +" ▶ "+ data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
+						"<img id='profileImg' src='../resources/upload/member/" + data[i].todoWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+						data[i].todoWriterName +" ▶ "+ 
+						"<img id='profileImg' src='../resources/upload/member/" + data[i].todoMemberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+						data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
 				}
 				$("#todoDiv").append(str);
 			},
@@ -424,7 +418,7 @@ div {
 				console.log("오류");
 			}
 		});
-	}
+	} */
 	
 	
 	
@@ -465,12 +459,16 @@ div {
 				todoContent : todoContent
 			},
 			success : function(data) {
-				alert("할일 작성 완료");
-				closeModal();
-				location.href='/todo.do';
+				$('#successAlertMessage').text('할 일이 추가되었습니다.');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
+				
+				location.reload();
 			},
 			error : function(data) {
-				console.log("오류");
+				$('#failedAlertMessage').text('할 일 추가에 실패하였습니다.');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);  
 			}
 		});
 		
@@ -483,39 +481,12 @@ div {
 	function openContentModal(id) {
 		$("#todoContentModal_"+id).show();
 		
-		var todoPostNo = $("#todoPostMember_"+id).val();
 		var todoProNo = $("#todoProjectMember_"+id).val();
 		
-		console.log(todoPostNo);
 		console.log(todoProNo);
 		
 		// 프로젝트 번호에 따라 할일을 하는 사람 불러오기
-		if(todoPostNo != 0 && todoProNo == 0) {
-			console.log("test1");
-			$.ajax({
-				url : "/todoContentMemberPost.do",
-				type : "post",
-				data : {
-					todoPostNo : todoPostNo
-				},
-				success : function(data) {
-					$('#todoMember_'+id).find("option").remove();
-					
-					for(var i=0;i<data.length;i++){
-						$('#todoMember_'+id).append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
-					}
-					
-				},
-				error : function(data) {
-					console.log("회원 불러오기 실패");
-				},
-				complete : function(data) {
-						
-				}
-			});
-		}
-		else if(todoProNo != 0 && todoPostNo == 0) {
-			console.log("test2");
+		if(todoProNo != 0) {
 			$.ajax({
 				url : "/todoContentMemberPro.do",
 				type : "post",
@@ -537,8 +508,6 @@ div {
 				}
 			});
 		}
-		
-		
 		
 	}
 	
@@ -565,31 +534,34 @@ div {
 					todoProgress : status
 				},
 				success : function(data) {
-					if (data.result < 0) {
-						alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
+					$('#successAlertMessage').text('할 일 진행과정 변경이 완료되었습니다.');
+					$('#successAlert').show('slow');
+					setTimeout(function () { $('#successAlert').hide('slow');}, 1500); 
+					
+					if (status == 'suggest') {
+						$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
+						$('#'+todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
 					} else {
 						if (status == 'suggest') {
-							$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
-							$('#'+todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
-						} else {
-							if (status == 'suggest') {
-								$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
-								$('#' + todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
-							} else if (status == 'working') {
-								$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
-								$('#' + todoNo+"_m").attr("src","../resources/images/post/play-buttonOn.png");
-							} else if (status == 'stop') {
-								$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
-								$('#' + todoNo+"_m").attr("src","../resources/images/post/pauseOn.png");
-							} else if (status == 'finish') {
-								$('#' + todoNo).attr("src","../resources/images/post/checked.png");
-								$('#' + todoNo+"_m").attr("src","../resources/images/post/checked.png");
-							}
+							$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
+							$('#' + todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+						} else if (status == 'working') {
+							$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
+							$('#' + todoNo+"_m").attr("src","../resources/images/post/play-buttonOn.png");
+						} else if (status == 'stop') {
+							$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
+							$('#' + todoNo+"_m").attr("src","../resources/images/post/pauseOn.png");
+						} else if (status == 'finish') {
+							$('#' + todoNo).attr("src","../resources/images/post/checked.png");
+							$('#' + todoNo+"_m").attr("src","../resources/images/post/checked.png");
 						}
 					}
 				},
 				error : function(data) {
-					console.log("할일 진행과정 변경 실패");
+					$('#failedAlertMessage').text('할 일 진행과정 변경이 실패하였습니다.');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);   
+
 				},
 				complete : function(data) {
 					
@@ -620,11 +592,16 @@ div {
 			},
 			success : function(data) {
 				closeContentModal(id);
-				alert("할 일 수정 성공");
 				todoCategory(1);
+				
+				$('#successAlertMessage').text('할 일이 수정되었습니다.');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 			},
 			error : function(data) {
-				console.log("할일 수정 실패");
+				$('#failedAlertMessage').text('할 일 수정에 실패하였습니다.');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 			},
 			complete : function(data) {
 					
@@ -641,11 +618,16 @@ div {
 				todoNo : id
 			},
 			success : function(data) {
-				alert("할 일 삭제 성공");
 				$("#todoEach_"+id).remove();
+				
+				$('#successAlertMessage').text('할 일이 삭제되었습니다.');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 			},
 			error : function(data) {
-				console.log("할일 수정 실패");
+				$('#failedAlertMessage').text('할 일 삭제에 실패하였습니다.');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);   
 			},
 			complete : function(data) {
 					

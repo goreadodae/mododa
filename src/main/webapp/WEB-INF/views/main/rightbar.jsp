@@ -90,12 +90,13 @@ table {
 						<a class='dropdown-item' onclick="changeProgressTodo_right(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
 						</div>
 					</div>
-					<a href="/todo.do">${t.todoTitle }</a> <a href="/todo.do" style="font-size: 80%">${t.todoMemberName }</a><br>
+					<a href="/todo.do">${t.todoTitle }&nbsp;<span style="font-size: 80%">${t.todoMemberName }</span></a><br>
+					<input type="hidden" id="todoMemberNo_${t.todoNo }" value="${t.todoMember }" />
 				</c:forEach>
 				
 				<c:choose>
 					<c:when test="${empty todoList}">
-						<p>할 일이 없습니다.</p>
+						<p style="font-size:80%;">할 일이 없습니다.</p>
 					</c:when>
 				</c:choose>
 			</td>
@@ -110,17 +111,17 @@ table {
 		<tr>
 			<td>
 				<div class="dropdown-divider"></div>
-				<h5>의사결정</h5>
+				<h5>대기중인 의사결정</h5>
 				<br>
 				<c:forEach items="${decisionList }" var="d" begin="0" end="3">
 					<p>
-					<a href="/decision.do"><img src="../resources/images/icon/decision.png"></img>
-						${d.dcContent}</a> <a href="/decision.do" style="font-size: 80%">${d.dcMakerName }</a><br>
+					<a href="/decision.do">&nbsp;&nbsp;<img src="../resources/images/icon/decision.png"></img>&nbsp;
+						${d.dcContent}&nbsp;<span style="font-size: 80%">${d.dcMakerName }</span></a><br>
 					</p>
 				</c:forEach>
 				<c:choose>
 					<c:when test="${empty decisionList}">
-						<p>의사결정이 없습니다.</p>
+						<p style="font-size:80%;">대기 중인 의사결정이 없습니다.</p>
 					</c:when>
 				</c:choose>
 				
@@ -147,21 +148,16 @@ table {
 
 <script>
 	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
-
+	
 	function library() {
 		location.href="/todo.do";
 	}
 	
 	// 할일 진행과정 변경
 	function changeProgressTodo_right(todoMember, todoNo, status) {
-		var writerNo = $("#writerNo_"+todoNo).val();
-		var memberNo = $("#memberNo_"+todoNo).val();
+		var memberNo = $("#todoMemberNo_"+todoNo).val();
 		
-		console.log("user : " + user);
-		console.log("writerNo : " + writerNo);
-		console.log("memberNo : " + memberNo);
-		
-		if((user == writerNo || user == memberNo) || (user==writerNo && user == memberNo)) {
+		if(user == memberNo) {
 			$.ajax({
 				url : "/postUpdateTodoProgress.do",
 				type : "post",
@@ -196,10 +192,16 @@ table {
 								$('#' + todoNo+"_r").attr("src","../resources/images/post/checked.png");
 							}
 						}
+						console.log("진행 변경");
+						$('#successAlertMessage').text('할 일 진행과정이 수정되었습니다.');
+						$('#successAlert').show('slow');
+						setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 					}
 				},
 				error : function(data) {
-					console.log("할일 진행과정 변경 실패");
+					$('#failedAlertMessage').text('할 일 진행과정 수정이 실패되었습니다.');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);   
 				},
 				complete : function(data) {
 						

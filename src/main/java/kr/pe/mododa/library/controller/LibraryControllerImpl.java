@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +40,9 @@ public class LibraryControllerImpl implements LibraryController{
 	@Autowired
 	@Qualifier(value="postService")
 	private PostServiceImpl postService;
+	
+	@Autowired
+	private ServletContext servletContext;
 	
 	// 할 일 페이지로 이동 (=자료실 메인페이지)
 	@RequestMapping(value="/todo.do")
@@ -106,27 +110,6 @@ public class LibraryControllerImpl implements LibraryController{
 			// 이미지 객체 리스트
 			ArrayList<Upload> listImage = libraryService.listImage(memberNo);
 			
-			// resource 부터 시작하는 이미지 경로 추출
-			for(int i=0; i<listImage.size(); i++) {
-				String[] array = listImage.get(i).getUploadPath().split("resources");
-				for(int j=0; j<array.length; j++) {
-					if(j == array.length-1) {
-						listImage.get(i).setUploadPath(array[j]);
-					}
-				}
-				listImage.get(i).setUploadPath("/resources"+listImage.get(i).getUploadPath().replace("\\", "/"));
-			}
-			
-			// 파일명 추출
-			for(int i=0; i<listImage.size(); i++) {
-				String[] array = listImage.get(i).getUploadPath().split("\\\\");
-				for(int j=0; j<array.length; j++) {
-					if(j == array.length-1) {
-						listImage.get(i).setFileName(array[j]);
-					}
-				}
-			}
-			
 			// 사용자가 속해 있는 프로젝트 리스트
 			ArrayList<Project> listProject = libraryService.listProject(memberNo);
 						
@@ -162,17 +145,6 @@ public class LibraryControllerImpl implements LibraryController{
 									
 			// 프라이빗 공간 프로젝트 번호 가져오기
 			int privateNo = libraryService.privateNo(memberNo);
-			
-			
-			// 파일 경로에서 파일명 추출
-			for(int i=0; i<listFile.size(); i++) {
-				String[] array = listFile.get(i).getUploadPath().split("\\\\");
-				for(int j=0; j<array.length; j++) {
-					if(j == array.length-1) {
-						listFile.get(i).setFileName(array[j]);
-					}
-				}
-			}
 
 			ModelAndView view = new ModelAndView();
 			view.addObject("listFile", listFile);
@@ -308,27 +280,6 @@ public class LibraryControllerImpl implements LibraryController{
 			listImage = libraryService.listImageMe(memberNo);
 		}
 			
-		// 파일 경로에서 파일명 추출
-		for(int i=0; i<listImage.size(); i++) {
-			String[] array = listImage.get(i).getUploadPath().split("\\\\");
-			for(int j=0; j<array.length; j++) {	
-				if(j == array.length-1) {
-					listImage.get(i).setFileName(array[j]);
-				}
-			}	
-		}
-		
-		// resource 부터 시작하는 이미지 경로 추출
-		for(int i=0; i<listImage.size(); i++) {
-			String[] array = listImage.get(i).getUploadPath().split("resources");
-			for(int j=0; j<array.length; j++) {
-				if(j == array.length-1) {
-					listImage.get(i).setUploadPath(array[j]);
-				}
-			}
-			listImage.get(i).setUploadPath("/resources"+listImage.get(i).getUploadPath().replace("\\", "/"));
-		}
-			
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
@@ -347,16 +298,6 @@ public class LibraryControllerImpl implements LibraryController{
 		}
 		else {
 			listFile = libraryService.listFileMe(memberNo);
-		}
-			
-		// 파일 경로에서 파일명 추출
-		for(int i=0; i<listFile.size(); i++) {
-			String[] array = listFile.get(i).getUploadPath().split("\\\\");
-			for(int j=0; j<array.length; j++) {	
-				if(j == array.length-1) {
-					listFile.get(i).setFileName(array[j]);
-				}
-			}	
 		}
 			
 		response.setContentType("application/json");
@@ -433,16 +374,15 @@ public class LibraryControllerImpl implements LibraryController{
 	public void fileDownload(HttpServletResponse response, HttpServletRequest request, @RequestParam int uploadNo) throws Exception {
 		Upload u = libraryService.uploadPath(uploadNo);
 		
-		File file = new File(u.getUploadPath());
+		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거 넘 어렵
+	    root_path = root_path.replaceFirst("webapp", "");
+	    String attach_path = "/resources/upload/write/";
+	    String uploadPath = root_path+attach_path+u.getUploadPath();
+	    File file = new File(uploadPath);
+	    if (!file.isDirectory()) {
+	    	file.mkdirs();
+	    }
 		
-		// 파일 경로에서 파일명 추출
-		String fileName = null;
-		String[] array = u.getUploadPath().split("\\\\");
-		for(int j=0; j<array.length; j++) {	
-			if(j == array.length-1) {
-				fileName = array[j];
-			}
-		}
 	 
 	    FileInputStream fileInputStream = null;
 	    ServletOutputStream servletOutputStream = null;
@@ -452,10 +392,10 @@ public class LibraryControllerImpl implements LibraryController{
 	        String browser = request.getHeader("User-Agent");
 	        //파일 인코딩
 	        if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")){//브라우저 확인 파일명 encode  
-	        	downName = URLEncoder.encode(fileName,"UTF-8").replace("+", "%20");
+	        	downName = URLEncoder.encode(u.getUploadPath(),"UTF-8").replace("+", "%20");
 	        }
 	        else{
-	            downName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1").replace("+", "%20");
+	            downName = new String(u.getUploadPath().getBytes("UTF-8"), "ISO-8859-1").replace("+", "%20");
 	        }
 	        
 	         

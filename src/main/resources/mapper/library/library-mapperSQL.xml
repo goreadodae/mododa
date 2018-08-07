@@ -15,8 +15,9 @@
 		todo_progress as todoProgress,
 		(select member_name from member where member_no=todo_writer) as todoWriterName,
         (select member_name from member where member_no=todo_member) as todoMemberName,
-        (select pro_title from project where pro_no = todo_pro_no or pro_no = (select post_pro_no from post where post_no = todo_post_no)) as todoProjectName,
-        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+        (select pro_title from project where pro_no = todo_pro_no) as todoProjectName,
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture,
+        (select member_picture from member where member_no=todo_writer) as todoWriterPicture
 		from todo
 		where (todo_writer = #{memberNo} or todo_member = #{memberNo})
         order by 1 desc
@@ -59,6 +60,7 @@
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
+		upload_name as fileName,
 		upload_path as uploadPath
 		from upload
 		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
@@ -73,6 +75,7 @@
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
+		upload_name as fileName,
 		upload_path as uploadPath,
         (select post_title from post where post_no = u.post_no) as postTitle
 		from upload u
@@ -121,20 +124,21 @@
 	
 	<select id="listTodoMe" resultType="todo">
 		select
-      todo_no as todoNo,
-      todo_post_no as todoPostNo,
-      todo_pro_no as todoProNo,
-      todo_title as todoTitle,
-      todo_content as todoContent,
-      todo_writer as todoWriter,
-      todo_member as todoMember,
-      todo_start_date as todoStartDate,
-      todo_end_date as todoEndDate,
-      todo_progress as todoProgress,
-      (select member_name from member where member_no=todo_writer) as todoWriterName,
+	    todo_no as todoNo,
+	    todo_post_no as todoPostNo,
+	    todo_pro_no as todoProNo,
+	    todo_title as todoTitle,
+	    todo_content as todoContent,
+	    todo_writer as todoWriter,
+	    todo_member as todoMember,
+	    todo_start_date as todoStartDate,
+	    todo_end_date as todoEndDate,
+	    todo_progress as todoProgress,
+	    (select member_name from member where member_no=todo_writer) as todoWriterName,
         (select member_name from member where member_no=todo_member) as todoMemberName,
         (select pro_title from project where pro_no = todo_pro_no) as todoProjectName,
-        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture,
+        (select member_picture from member where member_no=todo_writer) as todoWriterPicture
       from todo
       where todo_member = #{memberNo}
         order by 1 desc
@@ -154,8 +158,9 @@
 		todo_progress as todoProgress,
 		(select member_name from member where member_no=todo_writer) as todoWriterName,
         (select member_name from member where member_no=todo_member) as todoMemberName,
-        (select post_title from post where post_no = todo_post_no or post_pro_no = todo_pro_no) as todoProjectName,
-        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+        (select pro_title from project where pro_no = todo_pro_no) as todoProjectName,
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture,
+        (select member_picture from member where member_no=todo_writer) as todoWriterPicture
 		from todo
 		where todo_writer = #{memberNo}
         order by 1 desc
@@ -208,6 +213,7 @@
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
+		upload_name as fileName,
 		upload_path as uploadPath,
 		(select post_title from post where post_no = u.post_no) as postTitle
 		from upload u
@@ -223,7 +229,8 @@
 		member_no as memberNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
-		upload_path as uploadPath,
+		upload_name as uploadName,
+		upload_name as fileName,
 		(select post_title from post where post_no = u.post_no) as postTitle
 		from upload u
 		where member_no = #{memberNo}
@@ -282,7 +289,8 @@
 	      todo_progress as todoProgress,
 	      (select member_name from member where member_no=todo_writer) as todoWriterName,
 	      (select member_name from member where member_no=todo_member) as todoMemberName,
-	      (select member_picture from member where member_no=todo_member) as todoMemberPicture
+	      (select member_picture from member where member_no=todo_member) as todoMemberPicture,
+	      (select member_picture from member where member_no=todo_writer) as todoWriterPicture
 	      from todo
 	      where (todo_post_no in (select post_no from post where post_pro_no = #{PostProNo}) or todo_pro_no=#{PostProNo})
 	      and todo_member = #{PostWriter}
@@ -327,6 +335,27 @@
 		upload_path as uploadPath
 		from upload
 		where upload_no = #{uploadNo}
+		order by 1 desc
+	</select>
+	
+	<select id="listDcWait" resultType="decision">
+		select
+		dc_no as dcNo,
+		dc_post_no as dcPostNo,
+		dc_writer as dcWriter,
+		dc_maker as dcMaker,
+		dc_content as dcContent,
+		dc_date as dcDate,
+		dc_yn as dcYn,
+		dc_decision as dcDecision,
+		dc_comment as dcComment,
+		dc_confirm_date as dcConfirmDate,
+        (select post_title from post where post_no = dc_post_no) as dcPostTitle,
+        (select member_name from member where member_no=dc_writer) as dcWriterName,
+        (select member_name from member where member_no=dc_maker) as dcMakerName
+		from decision
+        where dc_maker = #{memberNo}
+        and dc_yn = 'N'
 		order by 1 desc
 	</select>
 </mapper>
