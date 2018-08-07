@@ -12,28 +12,28 @@
 <style>
 /* rightbar */
 a:link {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 a:visited {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 a:hover {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 table {
-   padding: 20px;
-   margin: 20px;
+	padding: 20px;
+	margin: 20px;
 }
 #background {
-   background-color: #F5F5F5;
-   margin: 0px;
-   padding: 0px;
+	background-color: #F5F5F5;
+	margin: 0px;
+	padding: 0px;
 }
 </style>
 
@@ -57,9 +57,6 @@ table {
     				<a class="dropdown-item" href="/file.do">파일</a>
   					</div>
 				</div>
-							
-						
-							
 			</td>
 		</tr>
 
@@ -69,7 +66,7 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>할 일</h5>
 				<br>
-				<c:forEach items="${todoList }" var="t">
+				<c:forEach items="${todoList }" var="t" >
 					<div class='btn-group'>
 						<c:choose>
 							<c:when test="${t.todoProgress.equals('suggest')}">
@@ -213,7 +210,7 @@ table {
 		}
 			
 	}
-
+	
 </script>
 
 </html>

@@ -39,39 +39,34 @@ div {
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-		<!-- 자료실 헤더 -->
-	<table width="100%">
-		<tr>
-			<td width="20%">
-				<h4 id="subject">파일</h4>
-			</td>
-			<td width="35%">
-			</td>
-			<td width="15%"></td>
-			<td width="5%">
-				<a href="/todo.do" id="todo">할 일</a>
-			</td>
-			<td width="5%">
-				<a href="/decision.do" id="decision">의사결정</a>
-			</td>
-			<td width="5%">
-				<a href="/image.do" id="image">이미지</a>
-			</td>
-			<td width="5%">
-				<a href="/file.do" id="file">파일</a>
-			</td>
-			<td width="5%">
-			</td>
-			<td width="5%"></td>
-		</tr>
-	</table>
-	
-	<div class="dropdown-divider"></div>
+	<!-- 자료실 헤더 -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/file.do"><b>파일</b></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/todo.do">할 일 </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/decision.do">의사결정</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/image.do">이미지</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="/file.do">파일<span class="sr-only">(current)</span></a>
+				</li>
+			</ul>
+			</div>
+		</nav>
 
 	<!-- 자료실 헤더 끝 -->
 	
 	<div style="padding:10px;">
-		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+		<div style="height:100%;">
 			<!-- 파일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
@@ -141,15 +136,16 @@ function fileCategory(num) {
 				
 				for(var i=0; i<data.length; i++) {
 					str +=
-						"<div id='fileEach_"+data[i].uploadNo+"'>"+
-						"<div class='card' style='width: 18rem;'>"+
+						"<div id='fileEach_"+data[i].uploadNo+"' style='float:left;'>"+
+						"<div class='card' style='width: 270px; margin:2px;'>"+
 		  				"<div class='card-body'>"+
-		    			"<h5 class='card-title'>"+data[i].fileName+"</h5>"+
-		    			"<h6 class='card-subtitle mb-2 text-muted'>"+data[i].postTitle +"</h6>"+
-		    			"<p class='card-text'>"+data[i].uploadDate+"</p>"+
-		    			"<a href='/fileDownload.do?uploadPath="+data[i].uploadPath +"&fileName="+data[i].fileName+"' class='card-link'>다운로드</a>"+
-		    			"<button type='button' class='btn btn-danger' style='margin:1px;' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>"+
-		    			"</div>"+
+		    			"<div><b>"+data[i].fileName+"</b></div>"+
+		    			"<div font-size='50%' font-color='grey'>"+data[i].postTitle+"</div>"+
+		    			"<div font-size='50%'>"+data[i].uploadDate+"</div>"+
+		    			"<div align='right'>"+
+		    			"<a href='/fileDownload.do?uploadNo="+data[i].uploadNo+"' class='card-link'>다운로드</a>&nbsp;&nbsp;"+
+		    			"<a src='#' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</a>"+
+		    			"</div></div>"+
 						"</div>"+		
 						"</div>";
 					
