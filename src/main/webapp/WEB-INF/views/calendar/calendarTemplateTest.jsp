@@ -6,7 +6,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=2, shrink-to-fit=no">
 <title>템플릿</title>
+
+
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -27,6 +30,12 @@
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
+<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/minty/bootstrap.min.css">
+
+
+
+
 
 
 <script type='text/javascript'>
@@ -36,6 +45,7 @@ var scheduleNo = 0;
 	$(document).ready(function() {
 		
 		createCal();
+		
 		myProList ();
 		
 	});
@@ -48,6 +58,8 @@ var scheduleNo = 0;
 		var d = date.getDate();
 		var m = date.getMonth()+1;
 		var y = date.getFullYear();
+	
+		
 		
 	 calendar = $('#calendar').fullCalendar({
 			/* monthNames: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
@@ -61,14 +73,19 @@ var scheduleNo = 0;
 	    	list : "리스트",
 	    	day : "일별",
 	    	},*/ 
+	    	/* themeSystem:themeSystem, */
 			header: {
 				left: 'title',
-				/* center: 'prev,next today', */
-				right: 'prev,next today,month,listWeek'
+				/* center: 'title', */
+				right: 'prev,next today,month,listMonth'
 			},
+			
+			theme: false,
 			selectable: true,
 			selectHelper: true,
-			contentHeight: 700,
+			editable:true,
+			 /* buttonIcons : true, */
+			 themeButtonIcons:true,
 			select: function(start, end, allDay) {
          
 				var start = start.format();
@@ -126,8 +143,6 @@ var scheduleNo = 0;
 							 }
 						}
 						 
-						 console.log(data.length);
-						 console.log(proColor.length);
 						 
 							
 							for(var i=0;i<data.length;i++){	
@@ -141,24 +156,11 @@ var scheduleNo = 0;
 								endDate = dateToYYYYMMDD(endDate);						
 							
 								
-								/* for(var j=0;j<data.length;j++){
-									
-									if(data[i].proNo != data[j].proNo){
-										
-										proColor = color[i+1];
-										
-									}else{
-										proColor = color[0];
-									}
-									
-								} */	
-
-								
 									 events.push({
 						        		 title : data[i].scTitle,
 						        		 start : data[i].stStartDate,
 						        		 end : endDate,
-										color :  proColor,
+										color :  '#CFF09E',
 						        		 url: data[i].scheduleNo
 						        	 });
 												 									 					  
@@ -589,13 +591,16 @@ var scheduleNo = 0;
    function projectSC(){
 	   
 	  var checkboxValues = [];	   
-
+	  var color = ['FF5F2E','#CFF09E','#339966','#F361DC','#6B66FF']; 	
+	  
 	    for(i=0; i < my_form.projectListName.length; i++) {
 	    	if(my_form.projectListName[i].checked) {
 				checkboxValues[i] =my_form.projectListName[i].value;
 				my_form.projectListName[i].checked=false;
 			}
 		}	
+	    
+	    
 	    
 	   $("#calendar").fullCalendar('removeEvents', function(eventObject) {return true;});
 
@@ -621,7 +626,7 @@ var scheduleNo = 0;
 				        			 title:data[i].scTitle,  
 				        			 start : data[i].stStartDate,
 					        		 end : endDate,
-					        		 color : '#CFF09E',
+					        		 color : 'FF5F2E',
 					        		 url: data[i].scheduleNo};
 
 				     	    $('#calendar').fullCalendar('renderEvent', event, true);
@@ -710,8 +715,11 @@ div {
 	
 	
 	#scUpdatePro:hover{
-	cursor:pointer;
+	cursor:pointer;	
+	}
 	
+	.postCloseIcon:hover{
+	cursor:pointer;	
 	}
 	
 
@@ -743,7 +751,7 @@ div {
 		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
-		<div class="col-md-12" id="calendar"></div>
+		<div class="fc fc-bootstrap4 fc-ltr" id="calendar"></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<%-- <jsp:include page="/post.do"></jsp:include> --%>
