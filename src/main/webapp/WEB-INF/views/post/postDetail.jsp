@@ -482,6 +482,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	var postScheduleNo = 0;	//수정할 일정 번호
 	var postDecisionNo = 0; //의사결정 번호
 	var postUploadNo=0; //다운로드 받을 파일 번호
+	
 
 	//게시글 불러옴
 	function getPost(postNumber) {
@@ -492,6 +493,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		var countTodo = 0;
 		var countFile = 0;
 		var countDecision = 0;
+		var countRelatedPost = 0;
 		
 		$.ajax({
 					url : "/viewPost.do",
@@ -516,7 +518,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							//프로젝트 이름과 게시글 제목,내용들
 							$('#viewProjectTitle').html(data.project.proTitle);
 							$('#post-title').html(data.post.postTitle);
-							$('#post-content').html(data.post.postContent);
+							$('#post-content').html("<pre>"+data.post.postContent+"</pre>");
 							$('#post-postTag').html(data.post.postTag);
 							$('#post-date').html("&nbsp;" + data.post.stPostData);
 							var postWriterProfileSrc = "../resources/upload/member/"+data.post.postWriterPicture;
@@ -748,7 +750,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	//게시글 수정 모달 open
 	function open_postUpdate(){
 		$('#updatedPostTitle').val($('#post-title').html());
-		$('#updatedPostContent').val($('#post-content').html());
+		$('#updatedPostContent').val($('#post-content>pre').html());
 		$('#postUpdateModal').show();
 	}
 	
@@ -845,7 +847,7 @@ img[class="btn btn-link dropdown-toggle"] {
 			},
 			success : function(){
 				$('#post-title').html(newPostTitle);
-				$('#post-content').html(newPostContent);
+				$('#post-content').html("<pre>"+newPostContent+"</pre>");
 				$('#successAlertMessage').text('게시글이 수정되었습니다.');
 				$('#successAlert').show('slow');
 				setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
@@ -1560,57 +1562,7 @@ img[class="btn btn-link dropdown-toggle"] {
   
      });
 
-	//이미지,파일 업로드
-	window.URL = window.URL || window.webkitURL;
-	jQuery.ajaxSettings.traditional = true;
-	
-	function readURL(files) {
-		var filesLength = files.length;
-		var postImgFile = $('#postImgFile').val();
-		
-		var form = $('#postUpload');
-		var formData = new FormData(form);
-		
-		console.log(postImgFile);
-		console.log("formData" + formData);
-		
-		var countFileforInsert = Number($('#countFile').html());
-		
-		if(!files.length){
-			alert("선택된 파일이 없습니다.");
-		}
-		else{
-			$.ajax({
-				url:"/postInsertFile.do",
-				type:"post",
-				enctype: "multipart/form-data",
-				processData: false,
-		        contentType: false,
-				data:formData,
-				success:function(data){
-					
-					console.log("filesLength : " + filesLength);
 
-					for (i = 0; i < files.length; i++) {
-						countFileforInsert++;
-						var postFileStr = "<div class='postContentBox'><img src=" + window.URL.createObjectURL(files[i]) + " class='postUploadedImg'/></div>";
-
-						/* img.onload = function() {
-							window.URL.revokeObjectURL(this.src);
-						}  */
-						$('#postFileAppend').append(postFileStr);
-					}
-					$('#countFile').html(countFileforInsert);
-				},
-				error:function(data){
-					console.log("사진 업로드 실패");
-				}
-			});
-		}
-		
-		
-	}
-	
 	//업로드 팝업창 뜸
 	function open_postUploadPage(){
 		var popupX = (window.screen.width/2)-(500/2); // 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
@@ -1619,8 +1571,47 @@ img[class="btn btn-link dropdown-toggle"] {
 		window.open(url,'window_name','width=500,height=230,location=no,status=no,scrollbars=yes left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
 	}
 	
+	//업로드된 후 새로고침
+	function postFileAfterUpload(){
+			$.ajax({
+				url : "/postSelectUpload.do",
+				type : "post",
+				data : {
+					postNo : postNo,
+				},
+				success : function(data) {
+					var countFileNew = 0;	//카운트 0으로 초기화
+					var postFileStr = "<div class='postContentBox' onclick='open_postUploadPage();'>"
+						+ "<img src='../resources/images/post/add.png' id='add-icon' />"
+						+ "</div>";
+					
+					if(data.upload.length!=0){
+						for (var i = 0; i < data.upload.length; i++) { 
+							countFileNew++;	//카운트 1씩 증가
+							
+							if(data.upload[i].uploadSubject=="image"){ //이미지일때
+								postFileStr += "<div class='postContentBox'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
+							}else{ //파일일때
+								postFileStr += "<div class='postFileBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postFile(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/images/post/file.png' class='postUploadedFile' /> 파일<br><span>" + data.upload[i].uploadName + "</span>";
+							}
+							postFileStr += "</div>";
+						}
+					}
+					$('#postFileAppend').html(postFileStr);
+					$('#countFile').html(countFileNew);//카운트 설정
+				},
+				error : function(data) {
+					console.log("파일새로고침 에러");
+				},
+				complete : function(data) {
+					
+				}
+			});
+	}
+	
 	//파일 삭제
 	function postDeleteFile(){
+		
 		$.ajax({
 			url : "/deleteUpload.do",
 			type : "post",
@@ -1637,6 +1628,8 @@ img[class="btn btn-link dropdown-toggle"] {
 				close_postFile();
 			}
 		});
+		
+		$('#countFile').html(Number($('#countFile').html())-1);
 	}
 	
 	//파일 다운로드
@@ -1781,6 +1774,15 @@ img[class="btn btn-link dropdown-toggle"] {
 							<br>
 
 						</div>
+						
+						<br><hr>
+						<span class="contents-title">&nbsp;관련 글 <span id="countRelatedPost">0</span></span><br>
+						
+						<div id="postFileAppend">
+						</div>
+						
+					
+						
 
 						<br>
 					</div>
