@@ -88,30 +88,34 @@ public class WriteServiceImpl implements WriteService{
 				
 			}
 			try {
+				//1. 원본파일에서 확장자 명만 추출
 				String subject = originalFileName.substring(originalFileName.lastIndexOf(".")+1,originalFileName.length());
-				
-				System.out.println(subject+"확장자 처음");
-				String[] extension = {"pxc","gif","bmp","png","jpg","raw"};
+				//2. 이미지 확장자 명 배열에 추가
+				String[] extension = {"pxc","gif","bmp","png","jpg","raw","jpeg"};
 				int length = extension.length;
+				String exResult="";//결과 담을 변수
 				
+				//3. for문으로 확장자명 비교에 따라 이미지/파일  구분 
 				for(int i=0; i<length; i++)
 				{
-					System.out.println(extension[i]+"확장자");
 					if(subject.equals(extension[i]))
 					{
-						System.out.println("이프");
-						upload.setUploadSubject("이미지");
+						// 확장자 명이 포함되면 중단
+						exResult="image";
+						break;
 					}
 					else {
-						System.out.println("엘스");
-						upload.setUploadSubject("파일");
+						// 확장자 명 찾을 때 까지 
+						exResult="file";
+						continue;
 					}
 					
 				}
-				System.out.println(upload.getUploadSubject());
+				
 				file.transferTo(new File(uploadPath + saveFileName));
+				upload.setUploadSubject(exResult);//uploadSubject에 담기!
 				upload.setFileName(originalFileName);
-				upload.setUploadPath(uploadPath + saveFileName);
+				upload.setUploadPath(saveFileName);
 				System.out.println(uploadPath+saveFileName);
 				result = writeDAO.insertFileUploaded(sqlSession,upload);
 				

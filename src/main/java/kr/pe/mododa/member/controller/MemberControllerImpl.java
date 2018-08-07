@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
@@ -41,6 +42,11 @@ public class MemberControllerImpl implements MemberController {
 	@RequestMapping(value="/mainPage.do")
 	public String gotoMain() {
 		return "main/mainPage";
+	}
+	
+	@RequestMapping(value="/mailCertify.do")
+	public String mailCertify() {
+		return "error/mailCertify";
 	}
 	
 	@Autowired
@@ -261,7 +267,7 @@ public class MemberControllerImpl implements MemberController {
 	public String changeMemberPic(MultipartHttpServletRequest request, HttpSession session) throws Exception {
 		Member vo = (Member) session.getAttribute("member");
 		memberService.changeMemberPic(request, vo);
-		return "redirect:/index.jsp";
+		return "redirect:/myInfo.do?menu=myInfo";
 	}
 	
 	@RequestMapping(value="/selectPartnerList.do")

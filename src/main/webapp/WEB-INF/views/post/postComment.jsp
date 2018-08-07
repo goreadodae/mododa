@@ -16,7 +16,7 @@
 
 <style>
 .comment-box {
-	height: auto;
+	height: 100%;
 	min-height: 99%;
 	width: 100%;
 	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
@@ -45,6 +45,7 @@
 	position:absolute;
 	height:14%;
 	width:93%;
+	resize:none;
 	bottom:5px;
 
 }
@@ -113,7 +114,7 @@ objDiv.scrollTop = objDiv.scrollHeight;
 								<span class="comment-no">댓글 <span
 									class="badge badge-pill badge-success" id="commentNum">${comment.size() }</span></span>
 							</div>
-							<div class="comment-area" id="mydiv">
+							<div class="comment-area" id="mydiv" >
 								<!-- 댓글 내용 출력.-->
 								<ul class="comment-list">
 								<c:forEach var="cm" items="${comment }">

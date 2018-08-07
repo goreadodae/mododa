@@ -11,6 +11,17 @@
 
 <style>
 @media screen and (max-width: 768px) {
+	html{
+		padding-right: 15px;
+	}
+	.row{
+		padding-left: 15px;
+		margin-right: 15px;
+	}
+	.viewContents {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
 	#leftBarBody, #rightBarBody {
 		display: none;
 	}
@@ -539,6 +550,9 @@ a:hover{
     						<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a>
     						<a class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및 탈퇴</a>
     						<a class="dropdown-item" href="/logout.do">로그아웃</a>
+							<div class="dropdown-divider"></div>
+    						<a class="dropdown-item" href="/noticeList.do?currentPage=1">공지사항</a>
+    						<a class="dropdown-item" href="/qnaList.do?currentPage=1">1:1 Q&A</a>
  						</div>
  						</div>
 						</div>
@@ -619,6 +633,9 @@ a:hover{
 				<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a> <a
 					class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및
 					탈퇴</a> <a class="dropdown-item" href="/logout.do">로그아웃</a>
+					    						<div class="dropdown-divider"></div>
+    						<a class="dropdown-item" href="/noticeList.do?currentPage=1">공지사항</a>
+    						<a class="dropdown-item" href="/qnaList.do?currentPage=1">1:1 Q&A</a>
 			</div>
 		<div class="row leftbar">
          <ul style="margin-bottom:0;">
@@ -643,7 +660,7 @@ a:hover{
 
             <!-- 프라이빗 공간 -->
             <li class="list-group-item openModal" id="mobilePrivateMain">
-               <img src="../resources/images/mobileLibrary/safe.png" class="icon"> 프라이빗 공간</li>
+               <img src="../resources/images/project/safe.png" class="icon"> 프라이빗 공간</li>
             
             <li class="mobilePrivateSub">
             <a class="dropdown-item mobilePriPost" href="#" value="${privateProject.proNo}"> 
@@ -707,6 +724,12 @@ a:hover{
 		</div>
 			<!-- Modal 내용 끝 -->
 		</div>
+			<div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; top:40px; z-index: 1060;">
+		<img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+	</div>
+	<div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; top:40px; background-color: #4A4A4A; color: white; z-index: 1060;">
+		<img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+	</div>
 		<!-- 팝업모달 끝 -->
 		
 <script>

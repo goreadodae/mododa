@@ -110,7 +110,6 @@
 								'</div><hr style="color:grey;"></li>';
 							}
 						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
 					   } 
 				   },
 					error:function()
@@ -161,10 +160,6 @@
 		});
 	});
 
-	
-	/* function postChangePage(proNo){
-		location.href="/projectPost.do?proNo="+proNo;
-	} */
 	function postChange(proNo){
 		location.href="/projectPost.do?proNo="+proNo;
 	}
@@ -218,7 +213,6 @@ div {
 #postTitle,#proName{
 font-family: 'Sunflower', sans-serif; 
 }
-
 
 
 
@@ -283,8 +277,7 @@ font-family: 'Sunflower', sans-serif;
 								</div>
 								<div class="col-md-8">
 									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
-									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br>
-									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
+									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br><span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
 								<div class="col-md-4">
 								<c:choose>
@@ -312,7 +305,6 @@ font-family: 'Sunflower', sans-serif;
 							<hr style="color: grey;">
 						</li>
 						</c:forEach>
-						<span>마지막입니다.</span>
 					</ul>
 					
 				</div>

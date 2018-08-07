@@ -22,7 +22,7 @@ public class MailCertifyInterceptor  extends HandlerInterceptorAdapter {
         int i=0;
         if(member!=null) {
         	if ( member.getMemberEmailCertify().equals("N") ){ 
-                response.sendRedirect("/views/main/mailCertify.jsp");
+                response.sendRedirect("/mailCertify.do");
                 result = false;
             }
         } else {

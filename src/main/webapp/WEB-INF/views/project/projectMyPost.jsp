@@ -16,7 +16,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <!-- CDN방식으로 아이콘 사용을 위한 링크 추가 -->
@@ -97,7 +96,10 @@ div {
 						if(searchResult.length == 0) {
 							
 							$(".feed-list").empty();
-							$(".feed-list").append("<div>내용없어요</div>");
+							$(".feed-list").append('<div class="row">'+
+								  	'<div class="col-md-12"><center>'+	
+									'<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>'+
+									'<span font-size="12px;">검색결과가 존재하지 않습니다..</span></div></div>');
 							
 						} else {
 								
@@ -261,10 +263,7 @@ div {
 					
 				</c:forEach>
 			</ul>
-			<div align="center">
-			<span>마지막입니다.</span>
 			<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
-			</div>
 		</div>
 
 
