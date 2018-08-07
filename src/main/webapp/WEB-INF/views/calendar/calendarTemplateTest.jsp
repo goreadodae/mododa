@@ -115,6 +115,20 @@ var scheduleNo = 0;
 			        	 
 			        	 var events = [];							
 						 var color = ['FF5F2E','#CFF09E','#339966','#F361DC','#6B66FF']; 	
+						 var proColor=[];
+						 var practiceColor;
+						 
+						 for(var i=0;i<data.length;i++){
+							 for(var j=0;j<data.length;j++){					 
+								 if(data[i].proNo==data[j].proNo){
+									 proColor[i]=data[j].proNo;	
+								 }
+							 }
+						}
+						 
+						 console.log(data.length);
+						 console.log(proColor.length);
+						 
 							
 							for(var i=0;i<data.length;i++){	
 											
@@ -124,23 +138,30 @@ var scheduleNo = 0;
 								var endDate = new Date(end);
 								endDate.setDate(endDate.getDate() + 1);
 									
-									endDate = dateToYYYYMMDD(endDate);
+								endDate = dateToYYYYMMDD(endDate);						
+							
 								
-								for(var j=0;j<data.length;j++){
+								/* for(var j=0;j<data.length;j++){
 									
-									if(data[i].proNo == data[j].proNo){
-										var colorPro = color[i];
+									if(data[i].proNo != data[j].proNo){
+										
+										proColor = color[i+1];
+										
+									}else{
+										proColor = color[0];
 									}
 									
-								}	
-									
-			 					events.push({
-					        		 title : data[i].scTitle,
-					        		 start : data[i].stStartDate,
-					        		 end : endDate,
-					        		 color : colorPro,
-					        		 url: data[i].scheduleNo
-					        	 });				 					  
+								} */	
+
+								
+									 events.push({
+						        		 title : data[i].scTitle,
+						        		 start : data[i].stStartDate,
+						        		 end : endDate,
+										color :  proColor,
+						        		 url: data[i].scheduleNo
+						        	 });
+												 									 					  
 			        	 } 
 							
 			        	 callback(events);
@@ -252,7 +273,7 @@ var scheduleNo = 0;
     	
     	var proSelect = document.getElementById("projectList").value;
     	var relationSelect = document.getElementById("linkPostList").value; 
-		console.log("프로젝트번호 :"+proSelect); console.log("글번호 :"+relationSelect);
+		
     	var title = document.getElementById("scheduleTitle").value;
     	var startDate = document.getElementById("startDate").value;
     	var endDate = document.getElementById("endDate").value;
@@ -376,9 +397,7 @@ var scheduleNo = 0;
 					}else{
 						$('#scUpdatePost').append("<label>해당 글이 없습니다.</label>");
 					}
-
- 
-       		
+      		
              },
             error : function(data) {
              console.log("실패");
@@ -535,9 +554,10 @@ var scheduleNo = 0;
   			$('#postList').find("div").remove();
   				
   			for(var i=0;i<data.length;i++){
-					$('#postList').append("<div id='post_"+data[i].proNo+"' value='"+data[i].proNo+"' class='projectDiv'><input type='checkbox' name='projectListName' value='"+data[i].proNo+"'/>"+data[i].proTitle+"</div>");
+					$('#postList').append("<div id='post_"+data[i].proNo+"' value='"+data[i].proNo+"' class='projectDiv'>　<input type='checkbox' name='projectListName' value='"+data[i].proNo+"'/>　"+data[i].proTitle+"</div>");
 				}
-  				$('#postList').append("<div id='post_0' class='projectDiv'><input type='button' class='btn btn-secondary' value='저장' onclick='projectSC();'></div>");
+  			
+  				$('#postList').append("<div id='post_0' class='projectDiv'>　<input type='button' class='btn btn-secondary' value='저장' onclick='projectSC();'></div>");
            },
            error : function(data) {
               console.log("실패");
@@ -548,11 +568,19 @@ var scheduleNo = 0;
   
    function prjectListOpen () {
 	   
+	   
+	   
 		var displayValue = $(".projectDiv").css('display');
 		if (displayValue == 'none') {
-			$(".projectDiv").show();/* 열렸던 창 닫기 */
+			$(".projectDiv").show();
 			
-		} else {
+		} else {	   
+
+		    for(i=0; i < my_form.projectListName.length; i++) {
+		    	if(my_form.projectListName[i].checked) {
+					my_form.projectListName[i].checked=false;
+				}
+			}
 			$(".projectDiv").hide();
 		}
 
@@ -632,7 +660,7 @@ div {
 	padding: 0px;
 }
 
-#background {
+.background {
 	background-color: #F5F5F5;
 	margin: 0px;
 	padding: 0px;
@@ -644,6 +672,7 @@ div {
 		font-size: 14px;
 		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 		margin: 0 auto;
+		margin-left: 20%;
 		width : 1000px;
 		}
 		
@@ -701,7 +730,7 @@ div {
 
 
 	<!-- contents -->
-	<div class="col-9" id="contents" style="padding:0;">
+	<div class="col-9" id="contents" >
 
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		<div class="row"><div class="col-md-12">　</div></div>
@@ -714,7 +743,7 @@ div {
 		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
-		<div class="col-md" id="calendar"></div>
+		<div class="col-md-12" id="calendar"></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<%-- <jsp:include page="/post.do"></jsp:include> --%>
