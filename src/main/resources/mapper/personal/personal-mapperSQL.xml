@@ -30,6 +30,7 @@
 	left join member m on p.post_writer=m.member_no
 	left join project pr on p.post_pro_no=pr.pro_no
 	where p.post_writer=#{memberNo}
+	order by p.post_date desc
   </select>
   
   <select id="searchNews" parameterType="serdel" resultType="newsfeed"><!-- 뉴스피드에서 검색어를 입력받아 검색. -->
@@ -49,6 +50,7 @@
 	left join member m on p.post_writer=m.member_no
 	left join project pr on p.post_pro_no=pr.pro_no
 	where p.post_writer=#{postWriter} and p.post_title like '%'||#{postTitle}||'%'
+	order by p.post_date desc
   </select>
   
   <delete id="delBookmark" parameterType="post"> <!-- 북마크 제거 -->

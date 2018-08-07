@@ -1,25 +1,26 @@
 package kr.pe.mododa.qna.model.vo;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+
 
 public class Qna {
 
 	private int ansNo;
-	private Timestamp ansTime;
+	private Date ansTime;
 	private String ansContents;
 	private int queNo;
 	private int memberNo;
 	private String queTitle;
 	private String queContents;
 	private String queResponseYn;
-	private Timestamp queTime;
+	private Date queTime;
 	private String memberName;
 	public Qna() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Qna(int ansNo, Timestamp ansTime, String ansContents, int queNo, int memberNo, String queTitle,
-			String queContents, String queResponseYn, Timestamp queTime, String memberName) {
+	public Qna(int ansNo, Date ansTime, String ansContents, int queNo, int memberNo, String queTitle,
+			String queContents, String queResponseYn, Date queTime, String memberName) {
 		super();
 		this.ansNo = ansNo;
 		this.ansTime = ansTime;
@@ -38,10 +39,10 @@ public class Qna {
 	public void setAnsNo(int ansNo) {
 		this.ansNo = ansNo;
 	}
-	public Timestamp getAnsTime() {
+	public Date  getAnsTime() {
 		return ansTime;
 	}
-	public void setAnsTime(Timestamp ansTime) {
+	public void setAnsTime(Date  ansTime) {
 		this.ansTime = ansTime;
 	}
 	public String getAnsContents() {
@@ -80,10 +81,10 @@ public class Qna {
 	public void setQueResponseYn(String queResponseYn) {
 		this.queResponseYn = queResponseYn;
 	}
-	public Timestamp getQueTime() {
+	public Date getQueTime() {
 		return queTime;
 	}
-	public void setQueTime(Timestamp queTime) {
+	public void setQueTime(Date queTime) {
 		this.queTime = queTime;
 	}
 	public String getMemberName() {

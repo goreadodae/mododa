@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import kr.pe.mododa.project.model.vo.Project;
 
 public interface ProjectController {
@@ -48,6 +50,8 @@ public interface ProjectController {
 	public void updateProjectProgress(HttpSession session, HttpServletResponse response, String proNoStr, String proProgress);
 	public Object searchMoreProTitle(int proNo);
 	public Object deleteProject(int proNo);
+	public Object gotoProjectDateChange(int proNo);
+	public String updateProjectDate(Project project);
 	
 	
 }

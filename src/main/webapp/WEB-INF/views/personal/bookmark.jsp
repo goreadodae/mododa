@@ -26,7 +26,8 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
@@ -46,7 +47,6 @@ div {
 		$("#keyword").val("");
 		$("#showHeader").css("display", "");
 		$("#contentSearch").css("display", "none");
-	
 		location.href="bookmark.do";
 	}
 	
@@ -59,7 +59,7 @@ div {
 			type:"POST",
 			data:{"delBookNo":delBookNo},
 			success:function(data){
-				$("#content-frame").load("/bookmark.do");
+				location.href="bookmark.do";
 			},
 			error:function(){
 				alert("error!");
@@ -107,10 +107,10 @@ div {
 							}else{
 								result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
 							}
-							result+='<a onclick="getPost('+data[i].postNo+');"class="btn btn-link">'+data[i].postTitle+'</a></div>'+
-								'<div class="col-md-9"><img id="memberImg2" src="../resources/upload/member/'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a href="#" class="btn btn-link" style="float:none;">'
+							result+='<a onclick="getPost('+data[i].postNo+');" id="postTitle" class="btn btn-link"><b>'+data[i].postTitle+'</b></a></div>'+
+								'<div class="col-md-9"><img id="memberImg2" src="../resources/upload/member/'+data[i].writerImg+'">&nbsp;&nbsp;&nbsp;'+ data[i].postWriter +' &nbsp;&nbsp;&nbsp; '+ data[i].postDate+'<a onclick="postChange('+data[i].proNo+');" class="btn btn-link" id="proName" style="float:none;">'
 								+data[i].proName+'</a></div>'+
-								'<div class="col-md-3"><button type="button" class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
+								'<div class="col-md-3"><button type="button"  class="btn btn-success btn-sm" style="float: right;" onclick="delBookmark('+data[i].postNo+');">'+
 								'<span class="ico"> <i class="far fa-bookmark"style="color:yellow;"></i></span>'+
 								'</button></div>'+
 								'</div><hr style="color:grey;"></li>';
@@ -128,11 +128,46 @@ div {
 				
 				
 				}
-	function postChangePage(proNo){ //프로젝트 글로  이동 추가
+
+	
+	// private번호 가져오기
+	
+	$(document).ready(function(){
+		
+	$.ajax({
+		url : "/setPrivateSpace.do",
+		type : "post",
+		success : function(data){
+		console.log("나의 프라이빗 번호 받아오기를 성공했어여!")
+		console.log("이건 나의 프라이빗 번호"+data)
+		var str=""
+			str += '<input type="hidden" id="myPrivateNo" value="'+data.myPrivateNo+'"/>'
+			$('#goWriting').append(str);
+			str="";
+		},
+		error : function(data){
+			console.log("에러라능");
+		}
+	});
+	});
+
+	function postChange(proNo){ //프로젝트 글로  이동 추가
 		location.href="/projectPost.do?proNo="+proNo;
 	}
+
 	
 	
+	function goWriting(){
+		console.log("클릭");
+		var myPrivateNo = $('#myPrivateNo').val();
+		console.log(myPrivateNo);
+		
+		location.href="/privatePost.do?proNo="+myPrivateNo;
+		
+	}
+	///요기까지
+	
+
 </script>
 
 
@@ -155,7 +190,7 @@ div {
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
 				<div class="headerTitle" id="headerTitle">
-					<h5>북마크</h5>
+					<h5><b>북마크</b></h5>
 				</div>
 				<div class="headerFunction" id="headerFun">
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -166,7 +201,7 @@ div {
 
 
 					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
+					<button type="button" id="goWriting" onclick="goWriting();" class="btn btn-outline-success">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -186,7 +221,7 @@ div {
 			</div>
 		</div>
 
-		<div class="viewContents  col-md-12">
+		<div class="viewContents  col-md-12" style="overflow-y: auto;">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 				<c:forEach var="book" items="${bookmark }">
@@ -194,15 +229,15 @@ div {
 						<div class="row">
 							<div class="col-md-12">
 							<c:choose>
-									<c:when test="${news.postProgress eq 'suggest' }">
+									<c:when test="${book.postProgress eq 'suggest' }">
 										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
 										<c:set var="statusTxt" value="발의된 이슈"/>
 									</c:when>
-									<c:when test="${news.postProgress eq 'working' }">
+									<c:when test="${book.postProgress eq 'working' }">
 										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
 										<c:set var="statusTxt" value="진행 중"/>
 									</c:when>
-									<c:when test="${news.postProgress eq 'stop' }">
+									<c:when test="${book.postProgress eq 'stop' }">
 										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
 										<c:set var="statusTxt" value="일시 중지"/>	
 									</c:when>
@@ -212,11 +247,11 @@ div {
 									</c:otherwise>
 									</c:choose>
 							<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>
-							<a onclick="getPost(${book.postNo});" class="btn btn-link">${book.postTitle }</a>
+							<a onclick="getPost(${book.postNo});" id="postTitle" class="btn btn-link"><b>${book.postTitle }</b></a>
 							</div>
 							<div class="col-md-9">
 							<img id="memberImg2" src="../resources/upload/member/${book.writerImg }">&nbsp;&nbsp;${book.postWriter }&nbsp;&nbsp;&nbsp;&nbsp; ${book.postDate }
-							<a onclick="postChangePage(${book.proNo });" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
+							<a onclick="postChange(${book.proNo });" id="proName" class="btn btn-link" style="float:none;" >${book.proName }</a></div>
 							<div class="col-md-3"><button type="button" class="btn btn-success btn-sm"
 								style="float: right;" onclick="delBookmark(${book.postNo});">
 								<span class="ico"> <i class="far fa-bookmark"

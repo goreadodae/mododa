@@ -12,23 +12,23 @@
 <style>
 /* rightbar */
 a:link {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 a:visited {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 a:hover {
-   color: black;
-   text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 table {
-   padding: 20px;
-   margin: 20px;
+	padding: 20px;
+	margin: 20px;
 }
 
 .background {
@@ -58,9 +58,6 @@ table {
     				<a class="dropdown-item" href="/file.do">파일</a>
   					</div>
 				</div>
-							
-						
-							
 			</td>
 		</tr>
 
@@ -70,7 +67,7 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>할 일</h5>
 				<br>
-				<c:forEach items="${todoList }" var="t">
+				<c:forEach items="${todoList }" var="t" >
 					<div class='btn-group'>
 						<c:choose>
 							<c:when test="${t.todoProgress.equals('suggest')}">
@@ -115,10 +112,10 @@ table {
 				<div class="dropdown-divider"></div>
 				<h5>의사결정</h5>
 				<br>
-				<c:forEach items="${decisionList }" var="d">
+				<c:forEach items="${decisionList }" var="d" begin="0" end="3">
 					<p>
 					<a href="/decision.do"><img src="../resources/images/icon/decision.png"></img>
-						${d.dcContent }</a> <a href="/decision.do" style="font-size: 80%">${d.dcMakerName }</a><br>
+						${d.dcContent}</a> <a href="/decision.do" style="font-size: 80%">${d.dcMakerName }</a><br>
 					</p>
 				</c:forEach>
 				<c:choose>
@@ -214,7 +211,7 @@ table {
 		}
 			
 	}
-
+	
 </script>
 
 </html>

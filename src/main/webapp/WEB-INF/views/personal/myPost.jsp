@@ -57,11 +57,11 @@
 						$(".feed-list").empty();
 						for(var i=0;i<data.length;i++)
 							{
-							result+='<li class="feed-contents"><div class="row"><div class="col-md-12"><span onclick="getPost('+data[i].postNo+')" class="btn btn-link" style="float:left;">"'+data[i].postTitle+'"</span></div>'+
-							'<br><div class="col-md-9">'+
+							result+='<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+')" id="postTitle"  class="btn btn-link" style="float:left;"><b>"'+data[i].postTitle+'"</b></a></div>'+
+							'<br><div class="col-md-12">'+
 							  '<img id="memberImg2" src="../resources/upload/member/'+data[i].myImg+'"/>&nbsp;&nbsp;<span>'+data[i].myName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;'+
 							  '<span>'+data[i].postDate+'</span>'+
-							  '<a class="btn btn-link btn-sm" href="#" style="float:none;">'+data[i].proName+'</a><hr style="color:grey;"></div>'+
+							  '<a class="btn btn-link btn-sm" onclick="postChange('+data[i].proNo+')" id="proName" style="float:right;color:#339966">'+data[i].proName+'</a><hr style="color:grey;"></div>'+
 							  '</div></li>';
 							}
 						$(".feed-list").append(result);
@@ -75,6 +75,42 @@
 			})
 		}
 	}
+		
+	
+	// private번호 가져오기
+	
+	$(document).ready(function(){
+		
+	$.ajax({
+		url : "/setPrivateSpace.do",
+		type : "post",
+		success : function(data){
+		console.log("나의 프라이빗 번호 받아오기를 성공했어여!")
+		console.log("이건 나의 프라이빗 번호"+data)
+		var str=""
+			str += '<input type="hidden" id="myPrivateNo" value="'+data.myPrivateNo+'"/>'
+			$('#goWriting').append(str);
+			str="";
+		},
+		error : function(data){
+			console.log("에러라능");
+		}
+	});
+	});
+	
+	
+	function goWriting(){
+		console.log("클릭");
+		var myPrivateNo = $('#myPrivateNo').val();
+		console.log(myPrivateNo);
+		
+		location.href="/privatePost.do?proNo="+myPrivateNo;
+		
+	}
+	///요기까지
+	function postChange(proNo){
+		location.href="/projectPost.do?proNo="+proNo;
+	}
 	
 </script>
 </head>
@@ -82,7 +118,9 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
+
 }
 div {
 	margin: 0px;
@@ -112,7 +150,7 @@ div {
 			<div id="showHeader">
 				<!-- 기본으로 출력되는 헤더 -->
 				<div class="headerTitle" id="headerTitle">
-					<h5>내가 쓴글</h5>
+					<h5><b>내가 쓴글</b></h5>
 				</div>
 				<div class="headerFunction" id="headerFun">
 					<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -121,7 +159,7 @@ div {
 						<i class="fas fa-search" style="color: grey;"></i>
 					</button>
 
-					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
+					<button type="button" id="goWriting" onclick="goWriting();" class="btn btn-outline-success">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 
@@ -143,18 +181,18 @@ div {
 		</div>
 
 
-		<div class="viewContents col-md-12">
+		<div class="viewContents col-md-12" style="overflow-y:auto;">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
 			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div class="row">
 						<div class="col-md-12">
-						<a onclick="getPost(${my.postNo})" class="btn btn-link" style="float:left;">"${my.postTitle }"</a>
+						<a onclick="getPost(${my.postNo})" class="btn btn-link" id="postTitle" style="float:left;"><b>"${my.postTitle }"</b></a>
 						</div>
 						<div class="col-md-12">
 							<img id="memberImg2" src="../resources/upload/member/${my.myImg }" />&nbsp;&nbsp;${my.myName }&nbsp;&nbsp;&nbsp;&nbsp;${my.postDate }
-						<a class="btn btn-link btn-sm" onclick="postChangePage(${my.proNo });" style="float:right;color:#339966">${my.proName }</a>
+						<a class="btn btn-link btn-sm" onclick="postChange(${my.proNo });" id="proName" style="float:right;color:#339966">${my.proName }</a>
 					 	</div>
 					</div>
 					<hr style="color: grey;">

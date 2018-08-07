@@ -333,7 +333,7 @@ public class ProjectControllerImpl implements ProjectController {
 	// --------------------- 프로젝트 진행 현황
 	
 	@Override
-	@RequestMapping(value="projectProgress.do")
+	@RequestMapping(value="projectProgress.do") // 일반 접속
 	public Object projectProgress(@RequestParam int proNo) {
 		
 		// 프로젝트 글 목록 읽어오기
@@ -345,15 +345,15 @@ public class ProjectControllerImpl implements ProjectController {
 		return view;
 	}
 	
-	@RequestMapping(value="mobileProjectProgress.do")
-	public Object mobileProjectProgress(@RequestParam int proNo) {
-		
+	
+	@RequestMapping(value="projectProgress_mobile.do") // 모바일 접속
+	public Object projectProgressMobile(@RequestParam int proNo) {
 		// 프로젝트 글 목록 읽어오기
 		ArrayList<ProjectPostList> postList = projectService.searchPostList(proNo);
 		// System.out.println(postList);
 		ModelAndView view = new ModelAndView();
 		view.addObject("postList", postList);
-		view.setViewName("project/mobileProjectProgress");
+		view.setViewName("project/projectProgress_mobile");
 		return view;
 	}
 	
@@ -397,7 +397,7 @@ public class ProjectControllerImpl implements ProjectController {
 	// --------------------- 프로젝트 더보기
 	
 	@Override
-	@RequestMapping(value="gotoMoreProject.do")
+	@RequestMapping(value="gotoMoreProject.do") // 일반 접속
 	public Object gotoMoreProject(HttpSession session) { // 이동
 		
 		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
@@ -412,6 +412,31 @@ public class ProjectControllerImpl implements ProjectController {
 			view.addObject("projectList", projectList);
 			view.addObject("leaderProNo", leaderProNo);
 			view.setViewName("project/moreProject");
+			return view;
+			
+		} else {
+			System.out.println("세션 실패");
+			return null;
+		}
+		
+	}
+	
+	
+	@RequestMapping(value="gotoMoreProject_mobile.do")
+	public Object gotoMoreProjectMobile(HttpSession session) { // 이동
+		
+		if(session.getAttribute("member")!=null) { // 로그인 세션을 가져오기
+			
+			// 프로젝트 목록 읽어오기
+			ArrayList<Project> projectList = this.projectList(session);
+			// 리더 권한인 프로젝트 읽어오기
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+			ArrayList<String> leaderProNo = projectService.searchLeaderProNo(memberNo);
+			
+			ModelAndView view = new ModelAndView();
+			view.addObject("projectList", projectList);
+			view.addObject("leaderProNo", leaderProNo);
+			view.setViewName("project/moreProject_mobile");
 			return view;
 			
 		} else {
@@ -500,6 +525,7 @@ public class ProjectControllerImpl implements ProjectController {
 	
 	
 	// 프로젝트 날짜 수정
+	@Override
 	@RequestMapping(value="gotoProjectDateChange.do") // 이동
 	public Object gotoProjectDateChange(@RequestParam int proNo) {
 		
@@ -512,6 +538,22 @@ public class ProjectControllerImpl implements ProjectController {
 		
 	}
 	
+
+	@RequestMapping(value="gotoProjectDateChange_mobile.do") // 이동
+	public Object gotoProjectDateChangeMobile(@RequestParam int proNo) {
+		
+		// 프로젝트 정보 1개 읽어오기
+		Project project = projectService.searchProjectInfo(proNo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("project", project);
+		view.setViewName("project/projectDateChange_mobile");
+		return view;
+		
+	}
+
+	
+	
+	@Override
 	@RequestMapping(value="updateProjectDate.do")
 	public String updateProjectDate(Project project) {
 		

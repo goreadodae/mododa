@@ -111,11 +111,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.deleteProject(sqlSession, proNo);
 	}
 	
-	
+	@Override
 	public Project searchProjectInfo(int proNo) {
 		return projectDAO.searchProjectInfo(sqlSession, proNo);
 	}
-	
+	@Override
 	public int updateProjectDate(Project project) {
 		return projectDAO.updateProjectDate(sqlSession, project);
 	}

@@ -35,23 +35,25 @@
 }
 
 .comment-area {
-	height: 75%;
+	height: 80%;
 	width: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
 #input-box {
-	margin: 5px;
-	border: 1.5px solid gray;
-	border-radius: 5px;
+	position:absolute;
+	height:14%;
+	width:93%;
+	bottom:5px;
+
 }
 
 .comment-input {
 	width: 100%;
-	height: 150%;
+	height: 65%;
 	resize: none;
-	border-bottom: 1px solid gray;
+	background-color: white;
 }
 
 .comment-list {
@@ -63,12 +65,15 @@
 }
 
 .comment-footer {
-	border-bottom: 3px;
-	bottom: 0px;
+	width:100%;
+	height:30%;
+	bottom:0px;
 }
 
 #comment-wr {
 	float: right;
+	padding-right:7;
+	font-size:12px;
 }
 
 .comment.btn {
@@ -82,9 +87,6 @@
 #commentInfo{
 	padding:0;
 }
-#commentPrint{
-	padding-left:20px;
-}
 
 #comment-wr:hover{
 	color:#339966;
@@ -92,6 +94,7 @@
 
 #commentPrint
 {
+padding-left:20px;
 color:#888;
 }
 
@@ -151,12 +154,12 @@ objDiv.scrollTop = objDiv.scrollHeight;
 							</div>
 							<div class="comment-footer">
 								<div id="input-box">
-									<textarea class="comment-input" placeholder="댓글 입력하세요" style="font-size:12px;"></textarea>
+									<textarea class="comment-input" placeholder="댓글은 요기에 입력하세요" style="font-size:12px;"></textarea>
 									<div class="comment-fun"
-										style="background-color: white; width: 100%; height: 30px;">
+										style="width: 100%; height: 35%;">
 										<!--댓글버튼 -->
-										<a id="comment-wr" class="btn-link btn-sm" onclick="insertComment(${cmPostNo});">댓글
-											작성!</a>
+										<button id="comment-wr" class="btn btn-secondary btn-sm" onclick="insertComment(${cmPostNo});">댓글
+											작성!</button>
 									</div>
 								</div>
 							</div>

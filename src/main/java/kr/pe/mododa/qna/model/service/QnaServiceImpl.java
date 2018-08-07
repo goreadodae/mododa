@@ -56,6 +56,29 @@ public class QnaServiceImpl {
 	}
 
 
+	public int deleteQna(int queNo) {
+		int result = qnaDAO.deleteQna(sqlSession, queNo);
+
+		return result;
+	}
+
+
+	public Qna qnaUpdateReady(int queNo) {
+		
+		Qna qna = qnaDAO.qnaUpdateReady(sqlSession, queNo);
+		
+		return qna;
+	}
+
+
+	public int updateQna(Qna qna) {
+		
+		int result = qnaDAO.updateQna(sqlSession, qna);
+
+		return result;
+	}
+
+
 
 
 	

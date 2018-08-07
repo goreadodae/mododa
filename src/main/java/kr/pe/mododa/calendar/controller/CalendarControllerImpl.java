@@ -48,7 +48,8 @@ public class CalendarControllerImpl implements CalendarController {
 	@Override
 	@RequestMapping(value="selectProject.do")
 	public void selectProject(HttpServletResponse response) throws Exception {
-		 ArrayList<Project> list = CalendarService.projectSelectAll();
+		
+		ArrayList<Project> list = CalendarService.projectSelectAll();
 		 
 		 response.setContentType("application/json");
 		 response.setCharacterEncoding("utf-8");
