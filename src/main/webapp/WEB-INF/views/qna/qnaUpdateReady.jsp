@@ -346,11 +346,11 @@
 <body>
 	<div class="ui container">
 	<form action="/qnaUpdate.do">
-		글제목 : <input type="text" size=90 value="${qnaUpdateReady.queTitle}" name="queTitle"/><br>
+		글제목 : <input type="text" size=90 class="form-control" value="${qnaUpdateReady.queTitle}" name="queTitle"/><br>
 		<input type="hidden" value="${qnaUpdateReady.queNo}" name="queNo"/><br>
-		<textarea rows="20" cols="100" style="resize:none;" name="queContents"/>${qnaUpdateReady.queContents}</textarea>
+		<textarea rows="20" cols="100" class="form-control" style="resize:none;" name="queContents"/>${qnaUpdateReady.queContents}</textarea>
 		<br>
-		<input type="submit" value="수정하기"/>
+		<input type="submit" class="btn btn-success" value="수정하기"/><br><br>
 		</form>
 	</div>
 </body>

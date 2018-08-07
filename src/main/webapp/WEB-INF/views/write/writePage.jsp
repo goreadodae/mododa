@@ -18,12 +18,6 @@
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-
-<!-- 파일 업로드  -->
-<!-- <script src="path/to/your/jquery.MultiFile.js" type="text/javascript" language="javascript"></script>
- -->
-
-
 <script>
 
 	$.noConflict
@@ -93,57 +87,7 @@
 				}
 			});
 
-	//자동완성
 
-	/* 	$(document).ready(function() {
-
-
-	 $("#searchPj").autocomplete({
-	 matchContains:true,
-	 delay:100,
-	 source : function(request, response) {
-	 $.ajax({
-	 type : "post",
-	 url : "/autoComplete.do",
-	 dataType : "json",
-	 data : {
-	 searchValues : request.term,
-	 memberNo : $("#memberNo").val()
-
-	 },
-	 success : function(data) {
-	 console.log("성공");
-	
-	 response($.map(data, function(item) {
-	
-	
-	 return {
-
-	 label : item.proTitle,
-	 value : item.proTitle
-	 }
-	 }));
-	
-	 },
-	 error : function(data) {
-	
-	 console.log("에러");
-	 }
-
-	 })
-	 },
-	 minLength :2,
-	 autoFocus:false,
-	 select:function(event,ui){
-	 console.log(ui.item.label);
-	 $('#changeType').text(ui.item.vale);
-	 $('#changeType').css('color','#0093BF');
-	 },focus:function(event,ui){
-	 return false;
-	 }
-	 });
-	 });
-	 */
 	//파일 이미지 업로드
 	window.URL = window.URL || window.webkitURL;
 
@@ -153,8 +97,8 @@
 	var filesLength = 0;
 	var img;
 	function readURL(files) {
-		var str
-		console.log($('#fileElem').val());
+		console.log($('#fileSelect').val()+"파일선택값");
+		console.log($('#fileElem').val()+"fileElem"+"값");
 		var height = $('.height').height('100px');
 
 		if (!files.length) {
@@ -178,14 +122,9 @@
 						'<div class="col-md-6 imgHeight" style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
 								+ img.outerHTML + '</div></div>').appendTo(
 						$('#divEnter'));
-	/* 			str ="<p><input type='file' id='file_"+imgCount+"' name='file_"+imgCount+"'</p>";
-					  $('#divEnter').append(str);
-					  str=""; */
 				imgCount++;
 
 			}
-			var str ="<p>" +
-					"input type='file' id=''"
 
 			if ($('#moreViewDiv').height() >= 200 && filesLength > 3) {
 				$('#moreViewDiv').addClass('moreViewDiv');
@@ -219,14 +158,8 @@
 
 	//modal 후  처리..!
 	function closeBtn() {
-
-		var result = window.confirm("정말 종료하시겠습니까??");
-		if (result == true) {
-			
-			/* location.href="/index.jsp" */
-		} else {
-			return false;
-		}
+		console.log("클리쿠");
+	
 
 	}
 
@@ -238,68 +171,6 @@
 		});
 
 	})
-
-	/* 	$(document).ready(function(){
-	 window.onload
-	
-	
-	 }); */
-
-	/*  	$(document).ready(function () {
-
-	 $('#toWriteFn').click(function () {
-	 $('#Modal').modal({
-	 show: true
-	 })
-	 });
-
-	 $('.modal').on('show.bs.modal', function (event) {
-	 var idx = $('.modal:visible').length;
-	 $(this).css('z-index', 1040 + (10 * idx));
-	 });
-	 $('.modal').on('shown.bs.modal', function (event) {
-	 var idx = ($('.modal:visible').length) - 1; // raise backdrop after animation.
-	 $('.modal-backdrop').not('.stacked').css('z-index', 1039 + (10 * idx));
-	 $('.modal-backdrop').not('.stacked').addClass('stacked');
-	 });
-
-
-	 }); 
-	 */
-
-	/* $(document).ready(
-			function() {
-				$('#searchPj').focus(
-						function() {
-
-							$.ajax({
-								url : "/projectNameList.do",
-								type : "post",
-								data : {
-									memberNo : $('#memberNo').val()
-
-								},
-								success : function(data) {
-									$('#addPjList').find("button").remove();
-
-									for (var i = 0; i < data.length; i++) {
-
-										console.log(data[i].proTitle);
-										$('#addPjList').append(
-												'<button id="pjName'+data[i].proNo+'" class="dropdown-item" type="button">'
-														+ data[i].proTitle   
-														+ '</button>');
-									}
-
-								},
-								error : function(data) {
-									console.log("실패");
-								}
-							})
-
-						});
-
-			}); */
 
 	//일정추가 
 	var scheCnt = 1;
@@ -342,6 +213,8 @@
 	function bringRelativeWrite() {
 		var currentProNo = $("#currentProNo").val()
 		var str="";
+		var failed="";
+		$("#relationSearch").val("");
 
 		$
 				.ajax({
@@ -354,7 +227,27 @@
 					},
 
 					success : function(data) {
+							console.log("관련글 불러오기"+ data.length);
 						$("#relationList").empty();
+						if(data.length ==0)
+							{
+							console.log("이프");
+							console.log(data);
+							failed += '<li class="list-group-item" style="padding-top: 10px; height:600px !important;" >'
+							failed += '<div class="row">';
+							failed += '<div class="col-md-12">';
+							failed += '<img id="searchImg" src="/resources/images/writeImages/friendship.png" />';
+							failed += '</div>';
+							failed += '</div>';
+							failed += '<div class="row" style="padding-top:80px;">';
+							failed += '<div class="offset-md-4">';
+							failed += '<h5 style="color:#A1A1A1; font-weight:bold;">관련글이 없습니다.</h5>';
+							failed += '</div></div></li>';	
+							$('#relationList').append(failed);
+							failed = "";
+							
+							}
+						
 						
 						console.log(currentProNo);
 						var flag = 0;
@@ -508,6 +401,7 @@
 	function loadByProName(no){
 		var proNo = $('#proNo_'+no).val();
 		var str ="";
+		var failed="";
 		console.log(proNo+"로드 바이 네임");
 		$.ajax({
 			url : "/loadByProName.do",
@@ -516,9 +410,30 @@
 				proNo :proNo
 			},
 			success : function(data){
-				console.log("성공");
-				console.log(proNo+"를 불러왔어요");
+
 				$("#relationList").empty();
+				
+				if(data.length == 0)
+				{	
+					console.log("이프");
+					console.log(data);
+					failed += '<li class="list-group-item" style="padding-top: 10px; height:600px !important;" >'
+					failed += '<div class="row">';
+					failed += '<div class="col-md-12">';
+					failed += '<img id="searchImg" src="/resources/images/writeImages/friendship.png" />';
+					failed += '</div>';
+					failed += '</div>';
+					failed += '<div class="row" style="padding-top:80px;">';
+					failed += '<div class="offset-md-4">';
+					failed += '<h5 style="color:#A1A1A1; font-weight:bold;">관련글이 없습니다.</h5>';
+					failed += '</div></div></li>';	
+					$('#relationList').append(failed);
+					failed = "";
+				}
+				
+				
+				
+				
 				 
 				 var flag = 0;
 				for (var i = 0; i < data.length; i++) {
@@ -555,7 +470,6 @@
 					str += '</h6>&nbsp;&nbsp;';
 					str += '</div>';
 					str += '</div>';
-			/* 		str += '<input type="hidden" value="'++'"' */
 					str += '</li>';
 					
 					$('#relationList').append(str);
@@ -563,12 +477,7 @@
 						str ="";
 					
 				}
-				console.log(data[0].proTitle);
 				$('#currentReProName').text(data[0].proTitle);
-				
-				
-				
-				
 			},
 			error : function(data){
 				console.log("실패");
@@ -721,6 +630,7 @@ $(document).ready(function(){
 function convertProject(no){
 	var proNo = $('#convertPro_'+no).val();
 	$('#currentProNo').val(proNo);
+	var failed="";
 	
 	
 	var str ="";
@@ -739,6 +649,16 @@ function convertProject(no){
 				console.log("불러오기 성공");
 				$('#changeType').text(data.currentProName);
 				$('#changeType').css('color','#339966');
+				if(data.length==0)
+					{
+						failed += '<div class="mx-auto style="width:50px;>'
+						failed += '<img src="/resources/images/writeImages/listener.png">'
+						failed += '<div>'
+						failed += '<div class="mx-auto" style="width:100%; padding-left:10px;">'
+						failed += '<b>파트너가 없습니다.</b></div>'
+							$('#partnersList').append(failed);
+						failed="";
+					}
 				
 				
 				for(var i = 0; i<data.proMember.length; i++){
@@ -777,6 +697,7 @@ $(document).ready(function(){
 		},
 		success : function(data){
 			$('#partnersList button').remove();
+			$('#partnersList div').remove();
 			console.log(data);
 			$('#changeType').text(data.privateSpace);
 			$('#changeType').css('color','#FF5F2E');
@@ -1091,20 +1012,18 @@ margin:auto;
 <form action="/insertPost.do" method="post" enctype="multipart/form-data">
 
 	
-	<div class="frameSize offset-md-1 col-md-10 offset-md-1">
+	<div class="frameSize col-md-12">
 	<!-- 제출 엔터 방지  -->
 	<div style="display:none">
 		<input type="submit" onclick="return false;"/>
-		
-	
 	</div>
 		
 	
-		<%-- 		<div class="row" style="height: 15%;">
+				<div class="row" style="height: 13%;">
 			<div class="col-md-12" style="height: 100%;">
-				<jsp:include page="/layout/header.jsp"></jsp:include>
+				<jsp:include page="/header.do"></jsp:include>
 			</div>
-		</div> --%>
+		</div> 
 
 
 		<!-- <div class="row" style="height: 100%; padding:0px" > -->
@@ -1117,9 +1036,9 @@ margin:auto;
 				</div>
 			</div> -->
 
-		<div class="row" style="height: 100%; padding: 0px;">
+		<div class="row offset-md-1 col-md-10 offset md-1" style="height: 87%; padding: 0px;">
 
-			<div class="col-md-3" id="test" style="padding-top: 40px; height: 100%;">
+			<div class="col-md-3" id="test" style="height: 100%;">
 
 
 				<div class="row" style="height: 10%">
@@ -1155,7 +1074,7 @@ margin:auto;
 
 			<div class="col-md-9" style="height: 100%">
 
-				<div class="row" style="padding-top: 40px; height: 15%;">
+				<div class="row" style=" height: 10%;">
 					<div class="col-md-12" id="mobileWriteTitle" style="display: none;">
 						<label style="font-size: 20px;"><strong>글쓰기</strong></label>
 					</div>
@@ -1226,7 +1145,16 @@ margin:auto;
 														${proMember.memberName}</button>
 														
 														</c:forEach>
-														<c:if test="${proMember eq null}">
+														
+														<c:if test="${empty proMember}">
+																	
+																		<div class="mx-auto" style="width: 50px;">
+																			<img src="/resources/images/writeImages/listener.png">
+																		</div>
+																	<div class="mx-auto" style="width:100%; padding-left:10px;">
+																		<b>파트너가 없습니다.</b>
+																	</div>
+																	
 														</c:if>
 														
 													</ul>
@@ -1237,24 +1165,11 @@ margin:auto;
 											
 											</div>
 											
-											
-												
 											</div>
-											
-											
-											
-											
-
-
-
-
-
-
-
 									<div class="col-md-1">
 
 										<!-- 페이지 닫기  -->
-											<button onclick="closeBtn()" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
+											<button onClick="closeBtn();" id="closeBtn" type="button" class="close" aria-label="Close" style="height: 100%">
 												<span aria-hidden="true" style="height: 100%;">&times;</span>
 											</button>
 										
@@ -1271,7 +1186,7 @@ margin:auto;
 						</div>
 					</div><!-- 쇼비탑  -->
 				</div>
-				<div class="row" style="height: 85%">
+				<div class="row" style="height: 90%">
 					<div class="col-md-8" style="height: 100%">
 						<div class="row" style="height: 80%">
 							<div class="col-md-12" style="height: 100%;">
@@ -1283,10 +1198,7 @@ margin:auto;
 								<div class="row" style="height: 90%">
 									<div class="col-md-12" style="height: 100%">
 										<div class="tarea col-md-12" style="height: 100%; padding-left: 0px;">
-											<textarea id="inputContents" value="" name="inputContents" required   style="width:100%; height:100%; border:none; resize:none;">
-											
-											
-											</textarea>
+											<textarea id="inputContents" value="" name="inputContents" required   style="width:100%; height:100%; border:none; resize:none; overflow-x:hidden;"></textarea>
 										
 										
 										</div>
@@ -1404,7 +1316,7 @@ margin:auto;
 							<!-- 모달 버튼 끝 -->
 
 							<!-- 모달 시작 -->
-							<div class="modal fade" tabindex="-1" role="dialog" id="relationWrite" aria-hidden="true">
+							<div class="modal fade frameSize" tabindex="-1" role="dialog" id="relationWrite" aria-hidden="true" style="z-index:1050">
 								<!-- <div class="container" style="height:80%"> -->
 								<div class="modal-dialog" role="document" style="background-color: white; height: 90%">
 									<div class="modal-content" style="height: 100%; z-index: 1070;">
@@ -1425,9 +1337,8 @@ margin:auto;
 															<c:out value="${proList.proTitle}" />
 														</button>
 
-
-
 													</c:forEach>
+													
 												</div>
 
 											</div>
@@ -1492,7 +1403,7 @@ margin:auto;
 
 
 							<!-- 일정 모달 시작   -->
-							<div class="modal fade" tabindex="-1" role="dialog" id="loadSchedule" aria-hidden="true">
+							<div class="modal fade" tabindex="-1" role="dialog" id="loadSchedule" aria-hidden="true" style="z-index:1050;">
 								<!--   Modal 내용 -->
 
 								<div class="modal-dialog modal-dialog-centered" role="document">

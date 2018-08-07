@@ -361,6 +361,10 @@ div {
 						context: context
 					},
 					success: function(data){
+						$('#successAlertMessage').text('변경하였습니다');
+						$('#successAlert').show('slow');
+						setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
+						
 						$('.name-con').parent().css('border-bottom','1px solid gray');
 						$('#myInfoDiv').load(window.location.href+" #myInfoDiv");
 					},

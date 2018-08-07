@@ -65,7 +65,6 @@
 							  '</div></li>';
 							}
 						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
 					}
 				},
 				error : function() {
