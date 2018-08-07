@@ -25,6 +25,8 @@ public interface ProjectService {
 	public String searchMoreProTitle(int proNo);
 	public ArrayList<String> searchLeaderProNo(int memberNo);
 	public int deleteProject(int proNo);
+	public Project searchProjectInfo(int proNo);
+	public int updateProjectDate(Project project);
 	
 	
 	

@@ -3,12 +3,20 @@
 <mapper namespace="personal">
   
   <select id="selectAllNewsfeed" parameterType="int" resultType="newsfeed" > <!-- 회원번호를 받아  그회원이 속한 프로젝트의 모든 글을 읽는 쿼리.-->
-	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress,concat(rpad(p.post_content,20,'.'),'..')as postContent, to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
-	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName, pr.pro_no as proNo from post p
-	join member m on(p.post_writer=m.member_no)
-	join project pr on(p.post_pro_no=pr.pro_no)
-	where p.POST_PRO_NO in(select pro_no from work_on where member_no=#{memberNo}) 
-	order by p.post_no desc
+	select p.post_no as postNo,
+	 p.post_title as postTitle,
+	 p.post_progress as postProgress,
+	 p.post_content as postContent, 
+	 to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
+	 m.member_name as postWriter, 
+	 m.member_picture as pWriterImg, 
+	 pr.pro_title as proName, 
+	 pr.pro_no as proNo 
+	from post p
+	 join member m on(p.post_writer=m.member_no)
+	 join project pr on(p.post_pro_no=pr.pro_no)
+	 where  p.POST_PRO_NO in (select pro_no from work_on where member_no=#{memberNo}and invite_yn='Y') or (p.post_pro_no  in(select pro_no from project where pro_title='프라이빗공간' and pro_member_no=#{memberNo}))
+	order by postDate desc
   </select>
   
   <select id="selectBookmark" parameterType="int" resultType="bookmark"> <!-- 북마크한 글 읽어노는 쿼리 -->
@@ -30,15 +38,25 @@
 	left join member m on p.post_writer=m.member_no
 	left join project pr on p.post_pro_no=pr.pro_no
 	where p.post_writer=#{memberNo}
+	order by p.post_date desc
   </select>
   
   <select id="searchNews" parameterType="serdel" resultType="newsfeed"><!-- 뉴스피드에서 검색어를 입력받아 검색. -->
-  	select p.post_no as postNo, p.post_title as postTitle, p.post_progress as postProgress, concat(rpad(p.post_content,20,'.'),'..')as postContent, to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
-	m.member_name as postWriter, m.member_picture as pWriterImg, pr.pro_title as proName, pr.pro_no as proNo from post p
-	join member m on(p.post_writer=m.member_no)
-	join project pr on(p.post_pro_no=pr.pro_no)
-	where p.POST_PRO_NO in(select pro_no from work_on where member_no=#{memberNo}) and(p.post_title like '%'||#{keyword}||'%' or m.member_name like '%'||#{keyword}||'%')
-	order by p.post_no desc
+  	select p.post_no as postNo,
+	 p.post_title as postTitle,
+	 p.post_progress as postProgress,
+	 p.post_content as postContent, 
+	 to_char(p.post_date,'yy-mm-dd am hh:mi:ss')as postDate,
+	 m.member_name as postWriter, 
+	 m.member_picture as pWriterImg, 
+	 pr.pro_title as proName, 
+	 pr.pro_no as proNo 
+	from post p
+	 join member m on(p.post_writer=m.member_no)
+	 join project pr on(p.post_pro_no=pr.pro_no)
+	where (p.post_title like  '%'||#{keyword}||'%' or m.member_name like  '%'||#{keyword}||'%') 
+        and ( p.POST_PRO_NO in (select pro_no from work_on where member_no=#{memberNo}) 
+        or (p.post_pro_no  in(select pro_no from project where pro_title='프라이빗공간' and pro_member_no=#{memberNo})))
   </select>
   
   <select id="searchTitle" parameterType="post" resultType="myPost"> <!--내가 쓴 글 에서 제목을 검색하는 쿼리 -->
@@ -49,6 +67,7 @@
 	left join member m on p.post_writer=m.member_no
 	left join project pr on p.post_pro_no=pr.pro_no
 	where p.post_writer=#{postWriter} and p.post_title like '%'||#{postTitle}||'%'
+	order by p.post_date desc
   </select>
   
   <delete id="delBookmark" parameterType="post"> <!-- 북마크 제거 -->
@@ -72,7 +91,7 @@
   		m.member_name as postWriter, 
   		m.member_picture as  pWriterImg,
 		p.post_progress as postProgress , 
-		concat(rpad(p.post_content,20,'.'),'..')as postContent,  
+		p.post_content as postContent,  
 		to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
 		pr.pro_title as proName, 
 		pr.pro_no as  proNo
@@ -90,7 +109,7 @@
   	m.member_name as postWriter, 
   	m.member_picture as  pWriterImg,
 	p.post_progress as postProgress, 
-	concat(rpad(p.post_content,20,'.'),'..')as postContent, 
+	p.post_content as postContent, 
 	to_char(p.post_date,'yy-mm-dd am hh:mi:ss') as postDate,
 	pr.pro_title as proName, 
 	pr.pro_no as proNo

@@ -54,18 +54,16 @@ div {
  
  
  .progressHeader {
- 	border-top: 1px solid black;
- 	border-left: 1px solid black;
- 	border-right: 1px solid black;
+ 	color: #339966;
 	width: 30%;
 	height: 100%;
-	background-color: #CFF09E;
+	
 	float: left;
 	text-align: center;
  }
  
  .progressBody {
-	border: 1px solid black;
+	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
 	width: 30%;
 	height: 88%;
 	background-color: #FFF;
@@ -97,7 +95,7 @@ div {
 
 
 .progressProject {
-	border: 1px solid black;
+	border-bottom: 1px solid gray;
 	float: left;
 	padding: 1% 5%;
 	width: 98%;
@@ -309,7 +307,12 @@ input[type=checkbox] {
 				success : function(projectList) {
 					
 					
-					location.href="/gotoMoreProject.do";
+					$('#successAlertMessage').text('프로젝트 진행 사항이 변경되었습니다.');
+		            $('#successAlert').show('slow');
+		            setTimeout(function () { $('#successAlert').hide('slow'); window.location.reload(); }, 1500);
+					
+					
+					//location.href="/gotoMoreProject.do";
 					
 /* 					
 					$(".progressBody").empty();
@@ -385,6 +388,11 @@ input[type=checkbox] {
 				},
 				error : function() {
 					console.log("업데이트 실패");
+					
+					$('#failedAlertMessage').text('프로젝트 변경이 실패하였습니다.');
+			        $('#failedAlert').show('slow');
+			        setTimeout(function () { $('#failedAlert').hide('slow'); window.location.reload(); }, 1500);
+					
 				}
 				
 				
@@ -453,11 +461,21 @@ input[type=checkbox] {
 						proNo : proNo
 					},
 					success : function(data) {
-						alert("["+proTitle+"] 프로젝트가 삭제되었습니다.");
-						location.href="/gotoMoreProject.do";
+						
+						
+						$('#successAlertMessage').text("["+proTitle+"] 프로젝트가 삭제되었습니다.");
+			            $('#successAlert').show('slow');
+			            setTimeout(function () { $('#successAlert').hide('slow'); window.location.reload(); }, 1500);
+						
+					
+						//location.href="/gotoMoreProject.do";
 					},
 					error : function() {
 						console.log("프로젝트 삭제 ajax실패");
+						
+						$('#failedAlertMessage').text('프로젝트 삭제가 실패하였습니다.');
+				        $('#failedAlert').show('slow');
+				        setTimeout(function () { $('#failedAlert').hide('slow'); window.location.reload(); }, 1500);
 					}
 					
 				});
@@ -484,6 +502,16 @@ input[type=checkbox] {
 
 
 <body>
+
+	<!-- 알림창 -->
+   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 20%; position: absolute; right:40px; bottom:0px;">
+      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+   </div>
+   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 20%; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
+      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+   </div>
+
+
 
 <!-- header -->
 <jsp:include page="/projectHeader.do"></jsp:include>
@@ -512,11 +540,11 @@ input[type=checkbox] {
 			<div class="titleEmpty"></div>
 			
 			<div class="progressTitle">
-			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+			<div class="progressHeader"><h5><b>"일시중지"</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
+			<div class="progressHeader"><h5><b>"진행 중"</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>완료</b></h5></div>
+			<div class="progressHeader"><h5><b>"완료"</b></h5></div>
 			</div>
 			
 			
@@ -527,7 +555,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='stop'}">
-					<div class="progressProject" draggable="true">
+					<div class="progressProject">
 						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
 						
 						<span class="stopCheckBox" style="display: none;">
@@ -577,7 +605,7 @@ input[type=checkbox] {
 
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='working'}">
-					<div class="progressProject" draggable="true">
+					<div class="progressProject">
 						
 						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
 						<span class="workCheckBox" style="display: none;">
@@ -625,7 +653,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${projectList}" var="projectList">
 				<c:if test="${projectList.proProgress=='finish'}">
-					<div class="progressProject" draggable="true">
+					<div class="progressProject">
 					
 						
 						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>

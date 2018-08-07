@@ -17,9 +17,11 @@ import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.dao.WriteDAOImpl;
+import kr.pe.mododa.write.model.vo.CallPost;
 import kr.pe.mododa.write.model.vo.Partners;
 import kr.pe.mododa.write.model.vo.PrivateSpace;
 import kr.pe.mododa.write.model.vo.ProjectMember;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
 
@@ -86,8 +88,29 @@ public class WriteServiceImpl implements WriteService{
 				
 			}
 			try {
+				String subject = originalFileName.substring(originalFileName.lastIndexOf(".")+1,originalFileName.length());
+				
+				System.out.println(subject+"확장자 처음");
+				String[] extension = {"pxc","gif","bmp","png","jpg","raw"};
+				int length = extension.length;
+				
+				for(int i=0; i<length; i++)
+				{
+					System.out.println(extension[i]+"확장자");
+					if(subject.equals(extension[i]))
+					{
+						System.out.println("이프");
+						upload.setUploadSubject("이미지");
+					}
+					else {
+						System.out.println("엘스");
+						upload.setUploadSubject("파일");
+					}
+					
+				}
+				System.out.println(upload.getUploadSubject());
 				file.transferTo(new File(uploadPath + saveFileName));
-				upload.setUploadSubject(originalFileName);
+				upload.setFileName(originalFileName);
 				upload.setUploadPath(uploadPath + saveFileName);
 				System.out.println(uploadPath+saveFileName);
 				result = writeDAO.insertFileUploaded(sqlSession,upload);
@@ -140,6 +163,51 @@ public class WriteServiceImpl implements WriteService{
 		return result;
 	}
 
+	public int insertRpPost(RelatedPost rpPost) {
+		
+		int result = writeDAO.insertRpPost(sqlSession,rpPost);
+				return result;
+		
+	}
+
+	public int insertCallMember(CallPost cp) {
+		int result = writeDAO.insertCallMember(sqlSession,cp);
+		return result;
+	}
+
+	public int setPrivateSpace(int memberNo) {
+		return writeDAO.setPrivateSpace(sqlSession,memberNo);
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }

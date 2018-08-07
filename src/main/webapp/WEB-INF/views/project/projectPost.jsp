@@ -29,7 +29,7 @@
 body {
 	overflow-x: hidden;
 	overflow-y: hidden;
-	height: 100%;
+	height: 100vh;
 }
 div {
 	margin: 0px;
@@ -99,7 +99,10 @@ div {
 						if(searchResult.length == 0) {
 							
 							$(".feed-list").empty();
-							$(".feed-list").append("<div>내용없어요</div>");
+							$(".feed-list").append('<div class="row">'+
+								  	'<div class="col-md-12"><center>'+	
+									'<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>'+
+									'<span font-size="12px;">검색결과가 존재하지 않습니다..</span></div></div>');
 							
 						} else {
 								
@@ -120,9 +123,19 @@ div {
 								console.log(printDate); */
 
 
-  								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">'
-	 									  + '<span onclick="getPost('+searchResult[i].postNo+');" class="btn btn-link" style="float:left;">'+searchResult[i].postTitle+'</span></div>'
-	 									  + '<div class="col-md-9"><img id="memberImg2" src="'+searchResult[i].memberPicture+'">&nbsp;&nbsp;'+searchResult[i].memberName
+  								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">';
+	  								if(searchResult[i].postProgress=='suggest'){
+	  									result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
+	  								}else if(searchResult[i].postProgress=='working'){
+	  									result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
+	  								}else if(searchResult[i].postProgress=='stop'){
+	  									result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
+	  								}else{
+	  									result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
+	  								}
+  									
+	 							result+= '<a onclick="getPost('+searchResult[i].postNo+');" id="postTitle" class="btn btn-link"><b>'+searchResult[i].postTitle+'</b></a></div>'
+	 									  + '<div class="col-md-9"><img id="memberImg2" src="../resources/upload/member/'+searchResult[i].memberPicture+'">&nbsp;&nbsp;'+searchResult[i].memberName
 	 									  + '&nbsp;&nbsp;&nbsp;&nbsp;'+searchResult[i].postDate+'</div>'
 	 									  + '</div><hr style="color: grey;"></li>';
 							}
@@ -208,7 +221,7 @@ div {
 			</div>
 		</div>
 
-		<div class="viewContents col-md-12" style="overflow:auto; height:84%;">
+		<div class="viewContents col-md-12" style="overflow:auto;">
 		
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
@@ -217,11 +230,30 @@ div {
 					<li class="feed-contents">
 						<div class="row">
 							<div class="col-md-12">
-							<span onclick="getPost(${postList.postNo});" class="btn btn-link" style="float:left;">${postList.postTitle}</span>
+							<c:choose>
+									<c:when test="${postList.postProgress eq 'suggest' }">
+										<c:set var="statusImg" value="../resources/images/post/light-bulbOn.png" />
+										<c:set var="statusTxt" value="발의된 이슈"/>
+									</c:when>
+									<c:when test="${postList.postProgress eq 'working' }">
+										<c:set var="statusImg" value="../resources/images/post/play-buttonOn.png"/>
+										<c:set var="statusTxt" value="진행 중"/>
+									</c:when>
+									<c:when test="${postList.postProgress eq 'stop' }">
+										<c:set var="statusImg" value="../resources/images/post/pauseOn.png"/>
+										<c:set var="statusTxt" value="일시 중지"/>	
+									</c:when>
+									<c:otherwise>
+										<c:set var ="statusImg" value="../resources/images/post/checked.png"/>
+										<c:set var="statusTxt" value="완료"/>
+									</c:otherwise>
+									</c:choose>
+							<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>
+							<a onclick="getPost(${postList.postNo});" id="postTitle" class="btn btn-link"><b>${postList.postTitle}</b></a>
 							</div>
 							
 							<div class="col-md-9">
-							<img id="memberImg2" src="${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
+							<img id="memberImg2" src="../resources/upload/member/${postList.memberPicture}">&nbsp;&nbsp;${postList.memberName}&nbsp;&nbsp;&nbsp;&nbsp;${postList.postDate}
 							</div>	
 
 						</div>
@@ -230,10 +262,7 @@ div {
 					
 				</c:forEach>
 			</ul>
-		 	<div align="center">
-         	<span>마지막입니다.</span>
          	<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
-         	</div>
 		</div>
 
 	</div>
@@ -241,7 +270,7 @@ div {
 
 
 	<!-- right bar -->
-	<jsp:include page="/rightbarPro.do?${requestScope['javax.servlet.forward.query_string']}"></jsp:include>
+	<jsp:include page="/rightbar.do"></jsp:include>
 	<!-- right bar 끝 -->
 	
 </div>

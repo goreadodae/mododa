@@ -39,40 +39,34 @@ div {
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-		<!-- 자료실 헤더 -->
-	<table width="100%">
-		<tr>
-			<td width="20%">
-				<h4 id="subject">이미지</h4>
-			</td>
-			<td width="35%">
-			</td>
-			<td width="15%"></td>
-			<td width="5%">
-				<a href="/todo.do" id="todo">할 일</a>
-			</td>
-			<td width="5%">
-				<a href="/decision.do" id="decision">의사결정</a>
-			</td>
-			<td width="5%">
-				<a href="/image.do" id="image">이미지</a>
-			</td>
-			<td width="5%">
-				<a href="/file.do" id="file">파일</a>
-			</td>
-			<td width="5%">
-			</td>
-			<td width="5%"></td>
-		</tr>
-	</table>
-	
-	<div class="dropdown-divider"></div>
-
+	<!-- 자료실 헤더 -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/image.do"><b>이미지</b></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/todo.do">할 일 </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/decision.do">의사결정</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="/image.do">이미지<span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/file.do">파일</a>
+				</li>
+			</ul>
+			</div>
+		</nav>
 	<!-- 자료실 헤더 끝 -->
 	
 	<!-- 본문 -->
 	<div style="padding:10px;">
-		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+		<div style="height:100%; ">
 			<!-- 이미지 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
@@ -88,7 +82,6 @@ div {
 			<div id="imageContainer">
 				<div id="imageDiv">
 					<%-- <c:forEach items="${listImage }" var="i">
-					<div id="imgEach_${i.uploadNo }">
 					<div class="card" style="width: 15rem; height:15rem; float:left;">
 						<img class="card-img-top" src="${i.uploadPath }" style="width:100%; height:15rem;alt="Card image cap">
 						<div class="card-body">
@@ -96,7 +89,6 @@ div {
 						<p class="card-text">${i.uploadDate }</p>
 						<a href="/fileDownload.do?uploadPath=${i.uploadPath }&fileName=${i.fileName}" class="btn btn-primary">다운로드</a>
 						</div>
-					</div>
 					</div>
 					</c:forEach> --%>
 				</div>
@@ -137,17 +129,15 @@ function imageCategory(num) {
 				
 				for(i=0; i<data.length; i++) {
 					str += 
-						"<div id='imgEach_"+data[i].uploadNo+"'>"+
-						"<div class='card' style='width: 15rem; height:15rem; float:left;'>"+
-							"<img class='card-img-top' src='"+data[i].uploadPath+"' style='width:100%; height:15rem;' alt='Card image cap'>"+
-							"<div class='card-body'>"+
-							"<h5 class='card-title'>"+data[i].fileName +"</h5>"+
-							"<p class='card-text'>"+data[i].uploadDate +"</p>"+
-							"<a href='/fileDownload.do?uploadPath="+data[i].uploadPath+"&fileName="+data[i].fileName+"' class='btn btn-primary'>다운로드</a>"+
-							"<button type='button' class='btn btn-danger' style='margin:1px;' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>"+		
-							"</div>"+
-						"</div>"+
-						"</div>";
+						"<div id='imgEach_"+data[i].uploadNo+"' style='float:left;'>"+
+						"<div class='card' style='width: 200px; margin:2px;'>"+
+						  "<img class='card-img-top' src='"+data[i].uploadPath+"' width='200px' height='200px' >"+
+						  "<div class='card-body'>"+
+						    "<div align='right'>"+
+						    "<a href='/fileDownload.do?uploadNo="+data[i].uploadNo+"'>다운로드</a>&nbsp;&nbsp;"+
+						    "<a href='#' onclick='deleteUpload("+data[i].uploadNo+");'>삭제</a>"+	
+						  "</div></div>"+
+						"</div></div>";
 				}
 				
 				$("#imageDiv").append(str);
@@ -158,6 +148,11 @@ function imageCategory(num) {
 			console.log("오류");
 		}
 	});
+}
+
+// 이미지 다운로드
+function download(id, path, name) {
+	location.href="/fileDownload.do?uploadPath="+path+"&fileName="+name;
 }
 
 // 이미지 삭제

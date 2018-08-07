@@ -582,7 +582,9 @@
         </div>
       </div>
     </div>
+
    <!-- FindPassword Modal -->
+
     <div class="portfolio-modal mfp-hide" id="FindPassword-modal">
       <div class="portfolio-modal-dialog bg-white" style="height: 600px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 200px;">
         <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
@@ -624,3 +626,4 @@
 
   </body>
 </html>
+

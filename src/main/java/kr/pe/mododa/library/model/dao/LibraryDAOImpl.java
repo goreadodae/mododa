@@ -11,6 +11,7 @@ import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Repository("libraryDAO")
@@ -109,13 +110,13 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return (ArrayList<Member>)todoContentMemberPost;
 	}
 
-	public ArrayList<Todo> todoListPro(SqlSessionTemplate sqlSession, int proNo) {
-		List todoListPro = sqlSession.selectList("library.todoListPro", proNo);
+	public ArrayList<Todo> todoListPro(SqlSessionTemplate sqlSession, Post p) {
+		List todoListPro = sqlSession.selectList("library.todoListPro", p);
 		return (ArrayList<Todo>)todoListPro;
 	}
 
-	public ArrayList<Decision> decisionListPro(SqlSessionTemplate sqlSession, int proNo) {
-		List decisionListPro = sqlSession.selectList("library.decisionListPro", proNo);
+	public ArrayList<Decision> decisionListPro(SqlSessionTemplate sqlSession, Post p) {
+		List decisionListPro = sqlSession.selectList("library.decisionListPro", p);
 		return (ArrayList<Decision>)decisionListPro;
 	}
 
@@ -129,6 +130,10 @@ public class LibraryDAOImpl implements LibraryDAO{
 
 	public int deleteUpload(SqlSessionTemplate sqlSession, int uploadNo) {
 		return sqlSession.delete("library.deleteUpload", uploadNo);
+	}
+
+	public Upload uploadPath(SqlSessionTemplate sqlSession, int uploadNo) {
+		return sqlSession.selectOne("library.uploadPath", uploadNo);
 	}
 
 }

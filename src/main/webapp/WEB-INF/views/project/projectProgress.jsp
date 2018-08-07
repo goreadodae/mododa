@@ -54,18 +54,17 @@ div {
  
  
  .progressHeader {
- 	border-top: 1px solid black;
- 	border-left: 1px solid black;
- 	border-right: 1px solid black;
+ 	
+ 	color: #339966;
 	width: 22%;
 	height: 100%;
-	background-color: #CFF09E;
+	
 	float: left;
 	text-align: center;
  }
  
  .progressBody {
-	border: 1px solid black;
+	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .3);
 	width: 22%;
 	height: 88%;
 	background-color: #FFF;
@@ -97,7 +96,7 @@ div {
 
 
 .progressPost {
-	border: 1px solid black;
+	border-bottom: 1px solid gray;
 	float: left;
 	padding: 1% 5%;
 	width: 98%;
@@ -403,28 +402,28 @@ input[type=checkbox] {
 						 */
 						
 						if(postList[i].postProgress=='suggest') {
-							suggestResult += '<div class="progressPost" draggable="true">'
+							suggestResult += '<div class="progressPost">'
 											 + '<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('+sug+');"/>'
 											 + '<span class="sugCheckBox" style="display: none;">'
 											 + '<input type="checkbox" class="checkBox" name="sug_checkBox" value="'+postList[i].postNo+'" onClick="check('+sug+');">'
 											 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 
 						} else if(postList[i].postProgress=='working') {
-							workingResult += '<div class="progressPost" draggable="true">'
+							workingResult += '<div class="progressPost">'
 								 			 + '<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('+work+');"/>'
 								 			 + '<span class="workCheckBox" style="display: none;">'
 								 			 + '<input type="checkbox" class="checkBox" name="work_checkBox" value="'+postList[i].postNo+'" onClick="check('+work+');">'
 								 			 + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 							
 						} else if(postList[i].postProgress=='stop') {
-							stopResult += '<div class="progressPost" draggable="true">'
+							stopResult += '<div class="progressPost">'
 								 		  + '<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('+stop+');"/>'
 								 		  + '<span class="stopCheckBox" style="display: none;">'
 								 		  + '<input type="checkbox" class="checkBox" name="stop_checkBox" value="'+postList[i].postNo+'" onClick="check('+stop+');">'
 								 		  + '</span><span onclick="getPost('+postList[i].postNo+');">'+postList[i].postTitle+'</span><br>'+postList[i].memberName+'<br>'+postList[i].postDate+'</div>';
 							
 						} else if(postList[i].postProgress=='finish') {
-							finishResult += '<div class="progressPost" draggable="true">'
+							finishResult += '<div class="progressPost">'
 								 			+ '<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('+fin+');"/>'
 											+ '<span class="finCheckBox" style="display: none;">'
 								 			+ '<input type="checkbox" class="checkBox" name="fin_checkBox" value="'+postList[i].postNo+'" onClick="check('+fin+');">'
@@ -440,9 +439,20 @@ input[type=checkbox] {
 					$("#stopBody").append(stopResult);
 					$("#finishBody").append(finishResult);
 					
+					$('#successAlertMessage').text('프로젝트 이슈가 변경되었습니다.');
+		            $('#successAlert').show('slow');
+		            setTimeout(function () { $('#successAlert').hide('slow'); }, 1500);
+					 
+					
+					
 				},
 				error : function() {
 					console.log("업데이트 실패");
+					
+					$('#failedAlertMessage').text('프로젝트 이슈 변경이 실패하였습니다.');
+			        $('#failedAlert').show('slow');
+			        setTimeout(function () { $('#failedAlert').hide('slow'); }, 1500);
+					
 				}
 				
 				
@@ -472,6 +482,14 @@ input[type=checkbox] {
 
 <body>
 
+	<!-- 알림창 -->
+   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 20%; position: absolute; right:40px; bottom:0px;">
+      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+   </div>
+   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 20%; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
+      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+   </div>
+
 <!-- header -->
 <jsp:include page="/projectHeader.do"></jsp:include>
 <!-- header 끝 -->
@@ -497,20 +515,20 @@ input[type=checkbox] {
 			<div class="titleEmpty"></div>
 			
 			<div class="progressTitle">
-			<div class="progressHeader"><h5><b>발의된 이슈</b></h5></div>
+			<div class="progressHeader"><h5><b>"발의된 이슈"</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
+			<div class="progressHeader"><h5><b>"진행 중"</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
+			<div class="progressHeader"><h5><b>"일시중지"</b></h5></div>
 			<div class="headEmpty"></div>
-			<div class="progressHeader"><h5><b>완료</b></h5></div>
+			<div class="progressHeader"><h5><b>"완료"</b></h5></div>
 			</div>
 			
 			<div class="progressBody" id="suggestBody" style="overflow:auto; height:84%;">
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='suggest'}">
-					<div class="progressPost" draggable="true">
+					<div class="progressPost">
 						
 						<img src="../resources/images/post/light-bulbOn.png" class="sugImg" onclick="changeCheckBox('sug');"/>
 						<span class="sugCheckBox" style="display: none;">
@@ -538,7 +556,7 @@ input[type=checkbox] {
 
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='working'}">
-					<div class="progressPost" draggable="true">
+					<div class="progressPost">
 						
 						<img src="../resources/images/post/play-buttonOn.png" class="workImg" onclick="changeCheckBox('work');"/>
 						<span class="workCheckBox" style="display: none;">
@@ -566,7 +584,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='stop'}">
-					<div class="progressPost" draggable="true">
+					<div class="progressPost">
 						
 						<img src="../resources/images/post/pauseOn.png" class="stopImg" onclick="changeCheckBox('stop');"/>
 						<span class="stopCheckBox" style="display: none;">
@@ -595,7 +613,7 @@ input[type=checkbox] {
 			
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='finish'}">
-					<div class="progressPost" draggable="true">
+					<div class="progressPost">
 						
 						<img src="../resources/images/post/checked.png" class="finImg" onclick="changeCheckBox('fin');"/>
 						<span class="finCheckBox" style="display: none;">
@@ -619,8 +637,9 @@ input[type=checkbox] {
 	<!-- contents 끝 -->
 
 	<jsp:include page="/post.do"></jsp:include> <!-- 게시글 보기 -->
-
+	
 </div>
+
 
 </body>
 </html>

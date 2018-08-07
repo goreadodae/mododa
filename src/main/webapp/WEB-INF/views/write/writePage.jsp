@@ -375,7 +375,7 @@
 								str += '<div class="row" style="height: 50%">';
 								str += '<div class="col-md-12" style="height: 100%">';
 								str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
-								str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';
+								str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+','+data[i].postProNo+'">';
 								str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 								str += data[i].postTitle;
 								str += '</span>';
@@ -440,14 +440,13 @@
 					failed += '<div class="col-md-12">';
 					failed += '<img id="searchImg" src="/resources/images/writeImages/search.png" />';
 					failed += '</div>';
-					failed += '</div><br><br>';
-					failed += '<div class="row">';
+					failed += '</div>';
+					failed += '<div class="row" style="padding-top:80px;">';
 					failed += '<div class="offset-md-4">';
 					failed += '<h5 style="color:#A1A1A1; font-weight:bold;">검색 결과가 없습니다.</h5>';
 					failed += '</div></div></li>';	
 					$('#relationList').append(failed);
 					failed = "";
-					
 				}
 				else{
 					console.log("엘스");
@@ -471,7 +470,7 @@
 										str += '<div class="row" style="height: 50%">';
 										str += '<div class="col-md-12" style="height: 100%">';
 										str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"';
-										str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';										
+										str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+','+data[i].postProNo+'">';										
 										str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 										str += data[i].postTitle;
 										str += '</span>';
@@ -509,7 +508,7 @@
 	function loadByProName(no){
 		var proNo = $('#proNo_'+no).val();
 		var str ="";
-		
+		console.log(proNo+"로드 바이 네임");
 		$.ajax({
 			url : "/loadByProName.do",
 			type : "post",
@@ -541,7 +540,7 @@
 					str += '<div class="row" style="height: 50%">';
 					str += '<div class="col-md-12" style="height: 100%">';
 					str += '<input type="checkbox" id="checked_'+data[i].postNo+'" name="checkedWriting" style="height: 100% !important; vertical-align: middle;"'
-					str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+'">';
+					str += 'value="'+data[i].postTitle+','+data[i].memberName+','+data[i].postNo+','+data[i].postProNo+'">';
 					str += '<span id="pTitle_'+data[i].postNo+'" style="font-size:23px; padding-left:15px">';
 					str += data[i].postTitle;
 					str += '</span>';
@@ -556,6 +555,7 @@
 					str += '</h6>&nbsp;&nbsp;';
 					str += '</div>';
 					str += '</div>';
+			/* 		str += '<input type="hidden" value="'++'"' */
 					str += '</li>';
 					
 					$('#relationList').append(str);
@@ -582,6 +582,8 @@
 		
 	}
 			
+	
+	//
 	var checkedInfoList = [];  
 	$(document).ready(function(){
 		$('#saveRelationWriting').click(function(){
@@ -590,17 +592,23 @@
 
 			$('input:checkbox[name=checkedWriting]:checked').each(function(index, item){
 					 str = $(this).val();
-					 postInfo = str.split(',');	
+					 postInfo = str.split(',');
 					 
 				checkedInfoList.push(postInfo[2]);
+				console.log(str);
+				console.log(postInfo);
 					 
 				$(
-						  '<div class="col-md-6" style="height:100px; padding-top:5%;">'
+						  '<div class="col-md-6" style="height:100px; padding-top:5%;" id="delRpPost_'+postInfo[2]+'" onclick="delRpPost('+postInfo[2]+')"">'
 						+ '<div class="col-md-12" style="border:1px solid #E6E6E6; padding:0px; height: 80px;">'
 						+ '<div class="col-md-12" style="padding:5px; color:#A1A1A1;"><img src="/resources/images/writeImages/invention.png" style="padding:0;"/>&nbsp;&nbsp;'
 						+ postInfo[1] + '</div><div class="col-md-12" style="color:#A1A1A1; font-size:11px; text-overflow:ellipsis">'
-						+ postInfo[0] + '</div></div></div>').appendTo($('#addRelationWriting'));
+						+ postInfo[0] + '</div></div>'
+						+'<input type="hidden" name="rpPostNo" value="'+postInfo[2]+'"/>'
+						+'<input type="hidden" name="rpPostProNo" value="'+postInfo[3]+'"/>'
+						+'</div>').appendTo($('#addRelationWriting'));
 				console.log(postInfo[2]);
+				console.log(postInfo+"관련글 불러오기");
 				
 				 
 				$('#writingCnt').text(checkedInfoList.length);
@@ -616,7 +624,20 @@
 		});	
 	})
 	
-	//해시태그
+	function delRpPost(pn){
+		console.log(checkedInfoList+"삭제전");
+		console.log("삭제버튼 눌렸어!! ");
+		$('#delRpPost_'+pn).remove();
+		
+		checkedInfoList.splice($.inArray(pn),1);
+		console.log(checkedInfoList+"삭제 후 ");	
+
+		$('#writingCnt').text(checkedInfoList.length);
+		
+		
+	}
+	
+	//해시태그 생성
 	$(document).ready(function(){
  
     $("#hashTag").on('keyup',function(e){
@@ -631,7 +652,6 @@
             $("#hashTag").val("");
             return false;
         }
-        
         if(e.which == 32 || e.which == 188){
         
             var tag = $("#hashTag").val();
@@ -671,48 +691,12 @@
 
 	
 
-	
+	//해시태그 삭제
 	function delTag(n){
 		var id="#tag_" + n;
 		$(id).remove();
 	}
-	
-	
-	// 저장할때 어떻게 저장할지.
- 	$('form').submit(function tag_post(){
-		var ts ="";
-		var t = $("after_tag").children('span');
-		console.log(t);
-		t.each(function(){
-			var v = $(this).html();
-			var rt = v.split('<a');
-			ts += "#"+rt[0];
-		});
-		$("#hashResults").val(ts);
-	} 
-	);
-	
-/* 	$(document).ready(function(){
-		$('#inputContents').keypress(function(){
- 	var inputText = $('#inputContents').text();
- 	 var expUrl = ﻿﻿ /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
- 	 var changedData = ﻿ inputText.replace(expUrl, '<a onclick="javascript:location.href='+'"$&"">$&</a>');
- 	 
- 	 if(event.which == 13)
- 	 {
- 	 
-	 	 if(expUrl.test(inputText) == true)
-			{
-	 		 $('#inputContents').append(changedData);
-				console.log(changedData);
-					 
-			}
-		}
-		})
-	}) */
-	
-/* 	<a onclick="javascript:location.href='www.naver.com'">naver</a> */
-					
+		
 
 var imgTran = true;
 $(document).ready(function(){
@@ -732,16 +716,13 @@ $(document).ready(function(){
 
 
 
-/* function calledPartner(){
-	
-	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
-							+ '" src="/resources/upload/member/defaultUserImg.png"'
-							+ 'class="rounded-circle border"/>');
 
-} */
 
 function convertProject(no){
-	var proNo = $('#-'+no).val();
+	var proNo = $('#convertPro_'+no).val();
+	$('#currentProNo').val(proNo);
+	
+	
 	var str ="";
 		$.ajax({
 			url :"/convertProName.do",
@@ -751,7 +732,7 @@ function convertProject(no){
 			},
 			success : function(data){
 				
-				
+				console.log($('#currentProNo').val()+"전환!!!");
 				
 				console.log(data);
 				$('#partnersList button').remove();
@@ -780,9 +761,13 @@ function convertProject(no){
 //프라이빗 클릭 시 파트너 불러오기!
 
 $(document).ready(function(){
-	var	privateNo = $('#privateSpace').val(); 
-	var str = "";
 	$('#privateSpace').click(function(){
+	var str = "";
+	var	privateNo = $('#privateSpace').val(); 
+	$('#currentProNo').val(privateNo);
+	
+	
+	
 		$.ajax({
 		url : "/myPartners.do",
 		type : "post",
@@ -825,6 +810,8 @@ $(document).ready(function(){
 	
 	
 });
+
+
 //파트너(프라이빗 공간 친구) 호출
 function calledPartner(no){
 	console.log("클릭했어요!!");
@@ -833,7 +820,10 @@ function calledPartner(no){
 	
 	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
 			+ '" src="/resources/upload/member/'+partnerPic+'"'
-			+ 'class="rounded-circle border" id="cancelCallPar_'+no+'" onclick="cancelCallPartner('+no+');"/>');
+			+ 'class="rounded-circle border" id="cancelCallPar_'+no+'" onclick="cancelCallPartner('+no+');"/>'
+			+ '<input type="hidden" id="calledPartner_'+no+'" name="calledPartner" value="'+no+'"/>'		
+	
+	);
 	
 	console.log($('#calledPartner_'+no).val());
 	$('#calledPartner_'+no).hide();
@@ -848,7 +838,9 @@ function calledProMember(no){
 	console.log(memberPic + "사진 값")
 	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
 			+ '" src="/resources/upload/member/'+memberPic+'"'
-			+ 'class="rounded-circle border" id="cancelCallMem_'+no+'" onclick="cancelCallMember('+no+');"/>');	
+			+ 'class="rounded-circle border" id="cancelCallMem_'+no+'" onclick="cancelCallMember('+no+');"/>'
+			+ '<input type="hidden" name="calledPartner" id="calledProMember_'+no+'" value="'+no+'"/>'		
+	);	
 	
 	$('#calledMember_'+no).hide();
 
@@ -859,12 +851,14 @@ function cancelCallPartner(no){
 	console.log("취소");
 	$('#calledPartner_'+no).show();
 	$('#cancelCallPar_'+no).remove();
+	$('#calledPartner_'+no).remove();
 }
 
 //파트너(프라이빗 공간 친구) 호출 취소
 function cancelCallMember(no){
 	$('#calledMember_'+no).show();
 	$('#cancelCallMem_'+no).remove();
+	$('#calledProMember_'+no).remove();
 }
 
 
@@ -876,7 +870,9 @@ function defaultCall(no){
 	
 	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
 			+ '" src="/resources/upload/member/'+memberPic+'"'
-			+ 'class="rounded-circle border" id="defaultCancelCallMem_'+no+'" onclick="defaultCancelCallMember('+no+');"/>');
+			+ 'class="rounded-circle border" id="defaultCancelCallMem_'+no+'" onclick="defaultCancelCallMember('+no+');"/>'
+			+ '<input type="hidden" name="calledPartner" id="defaultCalledProMember_'+no+'" value="'+no+'"/>'
+		);
 	$('#defaultCall_'+no).hide();
 	
 }
@@ -885,14 +881,28 @@ function defaultCancelCallMember(no){
 	
 	$('#defaultCancelCallMem_'+no).remove();
 	$('#defaultCall_'+no).show();
-	
+	$('#defaultCalledProMember_'+no).remove();
 }
+
 
 
 					
 </script>
 
 <style>
+@media screen and (max-width: 768px){
+	#test{
+		display: none;
+	}
+	#mobileWriteTitle{
+		display: block !important;
+	}
+	#writeSubmitBtn{
+		float: right;
+	}
+}
+
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -1146,6 +1156,9 @@ margin:auto;
 			<div class="col-md-9" style="height: 100%">
 
 				<div class="row" style="padding-top: 40px; height: 15%;">
+					<div class="col-md-12" id="mobileWriteTitle" style="display: none;">
+						<label style="font-size: 20px;"><strong>글쓰기</strong></label>
+					</div>
 					<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 						<div class="row" style="padding-left: 15px; height: 100%;">
 							<div class="col-md-2" style="height: 100%; padding: 0px;">
@@ -1158,18 +1171,22 @@ margin:auto;
 									<input type="hidden" placeholder="프로젝트 검사" id="searchPj" class="findPj" data-toggle="dropdown" role="button" />
 										
 									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addPjList">
-											<button id="privateSpace" class="dropdown-item" type="button" value="${myPrivateSpace.proNo}">
+											<button id="privateSpace" class="dropdown-item" type="button"  value="${myPrivateSpace.proNo}">
 											<c:out value="${myPrivateSpace.proTitle}"/>
 											</button>
 											
+											
 											<c:forEach items="${proList}" var="proList">
-												<button id="convertPro_${proList.proNo}" name="currentProNo" onclick="convertProject(${proList.proNo})" class="dropdown-item" type="button" value="${proList.proNo}">
+												<button id="convertPro_${proList.proNo}" name="convertCurrentProNo" onclick="convertProject(${proList.proNo})" class="dropdown-item" type="button" value="${proList.proNo}">
 													<c:out value="${proList.proTitle}"/>
 												</button>
 
 
 
 											</c:forEach>
+
+
+
 
 
 										</ul>
@@ -1207,10 +1224,10 @@ margin:auto;
 														<input type="hidden" id="memberPic_${proMember.memberNo}" value="${proMember.memberPicture}"/> 
 														&nbsp;&nbsp;
 														${proMember.memberName}</button>
-													
-													
-														</c:forEach>
 														
+														</c:forEach>
+														<c:if test="${proMember eq null}">
+														</c:if>
 														
 													</ul>
 	 
@@ -1266,7 +1283,7 @@ margin:auto;
 								<div class="row" style="height: 90%">
 									<div class="col-md-12" style="height: 100%">
 										<div class="tarea col-md-12" style="height: 100%; padding-left: 0px;">
-											<textarea id="inputContents" name="inputContents" required=required style="width:100%; height:100%; border:none; resize:none;">
+											<textarea id="inputContents" value="" name="inputContents" required   style="width:100%; height:100%; border:none; resize:none;">
 											
 											
 											</textarea>
@@ -1287,14 +1304,11 @@ margin:auto;
 
 									</div>
 								
-									<div class="row">
 										<div class="col-md-12">
-											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
+											<button id="writeSubmitBtn" style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
 										
 										</div>
-									
-									
-									</div>
+								
 									
 								</div>
 							</div>
