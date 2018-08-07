@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +24,11 @@ import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.service.WriteServiceImpl;
+import kr.pe.mododa.write.model.vo.CallPost;
 import kr.pe.mododa.write.model.vo.Partners;
 import kr.pe.mododa.write.model.vo.PrivateSpace;
 import kr.pe.mododa.write.model.vo.ProjectMember;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
 
@@ -58,6 +59,17 @@ public class WriteControllerImpl implements WriteController {
 
 		new Gson().toJson(list, response.getWriter());
 
+	}
+	
+	@RequestMapping(value="/setPrivateSpace.do")
+	public ModelAndView setPrivateSpace(HttpSession session) {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		int myPrivateNo = writeService.setPrivateSpace(memberNo);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		mav.addObject("myPrivateNo",myPrivateNo);	
+		return mav;
+		
 	}
 
 	
@@ -130,13 +142,19 @@ public class WriteControllerImpl implements WriteController {
 	
 	@RequestMapping(value="/insertPost.do")
 	public String insertPost(HttpServletRequest request,@RequestParam int currentProNo, 
-			@RequestParam(value="writeTitle",required=false) String writeTitle, 
-			@RequestParam(value="inputContents",required=false) String inputContents,
+			@RequestParam(value="writeTitle",required=true) String writeTitle, 
+			@RequestParam(value="inputContents",required=true) String inputContents,
 			@RequestParam(value="hashResults",required=false) String[] hashResults,
 			@RequestParam(value="startDate",required=false) Date[] startDate,
 			@RequestParam(value="endDate",required=false) Date[] endDate,
 			@RequestParam(value="scheTitle",required=false) String[] scheTitle,
+			@RequestParam(value="rpPostNo", required=false) int[] rpPostNo,
+			@RequestParam(value="rpPostProNo", required=false) int[] rpPostProNo,
+			@RequestParam(value="calledPartner", required=false) int[] calledPartner,
 			@RequestParam(value="files", required=false)MultipartFile[] files, HttpSession session )  {
+		System.out.println(currentProNo+"지금은 여기 입니당!");
+		
+		
 		Post post = new Post();
 		String hashTag ="";
 		int memberNo =(((Member)session.getAttribute("member")).getMemberNo());		
@@ -145,6 +163,8 @@ public class WriteControllerImpl implements WriteController {
 		post.setPostContent(inputContents);
 		post.setPostWriter(memberNo);
 		Upload upload = new Upload();
+		
+		RelatedPost rpPost = new RelatedPost();
 		if(hashResults!=null)
 		{
 			for(int i=0; i<hashResults.length; i++)
@@ -207,7 +227,49 @@ public class WriteControllerImpl implements WriteController {
 			}
 			
 			
+			if(rpPostNo != null)
+			{
+				int rpResult = 0;
+				for(int i=0; i<rpPostNo.length; i++)
+				{
+					rpPost.setRpNo(rpPostNo[i]);
+					rpPost.setProjectNo(rpPostProNo[i]);
+					rpResult = writeService.insertRpPost(rpPost);
+					
+				}
+				
+				if(rpResult>0)
+				{
+					
+					System.out.println("관련글 불러오기 성공!");
+					
+				}
+				else {
+					System.out.println("관련글 불러오기 실패");
+				}
+				
+			}
 			
+			
+			if(calledPartner !=  null)
+			{
+				CallPost cp = new CallPost();
+				int cpResult = 0;
+				for(int i=0; i<calledPartner.length; i++)
+				{
+					cp.setCallMember(calledPartner[i]);
+					
+					cpResult = writeService.insertCallMember(cp);
+					if(cpResult >0)
+					{
+						System.out.println("파트너 불러오기 성공!");
+					}
+					
+					
+				}
+				
+				
+			}
 			
 			
 			

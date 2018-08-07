@@ -37,6 +37,8 @@
       <typeAlias type="kr.pe.mododa.write.model.vo.ProjectMember" alias="projectMember"/>  
       <typeAlias type="kr.pe.mododa.write.model.vo.PrivateSpace" alias="privateSpace"/>
       <typeAlias type="kr.pe.mododa.write.model.vo.Partners" alias="partners"/>
+      <typeAlias type="kr.pe.mododa.write.model.vo.RelatedPost" alias="relatedPost"/>
+      <typeAlias type="kr.pe.mododa.write.model.vo.CallPost" alias="callPost"/>
       
         
       
