@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>1:1Q&A 글쓰기</title>
+    <title>1:1Q&A 글수정</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -335,7 +335,7 @@
     <header class="masthead bg-primary text-white text-center" style="padding-bottom:1%;">
       <div class="container">
         <img class="img-fluid mb-5 d-block mx-auto" src="../resources/images/layout-img/main_logo_rec.png" alt="" id="mododaImg" width="40%">
-        <h1 class="text-uppercase mb-0">1:1 QNA 글쓰기</h1>
+        <h1 class="text-uppercase mb-0">1:1 Q&A 글수정</h1>
         <hr class="star-light" style="max-width:45rem;">
       </div>
     </header>
@@ -345,14 +345,14 @@
 </head>
 <body>
 	<div class="ui container">
-	<form action="/qnaWrite.do">
-			제목:<input type="text" size=90 name="queTitle" /><br>
-			<textarea rows="20" cols="100" name="queContents"
-				style="resize: none;"></textarea>
-			<br> <input type="submit" class="btn btn-success" value="작성하기">
+	<form action="/qnaUpdate.do">
+		글제목 : <input type="text" size=90 value="${qnaUpdateReady.queTitle}" name="queTitle"/><br>
+		<input type="hidden" value="${qnaUpdateReady.queNo}" name="queNo"/><br>
+		<textarea rows="20" cols="100" style="resize:none;" name="queContents"/>${qnaUpdateReady.queContents}</textarea>
+		<br>
+		<input type="submit" value="수정하기"/>
 		</form>
 	</div>
-		<button type="button" onclick="back();">목록</button>
 </body>
 
 <!-- Footer -->

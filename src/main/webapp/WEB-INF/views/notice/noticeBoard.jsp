@@ -25,271 +25,271 @@
 
     <!-- Custom styles for this template -->
     <link href="../resources/css/index.min.css" rel="stylesheet">
-	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+   <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
   <style>
-  	.floating-label-form-group div {
-		border-bottom: 1px solid #e9ecef;
-	}
-	@media screen and (max-width: 768px){
-		#mainNav{
-			min-width: 768px;
-		}
-	}
-	@media (max-width: 768px){
-		header.masthead, section.introduce
-		, footer.footer, .copyright,.mfp-bg.mfp-ready{
-    		min-width: 786px;
-    	}
-    	.portfolio-modal-dialog{
-    		min-width: 786px !important;
-    		margin: none !important;
-    	}
-    	.nav-item{
-			height: 100px;
-			border-bottom: 1px solid white;
-		}
-		.nav-item>a:active{
-			color: #339966;
-    		background: #CFF09E;
-		}
-		.nav-item>label{
-			width: 100%;
-		}
-		.nav-item:last-child{
-			border-bottom: none;
-		}
-		.nav-item>a, .nav-item>label{
-			margin-top: 20px;
-			margin-bottom: 20px;
-		}
-		#menuBtn{
-			color: black !important;
-		}
-		#sendMessageButton{
-			margin-left: 39%;
-		}
-	}
+     .floating-label-form-group div {
+      border-bottom: 1px solid #e9ecef;
+   }
+   @media screen and (max-width: 768px){
+      #mainNav{
+         min-width: 768px;
+      }
+   }
+   @media (max-width: 768px){
+      header.masthead, section.introduce
+      , footer.footer, .copyright,.mfp-bg.mfp-ready{
+          min-width: 786px;
+       }
+       .portfolio-modal-dialog{
+          min-width: 786px !important;
+          margin: none !important;
+       }
+       .nav-item{
+         height: 100px;
+         border-bottom: 1px solid white;
+      }
+      .nav-item>a:active{
+         color: #339966;
+          background: #CFF09E;
+      }
+      .nav-item>label{
+         width: 100%;
+      }
+      .nav-item:last-child{
+         border-bottom: none;
+      }
+      .nav-item>a, .nav-item>label{
+         margin-top: 20px;
+         margin-bottom: 20px;
+      }
+      #menuBtn{
+         color: black !important;
+      }
+      #sendMessageButton{
+         margin-left: 39%;
+      }
+   }
   </style>
   </head>
 
   <body id="page-top">
-  	<script>
-  	var boolEmail;
-  	var boolName;
-  	var boolPass;
-  	var regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; //이메일 정규표현식
+     <script>
+     var boolEmail;
+     var boolName;
+     var boolPass;
+     var regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; //이메일 정규표현식
 
-  	function login(){
-  		var loginResult = false;
-  		var memberId = $('#memberId').val();
-  		var memberPw = $('#memberPw').val();
-  		$('#pwDiv').css('border-bottom','');
-  		$('#emailDiv').css('border-bottom','');
-  		if($("input:checkbox[id='autoLogin']").is(":checked")){
-  			$('#autoLoginHidden').val("true");
-  		} else {
-  			$('#autoLoginHidden').val("false");
-  		}
-  		$.ajax({
-  			url : "/checkLogin.do",
-  			type : "post",
-  			async : false,
-  			data : {
-  				memberId : memberId,
-  				memberPw : memberPw
-  			},
-  			success : function(data) {
-  				if(data.result=='failedId'){
-  					$('#idTitle').text('이메일을 확인해주세요.');
-  					$('#idTitle').css('color','red');
-  					$('#emailDiv').css('border-bottom','1px solid red');
-  					$('#pwDiv').css('border-bottom','');
-  					loginResult = false;
-  				} else if(data.result=='failedPw' || memberPw==''){
-  					$('#pwTitle').text('비밀번호를 확인해주세요.');
-  					$('#pwTitle').css('color','red');
-  					$('#pwDiv').css('border-bottom','1px solid red');
-  					$('#emailDiv').css('border-bottom','');
-  					loginResult = false;
-  				} else {
-  					loginResult = true;
-  				}
-  			},
-  			error : function(data) {
-  				console.log("실패");
-  			}
-  		});
-  		return loginResult;
-  	}
+     function login(){
+        var loginResult = false;
+        var memberId = $('#memberId').val();
+        var memberPw = $('#memberPw').val();
+        $('#pwDiv').css('border-bottom','');
+        $('#emailDiv').css('border-bottom','');
+        if($("input:checkbox[id='autoLogin']").is(":checked")){
+           $('#autoLoginHidden').val("true");
+        } else {
+           $('#autoLoginHidden').val("false");
+        }
+        $.ajax({
+           url : "/checkLogin.do",
+           type : "post",
+           async : false,
+           data : {
+              memberId : memberId,
+              memberPw : memberPw
+           },
+           success : function(data) {
+              if(data.result=='failedId'){
+                 $('#idTitle').text('이메일을 확인해주세요.');
+                 $('#idTitle').css('color','red');
+                 $('#emailDiv').css('border-bottom','1px solid red');
+                 $('#pwDiv').css('border-bottom','');
+                 loginResult = false;
+              } else if(data.result=='failedPw' || memberPw==''){
+                 $('#pwTitle').text('비밀번호를 확인해주세요.');
+                 $('#pwTitle').css('color','red');
+                 $('#pwDiv').css('border-bottom','1px solid red');
+                 $('#emailDiv').css('border-bottom','');
+                 loginResult = false;
+              } else {
+                 loginResult = true;
+              }
+           },
+           error : function(data) {
+              console.log("실패");
+           }
+        });
+        return loginResult;
+     }
 
-  	$(document).ready(function(){
-  		$('input').keyup(function(){
-  			if($('input:focus').val()==''){
-  				$('input:focus').parents('div').css('border-bottom','');
-  			}
-  		});
-  		$('#memberId').keyup(function(){
-  			if ($('#memberId').val().match(regExp) == null && $('#memberId').val() != '') {
-  				$('#idTitle').text('이메일 형식이 아닙니다.');
-  				$('#idTitle').css('color','red');
-  				$('#emailDiv').css('border-bottom','1px solid red');
-  				$('#pwDiv').css('border-bottom','');
-  			} else {
-  				$('.floating-label-form-group').css('border-bottom','');
-  				$('#idTitle').text('  ');
-  			}
-  		});
-  	});
+     $(document).ready(function(){
+        $('input').keyup(function(){
+           if($('input:focus').val()==''){
+              $('input:focus').parents('div').css('border-bottom','');
+           }
+        });
+        $('#memberId').keyup(function(){
+           if ($('#memberId').val().match(regExp) == null && $('#memberId').val() != '') {
+              $('#idTitle').text('이메일 형식이 아닙니다.');
+              $('#idTitle').css('color','red');
+              $('#emailDiv').css('border-bottom','1px solid red');
+              $('#pwDiv').css('border-bottom','');
+           } else {
+              $('.floating-label-form-group').css('border-bottom','');
+              $('#idTitle').text('  ');
+           }
+        });
+     });
 
 
-  	$(document).ready(function(){
-  		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}/;//비밀번호 정규식(6-16자리 영문, 숫자, 특수문자 조합)
-  		$('#joinEmail').keyup(function(){
-  			if ($('#joinEmail').val().match(regExp) != null) {
-  				$.ajax({
-  					url : "/checkEmail.do",
-  					type : "post",
-  					data : {
-  						memberId : $('#joinEmail').val()
-  					},
-  					success : function(data) {
-  						if(data.result){
-  							console.log($('#joinEmail').val());
-  							$('#joinEmailTitle').text('이미 가입된 이메일입니다.');
-  							$('#joinEmailTitle').css('color','red');
-  							$('#emailDiv').css('border-bottom','1px solid red');
-  							boolEmail = false;
-  						} else {
-  							$('.floating-label-form-group').css('border-bottom','');
-  							$('#joinEmailTitle').text('사용 가능한 이메일 입니다.');
-  							$('#joinEmailTitle').css('color','blue');
-  							boolEmail = true;
-  						}
-  					},
-  					error : function(data) {
-  						console.log("실패");
-  					}
-  				});
-  			} else if($('#joinEmail').val()==''){
-  				$('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  				$('#joinEmailTitle').text('이메일을 입력해주세요.');
-  				$('#joinEmailTitle').css('color','red');
-  				$('#emailDiv').css('border-bottom','1px solid red');
-  				boolEmail = false;
-  			} else {
-  				$('#joinEmailTitle').text('이메일 형식으로 작성해주세요.');
-  				$('#joinEmailTitle').css('color','red');
-  				$('#emailDiv').css('border-bottom','1px solid red');
-  				boolEmail = false;
-  			}
-  			
-  		});
-  		$('#joinPassword').keyup(function(){
-  			if ($('#joinPassword').val().match(regex) != null) {
-  				$('.floating-label-form-group').css('border-bottom','');
-  				$('#joinPwTitle').text('사용 가능한 비밀번호 입니다.');
-  				$('#joinPwTitle').css('color','blue');
-  				boolPass = true;
-  			} else if($('#joinPassword').val()==''){
-  				$('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  				$('#joinPwTitle').text('비밀번호를 입력해주세요.');
-  				$('#joinPwTitle').css('color','red');
-  				$('#pwDiv').css('border-bottom','1px solid red');
-  				boolPass = false;
-  			} else {
-  				$('#joinPwTitle').text('6-16자리 영문, 숫자, 특수문자 조합으로 작성해주세요.');
-  				$('#joinPwTitle').css('color','red');
-  				$('#pwDiv').css('border-bottom','1px solid red');
-  				boolPass = false;
-  			} 
-  		});
-  		$('#joinName').keyup(function(){
-  			if ($('#joinName').val() != '') {
-  				$('.floating-label-form-group').css('border-bottom','');
-  				$('#nameTitle').text('사용 가능한 이름 입니다.');
-  				$('#nameTitle').css('color','blue');
-  				boolName = true;
-  			} else if($('#joinName').val()==''){
-  				$('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  				$('#nameTitle').text('이름을 입력해주세요.');
-  				$('#nameTitle').css('color','red');
-  				$('#nameDiv').css('border-bottom','1px solid red');
-  				boolName = false;
-  			} else {
-  				$('#nameTitle').text('이름을 입력해주세요.');
-  				$('#nameTitle').css('color','red');
-  				$('#nameDiv').css('border-bottom','1px solid red');
-  				boolName = false;
-  			}
-  		});
-  	});
-  	function join(){
-  		var joinEmail = $("#joinEmail").val();
-  		var joinPassword = $("#joinPassword").val();
-  		var joinName = $("#joinName").val();
-  		$('.form-group').css('border-bottom','');
-  		if(joinEmail==''){
-  			$('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  			$('#joinEmailTitle').text('이메일을 입력해주세요.');
-  			$('#joinEmailTitle').css('color','red');
-  			$('#emailDiv').css('border-bottom','1px solid red');
-  		} else if(joinPassword==''){
-  			$('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  			$('#joinPwTitle').text('비밀번호를 입력해주세요.');
-  			$('#joinPwTitle').css('color','red');
-  			$('#pwDiv').css('border-bottom','1px solid red');
-  		} else if(joinName==''){
-  			$('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
-  			$('#nameTitle').text('이름을 입력해주세요.');
-  			$('#nameTitle').css('color','red');
-  			$('#nameDiv').css('border-bottom','1px solid red');			
-  		} else {
-  			if(boolEmail && boolName && boolPass){
-  				return true;
-  			}
-  		}
-  		
-  		return false;
-  	}
+     $(document).ready(function(){
+        var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}/;//비밀번호 정규식(6-16자리 영문, 숫자, 특수문자 조합)
+        $('#joinEmail').keyup(function(){
+           if ($('#joinEmail').val().match(regExp) != null) {
+              $.ajax({
+                 url : "/checkEmail.do",
+                 type : "post",
+                 data : {
+                    memberId : $('#joinEmail').val()
+                 },
+                 success : function(data) {
+                    if(data.result){
+                       console.log($('#joinEmail').val());
+                       $('#joinEmailTitle').text('이미 가입된 이메일입니다.');
+                       $('#joinEmailTitle').css('color','red');
+                       $('#emailDiv').css('border-bottom','1px solid red');
+                       boolEmail = false;
+                    } else {
+                       $('.floating-label-form-group').css('border-bottom','');
+                       $('#joinEmailTitle').text('사용 가능한 이메일 입니다.');
+                       $('#joinEmailTitle').css('color','blue');
+                       boolEmail = true;
+                    }
+                 },
+                 error : function(data) {
+                    console.log("실패");
+                 }
+              });
+           } else if($('#joinEmail').val()==''){
+              $('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+              $('#joinEmailTitle').text('이메일을 입력해주세요.');
+              $('#joinEmailTitle').css('color','red');
+              $('#emailDiv').css('border-bottom','1px solid red');
+              boolEmail = false;
+           } else {
+              $('#joinEmailTitle').text('이메일 형식으로 작성해주세요.');
+              $('#joinEmailTitle').css('color','red');
+              $('#emailDiv').css('border-bottom','1px solid red');
+              boolEmail = false;
+           }
+           
+        });
+        $('#joinPassword').keyup(function(){
+           if ($('#joinPassword').val().match(regex) != null) {
+              $('.floating-label-form-group').css('border-bottom','');
+              $('#joinPwTitle').text('사용 가능한 비밀번호 입니다.');
+              $('#joinPwTitle').css('color','blue');
+              boolPass = true;
+           } else if($('#joinPassword').val()==''){
+              $('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+              $('#joinPwTitle').text('비밀번호를 입력해주세요.');
+              $('#joinPwTitle').css('color','red');
+              $('#pwDiv').css('border-bottom','1px solid red');
+              boolPass = false;
+           } else {
+              $('#joinPwTitle').text('6-16자리 영문, 숫자, 특수문자 조합으로 작성해주세요.');
+              $('#joinPwTitle').css('color','red');
+              $('#pwDiv').css('border-bottom','1px solid red');
+              boolPass = false;
+           } 
+        });
+        $('#joinName').keyup(function(){
+           if ($('#joinName').val() != '') {
+              $('.floating-label-form-group').css('border-bottom','');
+              $('#nameTitle').text('사용 가능한 이름 입니다.');
+              $('#nameTitle').css('color','blue');
+              boolName = true;
+           } else if($('#joinName').val()==''){
+              $('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+              $('#nameTitle').text('이름을 입력해주세요.');
+              $('#nameTitle').css('color','red');
+              $('#nameDiv').css('border-bottom','1px solid red');
+              boolName = false;
+           } else {
+              $('#nameTitle').text('이름을 입력해주세요.');
+              $('#nameTitle').css('color','red');
+              $('#nameDiv').css('border-bottom','1px solid red');
+              boolName = false;
+           }
+        });
+     });
+     function join(){
+        var joinEmail = $("#joinEmail").val();
+        var joinPassword = $("#joinPassword").val();
+        var joinName = $("#joinName").val();
+        $('.form-group').css('border-bottom','');
+        if(joinEmail==''){
+           $('#emailDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+           $('#joinEmailTitle').text('이메일을 입력해주세요.');
+           $('#joinEmailTitle').css('color','red');
+           $('#emailDiv').css('border-bottom','1px solid red');
+        } else if(joinPassword==''){
+           $('#pwDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+           $('#joinPwTitle').text('비밀번호를 입력해주세요.');
+           $('#joinPwTitle').css('color','red');
+           $('#pwDiv').css('border-bottom','1px solid red');
+        } else if(joinName==''){
+           $('#nameDiv').attr('class','form-group floating-label-form-group controls mb-0 pb-2 floating-label-form-group-with-value');
+           $('#nameTitle').text('이름을 입력해주세요.');
+           $('#nameTitle').css('color','red');
+           $('#nameDiv').css('border-bottom','1px solid red');         
+        } else {
+           if(boolEmail && boolName && boolPass){
+              return true;
+           }
+        }
+        
+        return false;
+     }
 
-  	function findPassword(){
-  		var fpResult = false;
-  		var memberIdForFind = $("#memberIdForFind").val();
-  		$.ajax({
-				url : "/checkEmail.do",
-				type : "post",
-				async : false,
-				data : {
-					memberId : memberIdForFind
-				},
-				success : function(data) {
-					if(data.result){
-						fpResult = true;
-					} else {
-						$('#fpTitle').text('가입되지 않은 이메일입니다.');
-						$('#fpDiv').css('border-bottom','1px solid red');
-						$('#fpTitle').css('color','red');
-						fpResult = false;
-					}
-				},
-				error : function(data) {
-					console.log("실패");
-				}
-			});
-  		return fpResult;
-  	}
-  	</script>
-  	<c:if test="${cookie.loginCookie.value!=null }">
-  		<script>//쿠키값이 있는지 확인
-  			location.href="/mainPage.do";
-  		</script>
-  	</c:if>
-  	<c:if test="${sessionScope.member!=null }">
-  		<script type="text/javascript">//세션이 있는지 확인
-			location.href="/mainPage.do";
-  		</script>
-  	</c:if>
+     function findPassword(){
+        var fpResult = false;
+        var memberIdForFind = $("#memberIdForFind").val();
+        $.ajax({
+            url : "/checkEmail.do",
+            type : "post",
+            async : false,
+            data : {
+               memberId : memberIdForFind
+            },
+            success : function(data) {
+               if(data.result){
+                  fpResult = true;
+               } else {
+                  $('#fpTitle').text('가입되지 않은 이메일입니다.');
+                  $('#fpDiv').css('border-bottom','1px solid red');
+                  $('#fpTitle').css('color','red');
+                  fpResult = false;
+               }
+            },
+            error : function(data) {
+               console.log("실패");
+            }
+         });
+        return fpResult;
+     }
+     </script>
+     <c:if test="${cookie.loginCookie.value!=null }">
+        <script>//쿠키값이 있는지 확인
+           location.href="/mainPage.do";
+        </script>
+     </c:if>
+     <c:if test="${sessionScope.member!=null }">
+        <script type="text/javascript">//세션이 있는지 확인
+         location.href="/mainPage.do";
+        </script>
+     </c:if>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
@@ -339,72 +339,70 @@
     
     
     <div class="text-center">
+   
+   <!-- 여기 안쪽 부분 수정하면 됨 -->
+   <div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
+   
+   
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+               <th scope="col">번호</th>
+               <th scope="col">제목</th>
+               <th scope="col">작성자</th>
+               <th scope="col">작성일</th>
+               <th scope="col">조회수</th>
+          </tr>
+       </thead>
+        <tbody>
+         <c:forEach items="${listNotice}" var="n">
+   <tr>
+      <td>${n.noticeNo}</td>
+      <td><a href="/noticeDetail.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
+      <td>관리자</td>
+      <td>${n.noticeWriteDate}</td>
+      <td>${n.noticeViewCount}</td>
+   </tr>
+	</c:forEach>
 	
-	<!-- 여기 안쪽 부분 수정하면 됨 -->
-	<div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
+	<form action="/noticeSearch.do" method="get" style=display:inline;>
+	<select name="searchOption">
+	<option value="title" selected>제목</option>
+	<option value="contents">내용</option>
+	</select>
+	<input type="text" name="search" placeholder="검색" id="search">
+	<input type="submit" value="검색">
+</form>
+<form action="/writeReady.do">
+		<input type="submit" value="글쓰기"> 
+	</form>
 	
-	
-		<table class="table table-striped table-hover">
-  		<thead>
-    		<tr>
-      			<th scope="col" style="width:10%;">번호</th>
-      			<th scope="col" style="width:50%;">제목</th>
-      			<th scope="col" style="width:10%;">작성자</th>
-      			<th scope="col" style="width:20%;">작성일</th>
-      			<th scope="col" style="width:10%;">조회수</th>
-    		</tr>
- 		</thead>
-  		<tbody>
-  		
-  		<c:forEach items="${listNotice}" var="n">
-   		<tr scope="row">
-      	<td>${n.noticeNo}</td>
-     	<td><a href="/noticeDetail.do?noticeNo=${n.noticeNo}" style="color:black;">${n.noticeTitle}</a></td>
-      	<td>관리자</td>
-      	<td>${n.noticeWriteDate}</td>
-      	<td>${n.noticeViewCount}</td>
-   		</tr>
-		</c:forEach>
-		
-  		</tbody>
-		</table>
+        </tbody>
+      </table>
 
-	</div>
-	
-	
-		<div class="btn-group mr-2" role="group" aria-label="첫번째 그룹">
-    	<!-- <button type="button" class="btn btn-secondary">1</button>
-    	<button type="button" class="btn btn-secondary">2</button>
-    	<button type="button" class="btn btn-secondary">3</button>
-    	<button type="button" class="btn btn-secondary">4</button> -->
-    	${listCount}
-  		</div>
-	
-	
-		<div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
-		<center>
-		<div style="width:40%;">
-		
-		<form action="/noticeSearch.do" method="get">
-		<select class="form-control" style="width:20%; float:left;" name="searchOption">
-  		<option value="title" selected>제목</option>
-		<option value="contents">내용</option>
-		</select>
-		<input type="text" class="form-control" id="search" name="search" aria-describedby="emailHelp" placeholder="검색" style="width:60%; float:left;">
-		<button type="submit" class="btn btn-primary" style="width:20%;">검색</button>
-		</form>
-		
-		
-		<!-- 어드민계정만 볼 수 있게하기 -->
-		<form action="/writeReady.do">
-		<input type="submit" value="글쓰기" class="btn btn-primary" style=" background-color:#339966;"> 
-		</form>
-		
-		</div>
-		</center>
-		</div>
-	
-	
+   </div>
+   
+   
+      <div class="btn-group mr-2" role="group" aria-label="첫번째 그룹">
+       <button type="button" class="btn btn-secondary">${listCount}</button>
+        </div>
+   
+   
+      <div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
+      <center>
+      <div style="width:40%;">
+      <form>
+      <select class="form-control" style="width:20%; float:left;">
+        <option>Default select</option>
+      </select>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" style="width:60%; float:left;">
+      <button type="submit" class="btn btn-primary" style="width:20%;">Submit</button>
+      </form>
+      </div>
+      </center>
+      </div>
+   
+   
     
     </div>
 
@@ -584,7 +582,7 @@
         </div>
       </div>
     </div>
-	<!-- FindPassword Modal -->
+   <!-- FindPassword Modal -->
     <div class="portfolio-modal mfp-hide" id="FindPassword-modal">
       <div class="portfolio-modal-dialog bg-white" style="height: 600px; width: 50%; margin: 0 auto; min-width: 400px; min-height: 200px;">
         <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
@@ -622,7 +620,7 @@
     <script src="../resources/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    	<script src="../resources/js/index.min.js"></script>
+       <script src="../resources/js/index.min.js"></script>
 
   </body>
 </html>
