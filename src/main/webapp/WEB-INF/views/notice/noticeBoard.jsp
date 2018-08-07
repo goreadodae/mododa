@@ -344,7 +344,7 @@
    <div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
    
    
-      <table class="table table-striped table-hover">
+      <table class="table table-hover">
         <thead>
           <tr>
                <th scope="col">번호</th>
@@ -365,18 +365,6 @@
    </tr>
 	</c:forEach>
 	
-	<form action="/noticeSearch.do" method="get" style=display:inline;>
-	<select name="searchOption">
-	<option value="title" selected>제목</option>
-	<option value="contents">내용</option>
-	</select>
-	<input type="text" name="search" placeholder="검색" id="search">
-	<input type="submit" value="검색">
-</form>
-<form action="/writeReady.do">
-		<input type="submit" value="글쓰기"> 
-	</form>
-	
         </tbody>
       </table>
 
@@ -386,18 +374,30 @@
       <div class="btn-group mr-2" role="group" aria-label="첫번째 그룹">
        <button type="button" class="btn btn-secondary">${listCount}</button>
         </div>
+        
+         <form action="/writeReady.do">
+		<input type="submit" class="btn btn-secondary" value="글쓰기"> 
+		</form>
    
    
       <div style="margin-left:15%; margin-right:15%; padding-top:3%; padding-bottom:3%;">
       <center>
       <div style="width:40%;">
-      <form>
-      <select class="form-control" style="width:20%; float:left;">
-        <option>Default select</option>
-      </select>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" style="width:60%; float:left;">
-      <button type="submit" class="btn btn-primary" style="width:20%;">Submit</button>
-      </form>
+      
+	
+
+      <form action="/noticeSearch.do" method="get" style=display:inline;>
+       <select name="searchOption" class="form-control" style="width:24%; float:left;">
+		<option value="title" selected>제목</option>
+		<option value="contents">내용</option>
+		</select>
+      	<input type="text" class="form-control" style="width:55%; float:left;" name="search" placeholder="검색" id="search">
+      
+         <input class="btn btn-primary" style="width:20%;" type="submit" value="검색">
+      </form>    
+        
+      
+     
       </div>
       </center>
       </div>
