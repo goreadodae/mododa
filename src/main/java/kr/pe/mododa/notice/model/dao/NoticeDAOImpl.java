@@ -192,7 +192,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		if (gotoPrev) {
-			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><</a>");
 
 		}
 
@@ -205,7 +205,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 			}
 		}
 		if (gotoNext) {
-			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>");
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'>></i></a>");
 		}
 
 		return sb.toString();
