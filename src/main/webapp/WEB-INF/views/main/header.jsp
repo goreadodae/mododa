@@ -141,7 +141,7 @@ li[id^="MobilePlus_"] a {
 	#menu-img{
 		left: 40%;
 	}
-	#myInfoDiv{
+	.moblieTopbar{
 		display: none;
 	}
 }
@@ -286,6 +286,9 @@ a:hover {
 .btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover {
 	background-color: #CFF09E !important;
 	border-color: #CFF09E !important;
+}
+.dropdown-divider{
+	width: 100%;
 }
 </style>
 <script>
@@ -531,7 +534,7 @@ a:hover {
 	});
 </script>
 <body>
-<jsp:include page="/loading.do"></jsp:include>
+	<jsp:include page="/loading.do"></jsp:include>
 <!-- header -->
 		<div class="header">
 
@@ -553,9 +556,9 @@ a:hover {
 						src="../resources/images/layout-img/main_logo_rec.png"></a>
 				</div>
 
-				<div class="col-md-4 topbar" id="myInfoDiv">
+				<div class="col-md-4 topbar">
 					<div class="row" style="height: 100%;">
-					<div class="dropdown topbar" id="myInfoDiv" style="width: 10%;">
+					<div class="dropdown topbar moblieTopbar" id="myInfoDiv" style="width: 10%;">
 					<!-- 회원 썸네일 -->
 					<c:set var="memberPic" value="../resources/upload/member/${sessionScope.member.memberPicture }"/>
 					<img src="${memberPic }" class="img-circle rounded-circle border myInfo dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -573,14 +576,17 @@ a:hover {
     						<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a>
     						<a class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및 탈퇴</a>
     						<a class="dropdown-item" href="/logout.do">로그아웃</a>
+    						<div class="dropdown-divider"></div>
+    						<a class="dropdown-item" href="/noticeList.do?currentPage=1">공지사항</a>
+    						<a class="dropdown-item" href="/qnaList.do?currentPage=1">1:1 Q&A</a>
  						</div>
  						</div>
 						</div>
-						<div class="topbar" style="width: 10%;">
+						<div class="topbar moblieTopbar" style="width: 10%;">
 						<!-- 파트너추가 -->
 					<img src="../resources/upload/member/add-friend.png" class="myInfo" onclick="ipm_open_pop();">
 						</div>
-						<div class="topbar" style="width: 10%;">
+						<div class="topbar moblieTopbar" style="width: 10%;">
 						<!-- 파트너 목록 -->
 						<a class="dropdown-toggle partnerListDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showPartnerList();">파트너 목록</a>
 						<div class="dropdown-menu dropdown-menu-right" id="partnerList">
@@ -598,7 +604,6 @@ a:hover {
 							</div>
  						</div>
 						</div>
-						
 					</div>
 				</div>
 			</div>
@@ -653,6 +658,10 @@ a:hover {
 				<a class="dropdown-item" href="/myInfo.do?menu=myInfo">내정보</a> <a
 					class="dropdown-item" href="/myInfo.do?menu=memberInfo">멤버 초대 및
 					탈퇴</a> <a class="dropdown-item" href="/logout.do">로그아웃</a>
+					    	<div class="dropdown-divider"></div>
+    						<a class="dropdown-item" href="/noticeList.do?currentPage=1">공지사항</a>
+    						<a class="dropdown-item" href="/qnaList.do?currentPage=1">1:1 Q&A</a>
+					
 			</div>
 		<div class="row leftbar">
          <ul style="margin-bottom:0;">
@@ -677,7 +686,7 @@ a:hover {
 
             <!-- 프라이빗 공간 -->
             <li class="list-group-item openModal" id="mobilePrivateMain">
-               <img src="../resources/images/mobileLibrary/safe.png" class="icon"> 프라이빗 공간</li>
+               <img src="../resources/images/project/safe.png" class="icon"> 프라이빗 공간</li>
             
             <li class="mobilePrivateSub">
             <a class="dropdown-item mobilePriPost" href="#" value="${privateProject.proNo}"> 
@@ -741,6 +750,12 @@ a:hover {
 		</div>
 			<!-- Modal 내용 끝 -->
 		</div>
+	<div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; top:40px; z-index: 1060;">
+		<img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
+	</div>
+	<div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; top:40px; background-color: #4A4A4A; color: white; z-index: 1060;">
+		<img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
+	</div>
 		<!-- 팝업모달 끝 -->
 		
 		<script>
