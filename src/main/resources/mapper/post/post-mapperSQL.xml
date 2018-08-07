@@ -8,7 +8,8 @@
 		pro_title as proTitle,
 		pro_progress as proProgress
 		from project
-		where pro_no=(select post_pro_no from post where post_no=#{postNo})
+		where
+		pro_no=(select post_pro_no from post where post_no=#{postNo})
 	</select>
 
 	<select id="selectOnePost" resultType="post">
@@ -16,15 +17,19 @@
 		post_no as postNo,
 		post_title as postTitle,
 		post_progress as postProgress,
-		post_date as postDate,
+		post_date as
+		postDate,
 		post_content as postContent,
 		post_writer as postWriter,
-		(select member_name from member where member_no=post_writer) as postWriterName,
-		(select member_picture from member where member_no=post_writer) as postWriterPicture,
+		(select member_name from member where member_no=post_writer) as
+		postWriterName,
+		(select member_picture from member where
+		member_no=post_writer) as postWriterPicture,
 		post_temp as postTemp,
 		post_pro_no as postProNo,
 		post_Tag as postTag
-		from post where post_no = #{postNo}
+		from post where post_no =
+		#{postNo}
 	</select>
 
 	<select id="selectTodo" resultType="todo">
@@ -32,16 +37,21 @@
 		todo_no as todoNo,
 		todo_post_no as todoPostNo,
 		todo_pro_no as todoProNo,
-		todo_title as todoTitle,
+		todo_title as
+		todoTitle,
 		todo_content as todoContent,
 		todo_writer as todoWriter,
 		todo_member as todoMember,
 		todo_start_date as todoStartDate,
 		todo_end_date as todoEndDate,
 		todo_progress as todoProgress,
-		(select member_name from member where member_no=todo_writer) as todoWriterName,
-		(select member_name from member where member_no=todo_member) as todoMemberName,
-		(select member_picture from member where member_no=todo_member) as todoMemberPicture
+		(select
+		member_name from member where member_no=todo_writer) as
+		todoWriterName,
+		(select member_name from member where
+		member_no=todo_member) as todoMemberName,
+		(select member_picture from
+		member where member_no=todo_member) as todoMemberPicture
 		from todo
 		where todo_post_no=#{postNo}
 		order by todo_no desc
@@ -49,23 +59,38 @@
 
 	<select id="selectMembers" resultType="member">
 		select
-		member_no as memberNo,
+		member_no as
+		memberNo,
 		member_name as memberName
-		from work_on join member using (member_no)
-		where pro_no=(select post_pro_no from post where post_no=#{postNo})
+		from work_on join member using
+		(member_no)
+		where pro_no=(select post_pro_no from post where
+		post_no=#{postNo})
 		and invite_yn='Y'
 	</select>
 
 
 	<select id="selectSchedule" resultType="schedule">
 		select
-		sc_no as scheduleNo,
+		sc_no as
+		scheduleNo,
 		member_no as memNO,
 		sc_start_date as startDate,
-		sc_end_date as endDate,
+		sc_end_date
+		as endDate,
 		sc_title as scTitle
 		from schedule where post_no = #{postNo}
 		order by sc_no desc
+	</select>
+
+	<select id="selectUpload" resultType="upload">
+		select
+		upload_date as uploadDate,
+		upload_subject as uploadSubject,
+		upload_name as fileName,
+		upload_path as uploadPath
+		from upload
+		where post_no=#{postNo}
 	</select>
 
 	<select id="selectDecision" resultType="decision">
@@ -77,10 +102,13 @@
 		dc_yn as dcYn,
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
-		(select member_name from member where member_no=dc_writer) as dcWriterName,
-		(select member_name from member where member_no=dc_maker) as dcMakerName
+		(select member_name from member where member_no=dc_writer) as
+		dcWriterName,
+		(select member_name from member where member_no=dc_maker)
+		as dcMakerName
 		from decision where dc_Post_No=#{postNo}
-		order by dc_no desc
+		order by dc_no
+		desc
 	</select>
 
 	<select id="selectOneDecision" resultType="decision">
@@ -92,9 +120,11 @@
 		dc_yn as dcYn,
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
-		(select member_name from member where member_no=dc_writer) as dcWriterName,
-		(select member_name from member where member_no=dc_maker) as dcMakerName
-		from decision 
+		(select member_name from member where member_no=dc_writer) as
+		dcWriterName,
+		(select member_name from member where member_no=dc_maker)
+		as dcMakerName
+		from decision
 		where dc_no = #{dcNo}
 	</select>
 
@@ -121,10 +151,10 @@
 	</insert>
 
 	<select id="selectMemberInfo" resultType="member">
-		select 
-		member_name as memberName, 
-		member_picture as memberPicture 
-		from member 
+		select
+		member_name as memberName,
+		member_picture as memberPicture
+		from member
 		where member_no=#{memberNo}
 	</select>
 
@@ -133,9 +163,9 @@
 		values(decision_SEQ.NEXTVAL, #{dcPostNo}, #{dcWriter}, #{dcMaker},
 		#{dcContent},SYSDATE,'N',null,null,null)
 	</insert>
-	
+
 	<delete id="deleteTodo">
-	delete from todo where todo_no=#{todoNo}
+		delete from todo where todo_no=#{todoNo}
 	</delete>
 
 	<delete id="deleteSchedule">
@@ -145,16 +175,17 @@
 	<delete id="deleteDecision">
 		delete from decision where dc_no=#{dcNo}
 	</delete>
-	
+
 	<update id="updatePost" parameterType="post">
-	update post set post_title =#{postTitle}, post_content =#{postContent} where post_no=#{postNo}
+		update post set post_title =#{postTitle}, post_content =#{postContent} where
+		post_no=#{postNo}
 	</update>
 
 	<update id="updateDecision" parameterType="decision">
 		update decision set
 		dc_yn='Y',
 		dc_decision=#{dcDecision},
-		dc_comment=#{dcComment} 
+		dc_comment=#{dcComment}
 		where dc_no=#{dcNo}
 	</update>
 
@@ -167,11 +198,12 @@
 		update todo set
 		todo_progress=#{todoProgress} where todo_no=#{todoNo}
 	</update>
-	
+
 	<update id="updateTodo" parameterType="todo">
-	update todo 
-	set todo_title=#{todoContent}, todo_content=#{todoContent}, todo_member=#{todoMember} 
-	where todo_no=#{todoNo}
+		update todo
+		set todo_title=#{todoContent}, todo_content=#{todoContent},
+		todo_member=#{todoMember}
+		where todo_no=#{todoNo}
 	</update>
 
 	<insert id="insertBookmark" parameterType="bookmark">
@@ -189,15 +221,18 @@
 		m.member_name as writeNick,
 		m.member_no as writerNo,
 		m.member_picture as writePicture,
-		to_char(cm_date,'yy-mm-dd am hh24:mi:ss')as writeTime ,
+		to_char(cm_date,'yy-mm-dd am
+		hh24:mi:ss')as writeTime ,
 		ct.cm_tag as content,
 		ct.CM_POST as postNo,
 		ct.cmember_no as commentNo
 		from comment_tbl ct
-		join member m on (ct.cm_writer = m.member_no)
+		join member m on
+		(ct.cm_writer = m.member_no)
 		where
 		cm_post = #{postNo}
-		order by writeTime          <!-- 0802정렬 추가(준석) -->
+		order by writeTime          <!-- 
+			0802정렬 추가(준석) -->
 	</select>
 
 	<select id="selectPostLike" resultType="postLike">
@@ -241,13 +276,18 @@
 		values(comment_tbl_SEQ.nextval,#{postWriter},
 		#{postNo},#{postContent},sysdate)
 	</insert>
-	
+
 	<delete id="deleteComment">
 		delete from comment_tbl where cmember_no=#{commentNo} <!-- 준석 -->
 	</delete>
-	
+
 	<delete id="deletePost">
-	delete from post where post_no=#{postNo}
+		delete from post where post_no=#{postNo}
 	</delete>
+
+	<insert id="insertUpload" parameterType="upload">
+		insert into upload values(upload_SEQ.NEXTVAL, #{postNo}, #{memberNo},
+		SYSDATE,#{uploadSubject}, #{fileName},#{uploadPath})
+	</insert>
 
 </mapper>
