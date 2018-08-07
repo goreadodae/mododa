@@ -13,14 +13,13 @@
 		todo_start_date as todoStartDate,
 		todo_end_date as todoEndDate,
 		todo_progress as todoProgress,
-		m1.member_name as todoWriterName,
-        m2.member_name as todoMemberName,
-        pro_title as todoProjectName
-		from todo t, member m1, member m2, Project p
-		where t.todo_writer = m1.member_no
-        and t.todo_member = m2.member_no
-        and t.todo_pro_no = p.pro_no
-        and (todo_writer = #{memberNo} or todo_member = #{memberNo})
+		(select member_name from member where member_no=todo_writer) as todoWriterName,
+        (select member_name from member where member_no=todo_member) as todoMemberName,
+        (select pro_title from project where pro_no = todo_pro_no or pro_no = (select post_pro_no from post where post_no = todo_post_no)) as todoProjectName,
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+		from todo
+		where (todo_writer = #{memberNo} or todo_member = #{memberNo})
+        order by 1 desc
 	</select>
 	
 	<select id="listDecision" resultType="decision">
@@ -35,14 +34,12 @@
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
 		dc_confirm_date as dcConfirmDate,
-        post_title as dcPostTitle,
-        m1.member_name as dcWriterName,
-        m2.member_name as dcMakerName
-		from decision d, post p, member m1, member m2
-        where d.dc_post_no = p.post_no
-        and d.dc_writer = m1.member_no
-        and d.dc_maker = m2.member_no
-		and (dc_writer = #{memberNo} or dc_maker = #{memberNo})
+        (select post_title from post where post_no = dc_post_no) as dcPostTitle,
+        (select member_name from member where member_no=dc_writer) as dcWriterName,
+        (select member_name from member where member_no=dc_maker) as dcMakerName
+		from decision
+        where (dc_writer = #{memberNo} or dc_maker = #{memberNo})
+		order by 1 desc
 	</select>
 	
 	<select id="listProject" resultType="project">
@@ -52,6 +49,7 @@
 		from work_on w, project p
         where w.pro_no = p.PRO_NO
 		and member_no = #{memberNo}
+		order by 1
 	</select>
 	
 	<select id="listImage" resultType="upload">
@@ -64,7 +62,8 @@
 		upload_path as uploadPath
 		from upload
 		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
-		and upload_subject='이미지'
+		and upload_subject='image'
+		order by 1 desc
 	</select>
 	
 	<select id="listFile" resultType="upload">
@@ -75,11 +74,11 @@
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_path as uploadPath,
-        p.post_title as postTitle
-		from upload u, post p
-		where u.post_no = p.post_no
-        and u.post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
-		and upload_subject='파일'
+        (select post_title from post where post_no = u.post_no) as postTitle
+		from upload u
+		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
+		and upload_subject='file'
+		order by 1 desc
 	</select>
 	
 	<select id="listLink" resultType="link">
@@ -103,6 +102,7 @@
 		from work_on w, member m
         where w.member_no = m.member_no
 		and pro_no = #{proNo}
+		order by 1
 	</select>
 	
 	<insert id="insertTodo" parameterType="todo">
@@ -131,14 +131,13 @@
 		todo_start_date as todoStartDate,
 		todo_end_date as todoEndDate,
 		todo_progress as todoProgress,
-		m1.member_name as todoWriterName,
-        m2.member_name as todoMemberName,
-        pro_title as todoProjectName
-		from todo t, member m1, member m2, Project p
-		where t.todo_writer = m1.member_no
-        and t.todo_member = m2.member_no
-        and t.todo_pro_no = p.pro_no
-        and todo_member = #{memberNo}
+		(select member_name from member where member_no=todo_writer) as todoWriterName,
+        (select member_name from member where member_no=todo_member) as todoMemberName,
+        (select post_title from post where post_no = todo_post_no or post_pro_no = todo_pro_no) as todoProjectName,
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+		from todo
+		where todo_member = #{memberNo}
+        order by 1 desc
 	</select>
 	
 	<select id="listTodoRequest" resultType="todo">
@@ -153,14 +152,13 @@
 		todo_start_date as todoStartDate,
 		todo_end_date as todoEndDate,
 		todo_progress as todoProgress,
-		m1.member_name as todoWriterName,
-        m2.member_name as todoMemberName,
-        pro_title as todoProjectName
-		from todo t, member m1, member m2, Project p
-		where t.todo_writer = m1.member_no
-        and t.todo_member = m2.member_no
-        and t.todo_pro_no = p.pro_no
-        and todo_writer = #{memberNo}
+		(select member_name from member where member_no=todo_writer) as todoWriterName,
+        (select member_name from member where member_no=todo_member) as todoMemberName,
+        (select post_title from post where post_no = todo_post_no or post_pro_no = todo_pro_no) as todoProjectName,
+        (select member_picture from member where member_no=todo_member) as todoMemberPicture
+		from todo
+		where todo_writer = #{memberNo}
+        order by 1 desc
 	</select>
 	
 	<select id="listDcMe" resultType="decision">
@@ -175,14 +173,12 @@
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
 		dc_confirm_date as dcConfirmDate,
-        post_title as dcPostTitle,
-        m1.member_name as dcWriterName,
-        m2.member_name as dcMakerName
-		from decision d, post p, member m1, member m2
-        where d.dc_post_no = p.post_no
-        and d.dc_writer = m1.member_no
-        and d.dc_maker = m2.member_no
-		and dc_maker = #{memberNo}
+        (select post_title from post where post_no = dc_post_no) as dcPostTitle,
+        (select member_name from member where member_no=dc_writer) as dcWriterName,
+        (select member_name from member where member_no=dc_maker) as dcMakerName
+		from decision
+        where dc_maker = #{memberNo}
+		order by 1 desc
 	</select>
 	
 	<select id="listDcRequest" resultType="decision">
@@ -197,14 +193,12 @@
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
 		dc_confirm_date as dcConfirmDate,
-        post_title as dcPostTitle,
-        m1.member_name as dcWriterName,
-        m2.member_name as dcMakerName
-		from decision d, post p, member m1, member m2
-        where d.dc_post_no = p.post_no
-        and d.dc_writer = m1.member_no
-        and d.dc_maker = m2.member_no
-		and dc_writer = #{memberNo}
+        (select post_title from post where post_no = dc_post_no) as dcPostTitle,
+        (select member_name from member where member_no=dc_writer) as dcWriterName,
+        (select member_name from member where member_no=dc_maker) as dcMakerName
+		from decision
+        where dc_writer = #{memberNo}
+		order by 1 desc
 	</select>
 	
 	<select id="listImageMe" resultType="upload">
@@ -215,11 +209,11 @@
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_path as uploadPath,
-		p.post_title as postTitle
-		from upload u, post p
-		where u.post_no = p.post_no
-		and member_no = #{memberNo}
-		and upload_subject='이미지'
+		(select post_title from post where post_no = u.post_no) as postTitle
+		from upload u
+		where member_no = #{memberNo}
+		and upload_subject='image'
+		order by 1 desc
 	</select>
 	
 	<select id="listFileMe" resultType="upload">
@@ -230,11 +224,11 @@
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_path as uploadPath,
-		p.post_title as postTitle
-		from upload u, post p
-		where u.post_no = p.post_no
-		and member_no = #{memberNo}
-		and upload_subject='파일'
+		(select post_title from post where post_no = u.post_no) as postTitle
+		from upload u
+		where member_no = #{memberNo}
+		and upload_subject='file'
+		order by 1 desc
 	</select>
 	
 	<select id="listLinkMe" resultType="link">
@@ -249,6 +243,7 @@
 		from link l, member m
         where l.member_no = m.member_no
 		and m.member_no = #{memberNo}
+		order by 1 desc
 	</select>
 	
 	<select id="privateNo" resultType="int">
@@ -269,7 +264,8 @@
         member_name as memberName
 		from work_on w, member m, post p
         where w.member_no = m.member_no
-		and pro_no = (select post_pro_no from post where post_no = 2) order by 1
+		and pro_no = (select post_pro_no from post where post_no = #{todoPostNo})
+		order by 1
 	</select>
 	
 	<select id="todoListPro" resultType="todo">
@@ -288,7 +284,8 @@
 	      (select member_name from member where member_no=todo_member) as todoMemberName,
 	      (select member_picture from member where member_no=todo_member) as todoMemberPicture
 	      from todo
-	      where (todo_post_no in (select post_no from post where post_pro_no = #{proNo}) or todo_pro_no=#{proNo})
+	      where (todo_post_no in (select post_no from post where post_pro_no = #{PostProNo}) or todo_pro_no=#{PostProNo})
+	      and todo_member = #{PostWriter}
 	      order by todo_no desc
 	</select>
 	
@@ -304,14 +301,13 @@
 		dc_decision as dcDecision,
 		dc_comment as dcComment,
 		dc_confirm_date as dcConfirmDate,
-        post_title as dcPostTitle,
-        m1.member_name as dcWriterName,
-        m2.member_name as dcMakerName
-		from decision d, post p, member m1, member m2
-        where d.dc_post_no = p.post_no
-        and d.dc_writer = m1.member_no
-        and d.dc_maker = m2.member_no
-		and dc_post_no in (select post_no from post where post_pro_no = #{proNo})
+        (select post_title from post where post_no = dc_post_no) as dcPostTitle,
+        (select member_name from member where member_no=dc_writer) as dcWriterName,
+        (select member_name from member where member_no=dc_maker) as dcMakerName
+		from decision
+		where dc_post_no in (select post_no from post where post_pro_no = #{postProNo})
+        and dc_maker = #{postWriter}
+		order by 1 desc
 	</select>
 	
 	<delete id="deleteTodo" parameterType="todo">
@@ -325,4 +321,12 @@
 	<delete id="deleteUpload" parameterType="upload">
 		delete from upload where upload_no=#{uploadNo}
 	</delete>
+	
+	<select id="uploadPath" resultType="upload">
+		select
+		upload_path as uploadPath
+		from upload
+		where upload_no = #{uploadNo}
+		order by 1 desc
+	</select>
 </mapper>

@@ -15,6 +15,7 @@ import kr.pe.mododa.library.model.service.LibraryServiceImpl;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.controller.ProjectControllerImpl;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -73,6 +74,18 @@ public class HomeController {
 		ArrayList<Todo> todoList = libraryService.listTodoMe(memberNo);
 		ArrayList<Decision> decisionList = libraryService.listDcMe(memberNo);
 		
+		// 할 일 출력 5개 제한
+		for(int i=todoList.size()-1; i>=5; i--) {
+			todoList.remove(i);
+		}
+		System.out.println("todoList size : " + todoList.size());
+		
+		// 의사결정 출력 5개 제한
+		for(int i=decisionList.size()-1; i>=5; i--) {
+			decisionList.remove(i);
+		}
+		System.out.println("decisionList size : " + decisionList.size());
+		
 		ModelAndView view = new ModelAndView();
 		view.addObject("todoList", todoList);
 		view.addObject("decisionList", decisionList);
@@ -82,9 +95,15 @@ public class HomeController {
 	
 	// rightbar에서 프로젝트별로 내 할 일, 의사결정
 	@RequestMapping(value="/rightbarPro.do")
-	public Object rightbar(@RequestParam int proNo) {
-		ArrayList<Todo> todoList = libraryService.todoListPro(proNo);
-		ArrayList<Decision> decisionList = libraryService.decisionListPro(proNo);
+	public Object rightbar(HttpSession session, @RequestParam int proNo) {
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
+		
+		Post p = new Post();
+		p.setPostWriter(memberNo);
+		p.setPostProNo(proNo);
+		
+		ArrayList<Todo> todoList = libraryService.todoListPro(p);
+		ArrayList<Decision> decisionList = libraryService.decisionListPro(p);
 		
 		ModelAndView view = new ModelAndView();
 		view.addObject("todoList", todoList);
