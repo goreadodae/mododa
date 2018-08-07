@@ -16,10 +16,12 @@
 <style>
 
 /* leftbar */
-.leftbar {
+.background {
    background-color: #F5F5F5;
    position: relative;
-   height: auto;
+   overflow-x: hidden;
+	overflow-y: hidden;
+	height: 100vmin;
 }
 
 ul {

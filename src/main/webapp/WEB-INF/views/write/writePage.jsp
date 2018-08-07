@@ -893,6 +893,19 @@ function defaultCancelCallMember(no){
 </script>
 
 <style>
+@media screen and (max-width: 768px){
+	#test{
+		display: none;
+	}
+	#mobileWriteTitle{
+		display: block !important;
+	}
+	#writeSubmitBtn{
+		float: right;
+	}
+}
+
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -1146,6 +1159,9 @@ margin:auto;
 			<div class="col-md-9" style="height: 100%">
 
 				<div class="row" style="padding-top: 40px; height: 15%;">
+					<div class="col-md-12" id="mobileWriteTitle" style="display: none;">
+						<label style="font-size: 20px;"><strong>글쓰기</strong></label>
+					</div>
 					<div class="col-md-12" id="showBTop" style="height: 100%; padding-top: 14px;">
 						<div class="row" style="padding-left: 15px; height: 100%;">
 							<div class="col-md-2" style="height: 100%; padding: 0px;">
@@ -1287,14 +1303,11 @@ margin:auto;
 
 									</div>
 								
-									<div class="row">
 										<div class="col-md-12">
-											<button style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
+											<button id="writeSubmitBtn" style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
 										
 										</div>
-									
-									
-									</div>
+								
 									
 								</div>
 							</div>

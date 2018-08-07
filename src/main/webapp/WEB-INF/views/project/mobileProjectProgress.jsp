@@ -37,28 +37,99 @@ div {
 	padding: 0px;
 }
 /* 기본 구조 스타일 끝 */
-@media screen and (max-width: 768px){
-	html {
-		margin-left: 15px;
-    	margin-right: 7px;
-	}
+
+
+/* .fullProgressBox {
+	width: 100%;
+	height: auto;
+	background-color: #F5F5F5;
 }
-.progressHeader{
+ 
+ .progressTitle {
+	width: 100%;
+	height: 5%;
+	float: left;
+ }
+ 
+ .progressTitle h5 {
+  	margin-top: 8px;
+ }
+ 
+ 
+ .progressHeader {
+ 	border-top: 1px solid black;
+ 	border-left: 1px solid black;
+ 	border-right: 1px solid black;
+	width: 150%;
+	height: 4vmin;
 	background-color: #CFF09E;
-	border-bottom: 1px solid black;
-}
-.progressContent{
+	float: left;
+	text-align: center;
+ }
+ 
+ .progressBody {
 	border: 1px solid black;
-	background-color: white ;
-	height: 64vmin;
+	width: 150%;
+	height: auto !important;
+	background-color: #FFF;
+	float: left;
+	min-height: 435px;
+ }
+
+.bodyEmpty {
+	width: 4%;
+	height: 88%;
+	float: left;
 }
-.progressBody{
-	overflow-y: hidden;
+
+.bodyEmpty{
+	padding-top:22%;
 }
+
+.headEmpty {
+	width: 4%;
+	height: 100%;
+	float: left;
+}
+
+.titleEmpty {
+	border-top: 1px solid black;
+	width: 100%;
+	height: 2%;
+	float: left;
+}
+
+
 .progressPost {
 	border: 1px solid black;
+	float: left;
+	padding: 1% 5%;
+	width: 98%;
 	margin: 1%;
+	height: 17vmin;
+	max-height: 95%;
 }
+
+
+.progressPost img {
+	width: 10%;
+	height: 10%;
+	margin-right: 3%;
+	
+}
+
+.progressPost img:hover {
+	cursor: pointer;
+}
+
+
+input[type=checkbox] {
+	transform: scale(1.5);
+	margin-right: 4%;
+	margin-left: 4%;
+	margin-top: 3%;
+}
+ */
 </style>
 
 
@@ -429,14 +500,14 @@ div {
 				<span style="font-size:small;">프로젝트 이슈를 한 눈에 볼 수 있습니다. 해당 이슈의 진행 상태를 변경할 수 있습니다.</span></h5>
 				<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
 			</div>
-			<div class="titleEmpty col-md-12"></div>
+			<div class="titleEmpty col-12"></div>
 			<div class="col-md-12">
-			<div class="row">
-				<div class="col progressContent">
+			<div class="row" style="padding: 15px;">
+				<div class="col-md-2">
 					<div class="row progressHeader">
 					<div class="col-md-12"><h5><b>발의된 이슈</b></h5>
 					</div></div>
-					<div class="progressBody row" id="suggestBody">
+					<div class="progressBody row" id="suggestBody" style="overflow:auto; height:84%;">
 						<c:forEach items="${postList}" var="postList">
 						<c:if test="${postList.postProgress=='suggest'}">
 							<div class="progressPost col" draggable="true">
@@ -461,10 +532,10 @@ div {
 						<input type="hidden" id="workToSug" value="workToSug" />
 					</div>
 				</div>
-				<div class="col progressContent">
+				<div class="col-md-2">
 					<div class="row progressHeader">
 					<div class="col-md-12"><h5><b>진행 중</b></h5></div></div>
-					<div class="progressBody row" id="workingBody">
+					<div class="progressBody row" id="workingBody" style="overflow:auto; height:84%;">
 						<c:forEach items="${postList}" var="postList">
 						<c:if test="${postList.postProgress=='working'}">
 							<div class="progressPost col" draggable="true">
@@ -490,10 +561,10 @@ div {
 						<input type="hidden" id="stopToWork" value="stopToWork" />
 					</div>
 				</div>
-				<div class="col progressContent">
+				<div class="col-md-2">
 					<div class="row progressHeader">
 					<div class="col-md-12"><h5><b>일시중지</b></h5></div></div>
-					<div class="progressBody row" id="stopBody">
+					<div class="progressBody row" id="stopBody" style="overflow:auto; height:84%;">
 						<c:forEach items="${postList}" var="postList">
 						<c:if test="${postList.postProgress=='stop'}">
 							<div class="progressPost col" draggable="true">
@@ -519,10 +590,10 @@ div {
 					</div>			
 				
 				</div>
-				<div class="col progressContent">
+				<div class="col-md-2">
 					<div class="row progressHeader">
 					<div class="col-md-12"><h5><b>완료</b></h5></div></div>
-					<div class="progressBody row" id="finishBody">
+					<div class="progressBody row" id="finishBody" style="overflow:auto; height:84%;">
 						<c:forEach items="${postList}" var="postList">
 						<c:if test="${postList.postProgress=='finish'}">
 							<div class="progressPost col" draggable="true">
@@ -538,9 +609,25 @@ div {
 						</c:forEach>	
 					</div>
 				</div>
+				<div class="col-md-1">
+				</div>
 			</div>
 			</div>
 			
+<%-- 			
+			
+			
+
+			
+
+			
+
+
+
+	
+ --%>
+
+
 		</div>
 	
 	</div>

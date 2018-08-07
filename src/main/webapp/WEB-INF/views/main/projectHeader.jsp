@@ -16,6 +16,7 @@
 	}
 	#contents {
 		width: 100vmin;
+		height: 100vmin;
 	}
 	.topbar {
 		width: 20% !important;
@@ -38,7 +39,95 @@
 	.row.leftbar{
 		width:100%;
 		margin-left: 0px;
+		background-color: #F5F5F5;
+   		position: relative;
 	}
+	.topbar{
+		border-bottom: none !important;
+	}
+	ul {
+   float: right;
+   width: 80%;
+}
+
+li {
+   list-style: none;
+   padding: 5px 0px 5px 5px;
+   margin-bottom: 5px;
+   margin-right: 10px;
+}
+
+.icon {
+   margin-right: 5%;
+   height: 23px;
+   width: 23px;
+}
+
+.list-title {
+   color: #464646;
+   margin-bottom: 0;
+}
+
+div {
+   box-sizing: border-box;
+}
+
+/* 지은 스타일 추가 */
+.proIcon {
+   margin-right: 5%;
+   height: 23px;
+   width: 23px;
+}
+
+.subIcon {
+   height: 18px;
+   width: 18px;
+   margin-right: 5%;
+   margin-left: 15%;
+}
+
+.mobilePrivateSub {
+   display: none;
+   overflow: hidden;
+   position: relative;
+   margin-bottom: -1px;
+   border: 1px solid #ddd;
+   padding-top: 1.5% !important;
+   padding-bottom: 1.5% !important;
+}
+
+.mobilePrivateSub a {
+   padding: 0;
+}
+
+li[id^="mobileSub_"] {
+   display: none;
+   padding: 0;
+   background-color: #F5F5F5;
+}
+
+li[id^="mobileSub_"] a {
+   padding: 0;
+}
+
+.list-group-item {
+   padding-top: 1.5% !important;
+   padding-bottom: 1.5% !important;
+}
+
+.list-group-item:hover {
+	cursor: pointer;
+}
+
+li[id^="MobilePlus_"] {
+   display: none;
+   padding: 0;
+   background-color: #F5F5F5;
+}
+
+li[id^="MobilePlus_"] a {
+   padding: 0;
+}
 }
 @media screen and (max-width: 426px) {
 	#menu-img{
@@ -513,7 +602,7 @@ a:hover{
 		</div>
 		<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
 		<!-- 팝업모달 끝 -->
-<%-- 		<div id="mobileMenuModal" class="modal">
+ 		<div id="mobileMenuModal" class="modal">
 			<!-- Modal 내용 -->
 			<div id="mobileMenuContent" class="modal-content" style="width: 80%; height: auto; min-height: 100%;">
 			<div class="row" style="margin: 20px;">
@@ -534,34 +623,34 @@ a:hover{
 		<div class="row leftbar">
          <ul style="margin-bottom:0;">
             <li class="list-title">전체 정보</li>
-            <li class="list-group-item" id="newsfeed">
+            <li class="list-group-item" id="mobileNewsfeed">
                <img src="../resources/images/layout-img/lightning.png" class="icon"> 뉴스피드</li>
-            <li class="list-group-item" id="callpost">
+            <li class="list-group-item" id="mobileCallpost">
                <img src="../resources/images/layout-img/arroba.png" class="icon"> 호출된 글</li>
-            <li class="list-group-item" id="bookmark">
+            <li class="list-group-item" id="mobileBookmark">
                <img src="../resources/images/layout-img/bookmark.png" class="icon"> 북마크</li>
-            <li class="list-group-item" id="mypost">
+            <li class="list-group-item" id="mobileMypost">
                <img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
-            <li class="list-group-item" id="calendarAll">
+            <li class="list-group-item" id="mobileCalendarAll">
                <img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
          </ul>
 
          <ul>
             <li class="list-title">프로젝트</li>
 
-            <li class="list-group-item" id="createProject">
+            <li class="list-group-item" id="mobileCreateProject">
                <img src="../resources/images/layout-img/plus.png" class="icon"> 새 프로젝트 만들기</li>
 
             <!-- 프라이빗 공간 -->
-            <li class="list-group-item openModal" id="privateMain">
-               <img src="../resources/images/project/safe.png" class="icon"> 프라이빗 공간</li>
+            <li class="list-group-item openModal" id="mobilePrivateMain">
+               <img src="../resources/images/mobileLibrary/safe.png" class="icon"> 프라이빗 공간</li>
             
-            <li class="privateSub">
-            <a class="dropdown-item priPost" href="#" value="${privateProject.proNo}"> 
+            <li class="mobilePrivateSub">
+            <a class="dropdown-item mobilePriPost" href="#" value="${privateProject.proNo}"> 
             <img src="../resources/images/project/post-it.png" class="subIcon" /> 프라이빗 글</a></li>
             
-            <li class="privateSub">
-            <a class="dropdown-item priHashTag" href="#" value="${privateProject.proNo}">
+            <li class="mobilePrivateSub">
+            <a class="dropdown-item mobilePriHashTag" href="#" value="${privateProject.proNo}">
             <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
             
 
@@ -569,48 +658,48 @@ a:hover{
             <c:forEach items="${projectList}" var="projectList" end="5">
             
 
-               <li class="list-group-item projectMain openModal" value="${projectList.proNo}">
+               <li class="list-group-item MobileProjectMain openModal" value="${projectList.proNo}">
                <img src="../resources/images/project/flag.png" class="proIcon" /> ${projectList.proTitle}</li>
 
                <!-- 하위메뉴 -->
 
-               <li class="list-group-item" id="sub_${projectList.proNo}_post">
-               <a class="dropdown-item proPost" href="#" value="${projectList.proNo}">
+               <li class="list-group-item" id="mobileSub_${projectList.proNo}_post">
+               <a class="dropdown-item mobileProPost" href="#" value="${projectList.proNo}">
                <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
 
-               <li class="list-group-item" id="sub_${projectList.proNo}_hashTag">
-               <a class="dropdown-item proHashTag" href="#" value="${projectList.proNo}">
+               <li class="list-group-item" id="mobileSub_${projectList.proNo}_hashTag">
+               <a class="dropdown-item mobileProHashTag" href="#" value="${projectList.proNo}">
                <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
 
-               <li class="list-group-item" id="sub_${projectList.proNo}_progress">
-               <a class="dropdown-item proProgress" href="#" value="${projectList.proNo}">
+               <li class="list-group-item" id="mobileSub_${projectList.proNo}_progress">
+               <a class="dropdown-item mobileProProgress" href="#" value="${projectList.proNo}">
                <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
 
-               <li class="list-group-item" id="sub_${projectList.proNo}_myPost">
-               <a class="dropdown-item proMyPost" href="#" value="${projectList.proNo}"> 
+               <li class="list-group-item" id="mobileSub_${projectList.proNo}_myPost">
+               <a class="dropdown-item mobileProMyPost" href="#" value="${projectList.proNo}"> 
                <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
 
             
             </c:forEach>
             
-            <li class="list-group-item" id="moreProject">
+            <li class="list-group-item" id="mobileMoreProject">
             <img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
            	
            	<!-- 더 보기 -->
-           	<li class="list-group-item" id="projectPlus openModal" style="display:none;" >
+           	<li class="list-group-item" id="MobileProjectPlus openModal" style="display:none;" >
             <img src="../resources/images/project/flag-marker.png" class="icon"><span></span></li>
             <!-- 하위메뉴 -->
-               <li class="list-group-item" id="plus_post">
-               <a class="dropdown-item proPost" href="#" value="">
+               <li class="list-group-item" id="MobilePlus_post">
+               <a class="dropdown-item mobileProPost" href="#" value="">
                <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
-               <li class="list-group-item" id="plus_hashTag">
-               <a class="dropdown-item proHashTag" href="#" value="">
+               <li class="list-group-item" id="MobilePlus_hashTag">
+               <a class="dropdown-item mobileProHashTag" href="#" value="">
                <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
-               <li class="list-group-item" id="plus_progress">
-               <a class="dropdown-item proProgress" href="#" value="">
+               <li class="list-group-item" id="MobilePlus_progress">
+               <a class="dropdown-item mobileProProgress" href="#" value="">
                <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
-               <li class="list-group-item" id="plus_myPost">
-               <a class="dropdown-item proMyPost" href="#" value=""> 
+               <li class="list-group-item" id="MobilePlus_myPost">
+               <a class="dropdown-item mobileProMyPost" href="#" value=""> 
                <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
            
          </ul>
@@ -618,6 +707,169 @@ a:hover{
 		</div>
 			<!-- Modal 내용 끝 -->
 		</div>
-		<!-- 팝업모달 끝 --> --%>
+		<!-- 팝업모달 끝 -->
+		
+<script>
+
+	var beforeShow = 0; /* 열렸던 창을 닫기 위한 변수 */
+
+	function liClose(proNo) {
+		
+
+ 		var proListArr = $.makeArray($('.MobileProjectMain').map(function() {
+			return $(this).attr("value");
+		}));
+ 		
+ 		var cnt = 0;
+		for(var i=0; i<proListArr.length; i++) {
+			if(proListArr[i] == proNo) {
+				cnt++;
+			} 
+		}
+		
+		if(cnt==0) {
+			
+			
+			$.ajax({
+				url : "/searchMoreProTitle.do",
+				type : "post",
+				data : {
+					proNo : proNo
+				},
+				success : function(data) {
+					//console.log(data.proTitle);
+					$("#MobileProjectPlus span").text(data.proTitle);
+				},
+				error : function() {
+					console.log("이름찾기 실패");
+				}
+			});
+			
+			
+			//alert("더보기로 들어옴");
+			$("#MobileProjectPlus").show();
+			$("li[id^='MobilePlus_']").show();
+			$("#MobilePlus_post a").attr('value',proNo);
+			$("#MobilePlus_hashTag a").attr('value',proNo);
+			$("#MobilePlus_progress a").attr('value',proNo);
+			$("#MobilePlus_myPost a").attr('value',proNo);
+		}
+		
+		beforeShow = proNo;
+
+	}
+
+/* 해당하는 컨트롤러주소(.do)를 적어주시면 됩니다~ */
+   jQuery(function($) {
+      
+      $("#mobileNewsfeed").click(function() {
+         location.href="/newsfeed.do";
+      });
+
+      $("#mobileCallpost").click(function() {
+         location.href="/callpost.do";
+      });
+
+      $("#mobileBookmark").click(function() {
+         location.href="/bookmark.do";
+      });
+      $("#mobileMypost").click(function() {
+         location.href="/mypost.do";
+      });
+
+      $("#mobileProject").click(function() {
+         location.href="";
+      }); /* 삭제하기 */
+
+      $("#mobileLibrary").click(function() {
+         location.href="";
+      });
+      
+      $("#mobileCalendarAll").click(function() {
+         location.href="/calendar.do";
+      });
+      
+      
+      
+      /* 지은 사용 시작 */
+      // 프로젝트 생성
+      $("#mobileCreateProject").click(function() {
+         location.href="/gotoCreateProject.do";
+      });
+
+
+      // 프라이빗 공간
+      $("#mobilePrivateMain").click(function() {
+         var displayValue = $(".mobilePrivateSub").css('display');
+         if (displayValue == 'none') {
+            $('li[id^="mobileSub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $(".mobilePrivateSub").show();
+            $("#MobileProjectPlus").hide();
+            $("li[id^='MobilePlus_']").hide();
+         } else {
+            $('li[id^="mobileSub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $("#MobileProjectPlus").hide();
+            $("li[id^='MobilePlus_']").hide();
+            $(".mobilePrivateSub").hide();
+         }
+      });
+
+      // 프라이빗 하위 메뉴 
+      $(".mobilePriPost").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/privatePost.do?proNo=" + proNo;
+      });
+
+      $(".mobilePriHashTag").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/privateHashTag.do?proNo=" + proNo;
+      });
+
+      // 프로젝트 목록
+      $(".MobileProjectMain").click(function() {
+         var proNo = $(this).attr('value');
+         var displayValue = $('li[id^="mobileSub_' + proNo + '_"]').css('display');
+         if (displayValue == 'none') {
+            $(".mobilePrivateSub").hide();/* 열렸던 창 닫기 */
+            $('li[id^="mobileSub_' + beforeShow + '_"]').hide();/* 열렸던 창 닫기 */
+            $("li[id^='MobilePlus_']").hide();
+            $("#MobileProjectPlus").hide();
+            $('li[id^="mobileSub_' + proNo + '_"]').show();
+            beforeShow = proNo;/* 열렸던 창 닫기 */
+         } else {
+            $('li[id^="mobileSub_' + proNo + '_"]').hide();
+         }
+      });
+
+      // 프로젝트 하위 메뉴
+      $(".mobileProPost").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/projectPost.do?proNo=" + proNo;
+      });
+
+      $(".mobileProHashTag").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/projectHashTag.do?proNo=" + proNo;
+      });
+
+      $(".mobileProProgress").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/projectProgress.do?proNo=" + proNo;
+      });
+
+      $(".mobileProMyPost").click(function() {
+         var proNo = $(this).attr('value');
+         location.href="/projectMyPost.do?proNo=" + proNo;
+      });
+
+      /* 지은 사용 끝 */
+      
+      /* 프로젝트 더보기 */
+      $("#mobileMoreProject").click(function() {
+    	  location.href="/gotoMoreProject.do";
+      });
+
+   });
+</script>
 </body>
 </html>
