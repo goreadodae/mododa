@@ -88,8 +88,29 @@ public class WriteServiceImpl implements WriteService{
 				
 			}
 			try {
+				String subject = originalFileName.substring(originalFileName.lastIndexOf(".")+1,originalFileName.length());
+				
+				System.out.println(subject+"확장자 처음");
+				String[] extension = {"pxc","gif","bmp","png","jpg","raw"};
+				int length = extension.length;
+				
+				for(int i=0; i<length; i++)
+				{
+					System.out.println(extension[i]+"확장자");
+					if(subject.equals(extension[i]))
+					{
+						System.out.println("이프");
+						upload.setUploadSubject("이미지");
+					}
+					else {
+						System.out.println("엘스");
+						upload.setUploadSubject("파일");
+					}
+					
+				}
+				System.out.println(upload.getUploadSubject());
 				file.transferTo(new File(uploadPath + saveFileName));
-				upload.setUploadSubject(originalFileName);
+				upload.setFileName(originalFileName);
 				upload.setUploadPath(uploadPath + saveFileName);
 				System.out.println(uploadPath+saveFileName);
 				result = writeDAO.insertFileUploaded(sqlSession,upload);
