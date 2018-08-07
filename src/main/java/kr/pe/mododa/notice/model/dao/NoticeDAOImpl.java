@@ -79,7 +79,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		if(gotoPrev) { // 시작이 1페이지가 아니라면
-			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
+			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><</i></a>");
 		}
 		
 		for(int i=startCount; i<=endCount; i++) {
@@ -92,7 +92,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 		}
 		
 		if(gotoNext) { // 끝 페이지가 아니라면
-			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>"); 
+			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount + 1) + "'>></i></a>"); 
 		}
 		
 		return sb.toString();

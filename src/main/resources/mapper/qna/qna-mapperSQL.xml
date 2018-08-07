@@ -28,5 +28,24 @@
 insert into question values(que_seq.nextval,#{queTitle},SYSDATE,#{queContents},#{memberNo},'N')
 </insert>
 
+<delete id="qnaDelete">
+	delete from Question where QUE_NO = #{queNo}
+</delete>
+
+
+<select id="qnaUpdateReady" parameterType="Integer" resultType="qna">
+
+  select QUE_NO as queNo,
+   QUE_TITLE as queTitle,
+   QUE_TIME as queTime,
+   QUE_CONTENTS as queContents,
+   QUE_MEMBER_NO as memberNo,
+   QUE_RESPONSE_YN as queResponseYn
+   from Question where QUE_NO = #{queNo}
+	</select>
+
+	<update id="qnaUpdate">
+	 update Question set QUE_TITLE=#{queTitle}, QUE_CONTENTS=#{queContents} where QUE_NO=#{queNo}
+	</update>
 
 </mapper>

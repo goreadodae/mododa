@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.notice.model.vo.Notice;
 import kr.pe.mododa.qna.model.service.QnaServiceImpl;
 import kr.pe.mododa.qna.model.vo.Qna;
 import kr.pe.mododa.qna.model.vo.qnaPage;
@@ -87,7 +88,79 @@ public class QnaControllerImpl {
 		return view;
 	}
 	
+	@RequestMapping(value="/qnaDelete.do")
+	public ModelAndView qnaDelete(HttpServletRequest request) {
+		
+		int queNo = Integer.parseInt(request.getParameter("queNo"));
+		
+		HttpSession session = request.getSession(false); 
+		
+		int result = qnaService.deleteQna(queNo); // 게시글 삭제
+		
+		 ModelAndView view = new ModelAndView();
+				
+				if(result>0) { //게시글삭제가 성공하면
+					view.setViewName("redirect:/qnaList.do");
+				}else {//게시글 삭제가 실패하면
+					view.setViewName("qna/qnaError");
+					
+				}
+			
+		return view;
+		
+	}
+	
+	@RequestMapping(value="/qnaUpdateReady.do")
+	public ModelAndView qnaUpdateReady(HttpServletRequest request) {
+		
+
+		int queNo = Integer.parseInt(request.getParameter("queNo"));
+		
+		HttpSession session = request.getSession(false);
+
+		
+		Qna qna = qnaService.qnaUpdateReady(queNo);
+		
+		
+		ModelAndView view = new ModelAndView(); 
+		view.addObject("qnaUpdateReady",qna);
+		view.setViewName("qna/qnaUpdateReady");
+		return view;
 	
 	
+	}
 	
+	@RequestMapping(value="/qnaUpdate.do")
+	public ModelAndView qnaUpdate(HttpServletRequest request) {
+		
+		int queNo = Integer.parseInt(request.getParameter("queNo"));
+		String queTitle = request.getParameter("queTitle");
+		String queContents = request.getParameter("queContents");
+		
+		System.out.println(queNo);
+		
+		Qna qna = new Qna();
+		qna.setQueNo(queNo);
+		qna.setQueTitle(queTitle);
+		qna.setQueContents(queContents);
+		
+		HttpSession session=request.getSession(false);
+		
+
+			int result = qnaService.updateQna(qna);
+			
+			System.out.println(result);
+			
+			ModelAndView view = new ModelAndView();
+
+			if(result>0) { //게시글수정이 성공하면
+				view.setViewName("redirect:/qnaList.do");
+				}else {//게시글 수정이 실패하면
+				view.setViewName("qna/qnaError");
+					
+				}
+				return view;
+	
+	
+	}
 }
