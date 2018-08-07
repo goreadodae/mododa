@@ -174,7 +174,7 @@
 	
 	<insert id="insertSchedules" parameterType="schedule">
 	insert into schedule
-	 values(
+	 values( 
 
 		schedule_seq.nextval,
 		post_seq.currval,

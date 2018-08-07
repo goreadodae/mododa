@@ -89,7 +89,7 @@
 						for(var i=0;i<data.length;i++)
 						{
 						result+=
-							'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</a></div>'+
+							'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');" id="postTitle" class="btn btn-link" style="float:left;"><b>'+data[i].postTitle+'</b></a></div>'+
 							'<div class="col-md-8"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><span id="postcontent" style="font-size:12px;">'+data[i].postContent+'</span><br>'+ data[i].postWriter +' &nbsp;&nbsp; '+ data[i].postDate+'</div>'+
 							'<div class="col-md-4">';
 							if(data[i].postProgress=='suggest'){
@@ -101,7 +101,7 @@
 							}else{
 								result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
 							}
-						result+='<a onclick="postChangePage('+data[i].proNo+');" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
+						result+='<a onclick="postChange('+data[i].proNo+');" id="proName" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
 							'<div class="col-md-3"></div>'+
 							'</div><hr style="color:grey;"></li>';
 						}
@@ -119,7 +119,7 @@
 				
 				}
 
-	function postChangePage(proNo){ //준석추가
+	function postChange(proNo){
 		location.href="/projectPost.do?proNo="+proNo;
 	}
 	
@@ -206,7 +206,7 @@
 					<div id="showHeader">
 						<!-- 기본으로 출력되는 헤더 -->
 						<div class="headerTitle" id="headerTitle">
-							<h5>뉴스피드</h5>
+							<h5><b>뉴스피드</b></h5>
 						</div>
 						<div class="headerFunction" id="headerFun">
 							<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -242,7 +242,7 @@
 						<li class="feed-contents">
 							<div class="row">
 								<div class="col-md-12">
-								<a onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</a>
+								<a onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left" id="postTitle"><b>${news.postTitle }</b></a>
 								</div>
 								<div class="col-md-8">
 									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
@@ -269,7 +269,7 @@
 									</c:otherwise>
 									</c:choose>
 									<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>&nbsp;
-									<a onclick="postChangePage(${news.proNo })" class="btn btn-link" style="float:none;" >${news.proName }</a>
+									<a onclick="postChange(${news.proNo });" class="btn btn-link" id="proName" style="float:none;" >${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">

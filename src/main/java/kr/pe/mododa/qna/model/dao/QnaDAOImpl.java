@@ -101,6 +101,23 @@ public class QnaDAOImpl {
 		
 	}
 
+	public int deleteQna(SqlSessionTemplate sqlSession, int queNo) {
+		
+		return sqlSession.delete("qna.qnaDelete",queNo);
+
+	}
+
+	public Qna qnaUpdateReady(SqlSessionTemplate sqlSession, int queNo) {
+		
+		return sqlSession.selectOne("qna.qnaUpdateReady",queNo);
+
+	}
+
+	public int updateQna(SqlSessionTemplate sqlSession, Qna qna) {
+		
+		return sqlSession.update("qna.qnaUpdate",qna);
+	}
+
 
 
 	
