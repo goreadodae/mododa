@@ -72,7 +72,7 @@ public class HomeController {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();
 		
 		ArrayList<Todo> todoList = libraryService.listTodoMe(memberNo);
-		ArrayList<Decision> decisionList = libraryService.listDcMe(memberNo);
+		ArrayList<Decision> decisionList = libraryService.listDcWait(memberNo);
 		
 		// 할 일 출력 5개 제한
 		for(int i=todoList.size()-1; i>=5; i--) {

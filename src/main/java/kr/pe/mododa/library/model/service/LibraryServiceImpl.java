@@ -150,4 +150,8 @@ public class LibraryServiceImpl implements LibraryService{
 	public Upload uploadPath(int uploadNo) {
 		return libraryDAO.uploadPath(sqlSession, uploadNo);
 	}
+
+	public ArrayList<Decision> listDcWait(int memberNo) {
+		return libraryDAO.listDcWait(sqlSession, memberNo);
+	}
 }
