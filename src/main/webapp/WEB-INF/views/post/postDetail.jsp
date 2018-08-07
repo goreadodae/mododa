@@ -907,7 +907,7 @@ img[class="btn btn-link dropdown-toggle"] {
 								console.log("insert실패");
 								alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 							} else {
-								var str = "<div id='postEachTodo" + data.todoNo + "'><div class='btn-group'>"
+								var str = "<div class='row' id='postEachTodo" + data.todoNo + "'><div class='btn-group'>"
 										+ "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todoNo + "' src='../resources/images/icon/play-button.png' />"
 										+ "<div class='dropdown-menu'>"
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + todoMember + "," + data.todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
