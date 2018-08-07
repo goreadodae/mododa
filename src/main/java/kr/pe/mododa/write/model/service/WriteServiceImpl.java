@@ -17,9 +17,11 @@ import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.dao.WriteDAOImpl;
+import kr.pe.mododa.write.model.vo.CallPost;
 import kr.pe.mododa.write.model.vo.Partners;
 import kr.pe.mododa.write.model.vo.PrivateSpace;
 import kr.pe.mododa.write.model.vo.ProjectMember;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
 
@@ -140,6 +142,51 @@ public class WriteServiceImpl implements WriteService{
 		return result;
 	}
 
+	public int insertRpPost(RelatedPost rpPost) {
+		
+		int result = writeDAO.insertRpPost(sqlSession,rpPost);
+				return result;
+		
+	}
+
+	public int insertCallMember(CallPost cp) {
+		int result = writeDAO.insertCallMember(sqlSession,cp);
+		return result;
+	}
+
+	public int setPrivateSpace(int memberNo) {
+		return writeDAO.setPrivateSpace(sqlSession,memberNo);
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }

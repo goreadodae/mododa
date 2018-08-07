@@ -3,6 +3,7 @@ package kr.pe.mododa.write.model.dao;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +11,11 @@ import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.vo.CallPost;
 import kr.pe.mododa.write.model.vo.Partners;
 import kr.pe.mododa.write.model.vo.PrivateSpace;
 import kr.pe.mododa.write.model.vo.ProjectMember;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
 
@@ -84,6 +87,48 @@ public class WriteDAOImpl implements WriteDAO {
 		
 		return sqlSession.insert("write.insertSchedules",schedule);
 	}
+
+	public int insertRpPost(SqlSessionTemplate sqlSession, RelatedPost rpPost) {
+		int result = sqlSession.insert("write.insertRpPost",rpPost);
+		return result;
+	}
+
+	public int insertCallMember(SqlSessionTemplate sqlSession, CallPost cp) {
+		int result = sqlSession.insert("write.insertCallMember",cp);
+		return result;
+	}
+
+	public int setPrivateSpace(SqlSessionTemplate sqlSession, int memberNo) {
+		
+		return sqlSession.selectOne("write.setPrivateSpace",memberNo);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

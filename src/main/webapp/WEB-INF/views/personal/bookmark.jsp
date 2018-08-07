@@ -128,11 +128,46 @@ div {
 				
 				
 				}
+
+	
+	// private번호 가져오기
+	
+	$(document).ready(function(){
+		
+	$.ajax({
+		url : "/setPrivateSpace.do",
+		type : "post",
+		success : function(data){
+		console.log("나의 프라이빗 번호 받아오기를 성공했어여!")
+		console.log("이건 나의 프라이빗 번호"+data)
+		var str=""
+			str += '<input type="hidden" id="myPrivateNo" value="'+data.myPrivateNo+'"/>'
+			$('#goWriting').append(str);
+			str="";
+		},
+		error : function(data){
+			console.log("에러라능");
+		}
+	});
+	});
+
 	function postChange(proNo){ //프로젝트 글로  이동 추가
 		location.href="/projectPost.do?proNo="+proNo;
 	}
+
 	
 	
+	function goWriting(){
+		console.log("클릭");
+		var myPrivateNo = $('#myPrivateNo').val();
+		console.log(myPrivateNo);
+		
+		location.href="/privatePost.do?proNo="+myPrivateNo;
+		
+	}
+	///요기까지
+	
+
 </script>
 
 
@@ -166,7 +201,7 @@ div {
 
 
 					<!-- 한영진이 버튼 연결 -->	
-					<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
+					<button type="button" id="goWriting" onclick="goWriting();" class="btn btn-outline-success">
 						<i class="fas fa-edit"></i>글쓰기
 					</button>
 

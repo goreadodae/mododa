@@ -186,6 +186,53 @@
 	)
 	</insert>
 	
+	<insert id="insertRpPost" parameterType="relatedPost">
+	insert into related_post
+	 values(
+	 
+	 #{rpNo},
+	 post_seq.currval,
+	 #{projectNo}
+	)
+	
+	</insert>
+	
+	
+	<insert id="insertCallMember" parameterType="callPost">
+	insert into call_post
+	values(
+	post_seq.currval,
+	#{callMember}
+	)
+	
+
+	</insert>
+	
+	<select id="setPrivateSpace"  resultType="int">
+	select
+	min(pro_No)
+	from project
+	where pro_member_no = #{memberNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
   
