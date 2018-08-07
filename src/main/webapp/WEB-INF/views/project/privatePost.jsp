@@ -265,10 +265,7 @@ div {
 					</li>
 				</c:forEach>
 			</ul>
-			<div align="center">
-			<span>마지막입니다.</span>
 			<input type="hidden" id="proNo" value="${requestScope['javax.servlet.forward.query_string']}" />
-			</div>
 		</div>
 
 
