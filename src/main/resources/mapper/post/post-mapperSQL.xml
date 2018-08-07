@@ -85,6 +85,7 @@
 
 	<select id="selectUpload" resultType="upload">
 		select
+		upload_no as uploadNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_name as fileName,
@@ -286,8 +287,7 @@
 	</delete>
 
 	<insert id="insertUpload" parameterType="upload">
-		insert into upload values(upload_SEQ.NEXTVAL, #{postNo}, #{memberNo},
-		SYSDATE,#{uploadSubject}, #{fileName},#{uploadPath})
+		insert into upload values(upload_SEQ.NEXTVAL, #{postNo}, #{memberNo},SYSDATE,#{uploadSubject}, #{fileName},#{uploadPath})
 	</insert>
 
 </mapper>

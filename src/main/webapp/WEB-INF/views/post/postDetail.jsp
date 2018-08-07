@@ -13,10 +13,11 @@
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-<script src="http://malsup.github.com/jquery.form.js"></script><!-- 추가추가추가 -->
+<!-- 
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+ -->
+<!-- 글씨체 -->
 
-<!-- <script src="https://code.jquery.com/jquery-latest.js"></script>
- --><!-- 글씨체 -->
 <link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo|Sunflower:300"
 	rel="stylesheet">
 
@@ -117,6 +118,16 @@ div {
 	border-radius: 5px;
 	width: 550px;
 	height: 260px;
+}
+
+#modal-postFile {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 25px;
+	border: 1px solid #888;
+	border-radius: 5px;
+	width: 400px;
+	height: 230px;
 }
 
 #modal-close {
@@ -324,6 +335,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	display: inline-block;
 	vertical-align: middle;
 	padding : 7px;
+	font-size: 13px;
 }
 
 /* 업로드된 이미지 */
@@ -336,6 +348,8 @@ img[class="btn btn-link dropdown-toggle"] {
 /* 업로드된 파일 */
 .postUploadedFile{
 	margin-bottom : 5px;
+	width : 15px;
+	height: 15px;
 }
 
 /* 의사결정 등록 */
@@ -467,6 +481,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	var postTodoNo = 0;//수정할 할일 번호
 	var postScheduleNo = 0;	//수정할 일정 번호
 	var postDecisionNo = 0; //의사결정 번호
+	var postUploadNo=0; //다운로드 받을 파일 번호
 
 	//게시글 불러옴
 	function getPost(postNumber) {
@@ -606,21 +621,18 @@ img[class="btn btn-link dropdown-toggle"] {
 							
 							
 							//이미지,파일 불러오기
-							var postFileStr = "<div class='postContentBox' onclick='document.all.postImgFile.click();'>"
-								+ "<form id='postUpload' method='post' enctype='multipart/form-data'>"
-								+ "<input id='postImgFile' id='files' name='files' type='file' style='display: none' onchange='readURL(this.files);' multiple />"
-								+ "<input type='hidden' name='postNo' value=" + postNo + ">"
-								+ "</form><img src='../resources/images/post/add.png' id='add-icon' />"
+							var postFileStr = "<div class='postContentBox' onclick='open_postUploadPage();'>"
+								+ "<img src='../resources/images/post/add.png' id='add-icon' />"
 								+ "</div>";
 								
 							if(data.upload.length!=0){
 								for (var i = 0; i < data.upload.length; i++) { 
 									countFile++;	//카운트 1씩 증가
 									
-									if(data.upload[i].uploadSubject=="image"){
-										postFileStr += "<div class='postContentBox'><img src=" + data.upload[i].uploadPath + " class='postUploadedImg'/>"
-									}else{
-										postFileStr += "<div class='postFileBox'><img src='../resources/images/post/file.png' class='postUploadedFile' /><br><span>" + data.upload[i].uploadName + "</span>";
+									if(data.upload[i].uploadSubject=="image"){ //이미지일때
+										postFileStr += "<div class='postContentBox'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
+									}else{ //파일일때
+										postFileStr += "<div class='postFileBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postFile(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/images/post/file.png' class='postUploadedFile' /> 파일<br><span>" + data.upload[i].uploadName + "</span>";
 									}
 									postFileStr += "</div>";
 								}
@@ -785,6 +797,18 @@ img[class="btn btn-link dropdown-toggle"] {
 	function close_updateScheduleModal(flag) {
 		$('#updateScheduleModal').hide();
 	};
+	
+	//파일 모달 open
+	function open_postFile(uploadNoforModal, fileNameforModal){
+		postUploadNo = uploadNoforModal;
+		$('#postFileName').html(fileNameforModal);
+		$('#postFileModal').show();
+	}
+	
+	//파일 모달 close
+	function close_postFile(){
+		$('#postFileModal').hide();
+	}
 
 	//의사결정추가 모달 open
 	function open_decision(flag) {
@@ -1538,7 +1562,7 @@ img[class="btn btn-link dropdown-toggle"] {
 
 	//이미지,파일 업로드
 	window.URL = window.URL || window.webkitURL;
-	/* jQuery.ajaxSettings.traditional = true; */
+	jQuery.ajaxSettings.traditional = true;
 	
 	function readURL(files) {
 		var filesLength = files.length;
@@ -1548,6 +1572,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		var formData = new FormData(form);
 		
 		console.log(postImgFile);
+		console.log("formData" + formData);
 		
 		var countFileforInsert = Number($('#countFile').html());
 		
@@ -1584,6 +1609,54 @@ img[class="btn btn-link dropdown-toggle"] {
 		}
 		
 		
+	}
+	
+	//업로드 팝업창 뜸
+	function open_postUploadPage(){
+		var popupX = (window.screen.width/2)-(500/2); // 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
+		var popupY= (window.screen.height/2)-(230/2); // 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
+		var url = "/postUploadFilePage.do?postNoUP=" + postNo;
+		window.open(url,'window_name','width=500,height=230,location=no,status=no,scrollbars=yes left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
+	}
+	
+	//파일 삭제
+	function postDeleteFile(){
+		$.ajax({
+			url : "/deleteUpload.do",
+			type : "post",
+			data : {
+				uploadNo : postUploadNo,
+			},
+			success : function(data) {
+				$('#postFile' + postUploadNo).remove();
+			},
+			error : function(data) {
+				console.log("파일삭제 에러");
+			},
+			complete : function(data) {
+				close_postFile();
+			}
+		});
+	}
+	
+	//파일 다운로드
+	function postDownloadFile(){
+			$.ajax({
+				url : "/fileDownload.do",
+				type : "post",
+				data : {
+					uploadNo : postUploadNo,
+				},
+				success : function(data) {
+					
+				},
+				error : function(data) {
+					console.log("파일다운로드 에러");
+				},
+				complete : function(data) {
+					close_postFile();
+				}
+			});
 	}
 
 </script>
@@ -1691,10 +1764,10 @@ img[class="btn btn-link dropdown-toggle"] {
 
 						<br><hr>
 						<span class="contents-title">&nbsp;파일/이미지 <span id="countFile">0</span></span><br>
-						<form  method="post" enctype="multipart/form-data">
+						
 						<div id="postFileAppend">
 						</div>
-						</form>
+				
 
 
 						<br><br><hr><br>
@@ -1742,8 +1815,10 @@ img[class="btn btn-link dropdown-toggle"] {
 				<br> 
 				게시글 제목&nbsp;&nbsp; : &nbsp;&nbsp;<input type="text" id="updatedPostTitle" placeholder="게시글 제목을 입력해주세요." />
 				<br><br>
-				게시글 내용 <br>
-				<textarea rows="6" cols="65" id="updatedPostContent" style="resize:none" ></textarea><br><br>
+				게시글 내용
+				<center>
+				<textarea rows="6" cols="55" id="updatedPostContent" style="resize:none; margin-top : 10px;" ></textarea>
+				</center><br>
 				<button class="insertButton2" onclick="updatePost();" style="float: right;">수정</button>
 			</div>
 			<!-- Modal 내용 끝 -->
@@ -1860,6 +1935,29 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 끝 -->
 		</div>
 		<!-- 의사결정/변경하기 팝업모달 끝 -->
+		
+		
+		
+		<!-- 파일 팝업모달 시작 -->
+		<div id="postFileModal" class="modal">
+			<!-- Modal 내용 -->
+			<div id="modal-postFile">
+				<img src="../resources/images/post/select.png" /><span
+					style="color: #339966;">&nbsp;&nbsp;파일 상세보기</span> 
+				<img src="../resources/images/post/close.png" onclick="close_postFile();" class="postCloseIcon" style="float: right; height: 20px;" /><br>
+				<br> 
+				<center>
+				<img src="../resources/images/post/file.png"> <span id="postFileName"></span>
+				<br><br><br>
+				<button  type="button" class="btn btn-outline-success" onclick="postDeleteFile();">파일 삭제</button>
+				<button type="button" class="btn btn-success" onclick="postDownloadFile();">파일 다운로드</button>
+				</center>
+			</div>
+			<!-- Modal 내용 끝 -->
+		</div>
+		<!-- 파일 팝업모달 끝 -->
+		
+		
 	</div>
 </body>
 </html>

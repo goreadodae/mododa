@@ -17,7 +17,6 @@
 	 join project pr on(p.post_pro_no=pr.pro_no)
 	 where  p.POST_PRO_NO in (select pro_no from work_on where member_no=#{memberNo}and invite_yn='Y') or (p.post_pro_no  in(select pro_no from project where pro_title='프라이빗공간' and pro_member_no=#{memberNo}))
 	order by postDate desc
-
   </select>
   
   <select id="selectBookmark" parameterType="int" resultType="bookmark"> <!-- 북마크한 글 읽어노는 쿼리 -->
