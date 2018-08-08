@@ -19,7 +19,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 <script>
-
+	/* 모바일 시 동작하는 script */
+	$(document).ready(function(){
+		if(document.body.clientWidth<=768){
+			$('#writeContentsDiv').attr('class','col-md-12');
+		}
+	});
+	/* 모바일 끝 */
 	$.noConflict
 	//전체화면 사이즈 구하는 jquery
 	function divSize() {
@@ -1036,7 +1042,7 @@ margin:auto;
 				</div>
 			</div> -->
 
-		<div class="row offset-md-1 col-md-10 offset md-1" style="height: 87%; padding: 0px;">
+		<div class="row offset-md-1 col-md-10 offset md-1" id="writeContentsDiv" style="height: 87%; padding: 0px;">
 
 			<div class="col-md-3" id="test" style="height: 100%;">
 
