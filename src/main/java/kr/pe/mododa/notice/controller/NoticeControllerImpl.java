@@ -195,7 +195,7 @@ public class NoticeControllerImpl implements NoticeController {
 			ModelAndView view = new ModelAndView();
 
 			if(result>0) { //게시글수정이 성공하면
-				view.setViewName("redirect:/noticeDetail.do");
+				view.setViewName("notice/noticeDetail.jsp");
 				}else {//게시글 수정이 실패하면
 				view.setViewName("notice/noticeError");
 					
