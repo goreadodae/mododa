@@ -788,7 +788,7 @@ $(document).ready(function(){
 			$('#partnersList button').remove();
 			$('#partnersList div').remove();
 			console.log(data);
-			$('#changeType').text(data.privateSpace);
+		/* 	$('#changeType').text(data.privateSpace); */
 			$('#changeType').css('color','#FF5F2E');
 			
 			
