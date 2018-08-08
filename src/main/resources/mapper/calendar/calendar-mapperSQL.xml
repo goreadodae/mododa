@@ -9,7 +9,7 @@
 		pro_start_Date as proStartDate,
 		pro_end_Date as proEndDate,
 		PRO_MEMBER_NO as proMNo
-		from Project where pro_progress='working' and PRO_MEMBER_NO = #{proMemberNo}
+		from Project where pro_no in (select pro_no from work_on where member_no=#{proMemberNo} and invite_yn='Y') and pro_progress='working'
 	</select>
 	<select id="projectOne" resultType="project">
 		select pro_no as proNo,
@@ -71,7 +71,7 @@
         null,
     </otherwise>
 	</choose>
-	1,#{proNo},#{startDate},#{endDate},#{scTitle})	
+	#{memNO},#{proNo},#{startDate},#{endDate},#{scTitle})	
 	</insert>
 	<select id="calendarOneSchedule" parameterType="schedule" resultType="schedule">
 	select sc_no as scheduleNo,

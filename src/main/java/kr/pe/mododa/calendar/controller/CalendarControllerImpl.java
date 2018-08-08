@@ -119,16 +119,20 @@ public class CalendarControllerImpl implements CalendarController {
 
 	@Override
 	@RequestMapping(value="calendarInsertSchedule.do")
-	public ModelAndView calendarInsertSchedule(HttpServletResponse response,@RequestParam int proSelect,@RequestParam int relationSelect,@RequestParam String title,
+	public ModelAndView calendarInsertSchedule(HttpSession session,HttpServletResponse response,@RequestParam int proSelect,@RequestParam int relationSelect,@RequestParam String title,
 			@RequestParam Date startDate,@RequestParam Date endDate) throws Exception {
 		
+		if(session.getAttribute("member")!=null) {
+		
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();	
 		Schedule sc = new Schedule();
 		sc.setProNo(proSelect);
 		sc.setPostNo(relationSelect);
 		sc.setScTitle(title);
 		sc.setStartDate(startDate);
 		sc.setEndDate(endDate);		
-		
+		sc.setMemNO(memberNo);
+
 		int result = CalendarService.calendarInsertSchedule(sc);		
 
 		ModelAndView view = new ModelAndView();
@@ -137,6 +141,10 @@ public class CalendarControllerImpl implements CalendarController {
 		}
 		view.setViewName("jsonView");
 		return view;
+		
+		}else {
+			return null;
+		}
 	}
 	
 	@Override
