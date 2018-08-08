@@ -110,23 +110,12 @@ div {
 					<td width="10%"><button type="button" style="width:99%;" class="btn btn-outline-secondary btn-sm" onclick="openModal();">할 일 작성</button></td>
 				</tr>
 			</table>
-			<br>
 			<!-- 할 일 메뉴 끝 -->
 			
 			<!-- 할 일 내용 -->
 			<div id="todoContainer" style="overflow-y:auto; height:77vh;">
 				<div id="todoDiv">
-					<table class="table table-hover" style="margin:0;padding:0;">
-						<tbody>
-						<tr onclick="수정();">
-							<td>진행과정</td>
-							<td>할일내용</td>
-							<td>작성자>할일할자</td>
-							<td>프로젝트명</td>
-							<td></td>
-						</tr>
-						</tbody>
-					</table>
+					
 				</div>
 			</div>
 			
@@ -282,8 +271,11 @@ div {
 				</div>
     		</div>
  	 		</div>
+ 	 		<div align="center">
+ 	 		<button type="button" class="btn btn-outline-success" onclick="updateTodo(${t.todoNo});" style="width:49%;">수정</button>&nbsp;
+ 	 		<button type="button" class="btn btn-outline-danger" onclick="deleteTodo(${t.todoNo});" style="width:49%;">삭제</button>
+ 	 		</div>
  	 		
- 	 		<button type="button" class="btn btn-outline-success" onclick="updateTodo(${t.todoNo});">수정</button>
 		</div>
 	</div>
 
@@ -301,7 +293,7 @@ div {
 
 <script>
 	var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
-	//todoCategory(1);
+	todoCategory(1);
 	
 	
 	/* 프로젝트 선택에 따라 팀원 변경 */
@@ -346,7 +338,7 @@ div {
 	}
 
 	/* 할 일 분류 */
-	/* function todoCategory(num) {
+	function todoCategory(num) {
 		$.ajax({
 			url:"/todoCategory.do",
 			type:"POST",
@@ -360,65 +352,59 @@ div {
 				if(data.length == 0) {
 					str += "<div style='text-align:center;height:100px;'>할 일이 없습니다.</div>";
 				}
-				
-				for(i=0; i<data.length; i++) {
-					str += 
-						"<div id='todoEach_"+data[i].todoNo+"'><div style='float:left;'><div class='btn-group'>";
-					
-					if(data[i].todoProgress == 'suggest') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
-					}
-					else if(data[i].todoProgress == 'working') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
-					}
-					else if(data[i].todoProgress == 'stop') {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
-					}
-					else {
-						str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
-					}
+				else {
+					str += "<table class='table table-hover' style='margin:0;padding:0;'><tbody>";
 						
-					str += 
-						"<div class='dropdown-menu'>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
-						+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
-						+"</div>"+
-						"</div>"+
-						data[i].todoTitle +"</div><div align='right' style='padding:10px;'>";
-					
-					if((user == data[i].todoMember || user == data[i].todoWriter) || (user == data[i].todoMember && user == data[i].todoWriter)) {
-						str +=
-							"<button type='button' class='btn btn-outline-primary btn-sm' style='margin:1px;' onclick='openContentModal("+data[i].todoNo+")'>자세히 보기</button>"+
-							"<button type='button' class='btn btn-outline-danger btn-sm' style='margin:1px;' onclick='deleteTodo("+data[i].todoNo+")'>삭제</button>"
+					for(i=0; i<data.length; i++) {
+						str += 
+							"<tr id='tr_"+data[i].todoNo+"' onclick='openContentModal("+data[i].todoNo+")'>"+
+								"<td width='5%'>"+
+									"<div class='btn-group'>";
+									
+									if(data[i].todoProgress == 'suggest') {
+										str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/icon/play-button.png' />"; 
+									}
+									else if(data[i].todoProgress == 'working') {
+										str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/play-buttonOn.png' />";
+									}
+									else if(data[i].todoProgress == 'stop') {
+										str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/pauseOn.png' />";
+									}
+									else {
+										str += "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='"+data[i].todoNo+"' src='../resources/images/post/checked.png' />";
+									}
+										
+									str += 
+										"<div class='dropdown-menu'>"
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'working');\"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>"
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'stop'); \"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>"
+										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + data[i].todoMember + "," + data[i].todoNo + ",'finish');\"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>"
+										+"</div>"+
+										"</div>"+
+								"</td>"+
+								"<td width='50%'><div style='padding:7px;'>"+data[i].todoTitle+"</div></td>"+
+								"<td width='30%'>"+
+									"<div style='padding:7px;'>"+
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].todoWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].todoWriterName +" ▶ "+ 
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].todoMemberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].todoMemberName+
+								"</td>"+
+								"<td width='15%'><div style='padding:7px;'>"+data[i].todoProjectName+"</div></td>"+
+							"</tr>";
 					}
 					
-					str +=
-						"</div>";
-						
-					if(data[i].todoContent == null) {
-						str += "할 일 설명이 없습니다.";	
-					}
-					else {
-						str += data[i].todoContent;
-					}
-						
-					str +=
-						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
-						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
-						"<img id='profileImg' src='../resources/upload/member/" + data[i].todoWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
-						data[i].todoWriterName +" ▶ "+ 
-						"<img id='profileImg' src='../resources/upload/member/" + data[i].todoMemberPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
-						data[i].todoMemberName + "<br></div><div class='dropdown-divider'></div></div>";
+					str += "</tbody></table>";
 				}
+					
 				$("#todoDiv").append(str);
 			},
 			error : function(data) {
 				console.log("오류");
 			}
 		});
-	} */
+	}
 	
 	
 	
@@ -618,7 +604,7 @@ div {
 				todoNo : id
 			},
 			success : function(data) {
-				$("#todoEach_"+id).remove();
+				$("#tr_"+id).remove();
 				
 				$('#successAlertMessage').text('할 일이 삭제되었습니다.');
 				$('#successAlert').show('slow');

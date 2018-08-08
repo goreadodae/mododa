@@ -181,7 +181,6 @@ div {
 					<td width="55%"></td>
 				</tr>
 			</table>
-			<div class="dropdown-divider"></div>
 			<!-- 의사결정 메뉴 끝 -->
 			
 			<!-- 의사결정 내용 -->
@@ -253,65 +252,56 @@ div {
 				
 				var str = "";
 				
-				if(data.length == 0) {
-					str += "<div style='text-align:center;height:100px;'>의사결정이 없습니다.</div>";
-				}
+				str += "<table class='table table-hover' style='margin:0;padding:0;'><tbody>";
 				
-				for(i=0; i<data.length; i++) {
-					if(data[i].dcYn == 'N') { // 의사결정 안한 경우 (대기)
-						str += 
-							"<div id='dcEach_"+data[i].dcNo+"'>"+
-							"<div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'>"+
-							"<input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
-							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div><br>"+
-							"</div><div align='right'>";
+				if(data.length == 0) {
+					str += "<tr><td>의사결정이 없습니다.</td></tr>";
+				}
+				else {
+					for(i=0; i<data.length; i++) {
+						str += "<tr id='dcEach_"+data[i].dcNo+"'>";
 						
-						if(user == data[i].dcMaker) { // 의사결정자인 경우
-							str += 
-								"<div id='decideDcBtn_"+data[i].dcNo+"'>"+
-								"<button type='button'style='margin:1px;' class='btn btn-outline-primary btn-sm' onclick='open_decide("+data[i].dcNo+");'>결정하기</button>"+
-								"</div>";		
-						}
-							
-						if(user == data[i].dcWriter || user == data[i].dcMaker) { // 의사결정자이거나 작성자인 경우
+						// 의사결정 안한 경우(대기)
+						if(data[i].dcYn == 'N') {
 							str +=
-								"<button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>삭제하기</button>"+
-								"</div>";
+								"<td width='5%'>"+
+									"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div></div><br>"+
+								"</td>"+
+								"<td id='dcContent_"+data[i].dcNo+"' width='65%'>"+
+								data[i].dcContent+
+								"</td>"+
+								"<td width='25%'>"+
+									data[i].dcWriterName + "▶" + data[i].dcMakerName+
+								"</td>"+
+								"<td width='3%'>"+
+								"<button type='button'style='margin:1px;' id='decideBtn_"+data[i].dcNo+"' class='btn btn-outline-primary btn-sm' onclick='open_decide("+data[i].dcNo+");'>결정</button>"+
+								"</td>"+
+								"<td width='2%'>"+
+									"<button type='button' align='right' style='float:left; margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button>"+
+								"</td>";
 						}
-						
-						str += "</div>";
-								
+						else {
+							// 반려인 경우
+							if(data[i].dcDecision == 'N') {
+								str +=
+									"<td><div id='decisionCancel'>반려</div></td>"+
+									"<td>"+data[i].dcComment+"</td>"+
+									"<td>"+data[i].dcWriterName + "▶" + data[i].dcMakerName+"</td>"
+									"<td rowspan='2'><button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button></td>";
+							}
+							// 승인인 경우
+							else if(data[i].dcDecision == 'Y'){
+								str +=
+									"<td><div id='decisionApproval'>승인</div></td>"+
+									"<td>"+data[i].dcComment+"</td>"+
+									"<td>"+data[i].dcWriterName + "▶" + data[i].dcMakerName+"</td>"
+									"<td rowspan='2'><button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button></td>";
+									
+							}
+						}
+						str += "</tr>";
 					}
-					else {
-						if(data[i].dcDecision == 'N') { // 반려인 경우
-							str += 
-								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br><br>"+
-								"</div>";
-						}
-						else if(data[i].dcDecision == 'Y') { // 승인인 경우
-							str += 
-								"<div id='dcEach_"+data[i].dcNo+"'>"+
-								"<div class='eachDecision'>"+
-								"<div id='postDecision_"+data[i].dcNo+"'>"+
-								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br><br>"+
-								"</div>";
-						}
-						
-						if(user == data[i].dcMaker) {
-							str += 
-								"<button type='button' align='right' style='float:left; margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>삭제하기</button>";
-						}
-						
-						str += "</div>";
-					}
-					
-					str += "<div class='dropdown-divider'></div></div>";
+					str += "</tbody></table>";
 				}
 				$("#dcDiv").append(str);
 			},
@@ -381,22 +371,22 @@ div {
 					close_decide(id);
 					$('#changeDc_'+id).find().remove();
 					if(decideResult == 'N') {
+						$('#changeDc_'+id).html("<div id='decisionCancel'>반려</div>");
 						if(dcComment == "") {
-							$('#changeDc_'+id).html("<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : 반려합니다. <br>");
+							$('#dcContent_'+id).html("반려합니다.");
 						}
 						else {
-							$('#changeDc_'+id).html("<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : "+dcComment+" <br>");
+							$('#dcContent_'+id).html(dcContent);
 						}
-						
 					}
 					else {
+						$('#changeDc_'+id).html("<div id='decisionApproval'>승인</div>");
 						if(dcComment == "") {
-							$('#changeDc_'+id).html("<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : 승인합니다. <br>");
+							$('#dcContent_'+id).html("승인합니다.");
 						}
 						else {
-							$('#changeDc_'+id).html("<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+dcMakerName +"</span>님의 결정 : "+dcComment+" <br>");
+							$('#dcContent_'+id).html(dcContent);
 						}
-						
 					}
 					$('#decideDcBtn_'+id).remove();
 					
