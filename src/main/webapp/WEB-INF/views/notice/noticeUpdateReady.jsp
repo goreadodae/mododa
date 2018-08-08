@@ -8,9 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-		<link rel="icon" href="/resources/favicon.ico">
-	<link rel="shortcut icon" href="/resources/favicon.ico">
-	<title>협업툴 모두다 MODODA</title>
+
+    <title>1:1Q&A 글수정</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -326,9 +325,9 @@
 <body>
 	<div class="ui container">
 	<form action="/noticeUpdate.do" method="post">
-		글제목 : <input type="text" size=90 class="form-control" value="${noticeUpdateReady.noticeTitle}" name="noticeTitle"/><br>
+		글제목 : <input type="text" size=90 class="form-control" name="noticeTitle" value="${noticeUpdateReady.noticeTitle}" /><br>
 		<input type="hidden" value="${noticeUpdateReady.noticeNo}" name="noticeNo"/><br>
-		<textarea rows="20" cols="100" class="form-control" style="resize:none;" name="queContents"/>${noticeUpdateReady.noticeContents}</textarea>
+		<textarea rows="20" cols="100" class="form-control" style="resize:none;" name="noticeContents"/>${noticeUpdateReady.noticeContents}</textarea>
 		<br>
 		<input type="submit" class="btn btn-success" value="수정하기"/><br><br>
 		</form>
@@ -547,5 +546,4 @@
 
     <!-- Custom scripts for this template -->
        <script src="../resources/js/index.min.js"></script>
-
 </html>
