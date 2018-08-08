@@ -130,6 +130,15 @@ div {
 	height: 230px;
 }
 
+.modal-postImage {
+	background-color: #fefefe;
+	margin: 8% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	max-width: 700px;
+	max-height: 900px;
+}
+
 #modal-close {
 	width: 20px;
 	float: right;
@@ -138,8 +147,10 @@ div {
 }
 
 
+
+
 /* 마우스 포인터 설정 */
-#viewProjectTitle,#postBookmarkImg,#postUpdatePencilImg,#postMoreImg,#like-count,.postContentBox,.scheduleDate,.postCloseIcon,.postFileBox{
+#viewProjectTitle,#postBookmarkImg,#postUpdatePencilImg,#postMoreImg,#like-count,.postContentBox,.scheduleDate,.postCloseIcon,.postFileBox,.cursorPointer{
 	cursor : pointer;
 }
 
@@ -558,8 +569,8 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");' id='scheduleContent" + data.schedule[i].scNo + "'>"
 										+ data.schedule[i].startDate + " ~ "
 										+ data.schedule[i].endDate
-										+ "<br>일정 내용 : "
-										+ data.schedule[i].scTitle + "</span>"
+										+ "<br><span style='font-weight:bold; padding-left : 25px;'>"
+										+ data.schedule[i].scTitle + "</span></span>"
 										+"<div class='btn-group' style='float: right;'>"
 										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
 										+	"<div class='dropdown-menu'>"
@@ -632,7 +643,7 @@ img[class="btn btn-link dropdown-toggle"] {
 									countFile++;	//카운트 1씩 증가
 									
 									if(data.upload[i].uploadSubject=="image"){ //이미지일때
-										postFileStr += "<div class='postContentBox'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
+										postFileStr += "<div class='postContentBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postImage(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
 									}else{ //파일일때
 										postFileStr += "<div class='postFileBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postFile(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/images/post/file.png' class='postUploadedFile' /> 파일<br><span>" + data.upload[i].uploadName + "</span>";
 									}
@@ -693,7 +704,18 @@ img[class="btn btn-link dropdown-toggle"] {
 							}
 							
 							$('#appendforDecision').html(strDecision);
+							
+							//관련글 불러오기
+							var strRelatedPost = "";
+							for (var i = 0; i < data.relatedPost.length; i++) {
+								countRelatedPost++;
 
+								strRelatedPost += "<div style='font-size : 13px';><img src='../resources/images/post/check.png' style='height : 13px;'>&nbsp;&nbsp;<span class='cursorPointer' onclick='showRelatedPost(" + data.relatedPost[i].rpNo +");'>" + data.relatedPost[i].rpostTitle + "</span> <span style='color : grey;'> " + data.relatedPost[i].rproTitle + "</span></div>";
+							}
+							$('#postRelatedAppend').html(strRelatedPost);
+							$('#countRelatedPost').html(countRelatedPost);
+
+							
 							//게시글 프로젝트의 멤버들
 							$('#selectMember').html("");
 							$('#selectMemberForDecision').html("");
@@ -811,7 +833,22 @@ img[class="btn btn-link dropdown-toggle"] {
 	function close_postFile(){
 		$('#postFileModal').hide();
 	}
-
+	
+	//이미지 모달 open
+	function open_postImage(uploadNoforModal, fileNameforModal){
+		postUploadNo = uploadNoforModal;
+		
+		var postImageStr = "<img src='/resources/upload/write/" + fileNameforModal + "' style='max-width: 400px; max-height: 400px;' />"
+		$('#postImageShow').html(postImageStr);
+		$('#postImageName').html(fileNameforModal);
+		$('#postImageModal').show();
+	}
+	
+	//이미지 모달 close
+	function close_postImage(){
+		$('#postImageModal').hide();
+	}
+	
 	//의사결정추가 모달 open
 	function open_decision(flag) {
 		$('#decisionModal').show();
@@ -1104,9 +1141,10 @@ img[class="btn btn-link dropdown-toggle"] {
 									+ "<img src='../resources/images/post/calendar.png'/>&nbsp;&nbsp;"
 									+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.newScNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");' id='scheduleContent" + data.newScNo + "'>"
 									+ scStartDate + " ~ " + scEndDate
-									+ "&nbsp;&nbsp;&nbsp;&nbsp;" + scTitle
-									+ "</span>"
-									+ "<div class='btn-group'>"
+									+ "<br><span style='font-weight:bold; padding-left : 25px;'>" 
+									+ scTitle
+									+ "</span></span>"
+									+ "<div class='btn-group'  style='float: right;'>"
 									+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
 									+	"<div class='dropdown-menu'>"
 									+		"<a class='dropdown-item' onclick='postChangeCalendarPage();'>"
@@ -1151,8 +1189,8 @@ img[class="btn btn-link dropdown-toggle"] {
 			},
 			success : function(data){
 				var updatedSchedule = scStartDate + " ~ " + scEndDate
-				+ "&nbsp;&nbsp;&nbsp;&nbsp;"
-				+ scTitle;
+				+ "<br><span style='font-weight:bold; padding-left : 25px;'>"
+				+ scTitle + "</span>";
 				$('#scheduleContent' + postScheduleNo).html(updatedSchedule);
 				$('#scheduleContent' + postScheduleNo).attr("onclick","open_updateScheduleModal(" + postScheduleNo +",\""+ scStartDate + "\",\"" + scEndDate + "\",\"" + scTitle + "\");");
 				$('#successAlertMessage').text('일정이 수정되었습니다.');
@@ -1568,7 +1606,7 @@ img[class="btn btn-link dropdown-toggle"] {
 		var popupX = (window.screen.width/2)-(500/2); // 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
 		var popupY= (window.screen.height/2)-(230/2); // 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
 		var url = "/postUploadFilePage.do?postNoUP=" + postNo;
-		window.open(url,'window_name','width=500,height=230,location=no,status=no,scrollbars=yes left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
+		window.open(url,'window_name','width=500,height=300,location=no,status=no,scrollbars=yes left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
 	}
 	
 	//업로드된 후 새로고침
@@ -1590,7 +1628,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							countFileNew++;	//카운트 1씩 증가
 							
 							if(data.upload[i].uploadSubject=="image"){ //이미지일때
-								postFileStr += "<div class='postContentBox'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
+								postFileStr += "<div class='postContentBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postImage(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/upload/write/" + data.upload[i].uploadName + "' class='postUploadedImg'/>"
 							}else{ //파일일때
 								postFileStr += "<div class='postFileBox' id='postFile" + data.upload[i].uploadNo + "' onclick='open_postFile(" + data.upload[i].uploadNo + ",\"" + data.upload[i].uploadName + "\");'><img src='../resources/images/post/file.png' class='postUploadedFile' /> 파일<br><span>" + data.upload[i].uploadName + "</span>";
 							}
@@ -1626,6 +1664,7 @@ img[class="btn btn-link dropdown-toggle"] {
 			},
 			complete : function(data) {
 				close_postFile();
+				close_postImage();
 			}
 		});
 		
@@ -1634,24 +1673,16 @@ img[class="btn btn-link dropdown-toggle"] {
 	
 	//파일 다운로드
 	function postDownloadFile(){
-			$.ajax({
-				url : "/fileDownload.do",
-				type : "post",
-				data : {
-					uploadNo : postUploadNo,
-				},
-				success : function(data) {
-					
-				},
-				error : function(data) {
-					console.log("파일다운로드 에러");
-				},
-				complete : function(data) {
-					close_postFile();
-				}
-			});
+			location.href="/fileDownload.do?uploadNo=" + postUploadNo;
 	}
 
+	
+	//관련글로 이동
+	function showRelatedPost(relatedPostNo){
+		getPost(relatedPostNo);
+	}
+	
+	
 </script>
 </head>
 
@@ -1777,8 +1808,7 @@ img[class="btn btn-link dropdown-toggle"] {
 						
 						<br><hr>
 						<span class="contents-title">&nbsp;관련 글 <span id="countRelatedPost">0</span></span><br>
-						
-						<div id="postFileAppend">
+						<div id="postRelatedAppend" style="padding-left : 10px; padding-top : 10px;">
 						</div>
 						
 					
@@ -1958,6 +1988,32 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 끝 -->
 		</div>
 		<!-- 파일 팝업모달 끝 -->
+		
+		<!-- 이미지 팝업모달 시작 -->
+	<div id="postImageModal" class="modal">
+		<!-- Modal 내용 -->
+		<div class="modal-postImage">
+			<!-- 닫기 버튼 -->
+			<div align="right">
+				<img src="../resources/images/post/close.png" onclick="close_postImage();" /><br>
+			</div>
+			
+			<h4><span id="postImageName"></span></h4>
+			<div class="dropdown-divider"></div><br>
+			
+			<div align="center" id="postImageShow">
+			</div>
+			
+			<br>
+			
+			<div align="center">
+				<button class='btn btn-outline-success' onclick="postDownloadFile();">다운로드</button>&nbsp;
+				<button class='btn btn-outline-danger' onclick="postDeleteFile();">삭제하기</button>
+			</div>
+		</div>
+		<!-- Modal 내용 끝 -->
+	</div>
+	<!-- 이미지 팝업모달 끝 -->
 		
 		
 	</div>
