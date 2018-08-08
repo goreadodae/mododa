@@ -925,7 +925,7 @@ img[class="btn btn-link dropdown-toggle"] {
 						$('#successAlert').show('slow');
 						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 					} 
-					else if (status == 'stop') {uuu
+					else if (status == 'stop') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/pauseOn.png");
 						$('#successAlertMessage').text('글의 상태 \'일시중지\'로 변경');

@@ -119,11 +119,11 @@ div {
 								
 								console.log(printDate); */
   								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">';
-  								if(data[i].postProgress=='suggest'){
+  								if(searchResult[i].postProgress=='suggest'){
   									result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
-  								}else if(data[i].postProgress=='working'){
+  								}else if(searchResult[i].postProgress=='working'){
   									result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
-  								}else if(data[i].postProgress=='stop'){
+  								}else if(searchResult[i].postProgress=='stop'){
   									result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
   								}else{
   									result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
