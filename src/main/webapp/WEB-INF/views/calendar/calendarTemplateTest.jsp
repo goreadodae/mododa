@@ -5,9 +5,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=2, shrink-to-fit=no">
-<title>템플릿</title>
+
 
 
 

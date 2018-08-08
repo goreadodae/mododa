@@ -154,9 +154,9 @@ public class MemberControllerImpl implements MemberController {
 	}
 	
 	@RequestMapping(value="/confirmEmail.do")
-	public ModelAndView confirmEmail(HttpSession session) throws Exception {
+	public ModelAndView confirmEmail(HttpSession session, HttpServletRequest request) throws Exception {
 		String email = ((Member)session.getAttribute("member")).getMemberId();
-		memberService.confirmEmail(email);
+		memberService.confirmEmail(email, request);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("jsonView");
 		return mav;
@@ -175,8 +175,8 @@ public class MemberControllerImpl implements MemberController {
 	}
 	
 	@RequestMapping(value="/findPassword.do")
-	public String findPassword(HttpSession session, @RequestParam String memberId) throws Exception {
-		memberService.findPassword(memberId);
+	public String findPassword(HttpSession session, @RequestParam String memberId, HttpServletRequest request) throws Exception {
+		memberService.findPassword(memberId, request);
 		return "redirect:/index.jsp";
 	}
 	

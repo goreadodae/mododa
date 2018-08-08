@@ -10,7 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
     <title>공지사항-협업툴 모두다 MODODA</title>
 
 

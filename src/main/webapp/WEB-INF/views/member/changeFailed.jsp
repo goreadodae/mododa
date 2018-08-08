@@ -4,7 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>협업툴 모두다 MODODA</title>
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 </head>
 <body>
 	<script>

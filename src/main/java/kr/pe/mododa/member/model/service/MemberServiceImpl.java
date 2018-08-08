@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +80,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Inject
 	private JavaMailSender mailSender;
-	public void confirmEmail(String email) throws Exception {
+	public void confirmEmail(String email,  HttpServletRequest request) throws Exception {
 		String key = new TempKey().getKey(50, false);
 		MailHandler sendMail = new MailHandler(mailSender);
+		String currentUrl = request.getRequestURL().toString(); 
+		System.out.println(currentUrl);
+		StringTokenizer stk = new StringTokenizer(currentUrl,"/",false);
+		
+		System.out.println(stk.nextToken());
+		
 		sendMail.setSubject("[MODODA 서비스 이메일 인증]");
 		sendMail.setText(
 				new StringBuffer().append("<table align='center' width='620' style='margin: 0px auto; border-collapse: collapse; border: 1px solid #e7e7e7;' border='0' cellspacing='0' cellpadding='0'>\r\n" + 
@@ -91,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
 						"</td><td width='60'></td></tr><tr><td width='60'></td><td align='left' width='509'>\r\n" + 
 						"<p style='font-size: 16px; line-height: 26px; color: #4a4a4a; padding: 0; margin: 0; font-family: AppleSDGothicNeo-Regular'>모두다 가입을 위한 인증을 진행해 주세요.\r\n" + 
 						"<br>메일 인증하기 버튼을 눌러주세요.</p>\r\n" + 
-						"</td><td width='60'></td></tr><tr><td align='center' colspan='3'>").append("<a href='http://localhost/emailConfirm?").append("key=").append(key).append("' style='display: block; width: 200px; height: 40px; font-size: 16px; margin: 60px 0; color: #fff; text-decoration: none; line-: 46px; background-color: #339966; border-radius: 20px; -webkit-border-radius: 20px; text-align: center;' rel='noreferrer noopener' target='_blank'>" + 
+						"</td><td width='60'></td></tr><tr><td align='center' colspan='3'>").append("<a href='http://"+stk.nextToken()+"/emailConfirm?").append("key=").append(key).append("' style='display: block; width: 200px; height: 40px; font-size: 16px; margin: 60px 0; color: #fff; text-decoration: none; line-: 46px; background-color: #339966; border-radius: 20px; -webkit-border-radius: 20px; text-align: center;' rel='noreferrer noopener' target='_blank'>" + 
 						"메일 인증하기</a></td></tr><tr><td align='center' height='83' colspan='3' style='background-color: #f5f5f5;'>\r\n" + 
 						"<p style='font-size: 13px; line-height: 22px; color: #6c6c6c; padding: 0; margin: 0;'>본\r\n" + 
 						"메일은 발신전용입니다.</p>\r\n" + 
@@ -132,9 +140,13 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
-	public void findPassword(String email) throws Exception {
+	public void findPassword(String email, HttpServletRequest request) throws Exception {
 		String key = new TempKey().getKey(50, false);
 		MailHandler sendMail = new MailHandler(mailSender);
+		String currentUrl = request.getRequestURL().toString(); 
+		System.out.println(currentUrl);
+		StringTokenizer stk = new StringTokenizer(currentUrl,"/",false);
+		System.out.println(stk.nextToken());
 		sendMail.setSubject("[MODODA 비밀번호 변경]");
 		sendMail.setText(
 				new StringBuffer().append("<table align='center' width='620' style='margin: 0px auto; border-collapse: collapse; border: 1px solid #e7e7e7;' border='0' cellspacing='0' cellpadding='0'>\r\n" + 
@@ -146,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
 						"<p style='font-size: 16px; line-height: 26px; color: #4a4a4a; padding: 0; margin: 0; font-family: AppleSDGothicNeo-Regular'>메일\r\n" + 
 						"수신 후 1시간 이내에 아래 비밀번호 변경 버튼을 눌러 새 비밀번호를 입력하면, 변경된 비밀번호로 로그인할 수\r\n" + 
 						"있습니다.</p>\r\n" + 
-						"</td><td width='60'></td></tr><tr><td align='center' colspan='3'>").append("<a href='http://localhost/passwordFind?key=").append(key).append("' style='display: block; width: 200px; height: 40px; font-size: 16px; margin: 60px 0; color: #fff; text-decoration: none; line-: 46px; background-color: #339966; border-radius: 20px; -webkit-border-radius: 20px; text-align: center;' rel='noreferrer noopener' target='_blank'>" + 
+						"</td><td width='60'></td></tr><tr><td align='center' colspan='3'>").append("<a href='http://"+stk.nextToken()+"/passwordFind?key=").append(key).append("' style='display: block; width: 200px; height: 40px; font-size: 16px; margin: 60px 0; color: #fff; text-decoration: none; line-: 46px; background-color: #339966; border-radius: 20px; -webkit-border-radius: 20px; text-align: center;' rel='noreferrer noopener' target='_blank'>" + 
 						"비밀번호 변경하기</a></td></tr><tr><td align='center' height='83' colspan='3' style='background-color: #f5f5f5;'>" + 
 						"<p style='font-size: 13px; line-height: 22px; color: #6c6c6c; padding: 0; margin: 0;'>본" + 
 						"메일은 발신전용입니다.</p>" + 

@@ -5,8 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>프로젝트 이슈 진행 현황</title>
-
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -24,6 +25,11 @@
 	}
 	.progressBody{
 		padding-left: 0px !important;
+	}
+	.progressContent{
+		min-height: 101px;
+		border: 1px solid black;
+		background-color: white;
 	}
 }
 body {
@@ -421,7 +427,7 @@ input[type=checkbox] {
 		
 			<div class="col-md-2 progressBody">
 			<div class="progressHeader"><h5><b>발의된 이슈</b></h5></div>
-			<div class="">
+			<div class="progressContent">
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='suggest'}">
 					<div class="progressPost" draggable="true">
@@ -452,7 +458,7 @@ input[type=checkbox] {
 			
 			<div class="col-md-2 progressBody">
 			<div class="progressHeader"><h5><b>진행 중</b></h5></div>
-			<div class="">
+			<div class="progressContent">
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='working'}">
 					<div class="progressPost" draggable="true">
@@ -483,7 +489,7 @@ input[type=checkbox] {
 			
 			<div class="col-md-2 progressBody">
 			<div class="progressHeader"><h5><b>일시중지</b></h5></div>
-			<div class="">
+			<div class="progressContent">
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='stop'}">
 					<div class="progressPost" draggable="true">
@@ -515,7 +521,7 @@ input[type=checkbox] {
 			
 			<div class="col-md-2 progressBody">
 			<div class="progressHeader"><h5><b>완료</b></h5></div>
-			<div class="">
+			<div class="progressContent">
 				<c:forEach items="${postList}" var="postList">
 				<c:if test="${postList.postProgress=='finish'}">
 					<div class="progressPost" draggable="true">

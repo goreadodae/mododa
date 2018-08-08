@@ -65,7 +65,7 @@ li {
    list-style: none;
    padding: 5px 0px 5px 5px;
    margin-bottom: 5px;
-   margin-right: 10px;
+   margin-right: -3px;
 }
 
 .icon {
@@ -528,7 +528,7 @@ a:hover{
 			<!-- 상단바 -->
 			<div class="row" style="border-bottom: 1px solid #c8c8c8;">
 				<div class="col-md-3 topbar">
-					<img id="menu-img" src="../resources/images/layout-img/menu.png" onclick="mmm_open_pop();"/>
+					<img id="menu-img" src="../resources/images/layout-img/menu.png" onclick="mmm_open_pop();" style="display: none;"/>
 				</div>
 
 				<div class="col-md-5 topbar" id="mainLogoDiv">
