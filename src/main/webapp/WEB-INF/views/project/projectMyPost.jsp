@@ -9,8 +9,9 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>내가 쓴 글</title>
-
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -119,11 +120,11 @@ div {
 								
 								console.log(printDate); */
   								result += '<li class="feed-contents"><div class="row"><div class="col-md-12">';
-  								if(data[i].postProgress=='suggest'){
+  								if(searchResult[i].postProgress=='suggest'){
   									result+='<img id="statusImg1" src="../resources/images/post/light-bulbOn.png" title="발의된 이슈"/>';
-  								}else if(data[i].postProgress=='working'){
+  								}else if(searchResult[i].postProgress=='working'){
   									result+='<img id="statusImg1" src="../resources/images/post/play-buttonOn.png" title="진행 중"/>';
-  								}else if(data[i].postProgress=='stop'){
+  								}else if(searchResult[i].postProgress=='stop'){
   									result+='<img id="statusImg1" src="../resources/images/post/pauseOn.png" title="일시 정지"/>';
   								}else{
   									result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';

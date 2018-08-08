@@ -107,6 +107,9 @@ li[id^="plus_"] {
 li[id^="plus_"] a {
    padding: 0;
 }
+#leftBarBody{
+	padding-right: 0px !important;
+}
 
 </style>
 

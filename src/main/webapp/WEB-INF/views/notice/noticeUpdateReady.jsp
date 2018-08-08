@@ -546,5 +546,4 @@
 
     <!-- Custom scripts for this template -->
        <script src="../resources/js/index.min.js"></script>
-
 </html>

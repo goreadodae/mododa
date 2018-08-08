@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
     <title>공지사항-협업툴 모두다 MODODA</title>
 
     <!-- Bootstrap core CSS -->

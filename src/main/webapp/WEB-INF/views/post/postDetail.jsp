@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>게시글 상세보기 모달</title>
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -529,7 +531,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							//프로젝트 이름과 게시글 제목,내용들
 							$('#viewProjectTitle').html(data.project.proTitle);
 							$('#post-title').html(data.post.postTitle);
-							$('#post-content').html("<pre>"+data.post.postContent+"</pre>");
+							$('#post-content').html("<span>"+data.post.postContent+"</span>");
 							$('#post-postTag').html(data.post.postTag);
 							$('#post-date').html("&nbsp;" + data.post.stPostData);
 							var postWriterProfileSrc = "../resources/upload/member/"+data.post.postWriterPicture;
@@ -772,7 +774,7 @@ img[class="btn btn-link dropdown-toggle"] {
 	//게시글 수정 모달 open
 	function open_postUpdate(){
 		$('#updatedPostTitle').val($('#post-title').html());
-		$('#updatedPostContent').val($('#post-content>pre').html());
+		$('#updatedPostContent').val($('#post-content>span').html());
 		$('#postUpdateModal').show();
 	}
 	
@@ -884,7 +886,7 @@ img[class="btn btn-link dropdown-toggle"] {
 			},
 			success : function(){
 				$('#post-title').html(newPostTitle);
-				$('#post-content').html("<pre>"+newPostContent+"</pre>");
+				$('#post-content').html("<span>"+newPostContent+"</span>");
 				$('#successAlertMessage').text('게시글이 수정되었습니다.');
 				$('#successAlert').show('slow');
 				setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
@@ -925,7 +927,7 @@ img[class="btn btn-link dropdown-toggle"] {
 						$('#successAlert').show('slow');
 						setTimeout(function () {$('#successAlert').hide('slow');}, 2000);
 					} 
-					else if (status == 'stop') {uuu
+					else if (status == 'stop') {
 						$('#statusImg').attr("src",
 								"../resources/images/post/pauseOn.png");
 						$('#successAlertMessage').text('글의 상태 \'일시중지\'로 변경');

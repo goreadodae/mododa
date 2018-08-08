@@ -8,7 +8,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>새 프로젝트 생성</title>
+	<link rel="icon" href="/resources/favicon.ico">
+	<link rel="shortcut icon" href="/resources/favicon.ico">
+	<title>협업툴 모두다 MODODA</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -18,7 +20,14 @@
 </head>
 
 <style>
-
+@media screen and (max-width: 768px){
+	#createProjectModalContent{
+		width: 100% !important;
+	}
+	#centerImg{
+		width: 55%;
+	}
+}
 /* 기본 구조 스타일 시작 */
 body {
 	overflow-x: hidden;
@@ -163,7 +172,7 @@ span {
     <!-- The Modal -->
     <div id="createProjectModal" class="modal">
       <!-- Modal content -->
-      <div class="modal-content">
+      <div class="modal-content" id="createProjectModalContent">
       	<!-- 닫기 버튼 -->
       	<div class="modal-header" id="m_header"><img src="/resources/images/project/delete-button.png" onClick="close_pop();"></div>
       	<div class="modal-body">
@@ -184,7 +193,7 @@ span {
  
     </div>
     <!--End Modal-->
-	<img src = "/resources/images/layout-img/main_logo_square.png" style="margin-top:15%; margin-left:25%;"/>
+	<img id="centerImg" src = "/resources/images/layout-img/main_logo_square.png" style="margin-top:15%; margin-left:25%;"/>
 	
 	</div>
 	<!-- contents 끝 -->
