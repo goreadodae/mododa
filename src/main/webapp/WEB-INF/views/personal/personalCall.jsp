@@ -111,7 +111,7 @@
 		var myPrivateNo = $('#myPrivateNo').val();
 		console.log(myPrivateNo);
 		
-		location.href="/privatePost.do?proNo="+myPrivateNo;
+		location.href="/writePage.do?currentProjectNo="+myPrivateNo;
 		
 	}
 	///요기까지
