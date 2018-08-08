@@ -9,9 +9,9 @@ import kr.pe.mododa.project.model.vo.Project;
 
 public interface CalendarService {
 
-	public ArrayList<Project> projectSelectAll ();
+	public ArrayList<Project> projectSelectAll (int memberNo);
 	public ArrayList<Post> postSelectAll (int postNo);
-	public ArrayList<Schedule> calendarSchedule ();
+	public ArrayList<Schedule> calendarSchedule (int memberNo);
 	public int calendarInsertSchedule (Schedule sc);
 	public int updateSchedule (Schedule sc);
 	public Schedule infoSchedule (int scheduleNo);

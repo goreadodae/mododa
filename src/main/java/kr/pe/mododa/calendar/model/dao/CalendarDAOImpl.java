@@ -14,9 +14,9 @@ import kr.pe.mododa.project.model.vo.Project;
 public class CalendarDAOImpl implements CalendarDAO {
 
 	@Override
-	public ArrayList<Project> projectSelectAll(SqlSessionTemplate sqlSession) {
+	public ArrayList<Project> projectSelectAll(SqlSessionTemplate sqlSession,int memberNo) {
 		
-		List list = sqlSession.selectList("calendar.projectList");
+		List list = sqlSession.selectList("calendar.projectList",memberNo);
 		
 		return (ArrayList<Project>)list;
 	}
@@ -44,9 +44,9 @@ public class CalendarDAOImpl implements CalendarDAO {
 	}
 
 	@Override
-	public ArrayList<Schedule> calendarSchedule(SqlSessionTemplate sqlSession) {
+	public ArrayList<Schedule> calendarSchedule(SqlSessionTemplate sqlSession,int memberNo) {
 		
-		List list = sqlSession.selectList("calendar.calendarScheduleList");
+		List list = sqlSession.selectList("calendar.calendarScheduleList",memberNo);
 
 		return (ArrayList<Schedule>)list;
 	}

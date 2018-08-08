@@ -14,9 +14,9 @@ import kr.pe.mododa.project.model.vo.Project;
 public interface CalendarDAO {
 	
 	
-	public ArrayList<Project> projectSelectAll (SqlSessionTemplate sqlSession);
+	public ArrayList<Project> projectSelectAll (SqlSessionTemplate sqlSession,int memberNo);
 	public ArrayList<Post> postSelectAll (SqlSessionTemplate sqlSession,int postNo);
-	public ArrayList<Schedule> calendarSchedule (SqlSessionTemplate sqlSession);
+	public ArrayList<Schedule> calendarSchedule (SqlSessionTemplate sqlSession,int memberNo);
 	public int calendarInsertSchedule (SqlSessionTemplate sqlSession,Schedule sc);
 	public int updateSchedule (SqlSessionTemplate sqlSession,Schedule sc);
 	public Schedule infoSchedule (SqlSessionTemplate sqlSession,int scheduleNo);
