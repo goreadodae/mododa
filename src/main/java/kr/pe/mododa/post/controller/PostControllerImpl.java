@@ -51,14 +51,14 @@ public class PostControllerImpl {
 
 	//파일 업로드하는 팝업창
 	int postNoforUpload=-1;
-	
+
 	@RequestMapping(value="/postUploadFilePage.do")
 	public String postUploadFilePage (@RequestParam int postNoUP) {
 		postNoforUpload = postNoUP;
 		return "post/postUploadFile";
 	}
 
-	
+
 	//파일 업로드 성공 팝업창
 	@Autowired
 	@RequestMapping(value="/postUploadSuccessPage.do")
@@ -158,11 +158,13 @@ public class PostControllerImpl {
 			decision.put("dcMakerName", d.getDcMakerName());
 			decisionArray.add(decision);
 		}
-		
+
 		JSONArray RelatedPostArray = new JSONArray();
 		for(RelatedPost rp : listRelatedPost) {
 			JSONObject RelatedPost = new JSONObject();
-			
+			RelatedPost.put("rpNo", rp.getRpNo());
+			RelatedPost.put("rpostTitle", rp.getRpostTitle());
+			RelatedPost.put("rproTitle", rp.getRproTitle());
 			RelatedPostArray.add(RelatedPost);
 		}
 
@@ -180,6 +182,7 @@ public class PostControllerImpl {
 		view.addObject("decision",decisionArray);//0802아름수정
 		view.addObject("member",memberArray);
 		view.addObject("comment",commentArray);
+		view.addObject("relatedPost", RelatedPostArray);
 		view.setViewName("jsonView");
 		return view;
 	}
@@ -583,12 +586,12 @@ public class PostControllerImpl {
 
 		return "redirect:/postUploadSuccessPage.do";
 	}
-	
+
 	//파일 내역 가져오기
 	@RequestMapping(value="/postSelectUpload.do")
 	public ModelAndView selectUpload(int postNo) {
 		List<Upload> listUpload = postService.selectUpload(postNo);
-		
+
 		JSONArray uploadArray = new JSONArray();
 		for(Upload up : listUpload) {
 			JSONObject upload = new JSONObject();
@@ -598,12 +601,13 @@ public class PostControllerImpl {
 			upload.put("uploadPath", up.getUploadPath());
 			uploadArray.add(upload);
 		}
-		
+
 		ModelAndView view = new ModelAndView();
 		view.addObject("upload", uploadArray);
 		view.setViewName("jsonView");
 		return view;
 	}
+
 
 
 }
