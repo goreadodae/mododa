@@ -27,7 +27,7 @@ import kr.pe.mododa.write.model.vo.RelatedPost;
 import kr.pe.mododa.write.model.vo.RelationSearchKey;
 import kr.pe.mododa.write.model.vo.RelationWriting;
  @Controller
-public class WriteControllerImpl implements WriteController {
+public class WriteControllerImpl  implements WriteController {
  	@Autowired
 	private WriteServiceImpl writeService;
 	
@@ -37,7 +37,7 @@ public class WriteControllerImpl implements WriteController {
 		
 		return "write/writePage";
 	}
- 	@RequestMapping(value = "/projectNameList.do")
+/* 	@RequestMapping(value = "/projectNameList.do")
 	public void autoComplete(HttpServletRequest request, HttpServletResponse response, @RequestParam int memberNo)
 			throws Exception {
 		Project pj = new Project();
@@ -46,7 +46,7 @@ public class WriteControllerImpl implements WriteController {
 		response.setContentType("apllication/json");
 		response.setCharacterEncoding("utf-8");
  		new Gson().toJson(list, response.getWriter());
- 	}
+ 	}*/
 	
 	@RequestMapping(value="/setPrivateSpace.do")
 	public ModelAndView setPrivateSpace(HttpSession session) {
@@ -278,12 +278,6 @@ public class WriteControllerImpl implements WriteController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
 
 	@RequestMapping(value="/convertProName.do")
 	public ModelAndView convertProName(HttpServletResponse response, @RequestParam int proNo, HttpSession session) throws JsonIOException, IOException {
@@ -320,18 +314,6 @@ public class WriteControllerImpl implements WriteController {
 		
 	}
 	
-	
- 	@Override
-	public String loadHeader() {
-		// TODO Auto-generated method stub
-		return null;
-	}
- 	@Override
-	public String loadTumbnail() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
 	
 		
 		

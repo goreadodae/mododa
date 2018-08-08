@@ -102,6 +102,8 @@ div {
 </body>
 
 <script>
+var user = <%=((Member)session.getAttribute("member")).getMemberNo()%>;
+
 fileCategory(1);
 
 // 파일 분류
@@ -130,10 +132,17 @@ function fileCategory(num) {
 		    			"<h8>"+data[i].postTitle+"</h8><br>"+
 		    			"<h8>"+data[i].uploadDate+"</h8>"+
 		    			"</div>"+
-		    			"<div align='right'>"+
-		    			"<button class='btn btn-outline-success btn-sm' onclick='fileDownload("+data[i].uploadNo+")'>다운로드</button>&nbsp;"+
-		    			"<button class='btn btn-outline-danger btn-sm' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>"+
-		    			"</div></div>"+
+		    			"<div align='right'>";
+		    		
+		    		if(user == data[i].memberNo) {
+		    			str +=
+			    			"<button class='btn btn-outline-success btn-sm' onclick='fileDownload("+data[i].uploadNo+")'>다운로드</button>&nbsp;"+
+			    			"<button class='btn btn-outline-danger btn-sm' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>";
+			    	}
+		    			
+		    		str +=
+		    			"</div>"+
+		    			"</div>"+
 						"</div>"+		
 						"</div>";
 					

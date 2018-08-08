@@ -106,7 +106,9 @@ public class ProjectControllerImpl implements ProjectController {
 	@RequestMapping(value="checkInvite.do")
 	public Object checkInvite(@RequestParam String memberId) { // 초대할 회원이 존재하는지 확인
 		
+		
 		int memberNo = projectService.searchMemberNo(memberId); // 회원 번호 검색
+		System.out.println(memberNo);
 		ModelAndView view = new ModelAndView();
 		view.addObject("memberNo", memberNo);
 		view.setViewName("jsonView");

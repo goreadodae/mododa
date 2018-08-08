@@ -71,7 +71,7 @@ public class QnaDAOImpl {
 
 		boolean gotoPrev = true;
 		boolean gotoNext = true;
-		if (startCount == 1) {
+		if (startCount<0) {
 			gotoPrev = false;
 		}
 		if (endCount == pageTotalCount) {
@@ -79,22 +79,33 @@ public class QnaDAOImpl {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		
+		// <button type='button' class='btn btn-secondary'>
 		if(gotoPrev) { // 시작이 1페이지가 아니라면
-			sb.append("<a class='item' href='/qnaList.do?currentPage=" + (startCount - 1) + "'><</i></a>");
-		}
+			if(startCount == 1)
+			{
+				sb.append("<a class='item' href='/qnaList.do?currentPage=" + (startCount) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			else
+			{
+				sb.append("<a class='item' href='/qnaList.do?currentPage=" + (startCount - 1) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			}
+			
 		
 		for(int i=startCount; i<=endCount; i++) {
 			if(i == currentPage) {
-				sb.append("<a class='item' href='/qnaList.do?currentPage=" + i + "'><b> " + i + " </b></a>");
+				sb.append("<a class='item' href='/qnaList.do?currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + " </button></a>");
 			}
 			else {
-				sb.append("<a class='item' href='/qnaList.do?currentPage=" + i + "'> " + i + " </a>");
+				sb.append("<a class='item' href='/qnaList.do?currentPage=" + i + "'><button type='button' class='btn btn-secondary'> " + i + "</button> </a>");
 			}
 		}
 		
-		if(gotoNext) { // 끝 페이지가 아니라면
-			sb.append("<a class='item' href='/qnaList.do?currentPage=" + (endCount + 1) + "'>></i></a>"); 
+		if(endCount == pageTotalCount) { 
+			sb.append("<a class='item' href='/qnaList.do?currentPage=" + (endCount) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
+		}
+		else {
+			sb.append("<a class='item' href='/qnaList.do?currentPage=" + (endCount + 1) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
 		}
 		
 		return sb.toString();

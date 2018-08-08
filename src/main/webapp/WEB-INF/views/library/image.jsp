@@ -25,7 +25,7 @@ div {
 }
 .modal-content {
 	background-color: #fefefe;
-	margin: 5% auto; /* 15% from the top and centered */
+	margin: 0%; /* 15% from the top and centered */
 	padding: 20px;
 	border: 1px solid #888;
 	width: 60px;
@@ -137,14 +137,20 @@ div {
 			<div class="dropdown-divider"></div><br>
 			
 			<div align="center">
-				<img src='/resources/upload/write/${i.uploadPath}' style="width:100%;" />
+				<img src='/resources/upload/write/${i.uploadPath}' style='max-width:500px;' />
 			</div>
 			
 			<br>
+			<div align='right'>${i.uploadDate }</div>
+			<br>
 			
 			<div align="center">
-				<button class='btn btn-outline-success' onclick='imageDownload(${i.uploadNo});'>다운로드</button>&nbsp;
-				<button class='btn btn-outline-danger' onclick='deleteUpload(${i.uploadNo});'>삭제하기</button>
+			<c:choose>
+ 	 			<c:when test="${i.memberNo eq sessionScope.member.memberNo}">
+				<button class='btn btn-outline-success' onclick='imageDownload(${i.uploadNo});' style='width:49%;'>다운로드</button>&nbsp;
+				<button class='btn btn-outline-danger' onclick='deleteUpload(${i.uploadNo});' style='width:49%;'>삭제하기</button>
+			</c:when>
+ 	 		</c:choose>
 			</div>
 		</div>
 		<!-- Modal 내용 끝 -->

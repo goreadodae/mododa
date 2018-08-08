@@ -67,7 +67,7 @@
 			color: black !important;
 		}
 		#sendMessageButton{
-			margin-left: 39%;
+			margin-left: 35%;
 		}
 	}
   </style>

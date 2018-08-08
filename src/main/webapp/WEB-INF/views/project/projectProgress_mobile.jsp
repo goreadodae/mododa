@@ -18,6 +18,14 @@
 
 <style>
 /* 기본 구조 스타일 시작 */
+@media screen and (max-width: 768px){
+	html{
+		margin-left: -15px;
+	}
+	.progressBody{
+		padding-left: 0px !important;
+	}
+}
 body {
 	overflow-x: hidden;
 	height: 100%;

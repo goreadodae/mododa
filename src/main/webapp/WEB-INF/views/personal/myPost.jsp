@@ -183,6 +183,12 @@ div {
 		<div class="viewContents col-md-12" style="overflow-y:auto;">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
+			<c:if test="${empty mypost }">
+					<center>
+					<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>
+					<span font-size="12px;">아직 글이 없어요..<br>프라이빗공간이나 프로젝트에 글을 작성해보면 어떨까요??</span>
+					</center>
+			</c:if>
 			<c:forEach var="my" items="${mypost }">
 				<li class="feed-contents">
 					<div class="row">
