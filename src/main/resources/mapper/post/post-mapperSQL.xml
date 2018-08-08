@@ -85,13 +85,15 @@
 
 	<select id="selectUpload" resultType="upload">
 		select
-		upload_no as uploadNo,
+		upload_no as
+		uploadNo,
 		upload_date as uploadDate,
 		upload_subject as uploadSubject,
 		upload_name as fileName,
 		upload_path as uploadPath
 		from upload
-		where post_no=#{postNo}
+		where
+		post_no=#{postNo}
 	</select>
 
 	<select id="selectDecision" resultType="decision">
@@ -128,14 +130,13 @@
 		from decision
 		where dc_no = #{dcNo}
 	</select>
-	
+
 	<select id="selectRelatedPost" resultType="relatedPost">
-	select 
-	rp_no as rpNo,
-	post_no as postNo,
-	project_no as projectNo
-	from related_post
-	where post_no=#{postNo}
+		select
+		rp_no as rpNo,
+		(select post_title from post where post_no=rp_no) as rpostTitle,
+		(select pro_title from project where pro_no=project_no) as rproTitle
+		from related_post where post_no=#{postNo}
 	</select>
 
 	<select id="selectBookmark" parameterType="bookmark"
@@ -162,10 +163,12 @@
 
 	<select id="selectMemberInfo" resultType="member">
 		select
-		member_name as memberName,
+		member_name as
+		memberName,
 		member_picture as memberPicture
 		from member
-		where member_no=#{memberNo}
+		where
+		member_no=#{memberNo}
 	</select>
 
 	<insert id="insertDecision" parameterType="decision">
@@ -187,7 +190,8 @@
 	</delete>
 
 	<update id="updatePost" parameterType="post">
-		update post set post_title =#{postTitle}, post_content =#{postContent} where
+		update post set post_title
+		=#{postTitle}, post_content =#{postContent} where
 		post_no=#{postNo}
 	</update>
 
@@ -196,7 +200,8 @@
 		dc_yn='Y',
 		dc_decision=#{dcDecision},
 		dc_comment=#{dcComment}
-		where dc_no=#{dcNo}
+		where
+		dc_no=#{dcNo}
 	</update>
 
 	<update id="updatePostProgress" parameterType="post">
@@ -211,7 +216,8 @@
 
 	<update id="updateTodo" parameterType="todo">
 		update todo
-		set todo_title=#{todoContent}, todo_content=#{todoContent},
+		set
+		todo_title=#{todoContent}, todo_content=#{todoContent},
 		todo_member=#{todoMember}
 		where todo_no=#{todoNo}
 	</update>
@@ -296,7 +302,9 @@
 	</delete>
 
 	<insert id="insertUpload" parameterType="upload">
-		insert into upload values(upload_SEQ.NEXTVAL, #{postNo}, #{memberNo},SYSDATE,#{uploadSubject}, #{fileName},#{uploadPath})
+		insert into upload
+		values(upload_SEQ.NEXTVAL, #{postNo},
+		#{memberNo},SYSDATE,#{uploadSubject}, #{fileName},#{uploadPath})
 	</insert>
 
 </mapper>

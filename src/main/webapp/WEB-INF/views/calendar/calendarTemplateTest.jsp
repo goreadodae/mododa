@@ -30,8 +30,8 @@
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
-<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/minty/bootstrap.min.css">
+<!-- <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/minty/bootstrap.min.css"> -->
 
 
 
@@ -44,8 +44,7 @@ var scheduleNo = 0;
 
 	$(document).ready(function() {
 		
-		createCal();
-		
+		createCal();		
 		myProList ();
 		
 	});
@@ -85,17 +84,12 @@ var scheduleNo = 0;
 				/* center: 'title', */
 				right: 'prev,next today,month,listMonth'
 			},
-/* 			if($(window).width()<=786){
-				height: 300,
-			} else {
-				height: 650,
-			}
- */
  			height: calendarHeight,
 			theme: false,
 			selectable: true,
 			selectHelper: true,
 			editable:true,
+			 height: 650,
 			 /* buttonIcons : true, */
 			 themeButtonIcons:true,
 			select: function(start, end, allDay) {
@@ -147,7 +141,7 @@ var scheduleNo = 0;
 						 var proColor=[];
 						 var practiceColor;
 						 
-						 for(var i=0;i<data.length;i++){
+						for(var i=0;i<data.length;i++){
 							 for(var j=0;j<data.length;j++){					 
 								 if(data[i].proNo==data[j].proNo){
 									 proColor[i]=data[j].proNo;	
@@ -168,7 +162,7 @@ var scheduleNo = 0;
 						        		 title : data[i].scTitle,
 						        		 start : data[i].stStartDate,
 						        		 end : endDate,
-										color :  '#CFF09E',
+										color :  '#FF5F2E',
 						        		 url: data[i].scheduleNo
 						        	 });											 									 					  
 			        	 } 
@@ -772,7 +766,7 @@ div {
 		<div class="col-md-4" id="emptyDiv2">　</div>
 		<div class="col-md-4" id="emptyDiv3">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
-		<div class="row"><div class="col-md-12 fc fc-bootstrap4 fc-ltr" id="calendar"></div></div>
+		<div class="row"><div class="col-md-12" id="calendar"></div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<%-- <jsp:include page="/post.do"></jsp:include> --%>
@@ -853,14 +847,6 @@ div {
      <!--     Modal 내용 끝 -->
       </div>
 <!--팝업모달 끝 -->
-
-
-   <!-- <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; bottom:0px;">
-      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
-   </div>
-   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
-      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
-   </div> -->
 
 
 

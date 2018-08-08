@@ -69,7 +69,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 		boolean gotoPrev = true;
 		boolean gotoNext = true;
-		if (startCount == 1) {
+		if (startCount<0) {
 			gotoPrev = false;
 		}
 		if (endCount == pageTotalCount) {
@@ -79,8 +79,16 @@ public class NoticeDAOImpl implements NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 		// <button type='button' class='btn btn-secondary'>
 		if(gotoPrev) { // 시작이 1페이지가 아니라면
-			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
-		}
+			if(startCount == 1)
+			{
+				sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			else
+			{
+				sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			}
+			
 		
 		for(int i=startCount; i<=endCount; i++) {
 			if(i == currentPage) {
@@ -91,7 +99,10 @@ public class NoticeDAOImpl implements NoticeDAO {
 			}
 		}
 		
-		if(gotoNext) { // 끝 페이지가 아니라면
+		if(endCount == pageTotalCount) { 
+			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
+		}
+		else {
 			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount + 1) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
 		}
 		

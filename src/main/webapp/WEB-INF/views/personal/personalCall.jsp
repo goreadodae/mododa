@@ -199,6 +199,12 @@ div {
 		<div class="viewContents  col-md-12">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
+				<c:if test="${empty callPost }">
+					<center>
+					<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>
+					<span font-size="12px;">아직 호출된 글이 없어요..</span>
+					</center>
+				</c:if>
 						<c:forEach var="call" items="${callPost }">
 						<li class="feed-contents">
 							<div class="row">

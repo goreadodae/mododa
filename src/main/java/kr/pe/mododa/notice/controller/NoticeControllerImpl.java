@@ -181,6 +181,7 @@ public class NoticeControllerImpl implements NoticeController {
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContents = request.getParameter("noticeContents");
 		
+		System.out.println(noticeNo);
 		
 		Notice notice = new Notice();
 		notice.setNoticeNo(noticeNo);
@@ -192,10 +193,12 @@ public class NoticeControllerImpl implements NoticeController {
 
 			int result = noticeService.updateNotice(notice);
 			
+			System.out.println(result);
+			
 			ModelAndView view = new ModelAndView();
 
 			if(result>0) { //게시글수정이 성공하면
-				view.setViewName("notice/noticeDetail.jsp");
+				view.setViewName("redirect:/noticeDetail.do");
 				}else {//게시글 수정이 실패하면
 				view.setViewName("notice/noticeError");
 					

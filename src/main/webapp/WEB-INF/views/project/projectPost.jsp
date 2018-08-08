@@ -225,7 +225,12 @@ div {
 		
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
-			
+				<c:if test="${empty postList }">
+						<center>
+							<img src="../resources/images/layout-img/main_logo_square.png"style="width: 50%; height: 25%;" /><br> 
+							<span font-size="12px;">아직 프로젝트에 글이없어요....<br>먼저 글을 남겨보면 어떨까요??</span>
+						</center>
+					</c:if>
 				<c:forEach items="${postList}" var="postList">
 					<li class="feed-contents">
 						<div class="row">
