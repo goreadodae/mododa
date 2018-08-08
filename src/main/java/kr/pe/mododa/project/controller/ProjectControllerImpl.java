@@ -622,6 +622,7 @@ public class ProjectControllerImpl implements ProjectController {
 	public ModelAndView invitingWorkOnMemberList(@RequestParam int memberNo) {
 		ModelAndView view = new ModelAndView();
 		ArrayList<WorkOnProject> invitingMemberList = projectService.selectInvitingMemberList(memberNo);
+		System.out.println(invitingMemberList);
 		view.addObject("memberInvitingProList", invitingMemberList);
 		view.setViewName("jsonView");
 		return view;
