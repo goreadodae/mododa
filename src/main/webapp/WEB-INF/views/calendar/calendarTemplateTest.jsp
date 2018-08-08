@@ -51,6 +51,12 @@ var scheduleNo = 0;
 	
 	var calendar;
 	//캘린더 생성 기능
+	var calendarHeight;
+	if($(window).width()<=768){
+		calendarHeight = 400
+	} else {
+		calendarHeight = 650
+	}
 	function createCal(){
 		
 		var date = new Date();
@@ -76,8 +82,9 @@ var scheduleNo = 0;
 			header: {
 				left: 'title',
 				/* center: 'title', */
-				right: 'prev,next today,month'
-			},			
+				right: 'prev,next today,month,listMonth'
+			},
+ 			height: calendarHeight,
 			theme: false,
 			selectable: true,
 			selectHelper: true,
@@ -646,6 +653,24 @@ var scheduleNo = 0;
 </head>
 
 <style>
+@media screen and (max-width: 768px){
+	#calendar{
+		margin-left: 0px !important;
+		padding-left: 30px !important;
+	}
+	#emptyDiv1, #emptyDiv2, #emptyDiv3{
+		display: none;
+	}
+	#postList{
+		z-index: 5;
+	}
+	.fc-month-button.fc-button.fc-state-default.fc-corner-right{
+		z-index: 0;
+	}
+	#myModalScContent, #myModalUpdateContent{
+		width: 100% !important;
+	}
+}
 body {
 	overflow-x: hidden;
 	height: 100%;
@@ -737,9 +762,9 @@ div {
 		<button type="button" class="btn btn-secondary" onclick="prjectListOpen();"><img src="../resources/images/calendar/wish.png"> 프로젝트</button>
 			<form name='my_form'><div id="postList" style="width: 200px; position: absolute; left:20px; top:50px;"></div></form>
 		</div>	
-		<div class="col-md-2">　</div>
-		<div class="col-md-4">　</div>
-		<div class="col-md-4">　</div></div>
+		<div class="col-md-2" id="emptyDiv1">　</div>
+		<div class="col-md-4" id="emptyDiv2">　</div>
+		<div class="col-md-4" id="emptyDiv3">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row"><div class="col-md-12" id="calendar"></div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
@@ -754,7 +779,7 @@ div {
 
 <div id="myModalSc" class="modal">     
        <!--   Modal 내용 -->
-         <div class="modal-content" style="width:600px;">
+         <div class="modal-content" id="myModalScContent" style="width:600px;">
             <!-- <div class="modal-content ng-scope"> -->
             <div class="modal-header"><img src="../resources/images/post/add-event.png"
 			style="margin-bottom: 5px;" /><span style="color: #339966;">일정
@@ -792,7 +817,7 @@ div {
 
 <div id="myModalUpdate" class="modal">     
        <!--   Modal 내용 -->
-         <div class="modal-content" style="width:600px;">
+         <div class="modal-content" id="myModalUpdateContent"style="width:600px;">
             <!-- <div class="modal-content ng-scope"> -->
             <div class="modal-header"><img src="../resources/images/post/add-event.png"
 			style="margin-bottom: 5px;" /><span style="color: #339966;">일정

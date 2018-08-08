@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -292,7 +292,6 @@
         return fpResult;d
      }
      </script>
- 
        <c:if test="${sessionScope.member.memberNo!=1}">
        <script>
 			$(document).ready(function(){
@@ -301,8 +300,6 @@
        </script>
             
     </c:if>
-        
-     
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
