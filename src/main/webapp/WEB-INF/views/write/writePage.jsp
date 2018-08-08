@@ -96,6 +96,7 @@
 	var imgCount = 0;
 	var filesLength = 0;
 	var img;
+	var file ="";
 	function readURL(files) {
 		console.log($('#fileSelect').val()+"파일선택값");
 		console.log($('#fileElem').val()+"fileElem"+"값");
@@ -107,8 +108,46 @@
 			filesLength += files.length;
 
 			console.log(filesLength);
+			
+/* 				file = files[i];
+				var ext = file.name.split('.').pop().toLowerCase();
+				if($.inArray(ext,["pxc","gif","bmp","png","jpg","raw","jpeg"])==-1){
+					
+					console.log("이미지파일아니야.");
+					
+				
+							file = files[i];
+							console.log(file.name);
+							
+							console.log(file.name.split('.').pop().toLowerCase());
+							
+							 */
+							
+						/* console.log("포문");
+							console.log($('#fileElem').files[i].name); */
 
-			for (i = 0; i < files.length; i++) {
+			for (var i = 0; i < files.length; i++) {
+				
+ 				file = files[i];
+				var ext = file.name.split('.').pop().toLowerCase();
+				
+				console.log(ext);
+
+	/* 				if($.inArray(ext,["pxc","gif","bmp","png","jpg","raw","jpeg"])==-1)
+					{
+							
+								
+							
+								
+					}
+					else{
+								
+						continue;
+						
+					}	 */
+					
+				
+					
 
 			 	img = document.createElement("img");
 				img.src = window.URL.createObjectURL(files[i]);
@@ -119,22 +158,45 @@
 					window.URL.revokeObjectURL(this.src);
 				} 
 				$(
-						'<div class="col-md-6 imgHeight" style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
+							'<div class="col-md-6 imgHeight" id="delImg_'+imgCount+'" onclick="delImgs('+imgCount+');" '
+						+	'style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
 								+ img.outerHTML + '</div></div>').appendTo(
 						$('#divEnter'));
 				imgCount++;
 
 			}
 
+				
+				
 			if ($('#moreViewDiv').height() >= 200 && filesLength > 3) {
 				$('#moreViewDiv').addClass('moreViewDiv');
 				$('#moreViewText').css('display', 'block');
 
 			}
 
-		}
 
+		}
 	}
+	
+	
+	
+	
+	
+	function delImgs(no)
+	{
+		$('#delImg_'+no).remove();
+		filesLength--;
+		console.log(filesLength);
+		if(filesLength ==3)
+			{
+			$('#moreViewDiv').removeClass('moreViewDiv');
+			$('#moreViewText').css('display', 'none');
+			}
+		
+	}
+	
+	
+	
 
 	//더 보기
 	var convertMoreView = true;
@@ -173,7 +235,7 @@
 	})
 
 	//일정추가 
-	var scheCnt = 1;
+	var scheCnt = 0;
 	var scheduleCnt = 0;
 
 	function saveScheduleToView() {
@@ -186,9 +248,8 @@
 
 
 			$(
-					'<div id="schdules_'
-							+ scheCnt
-							+ '" class="col-md-6" style="height:100px; padding-top:5%;">'
+							'<div id="schedules_'+ scheCnt+'" onclick="removeSche('+scheCnt+')";'	
+							+ ' class="col-md-6" style="height:100px; padding-top:5%;">'
 							+ '<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0;">'
 							+ '<div class="col-md-12" style="padding:5px;color:#A1A1A1;"><img src="/resources/images/writeImages/calendar.png" style="padding:0;"/>&nbsp;&nbsp;'
 							+ startDate + '</div><div class="col-md-12">'
@@ -197,15 +258,23 @@
 							+ '<input type="hidden" name="endDate" value="'+endDate+'"/>'
 							+ '<input type="hidden" name="scheTitle" value="'+title+'"/>').appendTo($('#addSchedules'));
 			//일정개수
-			scheduleCnt++;
-			$('#scheduleCnt').text(scheduleCnt);
+			scheCnt++;
+			$('#scheduleCnt').text(scheCnt);
+
 
 		//초기화
 		$('#scheduleTitle').val("");
 		$('#startDate').val("");
 		$('#endDate').val("");
-
 	}
+	
+	function removeSche(no)
+	{
+		$('#schedules_'+no).remove();
+		scheCnt--;
+		$('#scheduleCnt').text(scheCnt);
+	}
+	
 
 	//관련 글 불러오기
 
@@ -705,6 +774,7 @@ $(document).ready(function(){
 			
 			for(var i = 0; i<data.partners.length; i++)
 				{
+				console.log("이건 프라이빗 친구"+data.partners[i].memberNo);
 					str += '<button id="calledPartner_'+data.partners[i].memberNo+'" onclick="calledPartner('+data.partners[i].memberNo+');" class="dropdown-item" type="button">'
 					str += '<img src="/resources/upload/member/'+data.partners[i].memberPicture+'" class="rounded-circle border"> &nbsp;&nbsp;'
 					str += data.partners[i].parName
@@ -736,15 +806,13 @@ $(document).ready(function(){
 //파트너(프라이빗 공간 친구) 호출
 function calledPartner(no){
 	console.log("클릭했어요!!");
-	console.log(no);
+	console.log(no+"나는 누구!");
 	var partnerPic = $('#calledPartnerPic_'+no).val();
 	
 	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
 			+ '" src="/resources/upload/member/'+partnerPic+'"'
 			+ 'class="rounded-circle border" id="cancelCallPar_'+no+'" onclick="cancelCallPartner('+no+');"/>'
-			+ '<input type="hidden" id="calledPartner_'+no+'" name="calledPartner" value="'+no+'"/>'		
-	
-	);
+			+ '<input type="hidden" id="hiddencalledPartner_'+no+'" name="calledPartner" value="'+no+'"/>');
 	
 	console.log($('#calledPartner_'+no).val());
 	$('#calledPartner_'+no).hide();
@@ -759,11 +827,11 @@ function calledProMember(no){
 	console.log(memberPic + "사진 값")
 	$('#addParImg').prepend('<img style="height:100%; float:right; margin-left:-19px !important;'
 			+ '" src="/resources/upload/member/'+memberPic+'"'
-			+ 'class="rounded-circle border" id="cancelCallMem_'+no+'" onclick="cancelCallMember('+no+');"/>'
+			+ ' class="rounded-circle border" id="cancelCallMem_'+no+'" onclick="cancelCallMember('+no+');"/>'
 			+ '<input type="hidden" name="calledPartner" id="calledProMember_'+no+'" value="'+no+'"/>'		
 	);	
 	
-	$('#calledMember_'+no).hide();
+	$('#calledMembers_'+no).hide();
 
 }
 
@@ -772,7 +840,7 @@ function cancelCallPartner(no){
 	console.log("취소");
 	$('#calledPartner_'+no).show();
 	$('#cancelCallPar_'+no).remove();
-	$('#calledPartner_'+no).remove();
+ 	$('#hiddencalledPartner_'+no).remove();
 }
 
 //파트너(프라이빗 공간 친구) 호출 취소
@@ -805,7 +873,15 @@ function defaultCancelCallMember(no){
 	$('#defaultCalledProMember_'+no).remove();
 }
 
-
+function allSaveForm(){
+	$('#saveFn').attr('action', "/insertPost.do");
+	$('#saveFn').submit();
+}
+function tempSaveForm(){
+	$('#saveFn').attr('action', "/tempInsertPost.do");
+	$('#saveFn').submit();
+	
+}
 
 					
 </script>
@@ -906,28 +982,10 @@ div.tarea {
 	cursor: pointer;
 }
 
-  #partnerImg img {
+#partnerImg img {
 	width: 35px;
 	height: 35px;
 } 
-
-
-
-/* #defaultPartnerPic {
-	background-image: url("/resources/images/writeImages/user.png");
-	background-size: cover;
-} */
-
-/* #addPartnerPic {
-	background-image: url("/resources/images/writeImages/add-button.png");
-	background-size: cover;
-} */
-
-/* #partnerImg div img {
-	width: 100%;
-	height: 100%;
-}
- */
 #addPartnerPic {
 	cursor: pointer;
 }
@@ -1009,14 +1067,14 @@ margin:auto;
 </head>
 <body>
 
-<form action="/insertPost.do" method="post" enctype="multipart/form-data">
+<form id="saveFn" action="/insertPost.do" method="post" enctype="multipart/form-data">
 
 	
 	<div class="frameSize col-md-12">
 	<!-- 제출 엔터 방지  -->
-	<div style="display:none">
+<!-- 	<div style="display:none">
 		<input type="submit" onclick="return false;"/>
-	</div>
+	</div> -->
 		
 	
 				<div class="row" style="height: 13%;">
@@ -1037,33 +1095,25 @@ margin:auto;
 			</div> -->
 
 		<div class="row offset-md-1 col-md-10 offset md-1" style="height: 87%; padding: 0px;">
-
-			<div class="col-md-3" id="test" style="height: 100%;">
+	 		<div class="col-md-3" id="test" style="height: 100%;">
 
 
 				<div class="row" style="height: 10%">
 
-					<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
+			<!-- 		<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
 						<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
 							<div class="row" id="forEmptyImg" style="padding-top: 5px">
 								<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<div id="forClear"></div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<div class="row" style="height: 90%">
 
-					<div class="col-md-12 border-right" style="padding: 0px; height: 100%; display: none" id="tempSaved">
-						<ul class="colorChange list-group" style="text-align: left;">
-
-							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
-							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
-							<li class="list-group-item"><span>안녕하세요</span> <br> <span style="color: #B8B8B8">2018.7.16</span> <br> <span style="color: #339966">프라이빗 공간</span> <br></li>
-
-						</ul>
-
-
+					<div class="col-md-12 border-right" style="padding: 0px; height: 100%; background-color:#F5F5F5;"  id="tempSaved">
+					
+				
 					</div>
 
 				</div>
@@ -1099,9 +1149,6 @@ margin:auto;
 												<button id="convertPro_${proList.proNo}" name="convertCurrentProNo" onclick="convertProject(${proList.proNo})" class="dropdown-item" type="button" value="${proList.proNo}">
 													<c:out value="${proList.proTitle}"/>
 												</button>
-
-
-
 											</c:forEach>
 
 
@@ -1216,8 +1263,8 @@ margin:auto;
 
 									</div>
 								
-										<div class="col-md-12">
-											<button id="writeSubmitBtn" style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="submit">저장</button>
+										<div class="col-md-12">									
+											<button id="writeSubmitBtn" style="float:right; background-color: #CFF09E; border: none;" class="btn btn-primary" type="button" onclick="allSaveForm();">저장</button>
 										
 										</div>
 								

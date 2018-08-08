@@ -181,7 +181,6 @@ public class WriteControllerImpl implements WriteController {
 			if(startDate != null)
 			{
 				
-				ArrayList<Schedule> schList = new ArrayList<Schedule>();
 				Schedule sche = new Schedule();
 				int scheResult = 0;
 				for(int i=0; i<startDate.length; i++)
@@ -202,8 +201,6 @@ public class WriteControllerImpl implements WriteController {
 				{
 					System.out.println("스케쥴 성공");
 				}
-				
-				
 			}
 			else {
 				
@@ -234,7 +231,6 @@ public class WriteControllerImpl implements WriteController {
 				
 			}
 			
-			
 			if(calledPartner !=  null)
 			{
 				CallPost cp = new CallPost();
@@ -242,26 +238,16 @@ public class WriteControllerImpl implements WriteController {
 				for(int i=0; i<calledPartner.length; i++)
 				{
 					cp.setCallMember(calledPartner[i]);
-					
 					cpResult = writeService.insertCallMember(cp);
 					if(cpResult >0)
 					{
 						System.out.println("파트너 불러오기 성공!");
 					}
-					
-					
 				}
-				
-				
 			}
-			
-			
-			
-			
-			
+
 		}
-		
-		
+
 		System.out.println(post.getPostTag());
 		
 		System.out.println(currentProNo+"현재 프로젝트 번호");
@@ -272,6 +258,33 @@ public class WriteControllerImpl implements WriteController {
 		
 	}
 	
+	@RequestMapping(value="/tempInsertPost.do")
+	public void tempInsertPost(HttpServletRequest request,@RequestParam int currentProNo, 
+			@RequestParam(value="writeTitle",required=true) String writeTitle, 
+			@RequestParam(value="inputContents",required=true) String inputContents,
+			@RequestParam(value="hashResults",required=false) String[] hashResults,
+			@RequestParam(value="startDate",required=false) Date[] startDate,
+			@RequestParam(value="endDate",required=false) Date[] endDate,
+			@RequestParam(value="scheTitle",required=false) String[] scheTitle,
+			@RequestParam(value="rpPostNo", required=false) int[] rpPostNo,
+			@RequestParam(value="rpPostProNo", required=false) int[] rpPostProNo,
+			@RequestParam(value="calledPartner", required=false) int[] calledPartner,
+			@RequestParam(value="files", required=false)MultipartFile[] files, HttpSession session ) {
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+
 	@RequestMapping(value="/convertProName.do")
 	public ModelAndView convertProName(HttpServletResponse response, @RequestParam int proNo, HttpSession session) throws JsonIOException, IOException {
 		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();

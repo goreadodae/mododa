@@ -68,7 +68,7 @@ public class WriteServiceImpl implements WriteService{
 	}
 
 	public int uploadFile(MultipartFile[] files, Upload upload)  {
-		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거 넘 어렵
+		String root_path = servletContext.getRealPath("/webapp");
 		root_path = root_path.replaceFirst("webapp", "");
 		String attach_path = "/resources/upload/write/";
 		String uploadPath = root_path+attach_path;
@@ -98,7 +98,7 @@ public class WriteServiceImpl implements WriteService{
 				//3. for문으로 확장자명 비교에 따라 이미지/파일  구분 
 				for(int i=0; i<length; i++)
 				{
-					if(subject.equals(extension[i]))
+					if(subject.equalsIgnoreCase(extension[i]))
 					{
 						// 확장자 명이 포함되면 중단
 						exResult="image";
@@ -123,19 +123,16 @@ public class WriteServiceImpl implements WriteService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("foreach 서비스"+files);
+			
 		}
 		return result;
 		
 	}
 
 	public ArrayList<ProjectMember> projectMember(Project pj) {
+			
+	return writeDAO.projectMember(sqlSession,pj);
 		
-		
-		
-		return writeDAO.projectMember(sqlSession,pj);
-		
-	
 	}
 
 	public String myPicture(int memberNo) {
@@ -159,11 +156,7 @@ public class WriteServiceImpl implements WriteService{
 
 	public int insertSchedules(Schedule sche) {
 		int result =0;
-
-			result =  writeDAO.insertSchedules(sqlSession,sche); 
-		
-		
-		
+		result =  writeDAO.insertSchedules(sqlSession,sche); 
 		return result;
 	}
 
