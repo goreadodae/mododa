@@ -136,19 +136,8 @@ var scheduleNo = 0;
 			         type : "post",
 			         success : function(data) {
 			        	 
-			        	 var events = [];							
-						 var color = ['FF5F2E','#CFF09E','#339966','#F361DC','#6B66FF']; 	
-						 var proColor=[];
-						 var practiceColor;
-						 
-						for(var i=0;i<data.length;i++){
-							 for(var j=0;j<data.length;j++){					 
-								 if(data[i].proNo==data[j].proNo){
-									 proColor[i]=data[j].proNo;	
-								 }
-							 }
-						}
-							
+			        	 var events = [];								
+	
 							for(var i=0;i<data.length;i++){	
 											
 								var start = data[i].stStartDate;
@@ -623,7 +612,7 @@ var scheduleNo = 0;
 				        			 title:data[i].scTitle,  
 				        			 start : data[i].stStartDate,
 					        		 end : endDate,
-					        		 color : 'FF5F2E',
+					        		 color : '#6B66FF',
 					        		 url: data[i].scheduleNo};
 
 				     	    $('#calendar').fullCalendar('renderEvent', event, true);
@@ -737,6 +726,12 @@ div {
 	cursor:pointer;	
 	}
 	
+	#postList{
+		z-index: 5;
+	}
+	.fc-month-button.fc-button.fc-state-default.fc-corner-right{
+		z-index: 0;
+	}
 
 </style>
 
