@@ -19,7 +19,7 @@
         (select member_picture from member where member_no=todo_member) as todoMemberPicture,
         (select member_picture from member where member_no=todo_writer) as todoWriterPicture
 		from todo
-		where (todo_writer = #{memberNo} or todo_member = #{memberNo})
+		where todo_pro_no in (select pro_no from work_on where (member_no = #{memberNo} or member_no = #{memberNo}) and invite_yn='Y')
         order by 1 desc
 	</select>
 	
@@ -37,19 +37,20 @@
 		dc_confirm_date as dcConfirmDate,
         (select post_title from post where post_no = dc_post_no) as dcPostTitle,
         (select member_name from member where member_no=dc_writer) as dcWriterName,
-        (select member_name from member where member_no=dc_maker) as dcMakerName
+        (select member_name from member where member_no=dc_maker) as dcMakerName,
+        (select member_picture from member where member_no=dc_maker) as dcMakerPicture,
+        (select member_picture from member where member_no=dc_writer) as dcWriterPicture
 		from decision
-        where (dc_writer = #{memberNo} or dc_maker = #{memberNo})
+        where dc_post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
 		order by 1 desc
 	</select>
 	
 	<select id="listProject" resultType="project">
 		select
-		w.pro_no as proNo,
-		p.pro_title as proTitle
-		from work_on w, project p
-        where w.pro_no = p.PRO_NO
-		and member_no = #{memberNo}
+		pro_no as proNo,
+		pro_title as proTitle
+		from project
+        where pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y')
 		order by 1
 	</select>
 	
@@ -63,7 +64,7 @@
 		upload_name as fileName,
 		upload_path as uploadPath
 		from upload
-		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
+		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
 		and upload_subject='image'
 		order by 1 desc
 	</select>
@@ -79,7 +80,7 @@
 		upload_path as uploadPath,
         (select post_title from post where post_no = u.post_no) as postTitle
 		from upload u
-		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo}))
+		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
 		and upload_subject='file'
 		order by 1 desc
 	</select>
@@ -100,11 +101,10 @@
 	
 	<select id="selectMemberList" resultType="member">
 		select
-		w.member_no as memberNo,
+		member_no as memberNo,
         member_name as memberName
-		from work_on w, member m
-        where w.member_no = m.member_no
-		and pro_no = #{proNo}
+		from member
+        where member_no in (select member_no from work_on where pro_no = #{memberNo} and invite_yn='Y')
 		order by 1
 	</select>
 	
@@ -139,8 +139,8 @@
         (select pro_title from project where pro_no = todo_pro_no) as todoProjectName,
         (select member_picture from member where member_no=todo_member) as todoMemberPicture,
         (select member_picture from member where member_no=todo_writer) as todoWriterPicture
-      from todo
-      where todo_member = #{memberNo}
+	    from todo
+	    where todo_member = #{memberNo}
         order by 1 desc
 	</select>
 	
@@ -180,7 +180,9 @@
 		dc_confirm_date as dcConfirmDate,
         (select post_title from post where post_no = dc_post_no) as dcPostTitle,
         (select member_name from member where member_no=dc_writer) as dcWriterName,
-        (select member_name from member where member_no=dc_maker) as dcMakerName
+        (select member_name from member where member_no=dc_maker) as dcMakerName,
+        (select member_picture from member where member_no=dc_maker) as dcMakerPicture,
+        (select member_picture from member where member_no=dc_writer) as dcWriterPicture
 		from decision
         where dc_maker = #{memberNo}
 		order by 1 desc
@@ -200,7 +202,9 @@
 		dc_confirm_date as dcConfirmDate,
         (select post_title from post where post_no = dc_post_no) as dcPostTitle,
         (select member_name from member where member_no=dc_writer) as dcWriterName,
-        (select member_name from member where member_no=dc_maker) as dcMakerName
+        (select member_name from member where member_no=dc_maker) as dcMakerName,
+        (select member_picture from member where member_no=dc_maker) as dcMakerPicture,
+        (select member_picture from member where member_no=dc_writer) as dcWriterPicture
 		from decision
         where dc_writer = #{memberNo}
 		order by 1 desc

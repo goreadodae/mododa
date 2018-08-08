@@ -24,6 +24,14 @@ div {
 	padding: 0px;
 }
 
+/* 프로필 이미지 */
+#profileImg {
+	margin-bottom: 3px;
+	height: 20px;
+	border: 1px solid white;
+	border-radius: 100px;
+}
+
 /* 의사결정 등록 */
 #modal-decide {
 	background-color: #fefefe;
@@ -213,20 +221,31 @@ div {
 					style="color: #339966;">&nbsp;&nbsp;의사 결정하기</span> <img
 					src="../resources/images/post/close.png" onclick="close_decide(${d.dcNo});"
 					style="float: right; height: 20px;" /><br>
-				<br> <input type="text" id="decisionComment_${d.dcNo }" style="width:100%; height:50px;" placeholder="의사결정 의견을 입력해 주세요." /><br>
-				<br>
-				<div id="decideYes_${d.dcNo }" onclick="decideYes(${d.dcNo});" style="color: #00837a; font-size: 30px; font-weight: 550; display: inline-block;">
-					<img src="../resources/images/post/yes.png" class="decideIcon" />
-					승인
-				</div>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<div id="decideNo_${d.dcNo }" onclick="decideNo(${d.dcNo});" style="color: #888888;font-size: 30px; font-weight: 550; display: inline-block;">
-					<img src="../resources/images/post/nooff.png" class="decideIcon" />
-					반려
-				</div>
-				<br>
-				<button class="insertButton2" onclick="updateDecision(${d.dcNo});"
-					style="float: right; margin-top: 10px;">결정</button>
+				<br> <input type="text" id="decisionComment_${d.dcNo }" value="${d.dcComment }" style="width:100%; height:50px;" placeholder="의사결정 의견을 입력해 주세요." /><br>
+				
+				
+				<c:choose>
+					<c:when test="${d.dcYn eq 'N'.charAt(0) }">
+						<br>
+						<div id="decideYes_${d.dcNo }" onclick="decideYes(${d.dcNo});" style="color: #00837a; font-size: 30px; font-weight: 550; display: inline-block;">
+							<img src="../resources/images/post/yes.png" class="decideIcon" />
+							승인
+						</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<div id="decideNo_${d.dcNo }" onclick="decideNo(${d.dcNo});" style="color: #888888;font-size: 30px; font-weight: 550; display: inline-block;">
+							<img src="../resources/images/post/nooff.png" class="decideIcon" />
+							반려
+						</div>
+						<br>
+					</c:when>
+				</c:choose>
+				
+				
+				<c:choose>
+					<c:when test="${d.dcYn eq 'N'.charAt(0) }">
+						<button class="insertButton2" id='decideBtn_${d.dcNo}' onclick="updateDecision(${d.dcNo});" style="float: right; margin-top: 10px;">결정</button>
+					</c:when>
+				</c:choose>
 			</div>
 		</div>
 		<!-- Modal 내용 끝 -->
@@ -259,25 +278,22 @@ div {
 				}
 				else {
 					for(i=0; i<data.length; i++) {
-						str += "<tr id='dcEach_"+data[i].dcNo+"'>";
+						str += "<tr id='dcEach_"+data[i].dcNo+"' onclick='open_decide("+data[i].dcNo+");'>";
 						
 						// 의사결정 안한 경우(대기)
 						if(data[i].dcYn == 'N') {
 							str +=
-								"<td width='5%'>"+
-									"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div></div><br>"+
+								"<td width='10%'>"+
+								"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div></div>"+
 								"</td>"+
-								"<td id='dcContent_"+data[i].dcNo+"' width='65%'>"+
-								data[i].dcContent+
+								"<td id='dcContent_"+data[i].dcNo+"' width='60%'>"+
+								data[i].dcContent+"<div id='dcComment_"+data[i].dcNo+"'></div>"+
 								"</td>"+
-								"<td width='25%'>"+
-									data[i].dcWriterName + "▶" + data[i].dcMakerName+
-								"</td>"+
-								"<td width='3%'>"+
-								"<button type='button'style='margin:1px;' id='decideBtn_"+data[i].dcNo+"' class='btn btn-outline-primary btn-sm' onclick='open_decide("+data[i].dcNo+");'>결정</button>"+
-								"</td>"+
-								"<td width='2%'>"+
-									"<button type='button' align='right' style='float:left; margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button>"+
+								"<td width='30%'>"+
+								"<img id='profileImg' src='../resources/upload/member/" + data[i].dcWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+								data[i].dcWriterName +" ▶ "+ 
+								"<img id='profileImg' src='../resources/upload/member/" + data[i].dcMakerPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+								data[i].dcMakerName+
 								"</td>";
 						}
 						else {
@@ -285,18 +301,24 @@ div {
 							if(data[i].dcDecision == 'N') {
 								str +=
 									"<td><div id='decisionCancel'>반려</div></td>"+
-									"<td>"+data[i].dcComment+"</td>"+
-									"<td>"+data[i].dcWriterName + "▶" + data[i].dcMakerName+"</td>"
-									"<td rowspan='2'><button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button></td>";
+									"<td>"+data[i].dcContent+"<div class='dropdown-divider'></div>"+data[i].dcComment+"</td>"+
+									"<td>"+
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].dcWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].dcWriterName +" ▶ "+ 
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].dcMakerPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].dcMakerName;
+									
 							}
 							// 승인인 경우
 							else if(data[i].dcDecision == 'Y'){
 								str +=
 									"<td><div id='decisionApproval'>승인</div></td>"+
-									"<td>"+data[i].dcComment+"</td>"+
-									"<td>"+data[i].dcWriterName + "▶" + data[i].dcMakerName+"</td>"
-									"<td rowspan='2'><button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>X</button></td>";
-									
+									"<td>"+data[i].dcContent+"<div class='dropdown-divider'></div>"+data[i].dcComment+"</td>"+
+									"<td>"+
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].dcWriterPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].dcWriterName +" ▶ "+ 
+									"<img id='profileImg' src='../resources/upload/member/" + data[i].dcMakerPicture + "' onerror=\"this.src='../resources/upload/member/whale.png'\" />"+
+									data[i].dcMakerName;
 							}
 						}
 						str += "</tr>";
@@ -314,7 +336,16 @@ div {
 	
 	//의사결정하기 모달 open
 	function open_decide(id) {
-		$('#decideModal_'+id).show();
+		var dcMaker = $('#dcMaker_'+id).val();
+		if(user == dcMaker) {
+			$('#decideModal_'+id).show();
+		}
+		else {
+			$('#failedAlertMessage').text('의사결정 권한이 없습니다.');
+			$('#failedAlert').show('slow');
+			setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
+		}
+		
 	}
 
 	//의사결정하기 모달 close
@@ -370,22 +401,27 @@ div {
 				success : function(data) {
 					close_decide(id);
 					$('#changeDc_'+id).find().remove();
+					$('#decideBtn_'+id).remove();
+					$('#decideYes_'+id).remove();
+					$('#decideNo_'+id).remove();
 					if(decideResult == 'N') {
 						$('#changeDc_'+id).html("<div id='decisionCancel'>반려</div>");
 						if(dcComment == "") {
-							$('#dcContent_'+id).html("반려합니다.");
+							$('#dcComment_'+id).html("<div class='dropdown-divider'></div>반려합니다.");
+							$('#decisionComment_'+id).val("반려합니다.");
 						}
 						else {
-							$('#dcContent_'+id).html(dcContent);
+							$('#dcComment_'+id).html("<div class='dropdown-divider'></div>"+dcComment);
 						}
 					}
 					else {
 						$('#changeDc_'+id).html("<div id='decisionApproval'>승인</div>");
 						if(dcComment == "") {
-							$('#dcContent_'+id).html("승인합니다.");
+							$('#dcComment_'+id).html("<div class='dropdown-divider'></div>승인합니다.");
+							$('#decisionComment_'+id).val("승인합니다.");
 						}
 						else {
-							$('#dcContent_'+id).html(dcContent);
+							$('#dcComment_'+id).html("<div class='dropdown-divider'></div>"+dcComment);
 						}
 					}
 					$('#decideDcBtn_'+id).remove();
