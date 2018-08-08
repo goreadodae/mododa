@@ -335,7 +335,7 @@
     <header class="masthead bg-primary text-white text-center" style="padding-bottom:1%;">
       <div class="container">
         <img class="img-fluid mb-5 d-block mx-auto" src="../resources/images/layout-img/main_logo_rec.png" alt="" id="mododaImg" width="40%">
-        <h1 class="text-uppercase mb-0">1:1 QNA 글쓰기</h1>
+        <h1 class="text-uppercase mb-0">1:1 Q&A 글쓰기</h1>
         <hr class="star-light" style="max-width:45rem;">
       </div>
     </header>
@@ -346,13 +346,13 @@
 <body>
 	<div class="ui container">
 	<form action="/qnaWrite.do">
-			제목:<input type="text" size=90 name="queTitle" /><br>
-			<textarea rows="20" cols="100" name="queContents"
+			제목:<input type="text" class="form-control" size=90 name="queTitle" /><br>
+			<textarea class="form-control" rows="20" cols="100" name="queContents"
 				style="resize: none;"></textarea>
-			<br> <input type="submit" class="btn btn-success" value="작성하기">
+			<br> <input type="submit" class="btn btn-success" value="작성하기"> <br><br>
 		</form>
 	</div>
-		<button type="button" onclick="back();">목록</button>
+		
 </body>
 
 <!-- Footer -->

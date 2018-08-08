@@ -16,7 +16,8 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
@@ -70,8 +71,8 @@ div {
 			<!-- 이미지 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" onclick="imageCategory(1);" class="btn btn-outline-success btn-sm">전체 이미지</button></td>
-					<td width="15%"><button type="button" style="width:99%" onclick="imageCategory(2);" class="btn btn-outline-success btn-sm">내 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="imageCategory(1);" class="btn btn-light btn-sm">전체 이미지</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="imageCategory(2);" class="btn btn-light btn-sm">내 이미지</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>
@@ -79,18 +80,9 @@ div {
 			<!-- 이미지 메뉴 끝 -->
 				
 			<!-- 이미지 내용 -->
-			<div id="imageContainer">
+			<div id="imageContainer" style="overflow-y:auto; height:77vh;">
 				<div id="imageDiv">
-					<%-- <c:forEach items="${listImage }" var="i">
-					<div class="card" style="width: 15rem; height:15rem; float:left;">
-						<img class="card-img-top" src="${i.uploadPath }" style="width:100%; height:15rem;alt="Card image cap">
-						<div class="card-body">
-						<h5 class="card-title">${i.fileName }</h5>
-						<p class="card-text">${i.uploadDate }</p>
-						<a href="/fileDownload.do?uploadPath=${i.uploadPath }&fileName=${i.fileName}" class="btn btn-primary">다운로드</a>
-						</div>
-					</div>
-					</c:forEach> --%>
+					
 				</div>
 			</div>
 			<!-- 이미지 내용 끝 -->
@@ -128,14 +120,15 @@ function imageCategory(num) {
 				var str = "";
 				
 				for(i=0; i<data.length; i++) {
+					console.log(data[i].uploadPath);
 					str += 
 						"<div id='imgEach_"+data[i].uploadNo+"' style='float:left;'>"+
-						"<div class='card' style='width: 200px; margin:2px;'>"+
-						  "<img class='card-img-top' src='"+data[i].uploadPath+"' width='200px' height='200px' >"+
+						"<div class='card' style='width: 180px; margin:2px;'>"+
+						  "<img class='card-img-top' src='/resources/upload/write/"+data[i].uploadPath+"' width='180px' height='180px' >"+
 						  "<div class='card-body'>"+
 						    "<div align='right'>"+
-						    "<a href='/fileDownload.do?uploadNo="+data[i].uploadNo+"'>다운로드</a>&nbsp;&nbsp;"+
-						    "<a href='#' onclick='deleteUpload("+data[i].uploadNo+");'>삭제</a>"+	
+						    "<button class='btn btn-outline-success btn-sm' onclick='imageDownload("+data[i].uploadNo+")'>다운로드</button>&nbsp;"+
+						    "<button class='btn btn-outline-danger btn-sm' onclick='deleteUpload("+data[i].uploadNo+");'>삭제</button>"+	
 						  "</div></div>"+
 						"</div></div>";
 				}
@@ -162,13 +155,22 @@ function deleteUpload(id) {
 		type:"POST",
 		data : {uploadNo : id},
 		success : function(data) {
-			alert("이미지 삭제 완료");
 			$('#imgEach_'+id).remove();
+			
+			$('#successAlertMessage').text('이미지가 삭제되었습니다.');
+			$('#successAlert').show('slow');
+			setTimeout(function () { $('#successAlert').hide('slow');}, 1500); 
 		},
 		error : function(data) {
-			console.log("오류");
+			$('#failedAlertMessage').text('이미지 삭제에 실패하였습니다.');
+			$('#failedAlert').show('slow');
+			setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 		}
 	});
+}
+
+function imageDownload(id) {
+	location.href="fileDownload.do?uploadNo="+id;
 }
 
 </script>

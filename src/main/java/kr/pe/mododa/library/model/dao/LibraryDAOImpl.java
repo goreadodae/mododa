@@ -136,4 +136,9 @@ public class LibraryDAOImpl implements LibraryDAO{
 		return sqlSession.selectOne("library.uploadPath", uploadNo);
 	}
 
+	public ArrayList<Decision> listDcWait(SqlSessionTemplate sqlSession, int memberNo) {
+		List listDcWait = sqlSession.selectList("library.listDcWait", memberNo);
+		return (ArrayList<Decision>)listDcWait;
+	}
+
 }

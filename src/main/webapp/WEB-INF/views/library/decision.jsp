@@ -16,7 +16,8 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
@@ -120,12 +121,8 @@ div {
 }
 
 .eachDecision{
-	background-color : #F0FFF0;
 	width : 100%;
-	border-radius: 5px;
 	padding : 15px;
-	margin-bottom : 15px;
-	border : 1px solid #C8FAC8;
 	display: inline-block;
 }
 
@@ -178,9 +175,9 @@ div {
 			<!-- 의사결정 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(1);">전체 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(2);">받은 의사결정</button></td>
-					<td width="15%"><button type="button" style="width:99%" class="btn btn-outline-success btn-sm" onclick="dcCategory(3);">요청한 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="dcCategory(1);">전체 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="dcCategory(2);">받은 의사결정</button></td>
+					<td width="15%"><button type="button" style="width:99%" class="btn btn-light btn-sm" onclick="dcCategory(3);">요청한 의사결정</button></td>
 					<td width="55%"></td>
 				</tr>
 			</table>
@@ -188,65 +185,12 @@ div {
 			<!-- 의사결정 메뉴 끝 -->
 			
 			<!-- 의사결정 내용 -->
-			<div id="dcContainer">
+			<div id="dcContainer" style="overflow-y:auto; height:77vh;">
 			<div id="dcDiv">
-				<%-- <c:forEach items="${listDecision }" var="d">
-				<c:choose>
-					<c:when test="${d.dcYn eq 'N'.charAt(0) }">
-						<div class='eachDecision'>
-							<div id='postDecision_${d.dcNo }'>
-								<span class='memberIdForDecision'>${d.dcWriterName }</span>님의 요청 : ${d.dcContent }<br>
-								<div id='decisionWait'>대기</div> <span class='memberIdForDecision'>${d.dcMakerName }</span>님의 결정 기다리는 중 <br>
-							</div>
-							<div id='decideForDecision' onclick='open_decide(${d.dcNo});'><img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</div>
-							<div id='deleteForDecision' onclick='deleteDecision(${d.dcNo});'>
-								<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기
-							</div>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<c:choose>
-						<c:when test="${d.dcDecision eq 'N'.charAt(0) }">
-							<div class='eachDecision'>
-								<div id='postDecision_${d.dcNo }'>
-									<span class='memberIdForDecision'>${d.dcWriterName }</span>님의 요청 : ${d.dcContent }<br>
-									<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>${d.dcMakerName }</span>님의 결정 : ${d.dcComment } <br>
-								</div>
-								<div id='deleteForDecision' onclick='deleteDecision(${d.dcNo});'>
-									<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기
-								</div>
-							</div>
-						</c:when>
-						<c:when test="${d.dcDecision eq 'Y'.charAt(0) }">
-							<div class='eachDecision'>
-								<div id='postDecision_${d.dcNo }'>
-									<span class='memberIdForDecision'>${d.dcWriterName }</span>님의 요청 : ${d.dcContent }<br>
-									<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>${d.dcMakerName }</span>님의 결정 : ${d.dcComment } <br>
-								</div>
-								<c:choose>
-									<c:when test="${d.dcMaker == sessionScope.memberNo}">
-										<div id='deleteForDecision' onclick='deleteDecision(${d.dcNo});'>
-											<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기
-										</div>
-									</c:when>
-								</c:choose>
-								<div id='decideForDecision' onclick='open_decide(${d.dcNo});'>
-									<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기
-								</div>
-							</div>
-						</c:when>
-						</c:choose>
-					</c:otherwise>
-				</c:choose>
-				</c:forEach> --%>
+				
 			</div>
 			</div>
 			<!-- 의사결정 내용 끝 -->
-			
-			
-		
-			
-			
 			
 		</div>
 	</div>
@@ -314,69 +258,60 @@ div {
 				}
 				
 				for(i=0; i<data.length; i++) {
-					if(data[i].dcYn == 'N') {
+					if(data[i].dcYn == 'N') { // 의사결정 안한 경우 (대기)
 						str += 
-							"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
-							"<div id='postDecision_"+data[i].dcNo+"'><input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
+							"<div id='dcEach_"+data[i].dcNo+"'>"+
+							"<div class='eachDecision'>"+
+							"<div id='postDecision_"+data[i].dcNo+"'>"+
+							"<input type='hidden' id='dcMakerName_"+data[i].dcNo+"' value='"+data[i].dcMakerName+"' />"+
 							"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div> <br>"+
-							"</div>";
+							"<div id='changeDc_"+data[i].dcNo+"'><div id='decisionWait'>대기</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 기다리는 중</div><br>"+
+							"</div><div align='right'>";
 						
-							if(user == data[i].dcMaker) {
-								str += 
-									"<div id='decideDcBtn_"+data[i].dcNo+"'><button type='button' class='btn btn-primary btn-sm' id='decideForDecision' onclick='open_decide("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/check.png' style='height:15px; margin-bottom:5px;'>결정하기</button></div>";
-									
-							}
+						if(user == data[i].dcMaker) { // 의사결정자인 경우
+							str += 
+								"<div id='decideDcBtn_"+data[i].dcNo+"'>"+
+								"<button type='button'style='margin:1px;' class='btn btn-outline-primary btn-sm' onclick='open_decide("+data[i].dcNo+");'>결정하기</button>"+
+								"</div>";		
+						}
 							
-							if((user == data[i].dcWriter || user == data[i].dcMaker) || (user == data[i].dcWriter && user == data[i].dcMaker)) {
-								str +=
-									"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-									"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>"+
-									"</div>";
-							}
-							
-						str += "</div>";	
+						if(user == data[i].dcWriter || user == data[i].dcMaker) { // 의사결정자이거나 작성자인 경우
+							str +=
+								"<button type='button' style='margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>삭제하기</button>"+
+								"</div>";
+						}
+						
+						str += "</div>";
 								
 					}
 					else {
-						if(data[i].dcDecision == 'N') {
+						if(data[i].dcDecision == 'N') { // 반려인 경우
 							str += 
 								"<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
+								"<div id='decisionCancel'>반려</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br><br>"+
 								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-										
-								}
-								
-								str += "</div></div></div>";
-							
 						}
-						else if(data[i].dcDecision == 'Y') {
-							str += "<div id='dcEach_"+data[i].dcNo+"'><div class='eachDecision'>"+
+						else if(data[i].dcDecision == 'Y') { // 승인인 경우
+							str += 
+								"<div id='dcEach_"+data[i].dcNo+"'>"+
+								"<div class='eachDecision'>"+
 								"<div id='postDecision_"+data[i].dcNo+"'>"+
 								"<span class='memberIdForDecision'>"+data[i].dcWriterName +"</span>님의 요청 : "+data[i].dcContent +"<br>"+
-								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br>"+
+								"<div id='decisionApproval'>승인</div> <span class='memberIdForDecision'>"+data[i].dcMakerName +"</span>님의 결정 : "+data[i].dcComment +" <br><br>"+
 								"</div>";
-								
-								if(user == data[i].dcMaker) {
-									str += 
-										"<button type='button' class='btn btn-primary btn-sm' id='deleteForDecision' onclick='deleteDecision("+data[i].dcNo+");'>"+
-										"<img src='../resources/images/post/delete.png' style='height:15px; margin-bottom:5px;'>삭제하기</button>";
-								}
-								
-								str += "</div></div></div>";
-							
 						}
+						
+						if(user == data[i].dcMaker) {
+							str += 
+								"<button type='button' align='right' style='float:left; margin:1px;' class='btn btn-outline-danger btn-sm' onclick='deleteDecision("+data[i].dcNo+");'>삭제하기</button>";
+						}
+						
+						str += "</div>";
 					}
 					
-					
+					str += "<div class='dropdown-divider'></div></div>";
 				}
 				$("#dcDiv").append(str);
 			},
@@ -465,15 +400,21 @@ div {
 					}
 					$('#decideDcBtn_'+id).remove();
 					
-					alert("의사결정 완료");
+					$('#successAlertMessage').text('의사결정이 완료되었습니다.');
+					$('#successAlert').show('slow');
+					setTimeout(function () { $('#successAlert').hide('slow');}, 1500);
 				},
 				error : function(data) {
-					console.log("updateDecision 실패");
+					$('#failedAlertMessage').text('의사결정에 실패하였습니다.');
+					$('#failedAlert').show('slow');
+					setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);  
 				}
 			});
 		}
 		else {
-			alert("의사결정 권한이 없습니다.");
+			$('#failedAlertMessage').text('의사결정 권한이 없습니다.');
+			$('#failedAlert').show('slow');
+			setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);  
 		}
 		
 		
@@ -488,10 +429,15 @@ div {
 			},
 			success : function(data) {
 				$('#dcEach_'+id).remove();
-				alert("의사결정 삭제 완료");
+				
+				$('#successAlertMessage').text('의사결정이 삭제되었습니다.');
+				$('#successAlert').show('slow');
+				setTimeout(function () { $('#successAlert').hide('slow');}, 1500); 
 			},
 			error : function(data) {
-				console.log("deleteDecision 실패");
+				$('#failedAlertMessage').text('의사결정에 실패하였습니다.');
+				$('#failedAlert').show('slow');
+				setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 			}
 		});
 	}

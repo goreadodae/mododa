@@ -14,6 +14,7 @@
 <style>
 body {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	height: 100%;
 }
 div {

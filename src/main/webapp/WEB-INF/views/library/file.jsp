@@ -16,7 +16,8 @@
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
@@ -70,8 +71,8 @@ div {
 			<!-- 파일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
-					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(1);" class="btn btn-outline-success btn-sm">전체 파일</button></td>
-					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(2);" class="btn btn-outline-success btn-sm">내 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(1);" class="btn btn-light btn-sm">전체 파일</button></td>
+					<td width="15%"><button type="button" style="width:99%" onclick="fileCategory(2);" class="btn btn-light btn-sm">내 파일</button></td>
 					<td width="70%"></td>
 				</tr>
 			</table>
@@ -79,27 +80,12 @@ div {
 			<!-- 파일 메뉴 끝 -->
 			
 			<!-- 파일 내용 -->
-			<div id="fileContainer">
+			<div id="fileContainer" style="overflow-y:auto; height:77vh;">
 				<div id="fileDiv">
-					<%-- <c:forEach items="${listFile }" var="f">
-					<div id="fileEach_${f.uploadNo }">
-					<div class="card" style="width: 18rem;">
-	  				<div class="card-body">
-	    			<h5 class="card-title">${f.fileName }</h5>
-	    			<h6 class="card-subtitle mb-2 text-muted">${f.postTitle }</h6>
-	    			<p class="card-text">${f.uploadDate }</p>
-	    			<a href="/fileDownload.do?uploadPath=${f.uploadPath }&fileName=${f.fileName}" class="card-link">다운로드</a>
-	  				</div>
-					</div>				
-					</div>
-					</c:forEach> --%>
+					
 				</div>
-				
-			</div>	
-			
+			</div>
 			<!-- 파일 내용 끝 -->
-			
-			
 			
 		</div>
 	</div>
@@ -137,14 +123,16 @@ function fileCategory(num) {
 				for(var i=0; i<data.length; i++) {
 					str +=
 						"<div id='fileEach_"+data[i].uploadNo+"' style='float:left;'>"+
-						"<div class='card' style='width: 270px; margin:2px;'>"+
+						"<div class='card' style='width: 310px; margin:2px;'>"+
 		  				"<div class='card-body'>"+
-		    			"<div><b>"+data[i].fileName+"</b></div>"+
-		    			"<div font-size='50%' font-color='grey'>"+data[i].postTitle+"</div>"+
-		    			"<div font-size='50%'>"+data[i].uploadDate+"</div>"+
+		    			"<h6>"+data[i].fileName+"</h6><br>"+
+		    			"<div style='font-size:70%; float:left;'>"+
+		    			"<h8>"+data[i].postTitle+"</h8><br>"+
+		    			"<h8>"+data[i].uploadDate+"</h8>"+
+		    			"</div>"+
 		    			"<div align='right'>"+
-		    			"<a href='/fileDownload.do?uploadNo="+data[i].uploadNo+"' class='card-link'>다운로드</a>&nbsp;&nbsp;"+
-		    			"<a src='#' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</a>"+
+		    			"<button class='btn btn-outline-success btn-sm' onclick='fileDownload("+data[i].uploadNo+")'>다운로드</button>&nbsp;"+
+		    			"<button class='btn btn-outline-danger btn-sm' onclick='deleteUpload("+data[i].uploadNo+")'>삭제</button>"+
 		    			"</div></div>"+
 						"</div>"+		
 						"</div>";
@@ -167,15 +155,23 @@ function deleteUpload(id) {
 		type:"POST",
 		data : {uploadNo : id},
 		success : function(data) {
-			alert("파일 삭제 완료");
 			$('#fileEach_'+id).remove();
+			
+			$('#successAlertMessage').text('파일 삭제가 완료되었습니다.');
+			$('#successAlert').show('slow');
+			setTimeout(function () { $('#successAlert').hide('slow');}, 1500); 
 		},
 		error : function(data) {
-			console.log("오류");
+			$('#failedAlertMessage').text('파일 삭제에 실패하였습니다.');
+			$('#failedAlert').show('slow');
+			setTimeout(function () { $('#failedAlert').hide('slow');}, 1500);
 		}
 	});
 }
 
+function fileDownload(id){
+	location.href="/fileDownload.do?uploadNo="+id;
+}
 
 
 
