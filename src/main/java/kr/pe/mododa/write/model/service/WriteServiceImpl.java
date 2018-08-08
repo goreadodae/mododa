@@ -36,11 +36,11 @@ public class WriteServiceImpl implements WriteService{
 	@Autowired
 	private ServletContext servletContext;
 
-	public ArrayList<Project> autoComplete(int memberNo) {
+	/*public ArrayList<Project> autoComplete(int memberNo) {
 		return (ArrayList)writeDAO.autoComplete(sqlSession,memberNo);
 		
 		
-	}
+	}*/
 
 	public String currentProName(Project pj) {
 		

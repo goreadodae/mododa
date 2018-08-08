@@ -22,9 +22,9 @@ import kr.pe.mododa.write.model.vo.RelationWriting;
 @Repository("writeDAO")
 public class WriteDAOImpl implements WriteDAO {
 
-	public ArrayList<Project> autoComplete(SqlSessionTemplate sqlSession, int memberNo) {
+/*	public ArrayList<Project> autoComplete(SqlSessionTemplate sqlSession, int memberNo) {
 		return (ArrayList)sqlSession.selectList("write.forSerachProjectNames",memberNo);
-	}
+	}*/
 
 	public String currentProName(SqlSessionTemplate sqlSession, Project pj) {
 		

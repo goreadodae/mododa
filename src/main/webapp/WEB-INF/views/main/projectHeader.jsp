@@ -165,6 +165,10 @@ li[id^="MobilePlus_"] a {
 	font-size: 15px;
 }
 
+#banner>a{
+	color: white;
+}
+
 .topbar {
 	height: 50px;
 	border-bottom: 1px solid #c8c8c8;
@@ -515,7 +519,9 @@ a:hover{
 			<!-- 팝업창 -->
 			<div class="row">
 				<div class="col-12" id="banner">
+					<a href="/noticeList.do">
 					모두다에 대해 더 알고싶다면 여기를 클릭해 주세요.
+					</a>
 				</div>
 			</div>
 
@@ -650,6 +656,8 @@ a:hover{
                <img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
             <li class="list-group-item" id="mobileCalendarAll">
                <img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+            <li class="list-group-item" id="mobileLibraryAll">
+               <img src="../resources/images/layout-img/library.png" class="icon">자료실</li>
          </ul>
 
          <ul>
@@ -672,7 +680,7 @@ a:hover{
             
 
             <!-- 내가 포함된 프로젝트 -->
-            <c:forEach items="${projectList}" var="projectList" end="5">
+            <c:forEach items="${projectList}" var="projectList">
             
 
                <li class="list-group-item MobileProjectMain openModal" value="${projectList.proNo}">
@@ -698,27 +706,6 @@ a:hover{
 
             
             </c:forEach>
-            
-            <li class="list-group-item" id="mobileMoreProject">
-            <img src="../resources/images/project/more-symbol.png" class="icon"> 프로젝트 더보기</li>
-           	
-           	<!-- 더 보기 -->
-           	<li class="list-group-item" id="MobileProjectPlus openModal" style="display:none;" >
-            <img src="../resources/images/project/flag-marker.png" class="icon"><span></span></li>
-            <!-- 하위메뉴 -->
-               <li class="list-group-item" id="MobilePlus_post">
-               <a class="dropdown-item mobileProPost" href="#" value="">
-               <img src="../resources/images/project/post-it.png" class="subIcon" /> 프로젝트 글</a></li>
-               <li class="list-group-item" id="MobilePlus_hashTag">
-               <a class="dropdown-item mobileProHashTag" href="#" value="">
-               <img src="../resources/images/project/hashtag.png" class="subIcon" /> 해시태그</a></li>
-               <li class="list-group-item" id="MobilePlus_progress">
-               <a class="dropdown-item mobileProProgress" href="#" value="">
-               <img src="../resources/images/project/diagram.png" class="subIcon" /> 프로젝트 이슈 진행 현황</a></li>
-               <li class="list-group-item" id="MobilePlus_myPost">
-               <a class="dropdown-item mobileProMyPost" href="#" value=""> 
-               <img src="../resources/images/project/file.png" class="subIcon" /> 내가 쓴 글</a></li>
-           
          </ul>
       </div>
 		</div>
@@ -877,7 +864,7 @@ a:hover{
 
       $(".mobileProProgress").click(function() {
          var proNo = $(this).attr('value');
-         location.href="/projectProgress.do?proNo=" + proNo;
+         location.href="/projectProgress_mobile.do?proNo=" + proNo;
       });
 
       $(".mobileProMyPost").click(function() {
@@ -889,7 +876,7 @@ a:hover{
       
       /* 프로젝트 더보기 */
       $("#mobileMoreProject").click(function() {
-    	  location.href="/gotoMoreProject.do";
+    	  location.href="/gotoMoreProject_mobile.do";
       });
 
    });

@@ -304,28 +304,6 @@
         
         <!-- 채우기 -->
         
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/index.jsp#introduce">Introduce</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/noticeList.do?currentPage=1">Notice</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/qnaList.do?currentPage=1">1:1 QNA</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#join-modal">Join</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <label style="border: 3px dashed white; border-radius:15px;">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#login-modal">Login</a>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
     </nav>
 
 
@@ -346,7 +324,7 @@
 <body>
 	<div class="ui container">
 	<form action="/qnaWrite.do">
-			제목:<input type="text" class="form-control" size=90 name="queTitle" /><br>
+			<div>제목</div><input type="text" class="form-control" size=90 name="queTitle" /><br>
 			<textarea class="form-control" rows="20" cols="100" name="queContents"
 				style="resize: none;"></textarea>
 			<br> <input type="submit" class="btn btn-success" value="작성하기"> <br><br>

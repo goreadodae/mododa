@@ -133,6 +133,8 @@ span {
 				},
 				success : function(data) {
 					
+					console.log(data);
+					
 					$.ajax({
 						url : "/inviteMember.do",
 						type : "post",
@@ -145,9 +147,16 @@ span {
 							console.log("insert성공");
 						},
 						error : function() {
-							$("#inviteMemberCheck").text('이미 초대된 멤버입니다.');
-							$('#inviteMemberCheck').css('color','red');
-							console.log("insert실패");
+							if(data.memberNo!=-1) {
+								$("#inviteMemberCheck").text('이미 초대된 멤버입니다.');
+								$('#inviteMemberCheck').css('color','red');
+								console.log("insert실패");
+							} else {
+								$("#inviteMemberCheck").text('존재하지 않는 회원입니다.');
+								$('#inviteMemberCheck').css('color','red');
+								console.log("실패");
+							}
+							
 						}
 						
 					});
