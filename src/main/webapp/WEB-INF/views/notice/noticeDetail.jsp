@@ -301,8 +301,20 @@
 	    $('#nContents').addClass('input-disabled');
 	});
 	
-     
      </script>
+    
+     <c:if test="${sessionScope.member.memberNo!=1}">
+       <script>
+			$(document).ready(function(){
+          		$('#nDelete').css('display','none');
+          		$('#nUpdate').css('display','none');
+			})
+       </script>
+            
+    </c:if>
+    
+     
+     
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
@@ -355,12 +367,12 @@
 			</div>
 		</div>
 	
-<form action="/noticeDelete.do" style="float:right; margin-right:100px;">
-		<input type="submit" class="btn btn-secondary"  value="삭제"> 
+<form action="/noticeDelete.do" style="float:right; margin-right:200px;">
+		<input type="submit" id="nDelete" class="btn btn-secondary"  value="삭제"> 
 		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
 	</form>
 <form action="/noticeUpdateReady.do" style="float:right; margin-right:5px;">
-		<input type="submit" class="btn btn-secondary" value="수정"> 
+		<input type="submit" id="nUpdate" class="btn btn-secondary" value="수정"> 
 		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
 	</form>	
 

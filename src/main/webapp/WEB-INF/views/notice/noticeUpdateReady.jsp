@@ -325,9 +325,9 @@
 <body>
 	<div class="ui container">
 	<form action="/noticeUpdate.do" method="post">
-		글제목 : <input type="text" size=90 class="form-control" value="${noticeUpdateReady.noticeTitle}" name="noticeTitle"/><br>
+		글제목 : <input type="text" size=90 class="form-control" name="noticeTitle" value="${noticeUpdateReady.noticeTitle}" /><br>
 		<input type="hidden" value="${noticeUpdateReady.noticeNo}" name="noticeNo"/><br>
-		<textarea rows="20" cols="100" class="form-control" style="resize:none;" name="queContents"/>${noticeUpdateReady.noticeContents}</textarea>
+		<textarea rows="20" cols="100" class="form-control" style="resize:none;" name="noticeContents"/>${noticeUpdateReady.noticeContents}</textarea>
 		<br>
 		<input type="submit" class="btn btn-success" value="수정하기"/><br><br>
 		</form>

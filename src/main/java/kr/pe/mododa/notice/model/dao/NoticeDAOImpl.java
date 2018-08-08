@@ -238,13 +238,12 @@ public class NoticeDAOImpl implements NoticeDAO {
 	}
 
 	public Notice noticeUpdateReady(SqlSessionTemplate sqlSession, int noticeNo) {
-		
 		return sqlSession.selectOne("notice.noticeUpdateReady",noticeNo);
 		
 	}
 
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice notice) {
-		
+		System.out.println(notice);
 		return sqlSession.update("notice.noticeUpdate",notice);
 	}
 
