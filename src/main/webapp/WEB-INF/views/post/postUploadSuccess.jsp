@@ -14,8 +14,10 @@
 
 <script>
 	function close_thisPage(){
+		opener.location.href="javascript:postFileAfterUpload();";
 		window.close();
 	}
+	
 </script>
 
 <style>

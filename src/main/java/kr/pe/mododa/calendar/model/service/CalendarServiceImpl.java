@@ -24,9 +24,9 @@ public class CalendarServiceImpl implements CalendarService {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public ArrayList<Project> projectSelectAll() {
+	public ArrayList<Project> projectSelectAll(int memberNo) {
 		
-		ArrayList<Project> list = CalendarDAO.projectSelectAll(sqlSession);
+		ArrayList<Project> list = CalendarDAO.projectSelectAll(sqlSession,memberNo);
 		
 		return list;
 	}
@@ -57,9 +57,9 @@ public class CalendarServiceImpl implements CalendarService {
 
 
 	@Override
-	public ArrayList<Schedule> calendarSchedule() {
+	public ArrayList<Schedule> calendarSchedule(int memberNo) {
 		
-		ArrayList<Schedule> list = CalendarDAO.calendarSchedule(sqlSession);
+		ArrayList<Schedule> list = CalendarDAO.calendarSchedule(sqlSession,memberNo);
 	
 		return list;
 	}

@@ -305,29 +305,11 @@
         
         <!-- 채우기 -->
         
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/index.jsp#introduce">Introduce</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/noticeList.do?currentPage=1">Notice</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/qnaList.do?currentPage=1">1:1 QNA</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#join-modal">Join</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <label style="border: 3px dashed white; border-radius:15px;">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#login-modal">Login</a>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+       
+    
+        
+        </nav>
+    
 
 
 
@@ -368,11 +350,11 @@
 
 					<tr>
 						<td class="contents" colspan="4" style="display: none;">${q.queContents}
-						<form action="/qnaUpdateReady.do" style="float:right;" >
+						<form action="/qnaUpdateReady.do" style="float:right; margin-right:0px;"  >
 						<input type="submit" class="btn btn-outline-success" value="수정" >
 						<input type="hidden" value="${q.queNo}" name="queNo">
 						</form>
-						<form action="/qnaDelete.do" style="float:right;">
+						<form action="/qnaDelete.do" style="float:right; margin-right:3px;">
 						<input type="submit" class="btn btn-outline-success"  value="삭제">
 						<input type="hidden" value="${q.queNo}" name="queNo">
 						</form>
@@ -384,7 +366,7 @@
 						<c:when test="${q.ansContents!=null}">
 							<tr class="showAContents">
 								<th scope="row"></th>
-								<td colspan="3"><img src="../resources/images/qna/replay.JPG" style="width:40px; height:40px;">답변드립니다.</td>
+								<td colspan="3"><img src="../resources/images/qna/qaReply.png" style="width:20px; height:20px;">답변드립니다.</td>
 							</tr>
 							<tr>
 								<td class="answerContents" colspan="4" style="display: none;">${q.ansContents}</td>
@@ -399,7 +381,7 @@
    
    
       <div class="btn-group mr-2" role="group" aria-label="첫번째 그룹">
-       <button type="button" class="btn btn-secondary"><div>${qnaListCount}</div></button>
+       ${qnaListCount}
         </div>
         <br>
         

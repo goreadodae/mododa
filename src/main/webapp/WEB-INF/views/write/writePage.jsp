@@ -19,7 +19,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 <script>
-
+	/* 모바일 시 동작하는 script */
+	$(document).ready(function(){
+		if(document.body.clientWidth<=768){
+			$('#writeContentsDiv').attr('class','col-md-12');
+		}
+	});
+	/* 모바일 끝 */
 	$.noConflict
 	//전체화면 사이즈 구하는 jquery
 	function divSize() {
@@ -1109,31 +1115,7 @@ margin:auto;
 			</div> -->
 
 		<div class="row offset-md-2 col-md-8 offset md-2" style="height: 87%; padding: 0px;">
-	<!--  		<div class="col-md-3" id="test" style="height: 100%;">
 
-
-				<div class="row" style="height: 10%">
-
-					<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
-						<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
-							<div class="row" id="forEmptyImg" style="padding-top: 5px">
-								<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<div id="forClear"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="height: 90%">
-
-					<div class="col-md-12 border-right" style="padding: 0px; height: 100%; background-color:#F5F5F5;"  id="tempSaved">
-					
-				
-					</div>
-
-				</div>
-
-
-			</div> -->
 			<!-- 임시저장 공간  -->
 
 			<div class="col-md-12" style="height: 100%">

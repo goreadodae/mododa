@@ -30,8 +30,8 @@
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
-<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/minty/bootstrap.min.css">
+<!-- <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/minty/bootstrap.min.css"> -->
 
 
 
@@ -44,8 +44,7 @@ var scheduleNo = 0;
 
 	$(document).ready(function() {
 		
-		createCal();
-		
+		createCal();		
 		myProList ();
 		
 	});
@@ -77,13 +76,13 @@ var scheduleNo = 0;
 			header: {
 				left: 'title',
 				/* center: 'title', */
-				right: 'prev,next today,month,listMonth'
-			},
-			
+				right: 'prev,next today,month'
+			},			
 			theme: false,
 			selectable: true,
 			selectHelper: true,
 			editable:true,
+			 height: 650,
 			 /* buttonIcons : true, */
 			 themeButtonIcons:true,
 			select: function(start, end, allDay) {
@@ -135,15 +134,13 @@ var scheduleNo = 0;
 						 var proColor=[];
 						 var practiceColor;
 						 
-						 for(var i=0;i<data.length;i++){
+						for(var i=0;i<data.length;i++){
 							 for(var j=0;j<data.length;j++){					 
 								 if(data[i].proNo==data[j].proNo){
 									 proColor[i]=data[j].proNo;	
 								 }
 							 }
 						}
-						 
-						 
 							
 							for(var i=0;i<data.length;i++){	
 											
@@ -154,16 +151,13 @@ var scheduleNo = 0;
 								endDate.setDate(endDate.getDate() + 1);
 									
 								endDate = dateToYYYYMMDD(endDate);						
-							
-								
 									 events.push({
 						        		 title : data[i].scTitle,
 						        		 start : data[i].stStartDate,
 						        		 end : endDate,
-										color :  '#CFF09E',
+										color :  '#FF5F2E',
 						        		 url: data[i].scheduleNo
-						        	 });
-												 									 					  
+						        	 });											 									 					  
 			        	 } 
 							
 			        	 callback(events);
@@ -499,24 +493,21 @@ var scheduleNo = 0;
    /* 달력 시작,종료일 확인시 시작일보다 종료일의 날짜가 클때 */
    
    function dateCheck (){
-
 	  	   
 	   var startDate = $('#startDate').val();
        var endDate = $('#endDate').val();
        
-       //-을 구분자로 연,월,일로 잘라내어 배열로 반환
        var startArray = startDate.split('-');
        var endArray = endDate.split('-');   
-       //배열에 담겨있는 연,월,일을 사용해서 Date 객체 생성
+
        var start_date = new Date(startArray[0], startArray[1], startArray[2]);
-       var end_date = new Date(endArray[0], endArray[1], endArray[2]);
-            //날짜를 숫자형태의 날짜 정보로 변환하여 비교한다.      
+       var end_date = new Date(endArray[0], endArray[1], endArray[2]);     
 		
        if(start_date.getTime() > end_date.getTime()) {
               
     	   alert("종료날짜보다 시작날짜가 작아야합니다.");
         	
-    	   $('#endDate').val(startDate);
+    	   $('#endDate').val(startDate); //종료날짜를 시작날짜와 같게 변경
     	   
   		}
            
@@ -599,7 +590,6 @@ var scheduleNo = 0;
 				my_form.projectListName[i].checked=false;
 			}
 		}	
-	    
 	    
 	    
 	   $("#calendar").fullCalendar('removeEvents', function(eventObject) {return true;});
@@ -751,7 +741,7 @@ div {
 		<div class="col-md-4">　</div>
 		<div class="col-md-4">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
-		<div class="fc fc-bootstrap4 fc-ltr" id="calendar"></div>
+		<div class="row"><div class="col-md-12" id="calendar"></div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<div class="row"><div class="col-md-12">　</div></div>
 		<%-- <jsp:include page="/post.do"></jsp:include> --%>
@@ -832,14 +822,6 @@ div {
      <!--     Modal 내용 끝 -->
       </div>
 <!--팝업모달 끝 -->
-
-
-   <div class="alert alert-success collapse" role="alert" id="successAlert" style="width: 320px; position: absolute; right:40px; bottom:0px;">
-      <img src="../resources/images/icon/checked.png"/><span style="margin: 10px;" id="successAlertMessage"></span>
-   </div>
-   <div class="alert alert-secondary collapse" role="alert" id="failedAlert" style="width: 320px; position: absolute; right:40px; bottom:0px; background-color: #4A4A4A; color: white;">
-      <img src="../resources/images/icon/warning.png"/><span style="margin: 10px;" id="failedAlertMessage"></span>
-   </div>
 
 
 

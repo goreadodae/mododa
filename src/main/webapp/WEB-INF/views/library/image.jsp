@@ -23,6 +23,27 @@ div {
 	margin: 0px;
 	padding: 0px;
 }
+.modal-content {
+	background-color: #fefefe;
+	margin: 5% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 60px;
+}
+
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+}
 </style>
 
 <body>
@@ -96,6 +117,43 @@ div {
 	<!-- right bar -->
 	<jsp:include page="/rightbar.do"></jsp:include>
 	<!-- right bar 끝 -->
+	
+	
+	
+	
+	
+	<!-- 이미지 확대 모달 -->
+	<c:forEach items="${listImage }" var="i">
+	<div id="imageModal_${i.uploadNo }" class="modal">
+
+		<!-- Modal 내용 -->
+		<div class="modal-content" style="width:40%;">
+			<!-- 닫기 버튼 -->
+			<div align="right">
+				<img src="../resources/images/post/close.png" onclick="imageCloseModal(${i.uploadNo});" /><br>
+			</div>
+			
+			<h4>${i.fileName }</h4>
+			<div class="dropdown-divider"></div><br>
+			
+			<div align="center">
+				<img src='/resources/upload/write/${i.uploadPath}' style="width:100%;" />
+			</div>
+			
+			<br>
+			
+			<div align="center">
+				<button class='btn btn-outline-success' onclick='imageDownload(${i.uploadNo});'>다운로드</button>&nbsp;
+				<button class='btn btn-outline-danger' onclick='deleteUpload(${i.uploadNo});'>삭제하기</button>
+			</div>
+		</div>
+		<!-- Modal 내용 끝 -->
+	</div>
+	</c:forEach>
+	<!-- 팝업모달 끝 -->
+	
+	
+	
 </div>
 
 </body>
@@ -120,17 +178,19 @@ function imageCategory(num) {
 				var str = "";
 				
 				for(i=0; i<data.length; i++) {
-					console.log(data[i].uploadPath);
 					str += 
-						"<div id='imgEach_"+data[i].uploadNo+"' style='float:left;'>"+
-						"<div class='card' style='width: 180px; margin:2px;'>"+
-						  "<img class='card-img-top' src='/resources/upload/write/"+data[i].uploadPath+"' width='180px' height='180px' >"+
+						"<div id='imgEach_"+data[i].uploadNo+"' onclick='imageOpenModal("+data[i].uploadNo+");' align='center' style='background-color:#F6F6F6; padding:2px; margin:2px; width:230px; height:170px; float:left;'>"+
+						"<img src='/resources/upload/write/"+data[i].uploadPath+"' style='height:100%; max-width:100%; vertical-align: middle;' >"+
+						"</div>";
+						
+						/* "<div class='card' style='width: 180px; margin:2px;'>"+
+						  "<img class='card-img-top' src='/resources/upload/write/"+data[i].uploadPath+"' style='height:100%; max-width:80%; vertical-align: middle;' >"+
 						  "<div class='card-body'>"+
 						    "<div align='right'>"+
 						    "<button class='btn btn-outline-success btn-sm' onclick='imageDownload("+data[i].uploadNo+")'>다운로드</button>&nbsp;"+
 						    "<button class='btn btn-outline-danger btn-sm' onclick='deleteUpload("+data[i].uploadNo+");'>삭제</button>"+	
 						  "</div></div>"+
-						"</div></div>";
+						"</div></div>"; */
 				}
 				
 				$("#imageDiv").append(str);
@@ -141,6 +201,16 @@ function imageCategory(num) {
 			console.log("오류");
 		}
 	});
+}
+
+// 이미지 모달 열기
+function imageOpenModal(id) {
+	$("#imageModal_"+id).show();
+}
+
+// 이미지 모달 닫기
+function imageCloseModal(id) {
+	$("#imageModal_"+id).hide();
 }
 
 // 이미지 다운로드
@@ -156,6 +226,7 @@ function deleteUpload(id) {
 		data : {uploadNo : id},
 		success : function(data) {
 			$('#imgEach_'+id).remove();
+			imageCloseModal(id);
 			
 			$('#successAlertMessage').text('이미지가 삭제되었습니다.');
 			$('#successAlert').show('slow');

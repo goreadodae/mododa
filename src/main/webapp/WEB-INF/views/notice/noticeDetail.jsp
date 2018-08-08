@@ -314,28 +314,7 @@
         
         <!-- 채우기 -->
         
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/index.jsp#introduce">Introduce</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/noticeList.do?currentPage=1">Notice</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/qnaList.do?currentPage=1">1:1 QNA</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#join-modal">Join</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <label style="border: 3px dashed white; border-radius:15px;">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#login-modal">Login</a>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+        
     </nav>
 
 
@@ -359,24 +338,24 @@
 		<div class="center aligned segment">
 			<!-- view에서 눌렀을때 나오는 내용들 -->
 			<div class="left aligned basic segment" style="margin-bottom: 0px;">
-				<span style="margin-right: 15px;">제목</span><span>제목</span>
+				<span style="margin-right: 15px;">제목</span><span>${noticeDetail.noticeTitle}</span>
 				<div></div>
 				<span style="margin-right: 15px;">작성자</span><span style="display: inline-block; width: 20%;">관리자</span><span style="margin-right: 15px;">작성일</span>
-				<span style="display: inline-block; width: 20%;">2018-08-07</span><span style="margin-right: 15px;">
+				<span style="display: inline-block; width: 20%;">${noticeDetail.noticeWriteDate}</span><span style="margin-right: 15px;">
 					<i class="eye icon"></i>조회수</span>
-					<span style="display: inline-block; width: 20%;">0</span>
+					<span style="display: inline-block; width: 20%;">${noticeDetail.noticeViewCount}</span>
 					<div class="ui divider"></div>
 				</div>
 				<br>
 				<div class="form-group">
 				
-					<textarea class="form-control" id="nContents" rows="20" readonly style="resize: none;" >asjdfkasjdfhajksdfhkajsdhfjkasdhfljkasdhkljasdhlajsdfasjklasjdfkasjdfhajksdfhkajsdhfjkasdhfljkasdhkljasdhlajsdfasjklasjdfkasjdfhajksdfhkajsdhfjkasdhfljkasdhkljasdhlajsdfasjklasjdfkasjdfhajksdfhkajsdhfjkasdhfljkasdhkljasdhlajsdfasjkl</textarea>
+					<textarea class="form-control" id="nContents" rows="20" readonly style="resize: none;" >${noticeDetail.noticeContents}</textarea>
 					
 				</div>
 			</div>
 		</div>
 	
-<form action="/noticeDelete.do" style="float:right; margin-right:400px;">
+<form action="/noticeDelete.do" style="float:right; margin-right:100px;">
 		<input type="submit" class="btn btn-secondary"  value="삭제"> 
 		<input type="hidden" value="${noticeDetail.noticeNo}" name="noticeNo">
 	</form>

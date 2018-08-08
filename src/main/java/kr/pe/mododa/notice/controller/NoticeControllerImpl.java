@@ -181,6 +181,7 @@ public class NoticeControllerImpl implements NoticeController {
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContents = request.getParameter("noticeContents");
 		
+		System.out.println(noticeNo);
 		
 		Notice notice = new Notice();
 		notice.setNoticeNo(noticeNo);
@@ -191,6 +192,8 @@ public class NoticeControllerImpl implements NoticeController {
 		
 
 			int result = noticeService.updateNotice(notice);
+			
+			System.out.println(result);
 			
 			ModelAndView view = new ModelAndView();
 

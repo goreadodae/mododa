@@ -24,6 +24,7 @@ import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 
 
 @Service("postService")
@@ -81,6 +82,10 @@ public class PostServiceImpl implements PostService{
 	
 	public Decision selectOneDecision(int dcNo) {
 		return postDAO.selectOneDecision(sqlSession, dcNo);
+	}
+	
+	public List<RelatedPost> selectRelatedPost(int postNo){
+		return postDAO.selectRelatedPost(sqlSession, postNo);
 	}
 	
 	public List<Member> selectMembers(int postNo){
@@ -216,8 +221,7 @@ public class PostServiceImpl implements PostService{
 	                  continue;
 	               }
 				}
-	            
-				System.out.println(vo.getUploadSubject());
+	          
 				file.transferTo(new File(uploadPath + saveFileName));
 				vo.setUploadSubject(exResult);
 				vo.setFileName(originalFileName);
@@ -229,7 +233,6 @@ public class PostServiceImpl implements PostService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("foreach 서비스"+files);
 		}
 		return result;
 		

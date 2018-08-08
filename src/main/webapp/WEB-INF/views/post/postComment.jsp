@@ -117,17 +117,16 @@ objDiv.scrollTop = objDiv.scrollHeight;
 							<div class="comment-area" id="mydiv" >
 								<!-- 댓글 내용 출력.-->
 								<ul class="comment-list">
+								<c:if test="${empty comment }">
+									<center>
+									<img src="../resources/upload/member/loading.gif" style="width:40%;height:30%;"/><br>
+									<span font-size="12px;">제일먼저 댓글을 남겨보면 어떨까요??</span>
+									</center>
+								</c:if>
 								<c:forEach var="cm" items="${comment }">
 								<li class="comment-item">
 										<div id="commentInfo" class="col-md-12">
 											<div id="comment1" class="col-md-12">
-												<%-- 
-													<center>
-														<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%;"/><br>
-														<span font-size="12px;">제일먼저 댓글을 남겨보면 어떨까요??</span>
-														</div></div></li>
-													</center> --%>
-												
 												<img id="wPicture"
 													src="../resources/upload/member/${cm.writePicture }"
 													style="height: 20px; width: 20px; border-radius: 50%;" />
