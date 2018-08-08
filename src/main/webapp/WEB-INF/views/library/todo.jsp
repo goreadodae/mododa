@@ -272,8 +272,12 @@ div {
     		</div>
  	 		</div>
  	 		<div align="center">
- 	 		<button type="button" class="btn btn-outline-success" onclick="updateTodo(${t.todoNo});" style="width:49%;">수정</button>&nbsp;
- 	 		<button type="button" class="btn btn-outline-danger" onclick="deleteTodo(${t.todoNo});" style="width:49%;">삭제</button>
+ 	 		<c:choose>
+ 	 			<c:when test="${t.todoMember eq sessionScope.member.memberNo}">
+ 	 				<button type="button" class="btn btn-outline-success" onclick="updateTodo(${t.todoNo});" style="width:49%;">수정</button>&nbsp;
+ 	 				<button type="button" class="btn btn-outline-danger" onclick="deleteTodo(${t.todoNo});" style="width:49%;">삭제</button>
+ 	 			</c:when>
+ 	 		</c:choose>
  	 		</div>
  	 		
 		</div>
@@ -527,19 +531,24 @@ div {
 					if (status == 'suggest') {
 						$('#'+todoNo).attr("src","../resources/images/icon/play-button.png");
 						$('#'+todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+						$('#'+todoNo+"_r").attr("src","../resources/images/icon/play-button.png");
 					} else {
 						if (status == 'suggest') {
 							$('#' + todoNo).attr("src","../resources/images/icon/play-button.png");
 							$('#' + todoNo+"_m").attr("src","../resources/images/icon/play-button.png");
+							$('#' + todoNo+"_r").attr("src","../resources/images/icon/play-button.png");
 						} else if (status == 'working') {
 							$('#' + todoNo).attr("src","../resources/images/post/play-buttonOn.png");
 							$('#' + todoNo+"_m").attr("src","../resources/images/post/play-buttonOn.png");
+							$('#' + todoNo+"_r").attr("src","../resources/images/post/play-buttonOn.png");
 						} else if (status == 'stop') {
 							$('#' + todoNo).attr("src","../resources/images/post/pauseOn.png");
 							$('#' + todoNo+"_m").attr("src","../resources/images/post/pauseOn.png");
+							$('#' + todoNo+"_r").attr("src","../resources/images/post/pauseOn.png");
 						} else if (status == 'finish') {
 							$('#' + todoNo).attr("src","../resources/images/post/checked.png");
 							$('#' + todoNo+"_m").attr("src","../resources/images/post/checked.png");
+							$('#' + todoNo+"_r").attr("src","../resources/images/post/checked.png");
 						}
 					}
 				},

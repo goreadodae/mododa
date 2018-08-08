@@ -16,10 +16,15 @@ public class Decision {
 	private String dcPostTitle;
 	private String dcWriterName;
 	private String dcMakerName;
-	public Decision() { }
+	private String dcMakerPicture;
+	private String dcWriterPicture;
+	public Decision() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Decision(int dcNo, int dcPostNo, int dcWriter, int dcMaker, String dcContent, Date dcDate, char dcYn,
 			char dcDecision, String dcComment, Date dcConfirmDate, String dcPostTitle, String dcWriterName,
-			String dcMakerName) {
+			String dcMakerName, String dcMakerPicture, String dcWriterPicture) {
 		super();
 		this.dcNo = dcNo;
 		this.dcPostNo = dcPostNo;
@@ -34,6 +39,8 @@ public class Decision {
 		this.dcPostTitle = dcPostTitle;
 		this.dcWriterName = dcWriterName;
 		this.dcMakerName = dcMakerName;
+		this.dcMakerPicture = dcMakerPicture;
+		this.dcWriterPicture = dcWriterPicture;
 	}
 	public int getDcNo() {
 		return dcNo;
@@ -113,6 +120,19 @@ public class Decision {
 	public void setDcMakerName(String dcMakerName) {
 		this.dcMakerName = dcMakerName;
 	}
+	public String getDcMakerPicture() {
+		return dcMakerPicture;
+	}
+	public void setDcMakerPicture(String dcMakerPicture) {
+		this.dcMakerPicture = dcMakerPicture;
+	}
+	public String getDcWriterPicture() {
+		return dcWriterPicture;
+	}
+	public void setDcWriterPicture(String dcWriterPicture) {
+		this.dcWriterPicture = dcWriterPicture;
+	}
+	
 	
 	
 	
