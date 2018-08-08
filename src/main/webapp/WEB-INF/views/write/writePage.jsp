@@ -96,7 +96,8 @@
 	var imgCount = 0;
 	var filesLength = 0;
 	var img;
-	var file ="";
+	var fileCon =false;
+	var imageCon=false;
 	function readURL(files) {
 		console.log($('#fileSelect').val()+"파일선택값");
 		console.log($('#fileElem').val()+"fileElem"+"값");
@@ -107,25 +108,10 @@
 		} else {
 			filesLength += files.length;
 
-			console.log(filesLength);
+			console.log(filesLength+"파일랭스");
 			
-/* 				file = files[i];
-				var ext = file.name.split('.').pop().toLowerCase();
-				if($.inArray(ext,["pxc","gif","bmp","png","jpg","raw","jpeg"])==-1){
-					
-					console.log("이미지파일아니야.");
-					
-				
-							file = files[i];
-							console.log(file.name);
+							var extension = ['pxc','gif','bmp','png','jpg','raw','jpeg'];
 							
-							console.log(file.name.split('.').pop().toLowerCase());
-							
-							 */
-							
-						/* console.log("포문");
-							console.log($('#fileElem').files[i].name); */
-
 			for (var i = 0; i < files.length; i++) {
 				
  				file = files[i];
@@ -133,53 +119,81 @@
 				
 				console.log(ext);
 
-	/* 				if($.inArray(ext,["pxc","gif","bmp","png","jpg","raw","jpeg"])==-1)
-					{
-							
-								
-							
-								
-					}
-					else{
-								
-						continue;
-						
-					}	 */
+				for(var j=0; j<extension.length; j++)
 					
+					{
+						console.log(extension[j]+"익스텐션");
+						
+						
+					
+		 				if(ext==extension[j])
+						{
+		 					 imageCon=true;
+						}
+						else{
+				
+							
+								fileCon = true;
+							
+							
+						}
+	 				
+					}	 
+	 					
+				if(imageCon)
+					{
+					
+							console.log("이미지");
+						 	img = document.createElement("img");
+							img.src = window.URL.createObjectURL(files[i]);
+							img.style.height = 100 + '%';
+							img.style.width = 100 + '%';
+			
+							img.onload = function() {
+								window.URL.revokeObjectURL(this.src);
+							} 
+							$(
+										'<div class="col-md-6 imgHeight" id="delImg_'+imgCount+'" onclick="delImgs('+imgCount+');" '
+									+	'style="height:150px; padding-top:5%;"><div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px; padding:0%;">'
+											+ img.outerHTML + '</div></div>').appendTo($('#divEnter'));
+							imageCon=false;
+							
+					}
+				else if(fileCon){
+					$(
+							'<div class="col-md-6 imgHeight" id="delImg_'+imgCount+'" onclick="delImgs('+imgCount+');" '
+						+	'style="height:150px; padding-top:5%;"><div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px; padding:0%;">'
+								+ '<div class="row"><div class="col-md-12" style="padding:10px; padding-left:10px"><img src="/resources/images/writeImages/file.png" style="float:left;"/>'+ext+'</div></div>'
+								+ '<div class="row"><div class="col-md-12"><div style="width:50px; text-overflow:ellipsis;">'+file.name+'</div></div>   </div></div>').appendTo($('#divEnter'));
+					fileCon = false;
+					
+					
+				}
+				
 				
 					
+					}
+					
+					
 
-			 	img = document.createElement("img");
-				img.src = window.URL.createObjectURL(files[i]);
-				img.style.height = 100 + '%';
-				img.style.width = 100 + '%';
-
-				img.onload = function() {
-					window.URL.revokeObjectURL(this.src);
-				} 
-				$(
-							'<div class="col-md-6 imgHeight" id="delImg_'+imgCount+'" onclick="delImgs('+imgCount+');" '
-						+	'style="height:100px; padding-top:5%;"><div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0%;">'
-								+ img.outerHTML + '</div></div>').appendTo(
-						$('#divEnter'));
 				imgCount++;
 
 			}
-
 				
 				
-			if ($('#moreViewDiv').height() >= 200 && filesLength > 3) {
+			if ($('#moreViewDiv').height() >= 300 && filesLength > 3) {
 				$('#moreViewDiv').addClass('moreViewDiv');
 				$('#moreViewText').css('display', 'block');
 
 			}
+				
+				}
 
+				
+				
+	
+			
 
-		}
-	}
-	
-	
-	
 	
 	
 	function delImgs(no)
@@ -250,7 +264,7 @@
 			$(
 							'<div id="schedules_'+ scheCnt+'" onclick="removeSche('+scheCnt+')";'	
 							+ ' class="col-md-6" style="height:100px; padding-top:5%;">'
-							+ '<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px; padding:0;">'
+							+ '<div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px; padding:0;">'
 							+ '<div class="col-md-12" style="padding:5px;color:#A1A1A1;"><img src="/resources/images/writeImages/calendar.png" style="padding:0;"/>&nbsp;&nbsp;'
 							+ startDate + '</div><div class="col-md-12">'
 							+ title + '</div></div></div>'
@@ -577,8 +591,8 @@
 				console.log(postInfo);
 					 
 				$(
-						  '<div class="col-md-6" style="height:100px; padding-top:5%;" id="delRpPost_'+postInfo[2]+'" onclick="delRpPost('+postInfo[2]+')"">'
-						+ '<div class="col-md-12" style="border:1px solid #E6E6E6; padding:0px; height: 80px;">'
+						  '<div class="col-md-6" style="height:100; padding-top:5%;" id="delRpPost_'+postInfo[2]+'" onclick="delRpPost('+postInfo[2]+')"">'
+						+ '<div class="col-md-10" style="border:1px solid #E6E6E6; padding:0px; height: 100%;">'
 						+ '<div class="col-md-12" style="padding:5px; color:#A1A1A1;"><img src="/resources/images/writeImages/invention.png" style="padding:0;"/>&nbsp;&nbsp;'
 						+ postInfo[1] + '</div><div class="col-md-12" style="color:#A1A1A1; font-size:11px; text-overflow:ellipsis">'
 						+ postInfo[0] + '</div></div>'
@@ -1026,7 +1040,7 @@ div.tarea {
 }
 
 .moreViewDiv {
-	height: 220px;
+	height: 320px;
 	overflow: hidden;
 }
 
@@ -1067,7 +1081,7 @@ margin:auto;
 </head>
 <body>
 
-<form id="saveFn" action="/insertPost.do" method="post" enctype="multipart/form-data">
+<form id="saveFn" action="/insertPost.do" method="post"  enctype="multipart/form-data">
 
 	
 	<div class="frameSize col-md-12">
@@ -1094,20 +1108,20 @@ margin:auto;
 				</div>
 			</div> -->
 
-		<div class="row offset-md-1 col-md-10 offset md-1" style="height: 87%; padding: 0px;">
-	 		<div class="col-md-3" id="test" style="height: 100%;">
+		<div class="row offset-md-2 col-md-8 offset md-2" style="height: 87%; padding: 0px;">
+	<!--  		<div class="col-md-3" id="test" style="height: 100%;">
 
 
 				<div class="row" style="height: 10%">
 
-			<!-- 		<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
+					<div class="colorChange col-md-12" style="height: 100%;" onclick="hide();">
 						<div class="col-md-12" style="text-align: center; padding-top: 10px; vertical-align: middle; height: 100%">
 							<div class="row" id="forEmptyImg" style="padding-top: 5px">
 								<span id="hideList"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;임시 저장 글 <span>(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<div id="forClear"></div>
 							</div>
 						</div>
-					</div> -->
+					</div>
 				</div>
 				<div class="row" style="height: 90%">
 
@@ -1119,10 +1133,10 @@ margin:auto;
 				</div>
 
 
-			</div>
+			</div> -->
 			<!-- 임시저장 공간  -->
 
-			<div class="col-md-9" style="height: 100%">
+			<div class="col-md-12" style="height: 100%">
 
 				<div class="row" style=" height: 10%;">
 					<div class="col-md-12" id="mobileWriteTitle" style="display: none;">
@@ -1234,7 +1248,7 @@ margin:auto;
 					</div><!-- 쇼비탑  -->
 				</div>
 				<div class="row" style="height: 90%">
-					<div class="col-md-8" style="height: 100%">
+					<div class="col-md-7" style="height: 100%">
 						<div class="row" style="height: 80%">
 							<div class="col-md-12" style="height: 100%;">
 								<div class="row" style="height: 10%">
@@ -1274,7 +1288,7 @@ margin:auto;
 						</div>
 					</div>
 
-					<div class="col-md-4 imageSpace" id="imageSpace" style="height: 100%">
+					<div class="col-md-5 imageSpace" id="imageSpace" style="height: 100%">
 						<div class="row" id="moreViewDiv">
 							<div class="col-md-12" style="height: 10%;">
 								<b>파일/이미지</b>
@@ -1283,7 +1297,7 @@ margin:auto;
 								<div class="row" id="divEnter" style="height: 100%;">
 									<div class="col-md-6" style="padding-top: 5%; cursor: pointer">
 										<!-- <br -->
-										<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="document.all.fileElem.click();" id="fileSelect">
+										<div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px;" onclick="document.all.fileElem.click();" id="fileSelect">
 
 											<br>
 											<!-- div 버튼 클릭시 아래 버튼 동작! -->
@@ -1313,14 +1327,14 @@ margin:auto;
 						<!-- 일정 창  -->
 						<div class="row" id="addSchedules">
 							<div class="col-md-12">
-								일정 <span id="scheduleCnt">0</span>
+								<b>일정</b> <span id="scheduleCnt">0</span>
 							</div>
 
 
 
 							<div class="col-md-6" data-toggle="modal" data-target="#loadSchedule" style="padding-top: 5%; cursor: pointer;">
 								<!-- <br -->
-								<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;">
+								<div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px;">
 
 									<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
 								</div>
@@ -1341,14 +1355,14 @@ margin:auto;
 						<!--  관련 글  -->
 						<div class="row">
 							<div class="col-md-12">
-								관련 글 <span id="writingCnt">0</span>
+								<b>관련 글</b> <span id="writingCnt">0</span>
 							</div>
 							<div class="col-md-12">
 								<!-- 모달 버튼 시작  -->
 								<div class="row" id="addRelationWriting">
 									<div class="col-md-6" data-toggle="modal" data-target="#relationWrite" style="padding-top: 5%; cursor: pointer;">
 										<!-- <br -->
-										<div class="col-md-12" style="border: 1px solid #E6E6E6; height: 80px;" onclick="bringRelativeWrite();">
+										<div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px;" onclick="bringRelativeWrite();">
 
 											<br> <img class="plus" src="/resources/images/writeImages/plus.png" />
 										</div>
@@ -1379,6 +1393,9 @@ margin:auto;
 													<span id="currentReProName"><c:out value="${currentProName}"></c:out></span>
 												</h6>
 												<div class="dropdown-menu" aria-labelledby="byProNameDD" id="proNameItems">
+												<button class="dropdown-item" type="button" id="proNo_${myPrivateSpace.proNo}"  onclick="loadByProName(${myPrivateSpace.proNo});" value="${myPrivateSpace.proNo}">
+												<c:out value="${myPrivateSpace.proTitle}"/>
+												</button>
 													<c:forEach items="${proList}" var="proList">
 														<button class="dropdown-item" id="proNo_${proList.proNo}" onclick="loadByProName(${proList.proNo});" type="button" value="${proList.proNo}">
 															<c:out value="${proList.proTitle}" />
