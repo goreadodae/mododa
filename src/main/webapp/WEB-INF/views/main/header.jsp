@@ -12,6 +12,9 @@
 
 <style>
 @media screen and (max-width: 768px) {
+	html{
+		padding-right: 15px;
+	}
 	#leftBarBody, #rightBarBody {
 		display: none;
 	}
@@ -553,7 +556,7 @@ a:hover {
 
 				<div class="col-md-5 topbar" id="mainLogoDiv">
 					<a href="/mainPage.do"><img id="logo-img"          
-						src="../resources/images/layout-img/main_logo_rec.png"></a>
+						src="../resources/images/layout-img/main_logo_rec.png" href="/mainPage.do" style="z-index: 1;"></a>
 				</div>
 
 				<div class="col-md-4 topbar">
@@ -643,7 +646,7 @@ a:hover {
 		
  		<div id="mobileMenuModal" class="modal">
 			<!-- Modal 내용 -->
-			<div id="mobileMenuContent" class="modal-content" style="width: 80%; height: auto; min-height: 100%;">
+			<div id="mobileMenuContent" class="modal-content" style="width: 80%; height: auto; min-height: 100%; z-index: 10;">
 			<div class="row" style="margin: 20px;">
 				<div class="col-md-6"style="margin: 0;">
 					<img src="${memberPic }"
@@ -676,6 +679,8 @@ a:hover {
                <img src="../resources/images/layout-img/file.png" class="icon"> 내가 쓴 글</li>
             <li class="list-group-item" id="mobileCalendarAll">
                <img src="../resources/images/layout-img/calendar.png" class="icon"> 전체 캘린더</li>
+            <li class="list-group-item" id="mobileLibraryAll">
+               <img src="../resources/images/layout-img/calendar.png" class="icon">자료실</li>
          </ul>
 
          <ul>
@@ -836,6 +841,9 @@ a:hover {
       
       $("#mobileCalendarAll").click(function() {
          location.href="/calendar.do";
+      });
+      $("#mobileLibraryAll").click(function() {
+         location.href="/todo.do";
       });
       
       

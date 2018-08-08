@@ -69,7 +69,19 @@
       #sendMessageButton{
          margin-left: 39%;
       }
-   }
+      
+  	}
+  
+ .nTitle a{
+  	color:black;
+  
+  }
+.nTitle a:hover{
+	text-decoration:none;
+
+} 
+      
+
   </style>
   </head>
 
@@ -356,9 +368,9 @@
        </thead>
         <tbody>
          <c:forEach items="${listNotice}" var="n">
-   <tr>
+   <tr id="NoticeTitles">
       <td>${n.noticeNo}</td>
-      <td><a href="/noticeDetail.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
+      <td class="nTitle"><a href="/noticeDetail.do?noticeNo=${n.noticeNo}">${n.noticeTitle}</a></td>
       <td>관리자</td>
       <td>${n.noticeWriteDate}</td>
       <td>${n.noticeViewCount}</td>
@@ -375,8 +387,8 @@
        <button type="button" class="btn btn-secondary">${listCount}</button>
         </div>
         
-         <form action="/writeReady.do">
-		<input type="submit" class="btn btn-secondary" value="글쓰기"> 
+         <form action="/writeReady.do" >
+		<input type="submit" class="btn btn-secondary"  style="float:right; margin-right:300px;" value="글쓰기"> 
 		</form>
    
    
