@@ -143,7 +143,7 @@
 	<insert id="insertPostToProject" parameterType="post">
 	insert into post values(post_seq.nextval,
 	#{postTitle},
-	null,
+	'suggest',
 	sysdate,
 	#{postContent},
 	#{postWriter},
@@ -168,13 +168,14 @@
 	#{memberNo},
 	sysdate,
 	#{uploadSubject},
+	#{fileName},
 	#{uploadPath}
 	)
 	</insert>
 	
 	<insert id="insertSchedules" parameterType="schedule">
 	insert into schedule
-	 values(
+	 values( 
 
 		schedule_seq.nextval,
 		post_seq.currval,
@@ -185,6 +186,53 @@
 		#{scTitle}
 	)
 	</insert>
+	
+	<insert id="insertRpPost" parameterType="relatedPost">
+	insert into related_post
+	 values(
+	 
+	 #{rpNo},
+	 post_seq.currval,
+	 #{projectNo}
+	)
+	
+	</insert>
+	
+	
+	<insert id="insertCallMember" parameterType="callPost">
+	insert into call_post
+	values(
+	post_seq.currval,
+	#{callMember}
+	)
+	
+
+	</insert>
+	
+	<select id="setPrivateSpace"  resultType="int">
+	select
+	min(pro_No)
+	from project
+	where pro_member_no = #{memberNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>[자료실] 이미지</title>
+<title>[자료실] 의사결정</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -145,41 +145,36 @@ div {
 
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
-		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
-		<!-- 자료실 헤더 -->
-	<table width="100%">
-		<tr>
-			<td width="20%">
-				<h4 id="subject">의사결정</h4>
-			</td>
-			<td width="35%">
-			</td>
-			<td width="15%"></td>
-			<td width="5%">
-				<a href="/todo.do" id="todo">할 일</a>
-			</td>
-			<td width="5%">
-				<a href="/decision.do" id="decision">의사결정</a>
-			</td>
-			<td width="5%">
-				<a href="/image.do" id="image">이미지</a>
-			</td>
-			<td width="5%">
-				<a href="/file.do" id="file">파일</a>
-			</td>
-			<td width="5%">
-			</td>
-			<td width="5%"></td>
-		</tr>
-	</table>
-	
-	<div class="dropdown-divider"></div>
+	<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
+	<!-- 자료실 헤더 -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/decision.do"><b>의사결정</b></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" href="/todo.do">할 일</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="/decision.do">의사결정<span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/image.do">이미지</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/file.do">파일</a>
+			</li>
+		</ul>
+		</div>
+	</nav>	
 
 	<!-- 자료실 헤더 끝 -->
 	
 	<!-- 본문 -->
 	<div style="padding:10px;">
-		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+		<div style="height:100%;">
 			<!-- 의사결정 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>

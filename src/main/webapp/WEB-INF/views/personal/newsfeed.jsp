@@ -21,6 +21,8 @@
 </head>
 
 <script>
+
+	
 	function searchShow() {
 		$("#showHeader").css("display", "none");
 		$("#contentSearch").css("display", "");
@@ -91,7 +93,7 @@
 						for(var i=0;i<data.length;i++)
 							{
 							result+=
-								'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');"class="btn btn-link" style="float:left;">'+data[i].postTitle+'</a></div>'+
+								'<li class="feed-contents"><div class="row"><div class="col-md-12"><a onclick="getPost('+data[i].postNo+');" id="postTitle" class="btn btn-link" style="float:left;"><b>'+data[i].postTitle+'</b></a></div>'+
 								'<div class="col-md-8"><img id="memberImg" src="../resources/upload/member/'+data[i].pWriterImg+'"/><span id="postcontent" style="font-size:12px;">'+data[i].postContent+'</span><br>'+ data[i].postWriter +' &nbsp;&nbsp; '+ data[i].postDate+'</div>'+
 								'<div class="col-md-4">';
 							if(data[i].postProgress=='suggest'){
@@ -103,12 +105,11 @@
 							}else{
 								result+='<img id="statusImg1" src="../resources/images/post/checked.png" title="완료"/>';
 							}
-							result+='<a onclick="postChangePage('+data[i].proNo+');" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
+							result+='<a onclick="postChange('+data[i].proNo+');" id="proName" class="btn btn-link" style="float:none;">'+data[i].proName+'</a></div>'+
 								'<div class="col-md-3"></div>'+
 								'</div><hr style="color:grey;"></li>';
 							}
 						$(".feed-list").append(result);
-						$(".feed-list").append("<span>마지막입니다.</sapn>");
 					   } 
 				   },
 					error:function()
@@ -159,24 +160,60 @@
 		});
 	});
 
-	
-	function postChangePage(proNo){ //준석추가
+	function postChange(proNo){
 		location.href="/projectPost.do?proNo="+proNo;
 	}
 	
+	
+	// private번호 가져오기
+	
+	$(document).ready(function(){
+		
+	$.ajax({
+		url : "/setPrivateSpace.do",
+		type : "post",
+		success : function(data){
+		console.log("나의 프라이빗 번호 받아오기를 성공했어여!")
+		console.log("이건 나의 프라이빗 번호"+data)
+		var str=""
+			str += '<input type="hidden" id="myPrivateNo" value="'+data.myPrivateNo+'"/>'
+			$('#goWriting').append(str);
+			str="";
+		},
+		error : function(data){
+			console.log("에러라능");
+		}
+	});
+	});
+	
+	
+	function goWriting(){
+		console.log("클릭");
+		var myPrivateNo = $('#myPrivateNo').val();
+		console.log(myPrivateNo);
+		
+		location.href="/privatePost.do?proNo="+myPrivateNo;
+		
+	}
+	///요기까지
+	
+	
+
 </script>
 <style>
 body {
 	overflow-x: hidden;
-	height: 100%;
+	overflow-y: hidden;
+	height: 100vh;
 }
 div {
 	margin: 0px;
 	padding: 0px;
 }
-.col-md-12 a:hover{
-	background-color:#f8f9fa;
+#postTitle,#proName{
+font-family: 'Sunflower', sans-serif; 
 }
+
 
 
 </style>
@@ -195,12 +232,12 @@ div {
 
 	<!-- contents -->
 	<div class="col-6" id="contents" style="padding:0;">
-		<div class="content">
+		<div class="content" >
 		<div class="viewHeader">
 			<div id="showHeader">
 						<!-- 기본으로 출력되는 헤더 -->
 						<div class="headerTitle" id="headerTitle">
-							<h5>뉴스피드</h5>
+							<h5><b>뉴스피드</b></h5>
 						</div>
 						<div class="headerFunction" id="headerFun">
 							<!-- 검색기능버튼과 글쓰기 버튼. -->
@@ -209,7 +246,7 @@ div {
 								<i class="fas fa-search" style="color: grey;"></i>
 							</button>
 
-							<button type="button" onclick="location='/write.do'" class="btn btn-outline-success">
+							<button id="goWriting" type="button" onclick="goWriting();" class="btn btn-outline-success">
 								<i class="fas fa-edit"></i>글쓰기
 							</button>
 						</div>
@@ -229,19 +266,18 @@ div {
 					</div>
 				</div>
 				
-				<div class="viewContents col-md-12">
+				<div class="viewContents col-md-12" >
 					<!-- 내용출력하는 부분 -->
 					<ul class="feed-list" id="proMemberListDiv">
 						<c:forEach var="news" items="${newsfeed }">
 						<li class="feed-contents">
 							<div class="row">
 								<div class="col-md-12">
-								<a onclick="getPost(${news.postNo });" class="btn btn-link" style="float:left">${news.postTitle }</a>
+								<a onclick="getPost(${news.postNo });" class="btn btn-link" id="postTitle" style="float:left"><b>${news.postTitle }</b></a>
 								</div>
 								<div class="col-md-8">
 									<img id="memberImg" src="../resources/upload/member/${news.pWriterImg }" />
-									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br>
-									<span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
+									<span id="postcontent" style="font-size:12px;">${news.postContent }</span><br><span>${news.postWriter }&nbsp;&nbsp;${news.postDate }</span>
 								</div>
 								<div class="col-md-4">
 								<c:choose>
@@ -263,13 +299,12 @@ div {
 									</c:otherwise>
 									</c:choose>
 									<img id="statusImg1" src="${statusImg }" title="${statusTxt }"/>&nbsp;
-									<a onclick="postChangePage(${news.proNo })" class="btn btn-link" style="float:none;" >${news.proName }</a>
+									<a onclick="postChange(${news.proNo });" class="btn btn-link" id="proName" style="float:none;">${news.proName }</a>
 								</div>
 							</div>
 							<hr style="color: grey;">
 						</li>
 						</c:forEach>
-						<span>마지막입니다.</span>
 					</ul>
 					
 				</div>

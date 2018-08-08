@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>1:1Q&A</title>
+
+    <title>공지사항-협업툴 모두다 MODODA</title>
+
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -342,11 +345,10 @@
     <header class="masthead bg-primary text-white text-center" style="padding-bottom:1%;">
       <div class="container">
         <img class="img-fluid mb-5 d-block mx-auto" src="../resources/images/layout-img/main_logo_rec.png" alt="" id="mododaImg" width="40%">
-        <h1 class="text-uppercase mb-0">1:1 Q&A</h1>
+        <h1 class="text-uppercase mb-0">Notice</h1>
         <hr class="star-light" style="max-width:45rem;">
       </div>
     </header>
-    
 
 </head>
 <body>

@@ -77,22 +77,22 @@ public class NoticeDAOImpl implements NoticeDAO {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		
+		// <button type='button' class='btn btn-secondary'>
 		if(gotoPrev) { // 시작이 1페이지가 아니라면
-			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><</i></a>");
+			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (startCount - 1) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
 		}
 		
 		for(int i=startCount; i<=endCount; i++) {
 			if(i == currentPage) {
-				sb.append("<a class='item' href='/noticeList.do?currentPage=" + i + "'><b> " + i + " </b></a>");
+				sb.append("<a class='item' href='/noticeList.do?currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + " </button></a>");
 			}
 			else {
-				sb.append("<a class='item' href='/noticeList.do?currentPage=" + i + "'> " + i + " </a>");
+				sb.append("<a class='item' href='/noticeList.do?currentPage=" + i + "'><button type='button' class='btn btn-secondary'> " + i + "</button> </a>");
 			}
 		}
 		
 		if(gotoNext) { // 끝 페이지가 아니라면
-			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount + 1) + "'>></i></a>"); 
+			sb.append("<a class='item' href='/noticeList.do?currentPage=" + (endCount + 1) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
 		}
 		
 		return sb.toString();
@@ -192,16 +192,17 @@ public class NoticeDAOImpl implements NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		if (gotoPrev) {
+
 			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><</a>");
 
 		}
 
 		for (int i = startCount; i <= endCount; i++) {
 			if (i == currentPage) {
-				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><b>" + i + "</b></a>");
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + "</button></a>");
 
 			} else {
-				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'>" + i + "</a>");
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + "</button></a>");
 			}
 		}
 		if (gotoNext) {

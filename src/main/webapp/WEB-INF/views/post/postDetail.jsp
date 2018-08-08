@@ -13,12 +13,29 @@
 <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-<script src="https://code.jquery.com/jquery-latest.js"></script>
-<!-- 글씨체 -->
+<script src="http://malsup.github.com/jquery.form.js"></script><!-- 추가추가추가 -->
+
+<!-- <script src="https://code.jquery.com/jquery-latest.js"></script>
+ --><!-- 글씨체 -->
 <link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Myeongjo|Sunflower:300"
 	rel="stylesheet">
 
 <style>
+@media screen and (max-width: 768px){
+	#postModalContent{
+		width: 100% !important;
+		height: 90% !important;
+		max-height: calc(100% - 100px);
+    	overflow-y: scroll;
+	}
+	#modal-postUpdate, #modal-decision, #modal-decide{
+		width: 100% !important;
+	}
+	#modal-schedule{
+		width: 100% !important;
+		height: 328px !important;
+	}
+}
 body {
 	overflow-x: hidden;
 	height: 100%;
@@ -111,7 +128,7 @@ div {
 
 
 /* 마우스 포인터 설정 */
-#viewProjectTitle,#postBookmarkImg,#postUpdatePencilImg,#postMoreImg,#like-count,.content-box,.scheduleDate,.postCloseIcon{
+#viewProjectTitle,#postBookmarkImg,#postUpdatePencilImg,#postMoreImg,#like-count,.postContentBox,.scheduleDate,.postCloseIcon,.postFileBox{
 	cursor : pointer;
 }
 
@@ -138,6 +155,8 @@ div {
 #postMoreImg {
 	margin-right: 20px;
 	margin-left: 20px;
+	margin-top: auto;
+	margin-bottom: auto;
 	height : 20px;
 }
 
@@ -201,6 +220,7 @@ div {
 	border: 1px solid white;
 	border-radius: 100px;
 }
+
 /* 할일 */
 img[class="btn btn-link dropdown-toggle"] {
 	height: 30px;
@@ -217,24 +237,25 @@ img[class="btn btn-link dropdown-toggle"] {
 	font-size: 20px;
 }
 
-.content-box {
+.postContentBox {
 	width: 120px;
 	height: 80px;
 	border: 1px solid #d2d2d2;
 	background-color: #F5F5F5;
+	margin-right: 13px;
+	margin-top: 15px;
+	display: inline-block;
 	text-align: center;
-	margin-right: 10px;
-	margin-left: 0px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: inline-table;
+	vertical-align: middle;
 }
 
 
 #add-icon {
 	height: 30px;
+	margin-left: auto;
+	margin-right: auto;
 	position: relative;
-	top: 25px;
+	top : 30%;
 }
 
 /* 게시글 수정 */
@@ -290,6 +311,31 @@ img[class="btn btn-link dropdown-toggle"] {
 	cursor: pointer;
 	border-radius: 30px;
 	font-size: 15px;
+}
+
+/* 파일  박스 */
+.postFileBox {
+	width: 120px;
+	height: 80px;
+	border: 1px solid #d2d2d2;
+	background-color: #F5F5F5;
+	margin-right: 13px;
+	margin-top: 15px;
+	display: inline-block;
+	vertical-align: middle;
+	padding : 7px;
+}
+
+/* 업로드된 이미지 */
+.postUploadedImg{
+	height: 100%;
+	max-width : 80%;
+	vertical-align: middle;
+}
+
+/* 업로드된 파일 */
+.postUploadedFile{
+	margin-bottom : 5px;
 }
 
 /* 의사결정 등록 */
@@ -429,7 +475,9 @@ img[class="btn btn-link dropdown-toggle"] {
 		//count
 		var countSchedule = 0;
 		var countTodo = 0;
+		var countFile = 0;
 		var countDecision = 0;
+		
 		$.ajax({
 					url : "/viewPost.do",
 					type : "post",
@@ -493,9 +541,9 @@ img[class="btn btn-link dropdown-toggle"] {
 										+ "<span class='scheduleDate' onclick='open_updateScheduleModal(" + data.schedule[i].scNo +",\""+ data.schedule[i].startDate + "\",\"" + data.schedule[i].endDate + "\",\"" + data.schedule[i].scTitle + "\");' id='scheduleContent" + data.schedule[i].scNo + "'>"
 										+ data.schedule[i].startDate + " ~ "
 										+ data.schedule[i].endDate
-										+ "&nbsp;&nbsp;&nbsp;&nbsp;"
+										+ "<br>일정 내용 : "
 										+ data.schedule[i].scTitle + "</span>"
-										+"<div class='btn-group'>"
+										+"<div class='btn-group' style='float: right;'>"
 										+ "<img src='../resources/images/post/more.png' id='postMoreImg' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='height:13px;'/>"
 										+	"<div class='dropdown-menu'>"
 										+		"<a class='dropdown-item' onclick='postChangeCalendarPage();'>"
@@ -504,7 +552,7 @@ img[class="btn btn-link dropdown-toggle"] {
 										+		"<img src='../resources/images/post/pencil.png' style='height : 18px;'/>&nbsp;&nbsp;&nbsp;일정 수정/삭제하기</a>"
 										+	"</div>"
 										+"</div>"
-										+ "</div>";
+										+"</div>";
 
 								$('#appendforSchedule').html(strSchedule);
 							}
@@ -516,7 +564,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							$('#newTodoContent').val("");
 							for (var i = 0; i < data.todo.length; i++) {
 								countTodo++;
-								strTodo += "<div id='postEachTodo" + data.todo[i].todoNo + "'><div class='btn-group'>";
+								strTodo += "<div class='row' id='postEachTodo" + data.todo[i].todoNo + "'><div class='btn-group'>";
 
 								switch (data.todo[i].todoProgress) {
 								case "suggest":
@@ -555,10 +603,35 @@ img[class="btn btn-link dropdown-toggle"] {
 							}
 							$('#appendforTodo').html(strTodo);
 							$('#countTodo').html(countTodo);
+							
+							
+							//이미지,파일 불러오기
+							var postFileStr = "<div class='postContentBox' onclick='document.all.postImgFile.click();'>"
+								+ "<form id='postUpload' method='post' enctype='multipart/form-data'>"
+								+ "<input id='postImgFile' id='files' name='files' type='file' style='display: none' onchange='readURL(this.files);' multiple />"
+								+ "<input type='hidden' name='postNo' value=" + postNo + ">"
+								+ "</form><img src='../resources/images/post/add.png' id='add-icon' />"
+								+ "</div>";
+								
+							if(data.upload.length!=0){
+								for (var i = 0; i < data.upload.length; i++) { 
+									countFile++;	//카운트 1씩 증가
+									
+									if(data.upload[i].uploadSubject=="image"){
+										postFileStr += "<div class='postContentBox'><img src=" + data.upload[i].uploadPath + " class='postUploadedImg'/>"
+									}else{
+										postFileStr += "<div class='postFileBox'><img src='../resources/images/post/file.png' class='postUploadedFile' /><br><span>" + data.upload[i].uploadName + "</span>";
+									}
+									postFileStr += "</div>";
+								}
+							}
+							$('#postFileAppend').html(postFileStr);
+							$('#countFile').html(countFile);//카운트 설정
 
+							
 							//의사결정 불러오기
 							if (data.decision.length == 0) {	//등록된 의사결정이 없으면
-								var strDecision = "<div class='content-box' onclick='open_decision();'>"
+								var strDecision = "<div class='postContentBox' onclick='open_decision();'>"
 										+ "<img src='../resources/images/post/add.png' id='add-icon' /></div>";
 
 								$('#countDecision').html(0);
@@ -834,7 +907,7 @@ img[class="btn btn-link dropdown-toggle"] {
 								console.log("insert실패");
 								alert("로그인 후 이용가능합니다. \n로그인을 해주세요.");
 							} else {
-								var str = "<div id='postEachTodo" + data.todoNo + "'><div class='btn-group'>"
+								var str = "<div class='row' id='postEachTodo" + data.todoNo + "'><div class='btn-group'>"
 										+ "<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='" + data.todoNo + "' src='../resources/images/icon/play-button.png' />"
 										+ "<div class='dropdown-menu'>"
 										+ "<a class='dropdown-item' onclick=\"changeProgressTodo(" + todoMember + "," + data.todoNo + ",'suggest');\"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>"
@@ -1093,20 +1166,6 @@ img[class="btn btn-link dropdown-toggle"] {
 		});
 	}
 
-	// 이미지 추가
-	function readURL(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-
-			reader.onload = function(e) {
-				$('#imgFile_Step_' + stepImgNum).attr('src', e.target.result);
-			}
-
-			reader.readAsDataURL(input.files[0]);
-		}
-
-	};
-
 	//의사결정 추가
 	function inputDecision() {
 		var dcMaker = $('#selectMemberForDecision').val();
@@ -1177,7 +1236,7 @@ img[class="btn btn-link dropdown-toggle"] {
 							var countDecision2 = Number($('#countDecision').html())-1;
 							console.log(Number($('#countDecision').html()));
 							if(countDecision2==0){
-								var strDecision = "<div class='content-box' onclick='open_decision();'>"
+								var strDecision = "<div class='postContentBox' onclick='open_decision();'>"
 									+ "<img src='../resources/images/post/add.png' id='add-icon' /></div>";
 								$('#appendforDecision').html(strDecision);
 							}
@@ -1476,6 +1535,57 @@ img[class="btn btn-link dropdown-toggle"] {
         
   
      });
+
+	//이미지,파일 업로드
+	window.URL = window.URL || window.webkitURL;
+	/* jQuery.ajaxSettings.traditional = true; */
+	
+	function readURL(files) {
+		var filesLength = files.length;
+		var postImgFile = $('#postImgFile').val();
+		
+		var form = $('#postUpload');
+		var formData = new FormData(form);
+		
+		console.log(postImgFile);
+		
+		var countFileforInsert = Number($('#countFile').html());
+		
+		if(!files.length){
+			alert("선택된 파일이 없습니다.");
+		}
+		else{
+			$.ajax({
+				url:"/postInsertFile.do",
+				type:"post",
+				enctype: "multipart/form-data",
+				processData: false,
+		        contentType: false,
+				data:formData,
+				success:function(data){
+					
+					console.log("filesLength : " + filesLength);
+
+					for (i = 0; i < files.length; i++) {
+						countFileforInsert++;
+						var postFileStr = "<div class='postContentBox'><img src=" + window.URL.createObjectURL(files[i]) + " class='postUploadedImg'/></div>";
+
+						/* img.onload = function() {
+							window.URL.revokeObjectURL(this.src);
+						}  */
+						$('#postFileAppend').append(postFileStr);
+					}
+					$('#countFile').html(countFileforInsert);
+				},
+				error:function(data){
+					console.log("사진 업로드 실패");
+				}
+			});
+		}
+		
+		
+	}
+
 </script>
 </head>
 
@@ -1485,11 +1595,15 @@ img[class="btn btn-link dropdown-toggle"] {
 		<div id="myModal" class="modal">
 
 			<!-- Modal 내용 -->
-			<div class="modal-content" style="width: 60%; height: 80%;">
+			<div class="modal-content" id="postModalContent" style="width: 60%; height: 80%;">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
+					</div>
+				</div>
 				<div class="row" style="margin-left: 10px; margin-bottom: 20px;">
-					<div class="col-5" id="viewProjectTitle" onclick="postChangePage();">게시글의 프로젝트 명</div>
-					<div class="col-2">
-					
+					<div class="col-md-4" id="viewProjectTitle" onclick="postChangePage();">게시글의 프로젝트 명</div>
+					<div class="col-md-3">
 						<div class="btn-group" id="postMore" >
 							<img src="../resources/images/post/more.png" id="postMoreImg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
 							<div class="dropdown-menu">
@@ -1504,18 +1618,14 @@ img[class="btn btn-link dropdown-toggle"] {
 						</div>
 						<img src="../resources/images/post/pencilOff.png" id="postUpdatePencilImg" onclick="open_postUpdate();" data-toggle="tooltip" data-placement="top" title="게시글 수정하기" />
 						<img src="../resources/images/post/bookmark.png" id="postBookmarkImg" onclick="postBookmark();" data-toggle="tooltip" data-placement="top" title="북마크 설정하기" />
-						
-
-						
 					</div>
-					<div class="col-5">
-						<img src="../resources/images/post/close.png" id="modal-close" onclick="close_postDetail();" />
+					<div class="col-md-5">
 					</div>
 				</div>
 
 				<div class="row">
 					<!-- left side (post내용) -->
-					<div class="col-7" style="overflow-y: scroll; padding-left: 30px;">
+					<div class="col-md-7" style="overflow-y: scroll; padding-left: 30px;">
 						<br>
 						<div class="btn-group" style="margin-bottom: 15px;">
 							<img id="statusImg" class="btn btn-link dropdown-toggle"
@@ -1553,11 +1663,18 @@ img[class="btn btn-link dropdown-toggle"] {
 						<br>
 
 						<div style="margin: 5px; font-size: 13px;">
-							<div
+							<div class="row"
 								style="border-bottom: 1px solid #CFF09E; border-top: 1px solid #CFF09E; margin-bottom: 10px; padding: 10px; padding-right: 0px;">
-								<input type="text" id="newTodoContent" placeholder="새 할 일을 입력해 주세요." style="width: 220px; border: 0px;" /> ▶ 담당자 선택 <select id="selectMember" name="담당자 선택"></select>
+								<div class="col-md-4">
+								<input type="text" id="newTodoContent" placeholder="새 할 일을 입력해 주세요." style="width: 220px; border: 0px;" />
+								</div>
+								<div class="col-md-4">
+								▶ 담당자 선택 <select id="selectMember" name="담당자 선택"></select>
+								</div>
+								<div class="col-md-4">
 								<button class="insertButton" onclick="inputTodo();"
 									style="float: right;">+ 할일추가</button>
+								</div>
 							</div>
 
 							<div id="appendforTodo"></div>
@@ -1573,23 +1690,19 @@ img[class="btn btn-link dropdown-toggle"] {
 
 
 						<br><hr>
-						<span class="contents-title">&nbsp;파일/이미지 0</span><br>
-						<div class="content-box" onclick="document.all.imgFile.click();">
-							<input id="imgFile" name="imgFile" multiple="multiple"
-								type="file" style="display: none" onchange="readURL(this);" />
-							<img src="../resources/images/post/add.png" id="add-icon" />
+						<span class="contents-title">&nbsp;파일/이미지 <span id="countFile">0</span></span><br>
+						<form  method="post" enctype="multipart/form-data">
+						<div id="postFileAppend">
 						</div>
+						</form>
 
 
-
-						<br>
-
-						<br><hr>
+						<br><br><hr><br>
 						<span class="contents-title">&nbsp;의사결정 &nbsp;<span id="countDecision">0</span></span>&nbsp;&nbsp;&nbsp;
 						<button class="insertButton" onclick="open_decision();" style="float: right;">+ 의사결정</button>
 						<br><br>
 						<div id="appendforDecision">
-							<div class="content-box" onclick="open_decision();">
+							<div class="postContentBox" onclick="open_decision();">
 								<img src="../resources/images/post/add.png" id="add-icon" />
 							</div>
 							<br>
@@ -1601,7 +1714,7 @@ img[class="btn btn-link dropdown-toggle"] {
 
 					<!-- right side (댓글 부분) -->
 
-					<div class="col-5" id="comment" style="padding:0;">
+					<div class="col-md-5" id="comment" style="padding:0;">
 
 				<!-- <jsp:include page="/comment.do"></jsp:include>  준석추가 -->
 					</div>
@@ -1700,14 +1813,6 @@ img[class="btn btn-link dropdown-toggle"] {
 			<!-- Modal 내용 끝 -->
 		</div>
 		<!-- 일정수정 팝업모달 끝 -->
-
-
-		<!-- 이미지 팝업모달 -->
-		<div id="scheduleModal" class="modal">
-			<!-- Modal 내용 -->
-			<div class="modal-input" style="width: 25%; height: 30%;"></div>
-		</div>
-		<!-- 이미지 팝업모달 끝 -->
 
 		<!-- 의사결정 팝업모달 시작 -->
 		<div id="decisionModal" class="modal">

@@ -84,7 +84,7 @@ public class MemberServiceImpl implements MemberService {
 		sendMail.setSubject("[MODODA 서비스 이메일 인증]");
 		sendMail.setText(
 				new StringBuffer().append("<table align='center' width='620' style='margin: 0px auto; border-collapse: collapse; border: 1px solid #e7e7e7;' border='0' cellspacing='0' cellpadding='0'>\r\n" + 
-						"<tbody><tr><td align='center' height='54' colspan='3'><a href='localhost' style='display: block; : 54px; margin-top: 35px; text-align: center;' rel='noreferrer noopener' target='_blank'><img src='../resources/images/layout-img/main_logo_rec.png' width='134' height='42'></a></td></tr><tr><td width='60'></td><td align='left' width='500'>\r\n" + 
+						"<tbody><tr><td align='center' height='54' colspan='3'></td></tr><tr><td width='60'></td><td align='left' width='500'>\r\n" + 
 						"<p style='font-size: 24px; line-height: 36px; color: #888; font-family: AppleSDGothicNeo-Regular; margin: 0; padding: 24px 0 21px;'>\r\n" + 
 						"<strong style='color: #4a4a4a; font-family: AppleSDGothicNeo-Bold'>메일인증만 하신다면 협업은 쉬워집니다!</strong>\r\n" + 
 						"</p>\r\n" + 
@@ -118,6 +118,9 @@ public class MemberServiceImpl implements MemberService {
 
 	public boolean userAuth(String key) {
 		ConfirmMailFindPass cmfp = memberDAO.checkConfirmFindKey(sqlSession, key);
+		if(cmfp==null) {
+			return false;
+		}
 		Timestamp curTime = new Timestamp(System.currentTimeMillis());
 		if(cmfp.getCfTime().compareTo(curTime)>0) {
 			memberDAO.userAuth(sqlSession, cmfp.getEmail());
@@ -135,7 +138,7 @@ public class MemberServiceImpl implements MemberService {
 		sendMail.setSubject("[MODODA 비밀번호 변경]");
 		sendMail.setText(
 				new StringBuffer().append("<table align='center' width='620' style='margin: 0px auto; border-collapse: collapse; border: 1px solid #e7e7e7;' border='0' cellspacing='0' cellpadding='0'>\r\n" + 
-						"<tbody><tr><td align='center' height='54' colspan='3'><a href='localhost' style='display: block; : 54px; margin-top: 35px; text-align: center;' rel='noreferrer noopener' target='_blank'><img src='../resources/images/layout-img/main_logo_rec.png' width='134' height='42'></a></td></tr><tr><td width='60'></td><td align='left' width='500'>\r\n" + 
+						"<tbody><tr><td align='center' height='54' colspan='3'></td></tr><tr><td width='60'></td><td align='left' width='500'>\r\n" + 
 						"<p style='font-size: 24px; line-height: 36px; color: #888; font-family: AppleSDGothicNeo-Regular; margin: 0; padding: 24px 0 21px;'>\r\n" + 
 						"<strong style='color: #4a4a4a; font-family: AppleSDGothicNeo-Bold'>비밀번호를 잊어버리셨나요?</strong>\r\n" + 
 						"</p>\r\n" + 

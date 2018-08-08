@@ -14,6 +14,7 @@ import kr.pe.mododa.library.model.vo.Link;
 import kr.pe.mododa.library.model.vo.Todo;
 import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.member.model.vo.Member;
+import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
 @Service("libraryService")
@@ -121,13 +122,13 @@ public class LibraryServiceImpl implements LibraryService{
 	}
 	
 	// 프로젝트별 할 일 출력
-	public ArrayList<Todo> todoListPro(int proNo) {
-		return libraryDAO.todoListPro(sqlSession, proNo);
+	public ArrayList<Todo> todoListPro(Post p) {
+		return libraryDAO.todoListPro(sqlSession, p);
 	}
 	
 	// 프로젝트별 의사결정 출력
-	public ArrayList<Decision> decisionListPro(int proNo) {
-		return libraryDAO.decisionListPro(sqlSession, proNo);
+	public ArrayList<Decision> decisionListPro(Post p) {
+		return libraryDAO.decisionListPro(sqlSession, p);
 	}
 	
 	// 할 일 삭제
@@ -139,8 +140,14 @@ public class LibraryServiceImpl implements LibraryService{
 	public int deleteDecision(int dcNo) {
 		return libraryDAO.deleteDecision(sqlSession, dcNo);
 	}
-
+	
+	// 파일, 이미지 삭제
 	public int deleteUpload(int uploadNo) {
 		return libraryDAO.deleteUpload(sqlSession, uploadNo);
+	}
+
+	// 업로드 경로와 파일 이름 구하기
+	public Upload uploadPath(int uploadNo) {
+		return libraryDAO.uploadPath(sqlSession, uploadNo);
 	}
 }

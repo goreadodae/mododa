@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
+import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.model.service.PostServiceImpl;
@@ -59,7 +61,8 @@ public class PostControllerImpl {
 		List<Schedule> listSc = postService.selectSchedule(postNo);
 		List<Todo> listTodo = postService.selectTodo(postNo);
 		List<Member> listMember = postService.selectMembers(postNo);
-		List<Decision> listDecision = postService.selectDecision(postNo); //0802 아름 수정
+		List<Upload> listUpload = postService.selectUpload(postNo);
+		List<Decision> listDecision = postService.selectDecision(postNo);
 		List<Comment> listComment = postService.selectComment(postNo); //댓글 읽어오는거 (준석 추가)
 
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);//0802 아름 추가수정
@@ -88,6 +91,15 @@ public class PostControllerImpl {
 			todo.put("todoMemberPicture", td.getTodoMemberPicture());
 			todo.put("todoProgress", td.getTodoProgress());
 			todoArray.add(todo);
+		}
+		
+		JSONArray uploadArray = new JSONArray();
+		for(Upload up : listUpload) {
+			JSONObject upload = new JSONObject();
+			upload.put("uploadSubject", up.getUploadSubject());
+			upload.put("uploadName", up.getFileName());
+			upload.put("uploadPath", up.getUploadPath());
+			uploadArray.add(upload);
 		}
 
 		JSONArray memberArray = new JSONArray();
@@ -135,6 +147,7 @@ public class PostControllerImpl {
 		view.addObject("likeCount",likeCount);
 		view.addObject("schedule",scheduleArray);
 		view.addObject("todo", todoArray);
+		view.addObject("upload", uploadArray);
 		view.addObject("decision",decisionArray);//0802아름수정
 		view.addObject("member",memberArray);
 		view.addObject("comment",commentArray);
@@ -517,6 +530,29 @@ public class PostControllerImpl {
 		int result = postService.deletePost(postNo);
 		return "redirect:/newsfeed.do";
 	}
+	
+	//파일 업로드
+	@RequestMapping(value="/postInsertFile.do")
+	public ModelAndView insertPost(HttpServletRequest request, @RequestParam(value="files", required=false)MultipartFile[] files , HttpSession session )  {
+		Upload vo = new Upload();
+		vo.setMemberNo(((Member)session.getAttribute("member")).getMemberNo());
+		vo.setPostNo(6);
+		
+		System.out.println("controller2");
+		System.out.println("files : " + files);
+		if(files!=null)
+		{
+			System.out.println("controller들어옴!");
+			int result = postService.insertFile(files,vo);			
+		}
+		else {
+			System.out.println("controller3 else");
+		}
+		
+		ModelAndView view = new ModelAndView();
+		view.setViewName("jsonView");
+		return view;
+	}
 
-
+	
 }

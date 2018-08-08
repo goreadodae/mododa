@@ -1,17 +1,22 @@
 package kr.pe.mododa.post.model.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.pe.mododa.calendar.model.vo.Schedule;
 import kr.pe.mododa.library.model.vo.Decision;
 import kr.pe.mododa.library.model.vo.Todo;
+import kr.pe.mododa.library.model.vo.Upload;
 import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.personal.model.vo.Bookmark;
 import kr.pe.mododa.post.dao.PostDAOImpl;
@@ -28,6 +33,9 @@ public class PostServiceImpl implements PostService{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	@Autowired
+	private ServletContext servletContext;
 	
 	public Project selectProject(int postNo) {
 		return postDAO.selectOneProject(sqlSession, postNo);
@@ -65,6 +73,10 @@ public class PostServiceImpl implements PostService{
 	
 	public List<Decision> selectDecision(int postNo){
 		return postDAO.selectDecision(sqlSession, postNo);
+	}
+	
+	public List<Upload> selectUpload(int postNo){
+		return postDAO.selectUpload(sqlSession, postNo);
 	}
 	
 	public Decision selectOneDecision(int dcNo) {
@@ -159,6 +171,43 @@ public class PostServiceImpl implements PostService{
 	
 	public int deletePost(int postNo) {
 		return postDAO.deletePost(sqlSession, postNo);
+	}
+	
+	public int insertFile(MultipartFile[] files, Upload vo)  {
+		System.out.println("service들어옴 : files길이" + files.length);
+		String root_path = servletContext.getRealPath("/webapp");//상대경로 잡는거
+		root_path = root_path.replaceFirst("webapp", "");
+		String attach_path = "/resources/upload/write/";
+		String uploadPath = root_path+attach_path;
+		File dir = new File(uploadPath);
+		int result = 0;
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+		for(MultipartFile file : files) {
+			String originalFileName = file.getOriginalFilename();
+			String saveFileName = originalFileName;
+			System.out.println("saveFileName : " + saveFileName);
+			if(saveFileName != null && !saveFileName.equals("")) {
+				if(new File(uploadPath + saveFileName).exists()) {
+					saveFileName = System.currentTimeMillis()+"_"+saveFileName;
+				}
+			}
+			try {
+				file.transferTo(new File(uploadPath + saveFileName));
+				vo.setFileName(originalFileName);
+				vo.setUploadPath(uploadPath + saveFileName);
+				System.out.println(uploadPath+saveFileName);
+				result = postDAO.insertFile(sqlSession,vo);
+				
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("foreach 서비스"+files);
+		}
+		return result;
+		
 	}
 
 }

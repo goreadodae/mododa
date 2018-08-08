@@ -63,39 +63,34 @@ div {
 	<div class="col-6" id="contents" style="padding:0;">
 		<!-- 여기에 본문 내용 추가해주시면 됩니당~~!! -->
 		<!-- 자료실 헤더 -->
-	<table width="100%">
-		<tr>
-			<td width="20%">
-				<h4 id="subject">할 일</h4>
-			</td>
-			<td width="35%">
-			</td>
-			<td width="15%"></td>
-			<td width="5%">
-				<a href="/todo.do" id="todo">할 일</a>
-			</td>
-			<td width="5%">
-				<a href="/decision.do" id="decision">의사결정</a>
-			</td>
-			<td width="5%">
-				<a href="/image.do" id="image">이미지</a>
-			</td>
-			<td width="5%">
-				<a href="/file.do" id="file">파일</a>
-			</td>
-			<td width="5%">
-			</td>
-			<td width="5%"></td>
-		</tr>
-	</table>
-	
-	<div class="dropdown-divider"></div>
-	<!-- 자료실 헤더 끝 -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/todo.do"><b>할 일</b></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item active">
+					<a class="nav-link" href="/todo.do">할 일 <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/decision.do">의사결정</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/image.do">이미지</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/file.do">파일</a>
+				</li>
+			</ul>
+			</div>
+		</nav>
+		<!-- 자료실 헤더 끝 -->
 	
 	<!-- 본문 -->
 	<div style="padding:10px; top:0;">
 		<!-- 할 일 목록 -->
-		<div style="height:100%; border:white 1px solid; box-shadow:1px 1px 1px #D5D5D5;">
+		<div style="height:100%; ">
 			<!-- 할 일 메뉴 -->
 			<table width="100%" style="margin:0; padding:0;">
 				<tr>
@@ -170,47 +165,45 @@ div {
 				<img src="../resources/images/post/close.png" onclick="closeModal();" /><br>
 			</div>
 			
-			<h3>할 일 작성</h3>
+			<h4>할 일 작성</h4>
+			<div class="dropdown-divider"></div><br>
 			
 			<!-- 작성 -->
-			<table width="100%" style="margin:0; padding:0;">
-				<tr>
-					<td>
-						<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
-  							<option value="0">프로젝트 선택</option>
-  							<option value="${privateNo }">프라이빗 공간</option>
-  							<c:forEach items="${listProject }" var="p">
-  								<option value="${p.proNo }">${p.proTitle }</option>
-  							</c:forEach>
-						</select>
-					</td>
-				</tr>
-			</table>
-	
-			<table width="100%" style="margin:0; padding:0;">
-				<tr>
-					<td colspan="2">
-						<input class="form-control" type="text" id="todoTitle" name="todoTitle" placeholder="새 할 일을 입력해주세요">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent"
+			<div class="form-group row">
+    			<label for="staticEmail" class="col-sm-2 col-form-label">프로젝트</label>
+    			<div class="col-sm-10">
+      				<select class="form-control" id="selectProject" name="todoProNo" style="width:150px;">
+  						<option value="0">프로젝트 선택</option>
+  						<option value="${privateNo }">프라이빗 공간</option>
+  						<c:forEach items="${listProject }" var="p">
+  							<option value="${p.proNo }">${p.proTitle }</option>
+  						</c:forEach>
+					</select>
+    			</div>
+  			</div>
+  			<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">할 일</label>
+    		<div class="col-sm-10">
+      			<input class="form-control" type="text" id="todoTitle" name="todoTitle" placeholder="새 할 일을 입력해주세요">
+    		</div>
+ 	 		</div>
+ 	 		<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">할 일 설명</label>
+    		<div class="col-sm-10">
+      			<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent"
 							style="width:100%; resize:none;" name="todoContent" placeholder="할 일 설명(선택)"></textarea>
-						
-					</td>
-				</tr>
-				<tr>
-					<td width="90%">
-						<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
+    		</div>
+ 	 		</div>
+ 	 		<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">멤버</label>
+    		<div class="col-sm-10">
+      			<select class="form-control" id="memberList" name="todoMember" style="width:150px;">
 							<option value="0">멤버 선택</option>
 						</select>
-					</td>
-					<td width="10%">
-						<button type="submit" class="btn btn-light" onclick="return submitTodo();" style="width:100%">저장</button>
-					</td>
-				</tr>
-			</table>
+    		</div>
+ 	 		</div>
+ 	 		
+ 	 		<button type="button" class="btn btn-outline-success" onclick="submitTodo();" style="width:100%">저장</button>
 				
 		</div>
 		<!-- Modal 내용 끝 -->
@@ -233,71 +226,74 @@ div {
 			<div align="right">
 				<img src="../resources/images/post/close.png" onclick="closeContentModal(${t.todoNo});" /><br>
 			</div>
-			<!-- 할 일 내용  -->
 			
-			<div>
-			<div class='btn-group' style="float:left;">
-				<c:choose>
-					<c:when test="${t.todoProgress.equals('suggest')}">
-						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/icon/play-button.png' />
-					</c:when>
-					<c:when test="${t.todoProgress.equals('working')}">
-						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/play-buttonOn.png' />
-					</c:when>
-					<c:when test="${t.todoProgress.equals('stop')}">
-						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/pauseOn.png' />
-					</c:when>
-					<c:otherwise>
-						<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/checked.png' />
-					</c:otherwise>
-				</c:choose>
-				<div class='dropdown-menu'>
-				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
-				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
-				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
-				<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
-				</div>
-			</div>
-			<div style="float:left; font-size:120%; font-bold:120%;">
-				할 일 수정
-			</div>
-			</div>
+			<h4>할 일 수정</h4>
+			<div class="dropdown-divider"></div><br>
 			
-			<div>
-				<div style="float:left; width:100%">
-					<input class="form-control" type="text" style="margin:2px;" id="todoTitle_${t.todoNo }" name="todoTitle" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요">
-				</div>
-				
-				
+			<div class="form-group row">
+    			<label for="staticEmail" class="col-sm-2 col-form-label">진행사항</label>
+    			<div class="col-sm-10">
+	      			<div class='btn-group' style="float:left;">
+						<c:choose>
+							<c:when test="${t.todoProgress.equals('suggest')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/icon/play-button.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('working')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/play-buttonOn.png' />
+							</c:when>
+							<c:when test="${t.todoProgress.equals('stop')}">
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/pauseOn.png' />
+							</c:when>
+							<c:otherwise>
+								<img class='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' id='${t.todoNo }_m' src='../resources/images/post/checked.png' />
+							</c:otherwise>
+						</c:choose>
+						<div class='dropdown-menu'>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'suggest');"><img src='../resources/images/icon/play-button.png' />&nbsp;&nbsp;&nbsp;할 일 할당</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'working');"><img src='../resources/images/post/play-buttonOn.png' />&nbsp;&nbsp;&nbsp;진행중</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'stop');"><img src='../resources/images/post/pauseOn.png' />&nbsp;&nbsp;&nbsp;일시중지</a>
+						<a class='dropdown-item' onclick="changeProgressTodo(${t.todoMember},${t.todoNo},'finish');"><img src='../resources/images/post/checked.png' />&nbsp;&nbsp;&nbsp;완료</a>
+						</div>
+					</div>
+    			</div>
+  			</div>
 
-				<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent_${t.todoNo }"
-					style="width:100%; resize:none; margin:2px;" name="todoContent" placeholder="할 일 설명(선택)">${t.todoContent }</textarea>
-				
-				<div>
-					<div style="float:left;">
-						<select class="form-control" name="todoMember" style="width:150px; margin:2px;">
-							<option value="0">${t.todoWriterName }</option>
-						</select>
-					</div>
-					
-					<div style="float:left;">
-					▶
-					</div>	
-					
-					<div style="float:left;">
-						<select class="form-control" id="todoMember_${t.todoNo }" name="todoMember" style="width:150px; margin:2px;">
-							<option value="0">${t.todoMemberName }</option>
-						</select>
-					</div>
-					
+  			<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">할 일</label>
+    		<div class="col-sm-10">
+      			<input class="form-control" type="text" style="margin:2px;" id="todoTitle_${t.todoNo }" value="${t.todoTitle }" placeholder="새 할 일을 입력해주세요">
+    		</div>
+ 	 		</div>
+ 	 		<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">할 일 설명</label>
+    		<div class="col-sm-10">
+      			<textarea class="form-control" aria-label="With textarea" rows="10" id="todoContent_${t.todoNo }"
+					style="width:100%; resize:none; margin:2px;" placeholder="할 일 설명(선택)">${t.todoContent }</textarea>
+    		</div>
+ 	 		</div>
+ 	 		<div class="form-group row">
+    			<label for="inputPassword" class="col-sm-2 col-form-label">멤버</label>
+    		<div class="col-sm-10">
+      			<div style="float:left;">
+					<select class="form-control" style="width:150px; margin:2px;">
+						<option value="0">${t.todoWriterName }</option>
+					</select>
 				</div>
-				
-				<div align="right"><button type="submit" class="btn btn-light" onclick="updateTodo(${t.todoNo});">수정</button></div>
-				
-			</div>
-				
+					
+				<div style="float:left;">
+				▶
+				</div>	
+					
+				<div style="float:left;">
+					<select class="form-control" id="todoMember_${t.todoNo }" style="width:150px; margin:2px;">
+						<option value="0">${t.todoMemberName }</option>
+					</select>
+				</div>
+    		</div>
+ 	 		</div>
+ 	 		
+ 	 		<button type="button" class="btn btn-outline-success" onclick="updateTodo(${t.todoNo});">수정</button>
 		</div>
-		<!-- Modal 내용 끝 -->
 	</div>
 
 </c:forEach>	
@@ -407,8 +403,16 @@ div {
 					}
 					
 					str +=
-						"</div><div style='padding:15px;'>"+
-						data[i].todoContent+
+						"</div><div style='padding:15px;'>";
+						
+					if(data[i].todoContent == null) {
+						str += "할 일 설명이 없습니다.";	
+					}
+					else {
+						str += data[i].todoContent;
+					}
+						
+					str +=
 						"</div>"+
 						"<div style='padding:15px;float:left;font-size:80%;'>"+data[i].todoProjectName+"</div>"+
 						"<div style='text-align:right;padding:15px;font-size:80%;'>"+
@@ -424,7 +428,7 @@ div {
 	
 	
 	
-	/* 할 일 작성 시 주의사항(?) */
+	/* 할 일 작성 */
 	function submitTodo() {
 		var selectProject = $('#selectProject option:selected').val();
 		var memberList = $('#memberList option:selected').val();
@@ -463,11 +467,7 @@ div {
 			success : function(data) {
 				alert("할일 작성 완료");
 				closeModal();
-				todoAll();
-				$('#selectProject').append("<option value='0'>프로젝트 선택</option>");
-				$('#memberList').append("<option value='0'>멤버 선택</option>");
-				$('#todoTitle').val("");
-				$('#todoContent').val("");
+				location.href='/todo.do';
 			},
 			error : function(data) {
 				console.log("오류");
@@ -479,7 +479,7 @@ div {
 	}
 	
 	
-	/* 할 일 내용보기 모달 열기 */
+	/* 할 일 수정 모달 열기 */
 	function openContentModal(id) {
 		$("#todoContentModal_"+id).show();
 		
@@ -592,7 +592,7 @@ div {
 					console.log("할일 진행과정 변경 실패");
 				},
 				complete : function(data) {
-						
+					
 				}
 			});
 		}
@@ -621,7 +621,7 @@ div {
 			success : function(data) {
 				closeContentModal(id);
 				alert("할 일 수정 성공");
-				todoAll();
+				todoCategory(1);
 			},
 			error : function(data) {
 				console.log("할일 수정 실패");

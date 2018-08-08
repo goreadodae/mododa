@@ -59,6 +59,22 @@
             <beans:ref bean="mailCertifyInterceptor"/>
         </interceptor>
     </interceptors>
+    <!-- 로그인 로그아웃시 인터셉터 -->
+
+	<interceptors>
+		<interceptor>
+		<mapping path="/mainPage.do"/>
+		<beans:bean id="webContentInterceptor"
+			class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+			<beans:property name="cacheSeconds" value="0" />
+			<beans:property name="useExpiresHeader" value="true" />
+			<beans:property name="useCacheControlHeader" value="true" />
+			<beans:property name="useCacheControlNoStore" value="true" />
+		</beans:bean>
+		</interceptor>
+	</interceptors>
+    
+    
 	<beans:import resource="./aop-context.xml"/>
 
 </beans:beans>
