@@ -138,6 +138,13 @@ public class WriteControllerImpl  implements WriteController {
 			@RequestParam(value="files", required=false)MultipartFile[] files, HttpSession session )  {
 		System.out.println(currentProNo+"지금은 여기 입니당!");
 		
+		for(int i=0; i<files.length; i++)
+		{
+			System.out.println(files[i]+"하나 들어감"+i);
+			
+		}
+		
+		
 		
 		Post post = new Post();
 		String hashTag ="";
@@ -163,7 +170,7 @@ public class WriteControllerImpl  implements WriteController {
 		if(postResult>0)
 		{
 			
-			if(files.length != 1)
+			if(files.length <= 1)
 			{
 				upload.setMemberNo(memberNo);
 				int result = writeService.uploadFile(files,upload);		

@@ -197,6 +197,9 @@ div {
 	<input type="hidden" id="memberNo_${t.todoNo }" value="${t.todoMember }" />
 	<input type="hidden" id="todoProjectMember_${t.todoNo }" value="${t.todoProNo }" />
 	<input type="hidden" id="todoPostMember_${t.todoNo }" value="${t.todoPostNo }" />
+	<input type="hidden" id="todoProjectName_${t.todoNo }" value="${t.todoProjectName }" />
+	<input type="hidden" id="todoMemberName_${t.todoNo }" value="${t.todoMemberName }" />
+	
 	
 	<div id="todoContentModal_${t.todoNo }" class="modal">
 
@@ -353,11 +356,12 @@ div {
 				
 				var str ="";
 				
+				str += "<table class='table table-hover' style='margin:0;padding:0;'><tbody>";
+				
 				if(data.length == 0) {
-					str += "<div style='text-align:center;height:100px;'>할 일이 없습니다.</div>";
+					str += "<tr><td align='center'>할 일이 없습니다.</td></tr>";
 				}
 				else {
-					str += "<table class='table table-hover' style='margin:0;padding:0;'><tbody>";
 						
 					for(i=0; i<data.length; i++) {
 						str += 
@@ -472,31 +476,42 @@ div {
 		$("#todoContentModal_"+id).show();
 		
 		var todoProNo = $("#todoProjectMember_"+id).val();
+		var todoProjectName = $("#todoProjectName_"+id).val();
+		var todoMemberNo = $("#memberNo_"+id).val();
+		var todoMemberName = $("#todoMemberName_"+id).val();
 		
-		console.log(todoProNo);
+		console.log(todoProjectName);
+		console.log(todoMemberNo);
+		console.log(todoMemberName);
 		
-		// 프로젝트 번호에 따라 할일을 하는 사람 불러오기
-		if(todoProNo != 0) {
-			$.ajax({
-				url : "/todoContentMemberPro.do",
-				type : "post",
-				data : {
-					todoProNo : todoProNo
-				},
-				success : function(data) {
-					$('#todoMember_'+id).find("option").remove();
-					
-					for(var i=0;i<data.length;i++){
-						$('#todoMember_'+id).append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
-					}
-				},
-				error : function(data) {
-					console.log("회원 불러오기 실패");
-				},
-				complete : function(data) {
+		if(todoProjectName == "프라이빗공간") {
+			$('#todoMember_'+id).find("option").remove();
+			$('#todoMember_'+id).append("<option value='"+todoMemberNo+"'>"+todoMemberName+"</option>");
+		}
+		else {
+			// 프로젝트 번호에 따라 할일을 하는 사람 불러오기
+			if(todoProNo != 0) {
+				$.ajax({
+					url : "/todoContentMemberPro.do",
+					type : "post",
+					data : {
+						todoProNo : todoProNo
+					},
+					success : function(data) {
+						$('#todoMember_'+id).find("option").remove();
 						
-				}
-			});
+						for(var i=0;i<data.length;i++){
+							$('#todoMember_'+id).append("<option value='"+data[i].memberNo+"'>"+data[i].memberName+"</option>");
+						}
+					},
+					error : function(data) {
+						console.log("회원 불러오기 실패");
+					},
+					complete : function(data) {
+							
+					}
+				});
+			}
 		}
 		
 	}

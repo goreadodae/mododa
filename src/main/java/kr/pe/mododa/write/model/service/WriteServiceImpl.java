@@ -73,6 +73,10 @@ public class WriteServiceImpl implements WriteService{
 		String attach_path = "/resources/upload/write/";
 		String uploadPath = root_path+attach_path;
 		File dir = new File(uploadPath);
+		
+		
+		System.out.println(files[0]+"서비스");
+		
 		int result = 0;
 		if (!dir.isDirectory()) {
 			dir.mkdirs();

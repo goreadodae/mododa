@@ -274,7 +274,7 @@ div {
 				str += "<table class='table table-hover' style='margin:0;padding:0;'><tbody>";
 				
 				if(data.length == 0) {
-					str += "<tr><td>의사결정이 없습니다.</td></tr>";
+					str += "<tr><td align='center'>의사결정이 없습니다.</td></tr>";
 				}
 				else {
 					for(i=0; i<data.length; i++) {

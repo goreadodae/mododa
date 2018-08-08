@@ -117,15 +117,15 @@
 	</select>
 	
 	<select id="privateSpace" resultType="privateSpace">
-	select
-	pro_no as proNo,
-	pro_title as proTitle,
-	pro_Progress as proPregress,
-	pro_start_date as proStartDate,
-	pro_end_date as proEndDate,
-	pro_member_no as proMemberNo
-	from project
-	where pro_no = (select min(pro_no) from project where pro_member_no =#{memberNo})
+   select
+   pro_no as proNo,
+   pro_title as proTitle,
+   pro_Progress as proPregress,
+   pro_start_date as proStartDate,
+   pro_end_date as proEndDate,
+   pro_member_no as proMemberNo
+   from project
+   where pro_no = (select min(pro_no) from project where pro_member_no =#{memberNo})
 	</select>
 	
 	<select id="myPartner" resultType="partners">
