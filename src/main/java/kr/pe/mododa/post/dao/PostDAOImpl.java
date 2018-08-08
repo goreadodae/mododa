@@ -16,6 +16,7 @@ import kr.pe.mododa.post.model.vo.Comment;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 
 
 @Repository("postDAO")
@@ -60,6 +61,10 @@ public class PostDAOImpl implements PostDAO{
 	
 	public Decision selectOneDecision(SqlSessionTemplate sqlSession, int dcNo) {
 		return sqlSession.selectOne("post.selectOneDecision", dcNo);
+	}
+	
+	public List<RelatedPost> selectRelatedPost(SqlSessionTemplate sqlSession, int postNo) {
+		return sqlSession.selectList("post.selectRelatedPost", postNo);
 	}
 	
 	public List<Member> selectMembers(SqlSessionTemplate sqlSession, int postNo){

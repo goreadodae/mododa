@@ -32,6 +32,7 @@ import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.post.model.vo.PostLike;
 import kr.pe.mododa.project.model.vo.Project;
 import kr.pe.mododa.write.model.service.WriteServiceImpl;
+import kr.pe.mododa.write.model.vo.RelatedPost;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -82,6 +83,7 @@ public class PostControllerImpl {
 		List<Member> listMember = postService.selectMembers(postNo);
 		List<Upload> listUpload = postService.selectUpload(postNo);
 		List<Decision> listDecision = postService.selectDecision(postNo);
+		List<RelatedPost> listRelatedPost = postService.selectRelatedPost(postNo);
 		List<Comment> listComment = postService.selectComment(postNo); //댓글 읽어오는거 (준석 추가)
 
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);//0802 아름 추가수정
@@ -142,7 +144,7 @@ public class PostControllerImpl {
 			commentArray.add(comment);
 		}
 
-		JSONArray decisionArray = new JSONArray();	//0802 아름 수정
+		JSONArray decisionArray = new JSONArray();
 		for(Decision d : listDecision) {
 			JSONObject decision = new JSONObject();
 			decision.put("dcNo", d.getDcNo());
@@ -155,6 +157,13 @@ public class PostControllerImpl {
 			decision.put("dcWriterName", d.getDcWriterName());
 			decision.put("dcMakerName", d.getDcMakerName());
 			decisionArray.add(decision);
+		}
+		
+		JSONArray RelatedPostArray = new JSONArray();
+		for(RelatedPost rp : listRelatedPost) {
+			JSONObject RelatedPost = new JSONObject();
+			
+			RelatedPostArray.add(RelatedPost);
 		}
 
 
@@ -552,7 +561,6 @@ public class PostControllerImpl {
 	}
 
 	//파일 업로드
-	
 	@RequestMapping(value="/postInsertFile.do")
 	public String insertPost(HttpServletRequest request, @RequestParam(value="files", required=false)MultipartFile[] files , HttpSession session )  {
 		Upload vo = new Upload();
@@ -563,7 +571,6 @@ public class PostControllerImpl {
 			System.out.println("files : " + files);
 			if(files!=null)
 			{
-				System.out.println("controller들어옴!");
 				int result = postService.insertFile(files, vo);
 			}
 			else {
@@ -575,6 +582,27 @@ public class PostControllerImpl {
 
 
 		return "redirect:/postUploadSuccessPage.do";
+	}
+	
+	//파일 내역 가져오기
+	@RequestMapping(value="/postSelectUpload.do")
+	public ModelAndView selectUpload(int postNo) {
+		List<Upload> listUpload = postService.selectUpload(postNo);
+		
+		JSONArray uploadArray = new JSONArray();
+		for(Upload up : listUpload) {
+			JSONObject upload = new JSONObject();
+			upload.put("uploadNo", up.getUploadNo());
+			upload.put("uploadSubject", up.getUploadSubject());
+			upload.put("uploadName", up.getFileName());
+			upload.put("uploadPath", up.getUploadPath());
+			uploadArray.add(upload);
+		}
+		
+		ModelAndView view = new ModelAndView();
+		view.addObject("upload", uploadArray);
+		view.setViewName("jsonView");
+		return view;
 	}
 
 
