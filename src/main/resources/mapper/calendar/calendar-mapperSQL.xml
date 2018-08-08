@@ -9,7 +9,7 @@
 		pro_start_Date as proStartDate,
 		pro_end_Date as proEndDate,
 		PRO_MEMBER_NO as proMNo
-		from Project where pro_progress='working'
+		from Project where pro_progress='working' and PRO_MEMBER_NO = #{proMemberNo}
 	</select>
 	<select id="projectOne" resultType="project">
 		select pro_no as proNo,
@@ -59,7 +59,7 @@
 		sc_start_date as startDate,
 		sc_end_date as endDate,
 		sc_title as scTitle
-		from schedule
+		from schedule where member_no = #{memNO}
 	</select>
 	<insert id ="calendarInsertSchedule" parameterType="schedule">
 	insert into schedule values (schedule_SEQ.nextval,	

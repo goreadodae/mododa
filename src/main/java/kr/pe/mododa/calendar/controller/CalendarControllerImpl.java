@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.google.gson.JsonIOException;
 
 import kr.pe.mododa.calendar.model.service.CalendarServiceImpl;
 import kr.pe.mododa.calendar.model.vo.Schedule;
+import kr.pe.mododa.member.model.vo.Member;
 import kr.pe.mododa.post.model.vo.Post;
 import kr.pe.mododa.project.model.vo.Project;
 
@@ -47,14 +49,23 @@ public class CalendarControllerImpl implements CalendarController {
 
 	@Override
 	@RequestMapping(value="selectProject.do")
-	public void selectProject(HttpServletResponse response) throws Exception {
+	public void selectProject(HttpSession session,HttpServletResponse response) throws Exception {
 		
-		ArrayList<Project> list = CalendarService.projectSelectAll();
+		
+		if(session.getAttribute("member")!=null) {
+		
+			int memberNo = ((Member)session.getAttribute("member")).getMemberNo();	
+			ArrayList<Project> list = CalendarService.projectSelectAll(memberNo);
+		
+			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
 		 
-		 response.setContentType("application/json");
-		 response.setCharacterEncoding("utf-8");
+			new Gson().toJson(list,response.getWriter());
+		
+		}else {
+				System.out.println("로그인 해주세용");
+		}
 		 
-		 new Gson().toJson(list,response.getWriter());
 		 
 	}
 
@@ -63,6 +74,8 @@ public class CalendarControllerImpl implements CalendarController {
 	@RequestMapping(value="selectLinkPost.do")
 	public void selectLinkPost(HttpServletResponse response,@RequestParam int postProNo) throws Exception {
 	
+		
+		
 		 ArrayList<Post> linkPostList = CalendarService.postSelectAll(postProNo);
 		 
 		 response.setContentType("application/json");
@@ -74,9 +87,12 @@ public class CalendarControllerImpl implements CalendarController {
 
 	@Override
 	@RequestMapping(value="calendarSchedule.do")
-	public void calendarSchedule(HttpServletResponse response) throws Exception {
+	public void calendarSchedule(HttpSession session,HttpServletResponse response) throws Exception {
 		
-		ArrayList<Schedule> list = CalendarService.calendarSchedule();
+		if(session.getAttribute("member")!=null) {
+		
+		int memberNo = ((Member)session.getAttribute("member")).getMemberNo();	
+		ArrayList<Schedule> list = CalendarService.calendarSchedule(memberNo);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd", Locale.KOREA);
 		
@@ -91,11 +107,14 @@ public class CalendarControllerImpl implements CalendarController {
 
 		}
 		
-		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		 
 		 new Gson().toJson(list,response.getWriter());
+		 
+		}else {
+			
+		}
 	}
 
 	@Override
