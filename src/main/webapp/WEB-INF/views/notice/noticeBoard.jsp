@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -292,16 +292,6 @@
         return fpResult;
      }
      </script>
-     <c:if test="${cookie.loginCookie.value!=null }">
-        <script>//쿠키값이 있는지 확인
-           location.href="/mainPage.do";
-        </script>
-     </c:if>
-     <c:if test="${sessionScope.member!=null }">
-        <script type="text/javascript">//세션이 있는지 확인
-         location.href="/mainPage.do";
-        </script>
-     </c:if>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">

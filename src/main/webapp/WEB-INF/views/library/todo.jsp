@@ -14,6 +14,12 @@
 </head>
 
 <style>
+@media screen and (max-width: 768px){
+	.todoContentModal{
+		width: 100% !important;
+		
+	}
+}
 body {
 	overflow-x: hidden;
 	overflow-y: hidden;
@@ -139,7 +145,7 @@ div {
 	<div id="todoModal" class="modal">
 
 		<!-- Modal 내용 -->
-		<div class="modal-content" style="width:40%;">
+		<div class="modal-content todoContentModal" style="width:40%;">
 			<!-- 닫기 버튼 -->
 			<div align="right">
 				<img src="../resources/images/post/close.png" onclick="closeModal();" /><br>
@@ -201,7 +207,7 @@ div {
 	<div id="todoContentModal_${t.todoNo }" class="modal">
 
 		<!-- Modal 내용 -->
-		<div class="modal-content" style="width:40%;">
+		<div class="modal-content todoContentModal" style="width:40%;">
 			<!-- 닫기 버튼 -->
 			<div align="right">
 				<img src="../resources/images/post/close.png" onclick="closeContentModal(${t.todoNo});" /><br>
