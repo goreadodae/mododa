@@ -209,7 +209,7 @@ public class PostServiceImpl implements PostService{
 	            //3. for문으로 확장자명 비교에 따라 이미지/파일  구분 
 	            for(int i=0; i<length; i++)
 	            {
-	               if(subject.equals(extension[i]))
+	               if(subject.equalsIgnoreCase(extension[i]))
 	               {
 	                  // 확장자 명이 포함되면 중단
 	                  exResult="image";

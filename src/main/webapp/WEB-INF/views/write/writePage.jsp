@@ -1235,7 +1235,7 @@ margin:auto;
 							<div class="col-md-12" style="height: 100%;">
 								<div class="row" style="height: 10%">
 									<div class="col-md-12" style="height: 100%;">
-										<input type="text" name="writeTitle" id="writeTitle" placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
+										<input type="text" name="writeTitle" id="writeTitle" requierd placeholder="제목을 입력해 주세요" maxlength="30" size="30" style="height: 100%;" />
 									</div>
 								</div>
 								<div class="row" style="height: 90%">

@@ -117,15 +117,15 @@
 	</select>
 	
 	<select id="privateSpace" resultType="privateSpace">
-	select
-	p.pro_no as proNo,
-	p.pro_title as proTitle,
-	p.pro_member_no as memberNo,
-	pt.par_no as parNo,
-	m.member_name as parName,
-	pt.par_yn as parYN
-	from project p left join partner pt on(pt.par_no = p.pro_member_no) left join member m on(m.member_no = p.pro_member_no) 
-	where pro_no in (select min(pro_no) from project where pro_member_no = #{memberNo})
+   select
+   pro_no as proNo,
+   pro_title as proTitle,
+   pro_Progress as proPregress,
+   pro_start_date as proStartDate,
+   pro_end_date as proEndDate,
+   pro_member_no as proMemberNo
+   from project
+   where pro_no = (select min(pro_no) from project where pro_member_no =#{memberNo})
 	</select>
 	
 	<select id="myPartner" resultType="partners">

@@ -20,6 +20,7 @@
         (select member_picture from member where member_no=todo_writer) as todoWriterPicture
 		from todo
 		where todo_pro_no in (select pro_no from work_on where (member_no = #{memberNo} or member_no = #{memberNo}) and invite_yn='Y')
+        or todo_pro_no = (select min(pro_no) from project where pro_member_no=#{memberNo})
         order by 1 desc
 	</select>
 	
@@ -64,8 +65,9 @@
 		upload_name as fileName,
 		upload_path as uploadPath
 		from upload
-		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
-		and upload_subject='image'
+		where (post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
+		or post_no in (select post_no from post where post_pro_no = (select min(pro_no) from project where pro_member_no=#{memberNo})))
+        and upload_subject='image'
 		order by 1 desc
 	</select>
 	
@@ -80,7 +82,8 @@
 		upload_path as uploadPath,
         (select post_title from post where post_no = u.post_no) as postTitle
 		from upload u
-		where post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
+		where (post_no in (select post_no from post where post_pro_no in (select pro_no from work_on where member_no=#{memberNo} and invite_yn='Y'))
+		or post_no in (select post_no from post where post_pro_no = (select min(pro_no) from project where pro_member_no=#{memberNo})))
 		and upload_subject='file'
 		order by 1 desc
 	</select>

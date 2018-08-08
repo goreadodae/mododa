@@ -52,6 +52,7 @@ public class WriteDAOImpl implements WriteDAO {
 	}
 
 	public int insertFileUploaded(SqlSessionTemplate sqlSession, Upload vo) {
+
 		return sqlSession.insert("write.uploadFiles",vo);
 		
 		

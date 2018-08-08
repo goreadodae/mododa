@@ -175,7 +175,7 @@ function imageCategory(num) {
 		data : {data : num},
 		success : function(data) {
 			if(data.length == 0) {
-				$("#imageContainer").html("<div style='text-align:center;height:100px;'>이미지가 없습니다.</div>");
+				$("#imageContainer").html("<div id='imageDiv'><div style='text-align:center;height:100px;'>이미지가 없습니다.</div></div>");
 			}
 			else {
 				$("#imageDiv").remove();
