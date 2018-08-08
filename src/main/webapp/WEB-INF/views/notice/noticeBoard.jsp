@@ -289,19 +289,20 @@
                console.log("실패");
             }
          });
-        return fpResult;
+        return fpResult;d
      }
      </script>
-     <c:if test="${cookie.loginCookie.value!=null }">
-        <script>//쿠키값이 있는지 확인
-           location.href="/mainPage.do";
-        </script>
-     </c:if>
-     <c:if test="${sessionScope.member!=null }">
-        <script type="text/javascript">//세션이 있는지 확인
-         location.href="/mainPage.do";
-        </script>
-     </c:if>
+ 
+       <c:if test="${sessionScope.member.memberNo!=1}">
+       <script>
+			$(document).ready(function(){
+          		$('#nWrite').css('display','none');
+			})
+       </script>
+            
+    </c:if>
+        
+     
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
@@ -313,28 +314,7 @@
         
         <!-- 채우기 -->
         
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/index.jsp#introduce">Introduce</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/noticeList.do?currentPage=1">Notice</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/qnaList.do?currentPage=1">1:1 QNA</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#join-modal">Join</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <label style="border: 3px dashed white; border-radius:15px;">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded portfolio-item d-block mx-auto" href="#login-modal">Login</a>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+     
     </nav>
 
 
@@ -367,6 +347,9 @@
           </tr>
        </thead>
         <tbody>
+        
+        
+       
          <c:forEach items="${listNotice}" var="n">
    <tr id="NoticeTitles">
       <td>${n.noticeNo}</td>
@@ -377,6 +360,8 @@
    </tr>
 	</c:forEach>
 	
+	  
+	
         </tbody>
       </table>
 
@@ -384,11 +369,12 @@
    
    
       <div class="btn-group mr-2" role="group" aria-label="첫번째 그룹">
-       <button type="button" class="btn btn-secondary">${listCount}</button>
+       ${listCount}
         </div>
+      
         
          <form action="/writeReady.do" >
-		<input type="submit" class="btn btn-secondary"  style="float:right; margin-right:300px;" value="글쓰기"> 
+		<input type="submit" class="btn btn-secondary" id="nWrite" style="float:right; margin-right:200px;" value="글쓰기"> 
 		</form>
    
    
