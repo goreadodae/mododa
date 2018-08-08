@@ -368,11 +368,11 @@
 
 					<tr>
 						<td class="contents" colspan="4" style="display: none;">${q.queContents}
-						<form action="/qnaUpdateReady.do" style="float:right;" >
+						<form action="/qnaUpdateReady.do" style="float:right; margin-right:0px;"  >
 						<input type="submit" class="btn btn-outline-success" value="수정" >
 						<input type="hidden" value="${q.queNo}" name="queNo">
 						</form>
-						<form action="/qnaDelete.do" style="float:right;">
+						<form action="/qnaDelete.do" style="float:right; margin-right:3px;">
 						<input type="submit" class="btn btn-outline-success"  value="삭제">
 						<input type="hidden" value="${q.queNo}" name="queNo">
 						</form>
@@ -384,7 +384,7 @@
 						<c:when test="${q.ansContents!=null}">
 							<tr class="showAContents">
 								<th scope="row"></th>
-								<td colspan="3"><img src="../resources/images/qna/replay.JPG" style="width:40px; height:40px;">답변드립니다.</td>
+								<td colspan="3"><img src="../resources/images/qna/qaReply.png" style="width:20px; height:20px;">답변드립니다.</td>
 							</tr>
 							<tr>
 								<td class="answerContents" colspan="4" style="display: none;">${q.ansContents}</td>
