@@ -71,7 +71,7 @@
         null,
     </otherwise>
 	</choose>
-	1,#{proNo},#{startDate},#{endDate},#{scTitle})	
+	#{memNO},#{proNo},#{startDate},#{endDate},#{scTitle})	
 	</insert>
 	<select id="calendarOneSchedule" parameterType="schedule" resultType="schedule">
 	select sc_no as scheduleNo,
