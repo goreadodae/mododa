@@ -80,15 +80,15 @@ public class PersonalControllerImpl implements PersonalController{
 		System.out.println(memberNo);
 		ArrayList<Bookmark> bookmark = personalService.selectBookmark(memberNo);
 		ModelAndView view = new ModelAndView();
-		if(bookmark!=null)
-		{
+		/*if(bookmark!=null)
+		{*/
 			view.addObject("bookmark", bookmark);
 			view.setViewName("personal/bookmark");
 			return view;
-		}else {
+		/*}else {
 			view.setViewName("personal/bookmark");
 			return view;
-		}
+		}*/
 	}
 	
 	@RequestMapping(value="mypost.do")

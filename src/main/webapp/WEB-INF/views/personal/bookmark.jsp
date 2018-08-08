@@ -223,6 +223,12 @@ div {
 		<div class="viewContents  col-md-12" style="overflow-y: auto;">
 			<!-- 내용출력하는 부분 -->
 			<ul class="feed-list">
+				<c:if test="${empty bookmark }">
+					<center>
+					<img src="../resources/images/layout-img/main_logo_square.png" style="width:50%;height:30%"/><br>
+					<span font-size="12px;">아직 북마크를 설정하지 않으셨네요..<br>마음에 드는글이 있다면 북마크를 설정해 보세요</span>
+					</center>
+				</c:if>
 				<c:forEach var="book" items="${bookmark }">
 					<li class="feed-contents">
 						<div class="row">
