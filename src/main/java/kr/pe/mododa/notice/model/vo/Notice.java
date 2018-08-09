@@ -7,6 +7,11 @@ public class Notice {
 	private String noticeTitle;
 	private String noticeContents;
 	private Date noticeWriteDate;
+	@Override
+	public String toString() {
+		return "Notice [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContents=" + noticeContents
+				+ ", noticeWriteDate=" + noticeWriteDate + ", noticeViewCount=" + noticeViewCount + "]";
+	}
 	private int noticeViewCount;
 	
 	public Notice() {
