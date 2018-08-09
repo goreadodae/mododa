@@ -1,0 +1,653 @@
+-- 테이블 및 시퀀스 삭제 구문~! 
+-- 디비 갱신때마다 그냥 통째로 실행시키면 됩니당
+-- 디비 날릴 때 간편~!
+
+-- 시퀀스 삭제 구문
+DROP SEQUENCE schedule_SEQ;
+DROP SEQUENCE notice_SEQ;
+DROP SEQUENCE link_SEQ;
+DROP SEQUENCE upload_SEQ;
+DROP SEQUENCE decision_SEQ;
+
+DROP SEQUENCE todo_SEQ;
+DROP SEQUENCE del_member_SEQ;
+DROP SEQUENCE auto_login_SEQ;
+DROP SEQUENCE comment_tbl_SEQ;
+DROP SEQUENCE post_SEQ;
+
+DROP SEQUENCE project_SEQ;
+DROP SEQUENCE member_SEQ;
+DROP SEQUENCE RP_SEQ;
+DROP SEQUENCE FAQ_SEQ;
+DROP SEQUENCE QUE_SEQ;
+
+DROP SEQUENCE ANS_SEQ;
+
+-- 테이블 삭제 구문
+DROP TABLE schedule CASCADE CONSTRAINTS;
+DROP TABLE notice CASCADE CONSTRAINTS;
+DROP TABLE link CASCADE CONSTRAINTS;
+DROP TABLE work_on CASCADE CONSTRAINTS;
+DROP TABLE upload CASCADE CONSTRAINTS;
+
+DROP TABLE decision CASCADE CONSTRAINTS;
+DROP TABLE bookmark CASCADE CONSTRAINTS;
+DROP TABLE post_like CASCADE CONSTRAINTS;
+DROP TABLE todo CASCADE CONSTRAINTS;
+DROP TABLE comment_like CASCADE CONSTRAINTS;
+
+DROP TABLE del_member CASCADE CONSTRAINTS;
+DROP TABLE partner CASCADE CONSTRAINTS;
+DROP TABLE auto_login CASCADE CONSTRAINTS;
+DROP TABLE comment_tbl CASCADE CONSTRAINTS;
+DROP TABLE post CASCADE CONSTRAINTS;
+
+DROP TABLE project CASCADE CONSTRAINTS;
+DROP TABLE member CASCADE CONSTRAINTS;
+DROP TABLE confirm_mail_find_pass CASCADE CONSTRAINTS;
+DROP TABLE RELATED_POST CASCADE CONSTRAINTS;
+DROP TABLE FAQ CASCADE CONSTRAINTS;
+
+DROP TABLE ANSWER CASCADE CONSTRAINTS;
+DROP TABLE QUESTION CASCADE CONSTRAINTS;
+DROP TABLE CALL_POST CASCADE CONSTRAINTS;
+SELECT * FROM TABS;
+
+-- 트리거 삭제 구문
+DROP TRIGGER private_project_trg;
+
+-- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
+
+-- member Table Create SQL
+CREATE TABLE member
+(
+    member_no             NUMBER            NOT NULL, 
+    member_id             VARCHAR2(100)     NOT NULL, 
+    member_pw             VARCHAR2(100)     NOT NULL, 
+    member_name           VARCHAR2(100)     NOT NULL, 
+    member_picture        VARCHAR2(2000)    NULL, 
+    member_depart_name    VARCHAR2(100)     NULL, 
+    member_main_task      VARCHAR2(100)     NULL,
+    member_email_certify      CHAR(1)           NULL,
+    CONSTRAINT MEMBER_PK PRIMARY KEY (member_no)
+)
+/
+
+CREATE SEQUENCE member_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+
+-- project Table Create SQL
+CREATE TABLE project
+(
+    pro_no            NUMBER           NOT NULL, 
+    pro_title         VARCHAR2(500)    NULL, 
+    pro_progress      VARCHAR2(100)    NULL, 
+    pro_start_date    DATE             NULL, 
+    pro_end_date      DATE             NULL,
+    pro_member_no          NUMBER          NOT NULL,
+    CONSTRAINT PROJECT_PK PRIMARY KEY (pro_no),
+    CONSTRAINT FK_PRO_MEMBER_NO FOREIGN KEY(pro_member_no) REFERENCES member(member_no) on delete cascade
+)
+/
+
+CREATE SEQUENCE project_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+-- post Table Create SQL
+CREATE TABLE post
+(
+    post_no          NUMBER            NOT NULL, 
+    post_title       VARCHAR2(1000)    NULL, 
+    post_progress    VARCHAR2(20)      NULL, 
+    post_date        DATE              NULL, 
+    post_content     VARCHAR2(4000)    NULL, 
+    post_writer      NUMBER            NULL, 
+    post_temp        CHAR(1)           NULL, 
+    post_pro_no      NUMBER            NULL, 
+    post_tag         VARCHAR(2000)     NULL, 
+    CONSTRAINT POST_PK PRIMARY KEY (post_no)
+)
+/
+
+CREATE SEQUENCE post_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE post
+    ADD CONSTRAINT FK_post_post_writer_member_m_n FOREIGN KEY (post_writer)
+        REFERENCES member (member_no) on delete set null;
+/
+
+ALTER TABLE post
+    ADD CONSTRAINT FK_post_post_pro_no_project_pr FOREIGN KEY (post_pro_no)
+        REFERENCES project (pro_no) on delete cascade;
+/
+
+
+-- comment_tbl Table Create SQL
+CREATE TABLE comment_tbl
+(
+    cmember_no        NUMBER            NOT NULL, 
+    cm_writer    NUMBER            NULL, 
+    cm_post      NUMBER            NULL, 
+    cm_tag       VARCHAR2(2000)    NULL, 
+    cm_date      DATE              NULL, 
+    CONSTRAINT COMMENT_TBL_PK PRIMARY KEY (cmember_no)
+)
+/
+
+CREATE SEQUENCE comment_tbl_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE comment_tbl
+    ADD CONSTRAINT FK_comment_tbl_cm_post_post_po FOREIGN KEY (cm_post)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE comment_tbl
+    ADD CONSTRAINT FK_comment_tbl_cm_writer_membe FOREIGN KEY (cm_writer)
+        REFERENCES member (member_no) on delete set null;
+/
+
+
+-- auto_login Table Create SQL
+CREATE TABLE auto_login
+(
+    auto_no      NUMBER            NOT NULL, 
+    member_no         NUMBER            NOT NULL, 
+    auto_time    DATE              NOT NULL, 
+    auto_key     VARCHAR2(1000)    NOT NULL, 
+    CONSTRAINT AUTO_LOGIN_PK PRIMARY KEY (auto_no)
+)
+/
+
+CREATE SEQUENCE auto_login_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+
+ALTER TABLE auto_login
+    ADD CONSTRAINT FK_auto_login_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+
+-- partner Table Create SQL
+CREATE TABLE partner
+(
+    member_no           NUMBER            NULL, 
+    par_no         NUMBER            NULL, 
+    par_explain    VARCHAR2(1000)    NULL, 
+    par_yn	char(1)		NULL,
+    CONSTRAINT PARTNER_PK PRIMARY KEY (member_no, par_no)
+)
+/
+
+
+ALTER TABLE partner
+    ADD CONSTRAINT FK_partner_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+ALTER TABLE partner
+    ADD CONSTRAINT FK_partner_par_no_member FOREIGN KEY (par_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+
+-- del_member Table Create SQL
+CREATE TABLE del_member
+(
+    del_no      NUMBER           NOT NULL, 
+    del_id      VARCHAR2(100)    NOT NULL, 
+    del_date    DATE             NOT NULL, 
+    CONSTRAINT DEL_MEMBER_PK PRIMARY KEY (del_no)
+)
+/
+
+CREATE SEQUENCE del_member_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+
+-- comment_like Table Create SQL
+CREATE TABLE comment_like
+(
+    cmember_no    NUMBER    NULL, 
+    member_no     NUMBER    NULL, 
+    CONSTRAINT COMMENT_LIKE_PK PRIMARY KEY (cmember_no, member_no)
+)
+/
+
+
+
+ALTER TABLE comment_like
+    ADD CONSTRAINT FK_comment_like_member_no FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+ALTER TABLE comment_like
+    ADD CONSTRAINT FK_comment_like_cmember_no FOREIGN KEY (cmember_no)
+        REFERENCES comment_tbl (cmember_no) on delete cascade;
+/
+
+
+-- todo Table Create SQL
+CREATE TABLE todo
+(
+    todo_no            NUMBER            NOT NULL, 
+    todo_post_no       NUMBER            NULL, 
+    todo_pro_no        NUMBER            NULL, 
+    todo_title         VARCHAR2(500)     NULL, 
+    todo_content       VARCHAR2(4000)    NULL, 
+    todo_writer        NUMBER            NULL, 
+    todo_member        NUMBER            NULL, 
+    todo_start_date    DATE              NULL, 
+    todo_end_date      DATE              NULL, 
+    todo_progress      VARCHAR2(100)     NULL, 
+    CONSTRAINT TODO_PK PRIMARY KEY (todo_no)
+)
+/
+
+CREATE SEQUENCE todo_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE todo
+    ADD CONSTRAINT FK_todo_todo_post_no_post_post FOREIGN KEY (todo_post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE todo
+    ADD CONSTRAINT FK_todo_todo_pro_no_project_pr FOREIGN KEY (todo_pro_no)
+        REFERENCES project (pro_no) on delete cascade;
+/
+
+ALTER TABLE todo
+    ADD CONSTRAINT FK_todo_todo_writer_member_m_n FOREIGN KEY (todo_writer)
+        REFERENCES member (member_no) on delete set null;
+/
+
+ALTER TABLE todo
+    ADD CONSTRAINT FK_todo_todo_member_member_m_n FOREIGN KEY (todo_member)
+        REFERENCES member (member_no) on delete set null;
+/
+
+
+-- post_like Table Create SQL
+CREATE TABLE post_like
+(
+    post_no    NUMBER    NULL, 
+    member_no      NUMBER    NULL, 
+    CONSTRAINT POST_LIKE_PK PRIMARY KEY (post_no, member_no)
+)
+/
+
+
+ALTER TABLE post_like
+    ADD CONSTRAINT FK_post_like_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+ALTER TABLE post_like
+    ADD CONSTRAINT FK_post_like_post_no_post FOREIGN KEY (post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+
+-- bookmark Table Create SQL
+CREATE TABLE bookmark
+(
+    post_no    NUMBER    NULL, 
+    member_no       NUMBER    NULL, 
+    CONSTRAINT BOOKMARK_PK PRIMARY KEY (post_no, member_no)
+)
+/
+
+
+ALTER TABLE bookmark
+    ADD CONSTRAINT FK_bookmark_post_no_post_post_ FOREIGN KEY (post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE bookmark
+    ADD CONSTRAINT FK_bookmark_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+
+-- decision Table Create SQL
+CREATE TABLE decision
+(
+    dc_no              NUMBER            NOT NULL, 
+    dc_post_no         NUMBER            NULL, 
+    dc_writer          NUMBER            NULL, 
+    dc_maker           NUMBER            NULL, 
+    dc_content         VARCHAR2(4000)    NULL, 
+    dc_date            DATE              NULL, 
+    dc_yn              CHAR(1)           NULL, 
+    dc_decision        CHAR(1)           NULL, 
+    dc_comment         VARCHAR2(4000)    NULL, 
+    dc_confirm_date    DATE              NULL, 
+    CONSTRAINT DECISION_PK PRIMARY KEY (dc_no)
+)
+/
+
+CREATE SEQUENCE decision_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE decision
+    ADD CONSTRAINT FK_decision_dc_post_no_post_po FOREIGN KEY (dc_post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE decision
+    ADD CONSTRAINT FK_decision_dc_writer_member_m FOREIGN KEY (dc_writer)
+        REFERENCES member (member_no) on delete set null;
+/
+
+ALTER TABLE decision
+    ADD CONSTRAINT FK_decision_dc_maker_member_m_ FOREIGN KEY (dc_maker)
+        REFERENCES member (member_no) on delete set null;
+/
+
+
+-- upload Table Create SQL
+CREATE TABLE upload
+(
+    upload_no         NUMBER            NOT NULL, 
+    post_no           NUMBER            NULL, 
+    member_no              NUMBER            NULL, 
+    upload_date       DATE              NULL, 
+    upload_subject    VARCHAR2(50)      NULL, 
+    upload_name     VARCHAR2(100)       NULL,
+    upload_path       VARCHAR2(1000)    NULL, 
+    CONSTRAINT UPLOAD_PK PRIMARY KEY (upload_no)
+)
+/
+
+CREATE SEQUENCE upload_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+COMMENT ON TABLE upload IS '업로드'
+/
+
+COMMENT ON COLUMN upload.upload_no IS '업로드번호'
+/
+
+COMMENT ON COLUMN upload.post_no IS '게시글번호'
+/
+
+COMMENT ON COLUMN upload.member_no IS '업로드한 사람'
+/
+
+COMMENT ON COLUMN upload.upload_date IS '업로드 날짜'
+/
+
+COMMENT ON COLUMN upload.upload_name IS '파일/이미지 이름'
+/
+
+COMMENT ON COLUMN upload.upload_subject IS '파일/이미지 구분'
+/
+
+COMMENT ON COLUMN upload.upload_path IS '경로'
+/
+
+ALTER TABLE upload
+    ADD CONSTRAINT FK_upload_post_no_post_post_no FOREIGN KEY (post_no)
+        REFERENCES post (post_no) on delete cascade
+/
+
+ALTER TABLE upload
+    ADD CONSTRAINT FK_upload_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete set null
+/
+
+
+-- work_on Table Create SQL
+CREATE TABLE work_on
+(
+    member_no      NUMBER     NULL, 
+    pro_no    NUMBER     NULL, 
+    leader    CHAR(1)    NULL, 
+    invite_yn   CHAR(1)    NULL,
+    CONSTRAINT WORK_ON_PK PRIMARY KEY (member_no, pro_no)
+)
+/
+
+
+ALTER TABLE work_on
+    ADD CONSTRAINT FK_work_on_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete set null;
+/
+
+ALTER TABLE work_on
+    ADD CONSTRAINT FK_work_on_pro_no_project_pro_ FOREIGN KEY (pro_no)
+        REFERENCES project (pro_no) on delete cascade;
+/
+
+
+-- link Table Create SQL
+CREATE TABLE link
+(
+    link_no         NUMBER            NOT NULL, 
+    post_no         NUMBER            NULL, 
+    member_no            NUMBER            NULL, 
+    link_date       DATE              NOT NULL, 
+    link_title      VARCHAR2(100)     NOT NULL, 
+    link_address    VARCHAR2(1000)    NULL, 
+    CONSTRAINT LINK_PK PRIMARY KEY (link_no)
+)
+/
+
+CREATE SEQUENCE link_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE link
+    ADD CONSTRAINT FK_link_post_no_post_post_no FOREIGN KEY (post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE link
+    ADD CONSTRAINT FK_link_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete set null;
+/
+
+CREATE TABLE notice
+(
+    notice_no            NUMBER            NOT NULL, 
+    notice_title         VARCHAR2(150)     NULL, 
+    notice_contents      VARCHAR2(4000)    NULL, 
+    notice_write_date    DATE              NULL, 
+    notice_view_count    NUMBER            NULL, 
+    CONSTRAINT NOTICE_PK PRIMARY KEY (notice_no)
+)
+/
+
+
+-- 공지사항 SQL 추가 180719
+CREATE SEQUENCE notice_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+
+-- 일정 SQL 추가 180719
+CREATE TABLE schedule
+(
+    sc_no            NUMBER           NOT NULL, 
+    post_no          NUMBER           NULL, 
+    member_no             NUMBER           NULL, 
+    pro_no           NUMBER           NULL, 
+    sc_start_date    DATE             NULL, 
+    sc_end_date      DATE             NULL, 
+    sc_title         VARCHAR2(500)    NULL, 
+    CONSTRAINT SCHEDULE_PK PRIMARY KEY (sc_no)
+)
+/
+
+CREATE SEQUENCE schedule_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+
+ALTER TABLE schedule
+    ADD CONSTRAINT FK_schedule_post_no_post_post_ FOREIGN KEY (post_no)
+        REFERENCES post (post_no) on delete cascade;
+/
+
+ALTER TABLE schedule
+    ADD CONSTRAINT FK_schedule_member_no_member FOREIGN KEY (member_no)
+        REFERENCES member (member_no) on delete cascade;
+/
+
+ALTER TABLE schedule
+    ADD CONSTRAINT FK_schedule_pro_no_project_pro FOREIGN KEY (pro_no)
+        REFERENCES project (pro_no) on delete cascade;
+/
+
+
+create table confirm_mail_find_pass(
+    email varchar2(100) not null,
+    cf_key varchar2(1000) not null,
+    cf_category varchar2(10) not null,
+    cf_time timestamp not null
+);
+
+
+-- 트리거
+
+-- 가입 시 바로 프라이빗 공간 생성하는 트리거
+CREATE OR REPLACE TRIGGER private_project_trg
+AFTER insert ON member FOR EACH ROW
+BEGIN
+    INSERT INTO project
+    VALUES(project_seq.nextval, '프라이빗공간', 'working', null, null, member_seq.currval);
+END;
+/
+
+
+--FAQ 테이블 생성
+CREATE TABLE FAQ(
+    FAQ_NO NUMBER NOT NULL PRIMARY KEY,
+    FAQ_CATEGORY VARCHAR2(20) NOT NULL,
+    FAQ_TITLE VARCHAR2(200) NOT NULL,
+    FAQ_CONTENTS VARCHAR2(2000) NOT NULL
+);
+
+-- FAQ_NO 시퀀스 생성
+CREATE SEQUENCE FAQ_SEQ
+INCREMENT BY 1
+START WITH 1;
+/
+
+
+
+-- 1:1문의 테이블
+CREATE TABLE QUESTION
+(
+    QUE_NO          NUMBER            NOT NULL, 
+    QUE_TITLE       VARCHAR2(50)      NOT NULL, 
+    QUE_TIME       TIMESTAMP         NOT NULL, 
+    QUE_CONTENTS    VARCHAR2(1000)    NOT NULL,
+    QUE_MEMBER_NO   NUMBER            NOT NULL,
+    QUE_RESPONSE_YN  CHAR(2) DEFAULT 'N' CHECK(QUE_RESPONSE_YN IN('Y','N')),
+    CONSTRAINT QUESTION_PK PRIMARY KEY (QUE_NO),
+    CONSTRAINT FK_QUE_MEMBER_NO FOREIGN KEY(QUE_MEMBER_NO) REFERENCES MEMBER(MEMBER_NO)
+);
+/
+
+--질문번호 시퀀스 생성
+CREATE SEQUENCE QUE_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+-- 답변 테이블 생성
+CREATE TABLE ANSWER
+(
+    ANS_NO          NUMBER            NOT NULL, 
+    ANS_TIME        TIMESTAMP         NOT NULL, 
+    ANS_CONTENTS    VARCHAR2(3000)    NOT NULL, 
+    ANS_QUE_NO      NUMBER            NOT NULL,
+    ANS_MEMBER_NO   NUMBER            NOT NULL,  
+    CONSTRAINT PK_ANSWER PRIMARY KEY (ANS_NO),
+    CONSTRAINT FK_ANS_NO FOREIGN KEY (ANS_QUE_NO)
+    REFERENCES QUESTION(QUE_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_MEMBER_NO FOREIGN KEY (ANS_MEMBER_NO)
+    REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE
+);
+
+/
+CREATE SEQUENCE ANS_SEQ
+START WITH 1
+INCREMENT BY 1;
+/
+
+-- 관련된 글 테이블 생성 (0803)
+CREATE TABLE RELATED_POST
+(
+    RP_NO   NUMBER  NOT NULL,
+    POST_NO NUMBER,
+    PROJECT_NO NUMBER,
+    
+    CONSTRAINT PK_RELATED_POST PRIMARY KEY (RP_NO, POST_NO),
+    CONSTRAINT FK_R_POST_POST_NO_POST_NO FOREIGN KEY (POST_NO)
+    REFERENCES POST(POST_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_R_POST_PRO_NO_PRO_P FOREIGN KEY (PROJECT_NO)
+    REFERENCES PROJECT(PRO_NO) ON DELETE CASCADE
+);
+
+
+COMMIT;
+
+CREATE TABLE call_post
+(
+    CALL_POST_NO     NUMBER      NOT NULL,
+    CALL_MEMBER  NUMBER  NULL
+);
+
+
+ALTER TABLE call_post
+    ADD CONSTRAINT FK_callno_post_no FOREIGN KEY (call_post_no)
+        REFERENCES post (post_no) on delete cascade;
+
+
+ ALTER TABLE call_post
+    ADD CONSTRAINT FK_callno_member_no FOREIGN KEY (call_member)
+        REFERENCES member(member_no) on delete cascade;
+
+
+COMMIT;
+SELECT TABLE_NAME FROM TABS;
+-- 23개 테이블
+

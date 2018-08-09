@@ -83,7 +83,7 @@ public class NoticeControllerImpl implements NoticeController {
 
 		Page page = noticeService.searchNotice(currentPage,search,searchOption);
 		
-		
+		System.out.println(page);
 
 		ModelAndView view = new ModelAndView(); 
 		view.addObject("searchList",page.getList());//맵퍼에서 넘어온 "listNotice"을게시글 리스트를 view변수에 담는다

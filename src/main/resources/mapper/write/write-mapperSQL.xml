@@ -67,7 +67,7 @@
 	pro_end_date as proEndDate,
 	pro_member_no as proMemberNo
 	from project
-	where pro_member_no = #{memberNo} and pro_no not in(select min(pro_no) from project)
+	where pro_member_no = #{memberNo} and pro_no not in(select min(pro_no) from project where pro_member_no = #{memberNo})
 	
 	
 	</select>

@@ -145,11 +145,11 @@ div {
 			<br>
 			
 			<div align="center">
+			<button class='btn btn-outline-success' onclick='imageDownload(${i.uploadNo});' style='width:49%;'>다운로드</button>&nbsp;
 			<c:choose>
  	 			<c:when test="${i.memberNo eq sessionScope.member.memberNo}">
-				<button class='btn btn-outline-success' onclick='imageDownload(${i.uploadNo});' style='width:49%;'>다운로드</button>&nbsp;
-				<button class='btn btn-outline-danger' onclick='deleteUpload(${i.uploadNo});' style='width:49%;'>삭제하기</button>
-			</c:when>
+					<button class='btn btn-outline-danger' onclick='deleteUpload(${i.uploadNo});' style='width:49%;'>삭제하기</button>
+				</c:when>
  	 		</c:choose>
 			</div>
 		</div>

@@ -73,7 +73,7 @@ public class WriteControllerImpl  implements WriteController {
 		ArrayList<Project> proList = writeService.myProject(memberNo);
 		ArrayList<ProjectMember> proMember = writeService.projectMember(pj);
 		String myPicture = writeService.myPicture(memberNo);
-		
+		System.out.println(currentProName);
 		ModelAndView view = new ModelAndView();
 		view.setViewName("/write/writePage");
 		view.addObject("currentProName",currentProName);
