@@ -311,7 +311,6 @@
         </button>
         
         <!-- 채우기 -->
-        
      
     </nav>
 
@@ -387,8 +386,7 @@
 		<option value="title" selected>제목</option>
 		<option value="contents">내용</option>
 		</select>
-      	<input type="text" class="form-control" style="width:55%; float:left;" name="search" placeholder="검색" id="search">
-      
+      	<input type="text"  class="form-control" style="width:55%; float:left;" name="search" placeholder="검색" id="search">
          <input class="btn btn-primary" style="width:20%;" type="submit" value="검색">
       </form>    
         

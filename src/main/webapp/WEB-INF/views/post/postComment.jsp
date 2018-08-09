@@ -17,6 +17,11 @@
 	<title>협업툴 모두다 MODODA</title>
 
 <style>
+@media screen and (max-width: 768px){
+	.comment-area{
+		height: 200px !important;
+	}
+}
 .comment-box {
 	height: 100%;
 	min-height: 99%;
@@ -121,7 +126,8 @@ objDiv.scrollTop = objDiv.scrollHeight;
 								<ul class="comment-list">
 								<c:if test="${empty comment }">
 									<center>
-									<img src="../resources/upload/member/loading.gif" style="width:40%;height:30%;"/><br>
+									<img id="emptyCommentImg" src="../resources/images/layout-img/main_logo_square.png" style="width:40%;height:30%;"/><br>
+									
 									<span font-size="12px;">제일먼저 댓글을 남겨보면 어떨까요??</span>
 									</center>
 								</c:if>

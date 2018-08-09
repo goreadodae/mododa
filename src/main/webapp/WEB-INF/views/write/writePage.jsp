@@ -106,6 +106,7 @@
 	var fileCon =false;
 	var imageCon=false;
 	function readURL(files) {
+		console.log($('#currentProNo').val());
 		console.log($('#fileSelect').val()+"파일선택값");
 		console.log($('#fileElem').val()+"fileElem"+"값");
 		var height = $('.height').height('100px');
@@ -170,8 +171,8 @@
 					$(
 							'<div class="col-md-6 imgHeight" id="delImg_'+imgCount+'" onclick="delImgs('+imgCount+');" '
 						+	'style="height:150px; padding-top:5%;"><div class="col-md-10" style="border: 1px solid #E6E6E6; height: 100px; padding:0%;">'
-								+ '<div class="row"><div class="col-md-12" style="padding:10px; padding-left:10px"><img src="/resources/images/writeImages/file.png" style="float:left;"/>'+ext+'</div></div>'
-								+ '<div class="row"><div class="col-md-12"><div style="width:50px; text-overflow:ellipsis;">'+file.name+'</div></div>   </div></div>').appendTo($('#divEnter'));
+								+ '<div class="row"><div class="col-md-12" style="padding:10px; padding-left:20px"><img src="/resources/images/writeImages/file.png" style="float:left;"/>'+ext+'</div></div>'
+								+ '<div class="row"><div class="col-md-12" style="padding-left:20px;"><div calss="col-md-12  style="text-overflow:ellipsis;">'+file.name+'</div></div>   </div></div>').appendTo($('#divEnter'));
 					fileCon = false;
 					
 					
@@ -302,6 +303,7 @@
 	 var preventStack = true;
 	function bringRelativeWrite() {
 		var currentProNo = $("#currentProNo").val()
+		console.log(currentProNo);
 		var str="";
 		var failed="";
 		$("#relationSearch").val("");
@@ -339,7 +341,7 @@
 							}
 						
 						
-						console.log(currentProNo);
+						
 						var flag = 0;
 							for (var i = 0; i < data.length; i++) {
 								
@@ -733,7 +735,7 @@ function convertProject(no){
 			success : function(data){
 				
 				console.log($('#currentProNo').val()+"전환!!!");
-				
+				$('.notExist').remove();
 				console.log(data);
 				$('#partnersList button').remove();
 				console.log("불러오기 성공");
@@ -741,10 +743,10 @@ function convertProject(no){
 				$('#changeType').css('color','#339966');
 				if(data.length==0)
 					{
-						failed += '<div class="mx-auto style="width:50px;>'
+						failed += '<div class="mx-auto notExist" style="width:50px;>'
 						failed += '<img src="/resources/images/writeImages/listener.png">'
 						failed += '<div>'
-						failed += '<div class="mx-auto" style="width:100%; padding-left:10px;">'
+						failed += '<div class="mx-auto notExist" style="width:100%; padding-left:10px;">'
 						failed += '<b>파트너가 없습니다.</b></div>'
 							$('#partnersList').append(failed);
 						failed="";
@@ -789,8 +791,8 @@ $(document).ready(function(){
 			$('#partnersList button').remove();
 			$('#partnersList div').remove();
 			console.log(data);
-		/* 	$('#changeType').text(data.privateSpace); */
-			$('#changeType').css('color','#FF5F2E');
+		 	$('#changeType').text(data.privateSpace);
+			/* $('#changeType').css('color','#FF5F2E'); */
 			
 			
 			for(var i = 0; i<data.partners.length; i++)
@@ -1192,10 +1194,10 @@ margin:auto;
 														
 														<c:if test="${empty proMember}">
 																	
-																		<div class="mx-auto" style="width: 50px;">
+																		<div  class="mx-auto notExist" style="width: 50px;">
 																			<img src="/resources/images/writeImages/listener.png">
 																		</div>
-																	<div class="mx-auto" style="width:100%; padding-left:10px;">
+																	<div class="mx-auto notExist" style="width:100%; padding-left:10px;">
 																		<b>파트너가 없습니다.</b>
 																	</div>
 																	

@@ -155,7 +155,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 		
 		
 		   String option = null;
-		   //System.out.println("dao : " +searchOption);
+		   System.out.println("dao : " +searchOption);
 		   if(searchOption.equals("title")) {
 		      option = "NOTICE_TITLE";
 		   }else if(searchOption.equals("contents")){
@@ -193,7 +193,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 		boolean gotoPrev = true;
 		boolean gotoNext = true;
-		if (startCount == 1) {
+		if (startCount<0) {
 			gotoPrev = false;
 		}
 		if (endCount == pageTotalCount) {
@@ -201,25 +201,35 @@ public class NoticeDAOImpl implements NoticeDAO {
 		}
 
 		StringBuilder sb = new StringBuilder();
-
-		if (gotoPrev) {
-
-			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><</a>");
-
-		}
-
-		for (int i = startCount; i <= endCount; i++) {
-			if (i == currentPage) {
+		// <button type='button' class='btn btn-secondary'>
+		if(gotoPrev) { // 시작이 1페이지가 아니라면
+			if(startCount == 1)
+			{
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			else
+			{
+				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><button type='button' class='btn btn-secondary'> ◀ </button></a>");
+			}
+			}
+			
+		
+		for(int i=startCount; i<=endCount; i++) {
+			if(i == currentPage) {
 				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + "</button></a>");
-
-			} else {
+			}
+			else {
 				sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'><button type='button' class='btn btn-secondary'>" + i + "</button></a>");
 			}
 		}
-		if (gotoNext) {
-			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'>></i></a>");
+		
+		if(endCount == pageTotalCount) { 
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
 		}
-
+		else {
+			sb.append("<a class='item' href='/noticeSearch.do?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'><button type='button' class='btn btn-secondary'> ▶ </button></a>"); 
+		}
+		
 		return sb.toString();
 		
 	}
@@ -238,13 +248,12 @@ public class NoticeDAOImpl implements NoticeDAO {
 	}
 
 	public Notice noticeUpdateReady(SqlSessionTemplate sqlSession, int noticeNo) {
-		
 		return sqlSession.selectOne("notice.noticeUpdateReady",noticeNo);
 		
 	}
 
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice notice) {
-		
+		System.out.println(notice);
 		return sqlSession.update("notice.noticeUpdate",notice);
 	}
 
